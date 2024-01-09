@@ -19,6 +19,7 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@supabase/supabase-js": "^2.39.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
