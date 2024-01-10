@@ -1,11 +1,12 @@
 import BookmarkButton from "@/components/BookmarkButton"
 import Image from "next/image"
+import Link from "next/link"
 import React from "react"
 
 const ProjectCard = () => {
   return (
     // TODO: 아이템 누르면 디테일 페이지로 이동(/projects/:id)
-    <div className="flex">
+    <Link href={`projects/1`} className="flex">
       <section className="relative overflow-hidden rounded-xl w-full max-w-[498px] h-[270px] bg-slate-200 mr-20">
         <Image
           src={"/images/React.jpeg"}
@@ -38,7 +39,7 @@ const ProjectCard = () => {
           <BookmarkButton />
         </div>
       </section>
-    </div>
+    </Link>
   )
 }
 
