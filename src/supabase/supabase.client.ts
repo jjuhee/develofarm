@@ -1,8 +1,9 @@
 import { createClient } from "@supabase/supabase-js"
 // import { Database } from "./types/supabase";
 
-const supabaseUrl: string = process.env.REACT_APP_SUPABASE_URL || ""
-const supabaseServerKey: string = process.env.REACT_APP_SUPABASE_API_KEY || ""
+const supabaseUrl: string = process.env.NEXT_PUBLIC_SUPABASE_URL as string
+const supabaseServerKey: string = process.env
+  .NEXT_PUBLIC_SUPABASE_CLIENT_SIDE_API_KEY as string
 
 // const supabase = createClient<Database>(supabaseUrl, supabaseServerKey)
 
