@@ -8,11 +8,12 @@ const ProjectsPage = () => {
       {/* category */}
 
       {/* projects */}
-
-      <ProjectCard />
-      <ProjectCard />
-      <ProjectCard />
-      <ProjectCard />
+      <div className="flex flex-col gap-8">
+        <ProjectCard />
+        <ProjectCard />
+        <ProjectCard />
+        <ProjectCard />
+      </div>
 
       {/* TODO: length가 0 이면  EmptyState */}
     </div>

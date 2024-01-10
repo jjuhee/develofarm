@@ -15,7 +15,7 @@ const ProjectCard = () => {
           className="object-cover w-full h-full transition group-hover:scale-110 "
         />
       </section>
-      <section className="relative flex flex-col pt-5 gap-5 w-full">
+      <section className="relative flex flex-col pt-5 gap-3 w-full">
         <div className="flex gap-2 items-center">
           <span className="bg-gray-300 px-2 py-1 rounded-md text-[20px]">
             모집 중{" "}

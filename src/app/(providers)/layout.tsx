@@ -7,8 +7,8 @@ function ProvidersLayout({ children }: PropsWithChildren<{}>) {
   return (
     <Provider>
       <Header />
-      <div className="flex flex-col w-full">
-        <div className="flex w-[1440px]  my-0 mx-auto">{children}</div>
+      <div className="flex  w-full">
+        <div className="flex flex-col w-[1440px]  my-0 mx-auto">{children}</div>
       </div>
       <Footer />
     </Provider>
