@@ -9,6 +9,64 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      academy: {
+        Row: {
+          academy_from: string | null
+          academy_id: string
+          academy_name: string | null
+          academy_to: string | null
+          user_id: string
+        }
+        Insert: {
+          academy_from?: string | null
+          academy_id?: string
+          academy_name?: string | null
+          academy_to?: string | null
+          user_id: string
+        }
+        Update: {
+          academy_from?: string | null
+          academy_id?: string
+          academy_name?: string | null
+          academy_to?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academy_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      award_history: {
+        Row: {
+          award_history_id: string
+          award_history_name: string | null
+          user_id: string
+        }
+        Insert: {
+          award_history_id?: string
+          award_history_name?: string | null
+          user_id: string
+        }
+        Update: {
+          award_history_id?: string
+          award_history_name?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "award_history_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       bookmarks: {
         Row: {
           bookmark_id: string
@@ -67,6 +125,32 @@ export interface Database {
         Relationships: [
           {
             foreignKeyName: "careers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      certificate: {
+        Row: {
+          certificate_id: string
+          certificate_name: string | null
+          user_id: string
+        }
+        Insert: {
+          certificate_id?: string
+          certificate_name?: string | null
+          user_id: string
+        }
+        Update: {
+          certificate_id?: string
+          certificate_name?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificate_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
