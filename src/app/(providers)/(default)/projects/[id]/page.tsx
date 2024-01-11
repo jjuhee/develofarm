@@ -13,7 +13,7 @@ const DetailPage = () => {
   ]
 
   return (
-    <div className="flex flex-col w-10/12 my-0 mx-auto">
+    <div className="flex flex-col w-10/12 my-0 mx-auto h">
       <Spacer y={90} />
       <header>
         <h1 className="text-3xl font-semibold">
@@ -76,7 +76,7 @@ const DetailPage = () => {
           </div>
         </section>
         <Spacer y={50} />
-        <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 h-3/4">
+        <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10">
           <div className="leading-7">
             안녕하세요! 책과 관련해서 간단하게 프로젝트 하나 진행할건데 관심
             있으신 분들 댓글 남겨 주세요!
