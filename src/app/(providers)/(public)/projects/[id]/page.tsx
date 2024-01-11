@@ -1,8 +1,10 @@
+import Spacer from "@/components/ui/Spacer"
 import React from "react"
 
 const DetailPage = () => {
   return (
     <div>
+      <Spacer y={90} />
       <header>
         <span>[tag]React, [tag]NextJS, [tag]JAVA</span>
         <button>목록</button>
