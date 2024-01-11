@@ -1,6 +1,8 @@
 import React from "react"
 
 const MemberCard = () => {
+  // TODO: 현재 구인 중인 멤버 리스트 가져오기
+
   return (
     // TODO: 클릭 시 프로필 모달 띄우기
     <li className="flex flex-col w-[361px] h-[436px] border-2 rounded-md my-[20px]">
