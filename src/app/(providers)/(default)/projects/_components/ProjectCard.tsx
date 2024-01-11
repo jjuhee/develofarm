@@ -5,6 +5,8 @@ import Link from "next/link"
 import { getProjectTech } from "../api"
 
 const ProjectCard = ({ project }: Projects) => {
+  const currentUser = "75085234-4b65-4dc7-8efc-679331ad0da2"
+
   const {
     id,
     content,
@@ -29,7 +31,6 @@ const ProjectCard = ({ project }: Projects) => {
     content.length > 100 ? content.slice(0, 100) + "..." : content
 
   return (
-    // TODO: 아이템 누르면 디테일 페이지로 이동(/projects/:id)
     <div className="flex">
       <section className="relative overflow-hidden rounded-xl w-full md:max-w-[498px] md:h-[270px] max-w-[300px] h-[230px] transition-all bg-slate-200 mr-20">
         <Image
@@ -48,8 +49,7 @@ const ProjectCard = ({ project }: Projects) => {
             </span>
             <h3 className="text-[26px] font-[700]">{title}</h3>
           </div>
-          {/* TODO: sm보다 작을 떄 display none */}
-          <span>
+          <span className="hidden md:block">
             {project_start_date} - {project_end_date}
           </span>
           <p>{cardContent}</p>
@@ -69,7 +69,6 @@ const ProjectCard = ({ project }: Projects) => {
               JAVA
             </li>
           </ul>
-          {/* TODO: sm보다 작을 떄 display none */}
           <Link
             href={`projects/${id}`}
             className="absolute bottom-0 right-2 bg-black text-white text-[16px] py-[12px] px-[34px] rounded-3xl"
@@ -78,9 +77,8 @@ const ProjectCard = ({ project }: Projects) => {
           </Link>
         </div>
 
-        {/* TODO: 북마크 컴포넌트 분리 */}
         <div className="absolute top-4 right-2">
-          <BookmarkButton projectId={id} currentUser={user_id} />
+          <BookmarkButton projectId={id} currentUser={currentUser} />
         </div>
       </section>
     </div>

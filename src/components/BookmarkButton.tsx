@@ -28,37 +28,33 @@ const BookmarkButton = ({ projectId, currentUser }: Props) => {
   })
 
   const onClickHandler = async (e: React.MouseEvent<HTMLDivElement>) => {
-    // 이벤트 버블링 제거
     e.stopPropagation()
 
-    // 로그인 됐을 때
     if (!currentUser) return
 
-    // 로그인 되지 않았을 때
-    if (isBookmarked()) {
-      console.log("이미 추가됨")
+    // 로그인 됐을 때
+    if (isBookmarked) {
+      // 이미 추가 됐을 경우
+      console.log("pass")
       await removeBookmarks({ projectId, currentUser })
       queryClient.invalidateQueries({ queryKey: ["bookmarks"] })
     } else {
+      // 추가되어 있지 않을 경우 새로 추가
       addMutate({ projectId, currentUser })
+      refetchBookmarks()
     }
-
     refetchBookmarks()
   }
 
-  const isBookmarked = () => {
-    return (
-      bookmarks &&
-      bookmarks.some((bookmark) => bookmark.project_id === projectId)
-    )
-  }
+  const isBookmarked =
+    bookmarks && bookmarks.some((bookmark) => bookmark.project_id === projectId)
 
   return (
-    <div className="cursor-pointer z-10" onClick={onClickHandler}>
-      {isBookmarked() ? (
-        <MdOutlineBookmark size={30} />
+    <div className="cursor-pointer z-10 text-gray-400" onClick={onClickHandler}>
+      {isBookmarked ? (
+        <MdOutlineBookmark size={35} />
       ) : (
-        <MdBookmarkBorder size={30} />
+        <MdBookmarkBorder size={35} />
       )}
     </div>
   )

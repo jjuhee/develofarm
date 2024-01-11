@@ -24,8 +24,9 @@ const ProjectsPage = () => {
         <Spacer y={30} />
 
         <div className="flex justify-between items-center">
+          {/* TODO: 핉터링 시 출력 */}
           <p className="text-[20px] text-[#363940]">
-            00건의 검색 결과를 찾았어요.
+            {projects?.length}건의 검색 결과를 찾았어요.
           </p>
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-2">

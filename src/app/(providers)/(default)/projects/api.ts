@@ -38,12 +38,12 @@ export async function removeBookmarks({
   currentUser,
 }: {
   projectId: string
-  currentUser: string
+  currentUser?: string
 }) {
   const { error } = await supabaseForClient
     .from("bookmarks")
     .delete()
-    .eq("project_id", "projectId")
+    .eq("project_id", projectId)
 
   if (error) console.log("error", error)
 }
