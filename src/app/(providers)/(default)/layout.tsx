@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react"
-import Header from "@/app/(providers)/(public)/_components/Header"
-import Footer from "@/app/(providers)/(public)/_components/Footer"
+import Header from "@/app/(providers)/(default)/_components/Header"
+import Footer from "@/app/(providers)/(default)/_components/Footer"
 
 function ProvidersLayout({ children }: PropsWithChildren<{}>) {
   return (

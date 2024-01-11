@@ -1,10 +1,17 @@
+"use client"
+
 import EmptyState from "@/components/EmptyState"
 import React from "react"
 import ProjectCard from "./_components/ProjectCard"
 import Spacer from "@/components/ui/Spacer"
 import Category from "./_components/Category"
+import { useQuery } from "@tanstack/react-query"
+import { getProjects } from "./api"
 
 const ProjectsPage = () => {
+  const { data } = useQuery({ queryKey: ["projects"], queryFn: getProjects })
+  console.log(data)
+
   return (
     <div>
       <Spacer y={60} />
