@@ -9,8 +9,10 @@ import { useQuery } from "@tanstack/react-query"
 import { getProjects } from "./api"
 
 const ProjectsPage = () => {
-  const { data } = useQuery({ queryKey: ["projects"], queryFn: getProjects })
-  console.log(data)
+  const { data: projects } = useQuery({
+    queryKey: ["projects"],
+    queryFn: getProjects,
+  })
 
   return (
     <div>
@@ -43,10 +45,9 @@ const ProjectsPage = () => {
         <Spacer y={50} />
 
         <ul className="flex flex-col gap-8">
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
+          {projects?.map((item: Projects) => (
+            <ProjectCard key={item?.id} project={item} />
+          ))}
         </ul>
 
         {/* TODO: length가 0 이면  EmptyState */}
