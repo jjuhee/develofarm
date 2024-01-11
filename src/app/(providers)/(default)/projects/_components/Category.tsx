@@ -20,8 +20,11 @@ const Category = () => {
           </div>
           <div className="flex flex-col gap-[16px] py-[15px]">
             <h5 className="text-[20px] font-[600]">활동 지역</h5>
-            <select className="border-[1.5px] border-slate-400 px-[20px] py-[10px] rounded-full">
-              <option selected>지역을 선택하세요</option>
+            <select
+              defaultValue="1"
+              className="border-[1.5px] border-slate-400 px-[20px] py-[10px] rounded-full"
+            >
+              <option value="1">지역을 선택하세요</option>
             </select>
           </div>
         </div>

@@ -32,12 +32,10 @@ const ProjectsPage = () => {
               <input type="checkbox" />
               <p>모집 중인 공고만 보기</p>
             </div>
-            <select name="" id="">
-              <option value="" selected>
-                최신순
-              </option>
-              <option value="">오래된순</option>
-              <option value="">찜한순</option>
+            <select defaultValue="1" name="" id="">
+              <option value="1">최신순</option>
+              <option value="2">오래된순</option>
+              <option value="3">찜한순</option>
             </select>
           </div>
         </div>
