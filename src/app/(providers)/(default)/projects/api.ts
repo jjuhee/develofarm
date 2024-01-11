@@ -47,3 +47,14 @@ export async function removeBookmarks({
 
   if (error) console.log("error", error)
 }
+
+export async function getProjectTech(projectId: string) {
+  const { data, error } = await supabaseForClient
+    .from("project_tech")
+    .select("*")
+    .eq("project_id", projectId)
+
+  if (error) console.log("error", error)
+
+  return data
+}

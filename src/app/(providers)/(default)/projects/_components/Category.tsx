@@ -1,7 +1,11 @@
-import React from "react"
-import { IoIosArrowDown } from "react-icons/io"
+"use client"
+
+import React, { useState } from "react"
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 
 const Category = () => {
+  const [isActive, setIsActive] = useState(false)
+
   return (
     <section className="flex flex-col gap-3 pb-[25px]">
       <h3 className="text-[26px] font-[700]">필터링 검색</h3>
@@ -45,20 +49,34 @@ const Category = () => {
         <div className="flex flex-col gap-[16px] py-[15px]">
           <h5 className="text-[20px] font-[600]">기술 스택</h5>
           <ul className="flex gap-3 items-center">
-            <li className="relative">
-              <div className="flex items-center justify-center gap-2 border-[1.5px] border-slate-400 px-[20px] py-[10px] rounded-full">
-                프론트엔드 <IoIosArrowDown />
+            <li className="relative" onMouseLeave={() => setIsActive(false)}>
+              <div
+                className="flex items-center mb-2 justify-center gap-2 border-[1.5px] border-slate-400 px-[20px] py-[10px] rounded-full cursor-pointer"
+                onClick={() => setIsActive(!isActive)}
+              >
+                프론트엔드 {isActive ? <IoIosArrowUp /> : <IoIosArrowDown />}
               </div>
-              {/* TODO: map, 조건부 렌더링 */}
-              <ul className="absolute flex  bg-slate-50 w-[150px] rounded-lg py-[15px] px-[20px]">
-                <input type="checkbox" className="mr-2" />
-                <li>React</li>
+              <ul
+                className={`absolute flex flex-col bg-slate-50 w-[150px] rounded-lg py-[15px] px-[20px] transition-all ${
+                  isActive ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <li>
+                  <label className="cursor-pointer">
+                    <input type="checkbox" id="react" className="mr-2" />
+                    React
+                  </label>
+                </li>
+                <li>
+                  <input type="checkbox" className="mr-2" />
+                  <span>Vue</span>
+                </li>
               </ul>
             </li>
-            <div className="flex items-center justify-center gap-2 border-[1.5px] border-slate-400 px-[20px] py-[10px] rounded-full">
+            <div className="flex items-center mb-2 justify-center gap-2 border-[1.5px] border-slate-400 px-[20px] py-[10px] rounded-full">
               백엔드 <IoIosArrowDown />
             </div>
-            <div className="flex items-center justify-center gap-2 border-[1.5px] border-slate-400 px-[20px] py-[10px] rounded-full">
+            <div className="flex items-center mb-2 justify-center gap-2 border-[1.5px] border-slate-400 px-[20px] py-[10px] rounded-full">
               디자인 <IoIosArrowDown />
             </div>
           </ul>
