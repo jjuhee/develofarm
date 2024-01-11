@@ -1,5 +1,5 @@
-import Spacer from "@/components/ui/Spacer"
 import React from "react"
+import Spacer from "@/components/ui/Spacer"
 
 const DetailPage = () => {
   return (
