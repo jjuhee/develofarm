@@ -353,7 +353,7 @@ export interface Database {
           region_id: string | null
           title: string
           updated_at: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           content: string
@@ -368,7 +368,7 @@ export interface Database {
           region_id?: string | null
           title: string
           updated_at?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           content?: string
@@ -383,7 +383,7 @@ export interface Database {
           region_id?: string | null
           title?: string
           updated_at?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -442,18 +442,30 @@ export interface Database {
       }
       users: {
         Row: {
+          avatar_url: string | null
+          created_at: string | null
           id: string
           positionId: string | null
+          user_email: string | null
+          user_nickname: string | null
           user_status: string | null
         }
         Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
           id: string
           positionId?: string | null
+          user_email?: string | null
+          user_nickname?: string | null
           user_status?: string | null
         }
         Update: {
+          avatar_url?: string | null
+          created_at?: string | null
           id?: string
           positionId?: string | null
+          user_email?: string | null
+          user_nickname?: string | null
           user_status?: string | null
         }
         Relationships: [
