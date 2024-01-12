@@ -1,19 +1,58 @@
 "use client"
 
 import EmptyState from "@/components/EmptyState"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import ProjectCard from "./_components/ProjectCard"
 import Spacer from "@/components/ui/Spacer"
 import Category from "./_components/Category"
 import { useQuery } from "@tanstack/react-query"
 import { getProjects } from "./api"
+import Pagination from "@mui/material/Pagination"
+
+const PAGE_SIZE = 4
 
 const ProjectsPage = () => {
+  const [page, setPage] = useState<number>(1)
+  const [recruitStatus, setRecruitStatus] = useState(false)
+
+  useEffect(() => {
+    console.log(!!recruitStatus)
+  }, [])
+
   const { data: projects } = useQuery({
-    queryKey: ["projects"],
-    queryFn: getProjects,
+    queryKey: ["projects", recruitStatus],
+    queryFn: () =>
+      getProjects({ orderBy: "created_at", recruitStatus: recruitStatus }),
     // initialData: props.projects,
+    enabled: !!page,
   })
+
+  const queryOption = {
+    limit: PAGE_SIZE + (page - 1) * PAGE_SIZE,
+    offset: page > 2 ? (page - 1) * PAGE_SIZE + 1 : (page - 1) * PAGE_SIZE,
+    recruitStatus: recruitStatus,
+  }
+
+  const { data: paginatedProjects } = useQuery({
+    queryKey: ["projects", page, recruitStatus],
+    queryFn: () => getProjects(queryOption),
+    enabled: !!projects,
+  })
+
+  const onClickPage = (e: React.ChangeEvent<unknown>, page: number) => {
+    setPage(page)
+  }
+
+  const onChangeRecruitHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.checked)
+
+    if (e.target.checked) {
+      // 모집 중인 것만 보기
+      setRecruitStatus(true)
+    } else {
+      setRecruitStatus(false)
+    }
+  }
 
   return (
     <div>
@@ -31,7 +70,7 @@ const ProjectsPage = () => {
           </p>
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-2">
-              <input type="checkbox" />
+              <input type="checkbox" onChange={onChangeRecruitHandler} />
               <p>모집 중인 공고만 보기</p>
             </div>
             <select defaultValue="1" name="" id="">
@@ -44,14 +83,24 @@ const ProjectsPage = () => {
 
         <Spacer y={50} />
 
-        <ul className="flex flex-col gap-8">
-          {projects?.map((item: Projects) => (
-            <ProjectCard key={item?.id} project={item} />
-          ))}
-        </ul>
-
-        {/* TODO: length가 0 이면  EmptyState */}
+        {(projects?.length as number) > 0 ? (
+          <ul className="flex flex-col gap-8">
+            {paginatedProjects?.map((item: TProjects) => (
+              <ProjectCard key={item?.id} project={item} />
+            ))}
+          </ul>
+        ) : (
+          <EmptyState />
+        )}
       </div>
+
+      <Pagination
+        count={Math.ceil(((projects?.length as number) || 0) / PAGE_SIZE)}
+        page={page}
+        defaultPage={1}
+        shape="rounded"
+        onChange={onClickPage}
+      />
     </div>
   )
 }

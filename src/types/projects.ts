@@ -1,4 +1,4 @@
-declare interface Projects {
+declare interface TProjects {
   content: string
   created_at: string | null
   id: string
