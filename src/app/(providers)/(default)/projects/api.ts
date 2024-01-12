@@ -36,7 +36,7 @@ export async function getProjects({
 export async function getProject(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("projects")
-    .select("*")
+    .select(`*, users(user_nickname)`)
     .eq("id", projectId)
 
   if (error) console.log("error", error)

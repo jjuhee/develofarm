@@ -37,6 +37,7 @@ const DetailPage = () => {
         <h1 className="text-3xl font-semibold">
           {/* 책 커뮤니티 관련 프로젝트 멤버 구합니다! */}
           {project.title}
+          {project.users?.user_nickname}
         </h1>
         <Spacer y={30} />
         <ul className="flex text-sm">
@@ -68,7 +69,7 @@ const DetailPage = () => {
             />
           </li>
           <li>
-            <span className="pr-2">작성자</span> {}
+            <span className="pr-2">작성자</span>
           </li>
           {/* <li>{TODAY.toLocaleString()}</li> */}
           <li>조회수 190</li>
