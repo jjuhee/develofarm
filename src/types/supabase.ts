@@ -353,7 +353,7 @@ export interface Database {
           region_id: string | null
           title: string
           updated_at: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           content: string
@@ -368,7 +368,7 @@ export interface Database {
           region_id?: string | null
           title: string
           updated_at?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           content?: string
@@ -383,7 +383,7 @@ export interface Database {
           region_id?: string | null
           title?: string
           updated_at?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {

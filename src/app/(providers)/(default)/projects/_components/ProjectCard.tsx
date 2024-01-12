@@ -3,10 +3,13 @@ import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
 import { getProjectTech } from "../api"
-import dayjs from "dayjs"
 import formatDate from "@/utils/formatDate"
 
-const ProjectCard = ({ project }: Projects) => {
+interface Props {
+  project: TProjects
+}
+
+const ProjectCard = ({ project }: Props) => {
   const currentUser = "75085234-4b65-4dc7-8efc-679331ad0da2"
 
   const {
@@ -28,7 +31,7 @@ const ProjectCard = ({ project }: Projects) => {
   })
 
   const cardContent =
-    content.length > 100 ? content.slice(0, 100) + "..." : content
+    content?.length > 100 ? content.slice(0, 100) + "..." : content
 
   return (
     <div className="flex">
