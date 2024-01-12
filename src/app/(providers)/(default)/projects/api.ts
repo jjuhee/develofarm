@@ -1,7 +1,10 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
 
 export async function getProjects() {
-  const { data, error } = await supabaseForClient.from("projects").select("*")
+  const { data, error } = await supabaseForClient
+    .from("projects")
+    .select("*")
+    .order("created_at")
 
   if (error) console.log("error", error)
 

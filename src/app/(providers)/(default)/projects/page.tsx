@@ -12,6 +12,7 @@ const ProjectsPage = () => {
   const { data: projects } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
+    // initialData: props.projects,
   })
 
   return (
@@ -56,3 +57,9 @@ const ProjectsPage = () => {
 }
 
 export default ProjectsPage
+
+// TODO: 서버 사이드 렌더링
+// export async function getServerSideProps() {
+//   const projects = await getProjects()
+//   return { props: { projects } }
+// }

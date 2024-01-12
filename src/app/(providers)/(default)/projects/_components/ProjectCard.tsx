@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
 import { getProjectTech } from "../api"
+import dayjs from "dayjs"
+import formatDate from "@/utils/formatDate"
 
 const ProjectCard = ({ project }: Projects) => {
   const currentUser = "75085234-4b65-4dc7-8efc-679331ad0da2"
@@ -24,8 +26,6 @@ const ProjectCard = ({ project }: Projects) => {
     queryFn: () => getProjectTech(id),
     enabled: !!id,
   })
-
-  console.log(id, techs)
 
   const cardContent =
     content.length > 100 ? content.slice(0, 100) + "..." : content
@@ -50,7 +50,7 @@ const ProjectCard = ({ project }: Projects) => {
             <h3 className="text-[26px] font-[700]">{title}</h3>
           </div>
           <span className="hidden md:block">
-            {project_start_date} - {project_end_date}
+            {formatDate(project_start_date)} - {formatDate(project_end_date)}
           </span>
           <p>{cardContent}</p>
         </div>
