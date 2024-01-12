@@ -7,7 +7,7 @@ import MemberCategory from "./_components/MemberCategory"
 import { useQuery } from "@tanstack/react-query"
 import { getUsers } from "./api"
 import { Tables } from "@/types/supabase"
-import useCategoryStore from "@/store/store"
+import useCategoryStore from "@/store/category"
 
 const MembersPage = () => {
   const { data: users } = useQuery({ queryKey: ["users"], queryFn: getUsers })

@@ -3,6 +3,7 @@ import Image from "next/image"
 import React from "react"
 import { getPositionById } from "../api"
 import { Tables } from "@/types/supabase"
+import useMembersStore from "@/store/members"
 
 interface Props {
   user: Tables<"users">
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const MemberCard = ({ user, title }: Props) => {
+  const { setViewMemberModal, selectMember } = useMembersStore((state) => state)
+
   const { data: position } = useQuery({
     queryKey: ["position", user.positionId],
     queryFn: () => getPositionById({ positionId: user?.positionId as string }),
@@ -17,10 +20,18 @@ const MemberCard = ({ user, title }: Props) => {
     select: (position) => position?.[0],
   })
 
+  const openModalHandler = () => {
+    selectMember(user)
+    setViewMemberModal(true)
+  }
+
   return (
     <>
       {(title === "전체보기" || title === position?.position_name) && (
-        <li className="relative flex justify-center items-end  w-[280px] h-[380px] rounded-3xl my-[20px] shadow-2xl mt-20 transition-all duration-200 cursor-pointer hover:scale-105">
+        <li
+          className="relative flex justify-center items-end  w-[280px] h-[380px] rounded-3xl my-[20px] shadow-2xl mt-20 transition-all duration-200 cursor-pointer hover:scale-105"
+          onClick={openModalHandler}
+        >
           <section className="flex flex-col z-1 p-[12px] gap-[5px] items-center pb-5 px-10 ">
             <span className="text-[20px] font-[700] leading-[24px]">
               {user.user_nickname}

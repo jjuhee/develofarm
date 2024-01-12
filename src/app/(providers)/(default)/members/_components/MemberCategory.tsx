@@ -1,6 +1,6 @@
 "use client"
 
-import useCategoryStore from "@/store/store"
+import useCategoryStore from "@/store/category"
 import React, { useState } from "react"
 import { useStore } from "zustand"
 
