@@ -36,7 +36,7 @@ const TipTap = () => {
         <EditorMenu editor={editor} />
         <Spacer y={10} />
       </div>
-      <div className="py-10 px-5 min-h-96">
+      <div className="py-10 px-5 min-h-[50vh]">
         <EditorContent editor={editor} />
       </div>
       <BubbleMenu editor={editor}>
