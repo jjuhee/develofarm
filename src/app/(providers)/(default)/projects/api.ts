@@ -1,11 +1,33 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
 
-export async function getProjects() {
-  const { data, error } = await supabaseForClient
-    .from("projects")
-    .select("*")
-    .order("created_at")
+interface Values {
+  orderBy?: string
+  order?: number
+  limit?: number
+  offset?: number
+  recruitStatus?: boolean
+}
 
+export async function getProjects({
+  orderBy = "created_at",
+  order = 1,
+  limit = 0,
+  offset = 0,
+  recruitStatus = false,
+}: Values) {
+  const query = supabaseForClient.from("projects").select("*")
+
+  limit !== 0 && query.range(offset, limit)
+
+  recruitStatus && query.eq("recruit_status", false)
+
+  order === 1
+    ? query.order("created_at", { ascending: false })
+    : order === 2
+      ? query.order("created_at", { ascending: true })
+      : query.order("recruit_status", { ascending: true })
+
+  const { data, error } = await query
   if (error) console.log("error", error)
 
   return data
