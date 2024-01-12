@@ -1,17 +1,37 @@
 import BookmarkButton from "@/components/BookmarkButton"
+import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
+import { getProjectTech } from "../api"
+import dayjs from "dayjs"
+import formatDate from "@/utils/formatDate"
 
-const ProjectCard = () => {
-  const content =
-    "The only moment, the only life we have is in the NOW. What happened afew moments or several years ago is gone, what will happen thisevening, or next month when we go on holidays is not here yet."
+const ProjectCard = ({ project }: Projects) => {
+  const currentUser = "75085234-4b65-4dc7-8efc-679331ad0da2"
+
+  const {
+    id,
+    content,
+    created_at,
+    picture_url,
+    project_start_date,
+    project_end_date,
+    title,
+    user_id,
+    recruit_status,
+  } = project
+
+  const { data: techs } = useQuery({
+    queryKey: ["techs"],
+    queryFn: () => getProjectTech(id),
+    enabled: !!id,
+  })
 
   const cardContent =
     content.length > 100 ? content.slice(0, 100) + "..." : content
 
   return (
-    // TODO: 아이템 누르면 디테일 페이지로 이동(/projects/:id)
-    <Link href={`projects/1`} className="flex">
+    <div className="flex">
       <section className="relative overflow-hidden rounded-xl w-full md:max-w-[498px] md:h-[270px] max-w-[300px] h-[230px] transition-all bg-slate-200 mr-20">
         <Image
           src={"/images/React.jpeg"}
@@ -21,16 +41,19 @@ const ProjectCard = () => {
           className="object-cover w-full h-full transition group-hover:scale-110 "
         />
       </section>
-      <section className="relative flex flex-col pt-5 gap-4 w-full">
-        <div className="flex gap-3 items-center">
-          <span className="bg-gray-300 px-2 py-1 rounded-md text-[20px] font-[700] text-white">
-            모집 중{" "}
+      <section className="relative flex flex-col pt-5  w-full justify-between">
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-3 items-center">
+            <span className="bg-gray-300 px-2 py-1 rounded-md text-[20px] font-[700] text-white">
+              {recruit_status ? "모집 완료" : "모집 중"}{" "}
+            </span>
+            <h3 className="text-[26px] font-[700]">{title}</h3>
+          </div>
+          <span className="hidden md:block">
+            {formatDate(project_start_date)} - {formatDate(project_end_date)}
           </span>
-          <h3 className="text-[26px] font-[700]">프로젝트 구인 타이틀</h3>
+          <p>{cardContent}</p>
         </div>
-        {/* TODO: sm보다 작을 떄 display none */}
-        <span>0000.00.00 - 0000.00.00</span>
-        <p>{cardContent}</p>
         <div className="flex justify-between items-center">
           <ul className="flex gap-3 ">
             <li className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl">
@@ -46,18 +69,19 @@ const ProjectCard = () => {
               JAVA
             </li>
           </ul>
-          {/* TODO: sm보다 작을 떄 display none */}
-          <button className="bg-black text-white text-[16px] py-[12px] px-[34px] rounded-3xl">
+          <Link
+            href={`projects/${id}`}
+            className="absolute bottom-0 right-2 bg-black text-white text-[16px] py-[12px] px-[34px] rounded-3xl"
+          >
             지원하기
-          </button>
+          </Link>
         </div>
 
-        {/* TODO: 북마크 컴포넌트 분리 */}
-        <div className="absolute top-4 right-3">
-          <BookmarkButton />
+        <div className="absolute top-4 right-2">
+          <BookmarkButton projectId={id} currentUser={currentUser} />
         </div>
       </section>
-    </Link>
+    </div>
   )
 }
 
