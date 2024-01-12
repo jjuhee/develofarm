@@ -2,6 +2,9 @@ import React from "react"
 import Spacer from "@/components/ui/Spacer"
 import Image from "next/image"
 import profileImg from "../../../../../../public/images/pathway-in-the-middle-of-the-green-leafed-trees-with-the-sun-shining-through-the-branches.jpg"
+import { CiBookmark } from "react-icons/ci"
+import { FaRegMessage } from "react-icons/fa6"
+import { IoShareSocialOutline } from "react-icons/io5"
 
 const DetailPage = () => {
   const TODAY = new Date()
@@ -13,7 +16,7 @@ const DetailPage = () => {
   ]
 
   return (
-    <div className="flex flex-col w-10/12 my-0 mx-auto h">
+    <div className="flex flex-col w-10/12 my-0 mx-auto">
       <Spacer y={90} />
       <header>
         <h1 className="text-3xl font-semibold">
@@ -76,7 +79,7 @@ const DetailPage = () => {
           </div>
         </section>
         <Spacer y={50} />
-        <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10">
+        <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 h-auto min-h-2">
           <div className="leading-7">
             안녕하세요! 책과 관련해서 간단하게 프로젝트 하나 진행할건데 관심
             있으신 분들 댓글 남겨 주세요!
@@ -91,15 +94,29 @@ const DetailPage = () => {
           </div>
         </section>
         <section>
-          <span>모집인원 3/5 멤버1, 멤버2, 멤버3</span>
+          <span>모집인원 3/5</span>
         </section>
-        <section>
-          <span>댓글 갯수: 24</span>
-          <span>신청자 수: 10</span>
-          <span>북마크 5</span>
-          <button className="hover:bg-violet-600 hover:text-white">
-            참여 신청
-          </button>
+        <section className="flex">
+          <article className="flex">
+            <span className="pr-5">
+              <FaRegMessage className="inline-block" /> 24
+            </span>
+            <span className="pr-5">신청자 수: 10</span>
+          </article>
+          <article className="flex justify-end w-8">
+            <span className="pr-5">
+              <span>
+                <CiBookmark className="inline-block" />
+              </span>
+              5
+            </span>
+            <span className="flex-end">
+              <IoShareSocialOutline />
+            </span>
+            <button className="hover:bg-violet-600 hover:text-white flex-end">
+              참여 신청
+            </button>
+          </article>
         </section>
         <section className="border-2 border-yellow-600">
           <div>
