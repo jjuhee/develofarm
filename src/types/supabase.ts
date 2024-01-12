@@ -349,7 +349,7 @@ export interface Database {
           picture_url: string | null
           project_end_date: string
           project_start_date: string
-          recruit_status: string | null
+          recruit_status: boolean | null
           region_id: string | null
           title: string
           updated_at: string | null
@@ -364,7 +364,7 @@ export interface Database {
           picture_url?: string | null
           project_end_date: string
           project_start_date: string
-          recruit_status?: string | null
+          recruit_status?: boolean | null
           region_id?: string | null
           title: string
           updated_at?: string | null
@@ -379,7 +379,7 @@ export interface Database {
           picture_url?: string | null
           project_end_date?: string
           project_start_date?: string
-          recruit_status?: string | null
+          recruit_status?: boolean | null
           region_id?: string | null
           title?: string
           updated_at?: string | null
