@@ -5,6 +5,7 @@ import profileImg from "../../../../../../public/images/pathway-in-the-middle-of
 import { CiBookmark } from "react-icons/ci"
 import { FaRegMessage } from "react-icons/fa6"
 import { IoShareSocialOutline } from "react-icons/io5"
+import { IoIosPeople } from "react-icons/io"
 
 const DetailPage = () => {
   const TODAY = new Date()
@@ -51,7 +52,7 @@ const DetailPage = () => {
           <li>조회수 190</li>
         </ul>
       </header>
-      <main className="border-2 border-rose-600 h-full">
+      <main className="h-full">
         <section>
           <div className="flex items-center justify-center border-t-2 border-b-2 border-zinc-600">
             <div className="pr-24 mt-7 mb-12">
@@ -79,7 +80,7 @@ const DetailPage = () => {
           </div>
         </section>
         <Spacer y={50} />
-        <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 h-auto min-h-2">
+        <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 min-h-96">
           <div className="leading-7">
             안녕하세요! 책과 관련해서 간단하게 프로젝트 하나 진행할건데 관심
             있으신 분들 댓글 남겨 주세요!
@@ -93,31 +94,28 @@ const DetailPage = () => {
             합니다 (ex. 드롭다운, 페이징, 네비바 등)
           </div>
         </section>
-        <section>
-          <span>모집인원 3/5</span>
+        <section className="flex items-center">
+          <span className="pr-14 pb-2 border-b-2 border-slate-700">
+            <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
+          </span>
+          <span className="pr-8 border-b-2">
+            <IoIosPeople size={40} className="inline-block ml-8 mr-1" />{" "}
+            모집정원 3/7
+          </span>
+          <span className="ml-auto pr-5">
+            <span>
+              <CiBookmark size={30} className="inline-block" />
+            </span>
+            5
+          </span>
+          <span className="pr-5">
+            <IoShareSocialOutline size={30} />
+          </span>
+          <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
+            마감하기
+          </button>
         </section>
-        <section className="flex">
-          <article className="flex">
-            <span className="pr-5">
-              <FaRegMessage className="inline-block" /> 24
-            </span>
-            <span className="pr-5">신청자 수: 10</span>
-          </article>
-          <article className="flex justify-end w-8">
-            <span className="pr-5">
-              <span>
-                <CiBookmark className="inline-block" />
-              </span>
-              5
-            </span>
-            <span className="flex-end">
-              <IoShareSocialOutline />
-            </span>
-            <button className="hover:bg-violet-600 hover:text-white flex-end">
-              참여 신청
-            </button>
-          </article>
-        </section>
+        <article></article>
         <section className="border-2 border-yellow-600">
           <div>
             <span>작성자</span>
