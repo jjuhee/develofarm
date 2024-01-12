@@ -442,18 +442,30 @@ export interface Database {
       }
       users: {
         Row: {
+          avatar_url: string | null
+          created_at: string | null
           id: string
           positionId: string | null
+          user_email: string | null
+          user_nickname: string | null
           user_status: string | null
         }
         Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
           id: string
           positionId?: string | null
+          user_email?: string | null
+          user_nickname?: string | null
           user_status?: string | null
         }
         Update: {
+          avatar_url?: string | null
+          created_at?: string | null
           id?: string
           positionId?: string | null
+          user_email?: string | null
+          user_nickname?: string | null
           user_status?: string | null
         }
         Relationships: [
