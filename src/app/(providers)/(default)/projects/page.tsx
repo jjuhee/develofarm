@@ -53,7 +53,6 @@ const ProjectsPage = () => {
   }
 
   const onChageOrder = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value)
     setOrder(Number(e.target.value))
   }
 
