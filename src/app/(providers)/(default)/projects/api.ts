@@ -11,6 +11,17 @@ export async function getProjects() {
   return data
 }
 
+export async function getProject(projectId: string) {
+  const { data, error } = await supabaseForClient
+    .from("projects")
+    .select("*")
+    .eq("id", projectId)
+
+  if (error) console.log("error", error)
+
+  return data ? data[0] : null
+}
+
 export async function getBookmarks() {
   const { data, error } = await supabaseForClient.from("bookmarks").select("*")
 

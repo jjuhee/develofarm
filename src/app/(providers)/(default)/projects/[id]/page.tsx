@@ -1,13 +1,27 @@
+"use client"
+
 import React from "react"
 import Spacer from "@/components/ui/Spacer"
 import Image from "next/image"
-import profileImg from "../../../../../../public/images/pathway-in-the-middle-of-the-green-leafed-trees-with-the-sun-shining-through-the-branches.jpg"
+import profileImg from "/images/profile_logo.jpg"
 import { CiBookmark } from "react-icons/ci"
 import { FaRegMessage } from "react-icons/fa6"
 import { IoShareSocialOutline } from "react-icons/io5"
 import { IoIosPeople } from "react-icons/io"
+import { useParams } from "next/navigation"
+import { useQuery } from "@tanstack/react-query"
+import { getProject, getProjects } from "../api"
 
 const DetailPage = () => {
+  const { id } = useParams<{ id: string }>()
+
+  const { data: project, isLoading } = useQuery({
+    queryKey: ["project", id],
+    queryFn: () => getProject(id),
+  })
+
+  if (isLoading || !project) return <div>is Loading...</div>
+
   const TODAY = new Date()
   const techStack = [
     { id: "1", tech: "React" },
@@ -21,7 +35,8 @@ const DetailPage = () => {
       <Spacer y={90} />
       <header>
         <h1 className="text-3xl font-semibold">
-          책 커뮤니티 관련 프로젝트 멤버 구합니다!
+          {/* 책 커뮤니티 관련 프로젝트 멤버 구합니다! */}
+          {project.title}
         </h1>
         <Spacer y={30} />
         <ul className="flex text-sm">
@@ -39,16 +54,23 @@ const DetailPage = () => {
         <Spacer y={25} />
         <ul className="flex gap-x-5 pl-2 text-zinc-400 mb-5 items-center">
           <li>
-            <Image
+            {/* <Image
               src={profileImg}
+              alt="프로필이미지"
+              className="w-12 h-12 rounded-full object-cover"
+            /> */}
+            <Image
+              width={12}
+              height={12}
+              src={"/images/profile_logo.jpg"}
               alt="프로필이미지"
               className="w-12 h-12 rounded-full object-cover"
             />
           </li>
           <li>
-            <span className="pr-2">작성자</span> 강쟝
+            <span className="pr-2">작성자</span> {}
           </li>
-          <li>{TODAY.toLocaleString()}</li>
+          {/* <li>{TODAY.toLocaleString()}</li> */}
           <li>조회수 190</li>
         </ul>
       </header>
@@ -95,10 +117,10 @@ const DetailPage = () => {
           </div>
         </section>
         <section className="flex items-center">
-          <span className="pr-14 pb-2 border-b-2 border-slate-700">
+          <span className="pr-14">
             <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
           </span>
-          <span className="pr-8 border-b-2">
+          <span className="pr-8">
             <IoIosPeople size={40} className="inline-block ml-8 mr-1" />{" "}
             모집정원 3/7
           </span>
@@ -112,14 +134,15 @@ const DetailPage = () => {
             <IoShareSocialOutline size={30} />
           </span>
           <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
-            마감하기
+            참여 신청
           </button>
         </section>
-        <article></article>
-        <section className="border-2 border-yellow-600">
-          <div>
-            <span>작성자</span>
-            <span>작성날짜</span>
+        <Spacer y={30} />
+        <section className="">
+          <div className="border-2 border-yellow-600">
+            {/* <Image /> */}
+            <span className="mr-2">작성자</span>
+            {/* <span className="text-sm">{TODAY.toLocaleString()}</span> */}
             <div>댓글내용</div>
             <span>
               <button>대댓글</button>
