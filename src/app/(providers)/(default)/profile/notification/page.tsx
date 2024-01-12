@@ -1,13 +1,9 @@
 import React from "react"
-import ProfileCategory from "../_components/ProfileCategory"
 
 const NotificationPage = () => {
   return (
     <div>
-      <div className="flex items-center w-[1440px] h-[108px] my-0 mx-auto">
-        <ProfileCategory />
-      </div>
-      <div className="flex justify-between items-center my-0 mx-auto">
+      <div className="flex justify-between items-center my-0 mx-auto pt-[10px]">
         <div className="flex items-center">
           <input
             type="checkbox"
