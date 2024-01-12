@@ -9,32 +9,33 @@ import { useQuery } from "@tanstack/react-query"
 import { getProjects } from "./api"
 import Pagination from "@mui/material/Pagination"
 
-const PAGE_SIZE = 4
+const PAGE_SIZE = 5
 
 const ProjectsPage = () => {
   const [page, setPage] = useState<number>(1)
   const [recruitStatus, setRecruitStatus] = useState(false)
-
-  useEffect(() => {
-    console.log(!!recruitStatus)
-  }, [])
+  const [order, setOrder] = useState(1)
 
   const { data: projects } = useQuery({
-    queryKey: ["projects", recruitStatus],
+    queryKey: ["projects", recruitStatus, { order: order }],
     queryFn: () =>
-      getProjects({ orderBy: "created_at", recruitStatus: recruitStatus }),
-    // initialData: props.projects,
-    enabled: !!page,
+      getProjects({
+        orderBy: "created_at",
+        recruitStatus: recruitStatus,
+        order: order,
+      }),
+    enabled: !!page && !!order,
   })
 
   const queryOption = {
-    limit: PAGE_SIZE + (page - 1) * PAGE_SIZE,
-    offset: page > 2 ? (page - 1) * PAGE_SIZE + 1 : (page - 1) * PAGE_SIZE,
+    limit: PAGE_SIZE + (page - 1) * PAGE_SIZE - 1,
+    offset: (page - 1) * PAGE_SIZE,
     recruitStatus: recruitStatus,
+    order: order,
   }
 
   const { data: paginatedProjects } = useQuery({
-    queryKey: ["projects", page, recruitStatus],
+    queryKey: ["projects", page, recruitStatus, { order: order }],
     queryFn: () => getProjects(queryOption),
     enabled: !!projects,
   })
@@ -44,14 +45,16 @@ const ProjectsPage = () => {
   }
 
   const onChangeRecruitHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.checked)
-
     if (e.target.checked) {
-      // 모집 중인 것만 보기
       setRecruitStatus(true)
     } else {
       setRecruitStatus(false)
     }
+  }
+
+  const onChageOrder = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value)
+    setOrder(Number(e.target.value))
   }
 
   return (
@@ -64,7 +67,6 @@ const ProjectsPage = () => {
         <Spacer y={30} />
 
         <div className="flex justify-between items-center">
-          {/* TODO: 핉터링 시 출력 */}
           <p className="text-[20px] text-[#363940]">
             {projects?.length}건의 검색 결과를 찾았어요.
           </p>
@@ -73,7 +75,7 @@ const ProjectsPage = () => {
               <input type="checkbox" onChange={onChangeRecruitHandler} />
               <p>모집 중인 공고만 보기</p>
             </div>
-            <select defaultValue="1" name="" id="">
+            <select defaultValue="1" name="" id="" onChange={onChageOrder}>
               <option value="1">최신순</option>
               <option value="2">오래된순</option>
               <option value="3">찜한순</option>
@@ -95,6 +97,7 @@ const ProjectsPage = () => {
       </div>
 
       <Pagination
+        className="flex justify-center mt-20"
         count={Math.ceil(((projects?.length as number) || 0) / PAGE_SIZE)}
         page={page}
         defaultPage={1}
@@ -106,9 +109,3 @@ const ProjectsPage = () => {
 }
 
 export default ProjectsPage
-
-// TODO: 서버 사이드 렌더링
-// export async function getServerSideProps() {
-//   const projects = await getProjects()
-//   return { props: { projects } }
-// }
