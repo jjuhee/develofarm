@@ -34,14 +34,20 @@ export async function getProjects({
 }
 
 export async function getProject(projectId: string) {
-  const { data, error } = await supabaseForClient
+  const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
-    .select(`*, users(user_nickname)`)
+    .select("*, user:users(id, user_nickname), region:project_regions(*)")
     .eq("id", projectId)
+    .single()
 
-  if (error) console.log("error", error)
+  if (projectError) console.log("error", projectError)
 
-  return data ? data[0] : null
+  return projectData || null
+}
+
+export async function getUser() {
+  const { data } = await supabaseForClient.auth.getUser()
+  console.log(data)
 }
 
 export async function getBookmarks() {
