@@ -10,7 +10,7 @@ interface Props {
 }
 
 const ProjectCard = ({ project }: Props) => {
-  const currentUser = "75085234-4b65-4dc7-8efc-679331ad0da2"
+  const currentUser = "3a148d55-cd4e-421e-a35e-5f3cc0e8c847"
 
   const {
     id,

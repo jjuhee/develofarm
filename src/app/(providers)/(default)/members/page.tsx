@@ -11,8 +11,20 @@ import useCategoryStore from "@/store/category"
 import useMembersStore from "@/store/members"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import MemberProfile from "./_components/MemberProfile"
+import { supabaseForClient } from "@/supabase/supabase.client"
+import { supabaseForServer } from "@/supabase/supabase.server"
 
 const MembersPage = () => {
+  useEffect(() => {
+    getAuth()
+  }, [])
+
+  const getAuth = async () => {
+    const { data, error } = await supabaseForClient.auth.getSession()
+    console.log(data)
+    return data
+  }
+
   const { data: users } = useQuery({ queryKey: ["users"], queryFn: getUsers })
 
   const title = useCategoryStore((state) => state.title)
