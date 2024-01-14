@@ -1,16 +1,31 @@
-import BookmarkButton from "@/components/BookmarkButton"
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
 import { getProjectTech } from "../api"
 import formatDate from "@/utils/formatDate"
+import BookmarkButton from "@/components/BookmarkButton"
+
+import type { Tables } from "@/types/supabase"
+import { supabaseForClient } from "@/supabase/supabase.client"
+import { useEffect } from "react"
 
 interface Props {
-  project: TProjects
+  project: Tables<"projects">
 }
 
 const ProjectCard = ({ project }: Props) => {
-  const currentUser = "75085234-4b65-4dc7-8efc-679331ad0da2"
+  // TODO: 현재 유저 정보 가져오기
+  // useEffect(() => {
+  //   const getAuth = async () => {
+  //     const auth = await supabaseForClient.auth.getUser()
+  //     console.log(auth)
+  //     return auth
+  //   }
+
+  //   getAuth()
+  // }, [])
+
+  const currentUser = "3a148d55-cd4e-421e-a35e-5f3cc0e8c847"
 
   const {
     id,

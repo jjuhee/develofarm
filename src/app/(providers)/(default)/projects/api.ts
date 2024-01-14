@@ -41,6 +41,17 @@ export async function getBookmarks() {
   return data
 }
 
+export async function getBookmarksByUserId(userId: string) {
+  const { data, error } = await supabaseForClient
+    .from("bookmarks")
+    .select("*")
+    .eq("user_id", userId)
+
+  if (error) console.log("error", error)
+
+  return data
+}
+
 export async function setBookmarks({
   projectId,
   currentUser,

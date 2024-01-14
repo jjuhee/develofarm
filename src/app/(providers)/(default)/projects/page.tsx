@@ -8,6 +8,7 @@ import Category from "./_components/Category"
 import { useQuery } from "@tanstack/react-query"
 import { getProjects } from "./api"
 import Pagination from "@mui/material/Pagination"
+import { Tables } from "@/types/supabase"
 
 const PAGE_SIZE = 5
 
@@ -86,7 +87,7 @@ const ProjectsPage = () => {
 
         {(projects?.length as number) > 0 ? (
           <ul className="flex flex-col gap-8">
-            {paginatedProjects?.map((item: TProjects) => (
+            {paginatedProjects?.map((item: Tables<"projects">) => (
               <ProjectCard key={item?.id} project={item} />
             ))}
           </ul>
