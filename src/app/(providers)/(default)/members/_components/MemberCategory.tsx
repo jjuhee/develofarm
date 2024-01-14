@@ -38,7 +38,7 @@ const MemberCategory = () => {
   }
 
   return (
-    <ul className="flex flex-col px-[32px] py-[48px] w-[220px] h-[328px] gap-[20px] rounded-2xl text-[17px] text-[#777E90] font-[700] shadow-2xl">
+    <ul className="flex flex-col fixed top-40 left-30 px-[32px] py-[48px] w-[220px] h-[328px] gap-[20px] rounded-2xl text-[17px] text-[#777E90] font-[700] shadow-2xl">
       {/* TODO: isActive 시 bold 지정하기*/}
       {category.map((item) => (
         <li

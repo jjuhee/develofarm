@@ -13,6 +13,7 @@ import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import MemberProfile from "./_components/MemberProfile"
 import { supabaseForClient } from "@/supabase/supabase.client"
 import { supabaseForServer } from "@/supabase/supabase.server"
+import EmptyState from "@/components/EmptyState"
 
 const MembersPage = () => {
   useEffect(() => {
@@ -58,7 +59,7 @@ const MembersPage = () => {
       <div className="flex w-full">
         <MemberCategory />
 
-        <section className="flex flex-col ml-20 py-5 gap-[24px] w-full">
+        <section className="flex flex-col ml-[17rem] py-5 gap-[24px] w-full ">
           <h3 className="text-[40px] font-[700]">{title}</h3>
           <p className="text-[16px] font-[400] text-[#606060]">
             {title === "전체보기"
@@ -67,9 +68,15 @@ const MembersPage = () => {
           </p>
           <div className="w-full mt-10">
             <ul className="grid grid-cols-1 gap-20 md:grid-cols-2 lg:grid-cols-3">
-              {users?.map((user: Tables<"users">) => (
-                <MemberCard key={user.id} user={user} title={title} />
-              ))}
+              {(users?.length as number) > 0 ? (
+                <>
+                  {users?.map((user: Tables<"users">) => (
+                    <MemberCard key={user.id} user={user} title={title} />
+                  ))}
+                </>
+              ) : (
+                <EmptyState />
+              )}
             </ul>
           </div>
         </section>

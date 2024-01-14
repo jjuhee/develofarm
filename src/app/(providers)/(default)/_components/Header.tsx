@@ -9,6 +9,14 @@ import { VscBell } from "react-icons/vsc"
 
 const Header = () => {
   const { selectCategory } = useCategoryStore((state) => state)
+  const setViewMemberModal = useMembersStore(
+    (state) => state.setViewMemberModal,
+  )
+
+  const onClickMemberCategoryHandler = () => {
+    selectCategory("전체보기")
+    setViewMemberModal(false)
+  }
 
   return (
     <div className="flex w-full bg-gray-200">
@@ -16,7 +24,7 @@ const Header = () => {
         <Link href={"/"}>home</Link>
         <nav className="flex items-center gap-5 ml-40">
           <Link href={"/projects"}>프로젝트</Link>
-          <Link href={"/members"} onClick={() => selectCategory("전체보기")}>
+          <Link href={"/members"} onClick={onClickMemberCategoryHandler}>
             인재풀
           </Link>
         </nav>
