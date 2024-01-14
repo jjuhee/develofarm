@@ -1,6 +1,7 @@
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import useMembersStore from "@/store/members"
 import { Tables } from "@/types/supabase"
+import Image from "next/image"
 import Link from "next/link"
 import React, { useRef, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
@@ -22,8 +23,16 @@ const MemberProfile = () => {
     <>
       <div className="flex w-full items-center justify-between">
         <div className="flex  items-center">
-          <div className="w-[123px] h-[123px] bg-gray-300 rounded-full mr-10">
-            {/* image */}
+          <div className="relative w-[123px] h-[123px] bg-gray-300 rounded-full mr-10">
+            <Image
+              src={
+                (selectedMember.avatar_url as string) || "/images/React.jpeg"
+              }
+              alt="member"
+              sizes="auto"
+              fill
+              className="absolute object-cover overflow-hidden rounded-full"
+            />
           </div>
           <div className="flex flex-col gap-2">
             <h3 className="text-[30px] font-[700]">
