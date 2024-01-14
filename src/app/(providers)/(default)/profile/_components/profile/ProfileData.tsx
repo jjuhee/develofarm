@@ -1,7 +1,7 @@
 const ProfileData = () => {
   return (
     <div className="pt-3">
-      {/* 유저 데이터 수정 */}
+      {/* 유저 데이터 */}
       <div className="flex items-center space-y-4 p-4">
         <img
           src="https://i.namu.wiki/i/11bab2jbR_U-fjyY58rzBgFsC4MwQBhztHGaWaTGOc9YwF0jiQc5hss0fgeXzfawAaatou9H4SOMA1NJv18Fh5UPHqspHSimZaQhD2teJOYICRc2rtehw7qFQ-Cvall90i47JzBZkTvjoxxT3CT66g.webp"
