@@ -2,17 +2,22 @@ import { Tables } from "@/types/supabase"
 import { create } from "zustand"
 
 interface TMembersState {
-  member: Tables<"users">
-  selectMember: (user: Tables<"users">) => void
-  ViewMemberModal: boolean
+  selectedMember: Tables<"users">
+  setSelectedMember: (user: Tables<"users">) => void
+  viewMemberModal: boolean
   setViewMemberModal: (value: boolean) => void
+  memberPosition: Tables<"positions">
+  setMemberPosition: (position: Tables<"positions">) => void
 }
 
 const useMembersStore = create<TMembersState>()((set) => ({
-  member: {} as Tables<"users">,
-  selectMember: (user: Tables<"users">) => set({ member: user }),
-  ViewMemberModal: false,
-  setViewMemberModal: (value: boolean) => set({ ViewMemberModal: value }),
+  selectedMember: {} as Tables<"users">,
+  setSelectedMember: (user: Tables<"users">) => set({ selectedMember: user }),
+  viewMemberModal: false,
+  setViewMemberModal: (value: boolean) => set({ viewMemberModal: value }),
+  memberPosition: {} as Tables<"positions">,
+  setMemberPosition: (position: Tables<"positions">) =>
+    set({ memberPosition: position }),
 }))
 
 export default useMembersStore

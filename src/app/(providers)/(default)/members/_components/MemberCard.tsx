@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import { getPositionById } from "../api"
 import { Tables } from "@/types/supabase"
 import useMembersStore from "@/store/members"
+import MemberProfile from "./MemberProfile"
+import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 
 interface Props {
   user: Tables<"users">
@@ -11,7 +13,10 @@ interface Props {
 }
 
 const MemberCard = ({ user, title }: Props) => {
-  const { setViewMemberModal, selectMember } = useMembersStore((state) => state)
+  const modalRef = useRef<HTMLInputElement>(null)
+
+  const { setViewMemberModal, setSelectedMember, setMemberPosition } =
+    useMembersStore((state) => state)
 
   const { data: position } = useQuery({
     queryKey: ["position", user.positionId],
@@ -21,7 +26,8 @@ const MemberCard = ({ user, title }: Props) => {
   })
 
   const openModalHandler = () => {
-    selectMember(user)
+    setSelectedMember(user)
+    setMemberPosition(position as Tables<"positions">)
     setViewMemberModal(true)
   }
 

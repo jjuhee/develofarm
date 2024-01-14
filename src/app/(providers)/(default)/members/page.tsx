@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import MemberCard from "./_components/MemberCard"
 import Spacer from "@/components/ui/Spacer"
 import MemberCategory from "./_components/MemberCategory"
@@ -8,11 +8,37 @@ import { useQuery } from "@tanstack/react-query"
 import { getUsers } from "./api"
 import { Tables } from "@/types/supabase"
 import useCategoryStore from "@/store/category"
+import useMembersStore from "@/store/members"
+import useOnClickOutSide from "@/hooks/useOnClickOutSide"
+import MemberProfile from "./_components/MemberProfile"
 
 const MembersPage = () => {
   const { data: users } = useQuery({ queryKey: ["users"], queryFn: getUsers })
 
   const title = useCategoryStore((state) => state.title)
+
+  const { viewMemberModal, setViewMemberModal } = useMembersStore(
+    (state) => state,
+  )
+
+  const modalRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (viewMemberModal) {
+      document.body.style.cssText = `
+        position: fixed; 
+        top: -${window.scrollY}px;
+        overflow-y: scroll;
+        width: 100%;`
+      return () => {
+        const scrollY = document.body.style.top
+        document.body.style.cssText = ""
+        window.scrollTo(0, parseInt(scrollY || "0", 10) * -1)
+      }
+    }
+  }, [viewMemberModal])
+
+  useOnClickOutSide({ ref: modalRef, handler: () => setViewMemberModal(false) })
 
   return (
     <div>
@@ -36,6 +62,16 @@ const MembersPage = () => {
           </div>
         </section>
       </div>
+      {viewMemberModal && (
+        <div className="flex justify-center items-center fixed w-full top-0 left-0 h-full backdrop-blur-sm bg-black bg-opacity-50 z-20">
+          <div
+            className="flex flex-col bg-white w-[732px] h-auto py-10 px-[50px] gap-8 rounded-3xl"
+            ref={modalRef}
+          >
+            <MemberProfile />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
