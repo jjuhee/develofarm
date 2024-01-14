@@ -26,7 +26,7 @@ const NotificationPage = () => {
         <div className="border-t-4 my-4">
           <h2 className="pt-3 pb-2">알림</h2>
           <p className="pb-3">
-            프로젝트 구인 사이트 개발' 프로젝트 신청이 수락되었습니다.
+            프로젝트 구인 사이트 개발 프로젝트 신청이 수락되었습니다.
           </p>
           <hr className=" border-t-4" />
           <h2 className="pt-3 pb-2">알림</h2>
