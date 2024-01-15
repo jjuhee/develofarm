@@ -242,6 +242,39 @@ export interface Database {
           }
         ]
       }
+      position_tech: {
+        Row: {
+          id: string
+          position_id: string
+          tech_id: string
+        }
+        Insert: {
+          id?: string
+          position_id: string
+          tech_id: string
+        }
+        Update: {
+          id?: string
+          position_id?: string
+          tech_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "position_tech_position_id_fkey"
+            columns: ["position_id"]
+            isOneToOne: false
+            referencedRelation: "positions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "position_tech_tech_id_fkey"
+            columns: ["tech_id"]
+            isOneToOne: false
+            referencedRelation: "techs"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       positions: {
         Row: {
           id: string
@@ -275,6 +308,13 @@ export interface Database {
         }
         Relationships: [
           {
+            foreignKeyName: "project_members_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "project_members_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -301,6 +341,13 @@ export interface Database {
         }
         Relationships: [
           {
+            foreignKeyName: "project_position_position_id_fkey"
+            columns: ["position_id"]
+            isOneToOne: false
+            referencedRelation: "positions"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "project_position_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
@@ -326,18 +373,36 @@ export interface Database {
       }
       project_tech: {
         Row: {
+          id: string
           project_id: string
-          tech_id: string | null
+          tech_id: string
         }
         Insert: {
+          id?: string
           project_id: string
-          tech_id?: string | null
+          tech_id: string
         }
         Update: {
+          id?: string
           project_id?: string
-          tech_id?: string | null
+          tech_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "project_tech_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_tech_tech_id_fkey"
+            columns: ["tech_id"]
+            isOneToOne: false
+            referencedRelation: "techs"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       projects: {
         Row: {
@@ -354,6 +419,7 @@ export interface Database {
           title: string
           updated_at: string | null
           user_id: string
+          views: number
         }
         Insert: {
           content: string
@@ -369,6 +435,7 @@ export interface Database {
           title: string
           updated_at?: string | null
           user_id: string
+          views?: number
         }
         Update: {
           content?: string
@@ -384,6 +451,7 @@ export interface Database {
           title?: string
           updated_at?: string | null
           user_id?: string
+          views?: number
         }
         Relationships: [
           {
@@ -419,14 +487,17 @@ export interface Database {
       }
       user_tech: {
         Row: {
+          id: string
           tech_id: string
           user_id: string
         }
         Insert: {
+          id?: string
           tech_id: string
           user_id: string
         }
         Update: {
+          id?: string
           tech_id?: string
           user_id?: string
         }
@@ -453,8 +524,10 @@ export interface Database {
           created_at: string | null
           id: string
           positionId: string | null
+          user_comment: string | null
           user_email: string | null
           user_nickname: string | null
+          user_phone_number: string | null
           user_status: string | null
         }
         Insert: {
@@ -462,8 +535,10 @@ export interface Database {
           created_at?: string | null
           id: string
           positionId?: string | null
+          user_comment?: string | null
           user_email?: string | null
           user_nickname?: string | null
+          user_phone_number?: string | null
           user_status?: string | null
         }
         Update: {
@@ -471,8 +546,10 @@ export interface Database {
           created_at?: string | null
           id?: string
           positionId?: string | null
+          user_comment?: string | null
           user_email?: string | null
           user_nickname?: string | null
+          user_phone_number?: string | null
           user_status?: string | null
         }
         Relationships: [
@@ -481,6 +558,13 @@ export interface Database {
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_positionId_fkey"
+            columns: ["positionId"]
+            isOneToOne: false
+            referencedRelation: "positions"
             referencedColumns: ["id"]
           },
           {
