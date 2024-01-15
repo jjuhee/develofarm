@@ -12,9 +12,16 @@ import Pagination from "@mui/material/Pagination"
 const PAGE_SIZE = 5
 
 const ProjectsPage = () => {
+  const initialState = {
+    // 지역
+    // 테크
+    // 오프라인
+  }
+
   const [page, setPage] = useState<number>(1)
   const [recruitStatus, setRecruitStatus] = useState(false)
   const [order, setOrder] = useState(1)
+  const [categoryData, setCategoryData] = useState(initialState)
 
   const { data: projects } = useQuery({
     queryKey: ["projects", recruitStatus, { order: order }],
@@ -61,7 +68,7 @@ const ProjectsPage = () => {
       <Spacer y={60} />
 
       <div>
-        <Category />
+        <Category setCategoryData={setCategoryData} />
 
         <Spacer y={30} />
 
