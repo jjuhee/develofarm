@@ -1,7 +1,7 @@
 "use client"
 
 import EmptyState from "@/components/EmptyState"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import ProjectCard from "./_components/ProjectCard"
 import Spacer from "@/components/ui/Spacer"
 import Category from "./_components/Category"
