@@ -36,7 +36,9 @@ export async function getProjects({
 export async function getProject(projectId: string) {
   const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
-    .select("*, user:users(id, user_nickname), region:project_regions(*)")
+    .select(
+      "*, user:users(id, user_nickname, avatar_url), region:project_regions(*)",
+    )
     .eq("id", projectId)
     .single()
 
@@ -48,15 +50,7 @@ export async function getProject(projectId: string) {
 export async function getUser() {
   const { data: userData } = await supabaseForClient.auth.getUser()
 
-  const { data, error: userError } = await supabaseForClient
-    .from("projects")
-    .select("*")
-    .eq("user_id", userData.user!.id)
-    .single()
-
-  if (userError) console.log("error", userError)
-
-  return data || null
+  return userData || null
 }
 
 export async function getBookmarks() {
