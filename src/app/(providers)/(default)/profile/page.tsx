@@ -27,14 +27,16 @@ const ProfilePage = () => {
         })
     })
   }, [])
+
   console.log(profile)
+
   return (
     <div className="container mx-auto">
       <ProfileActions />
-      <ProfileData />
-      <ProfileResume />
-      <ProfileProjectList />
-      <ProfileSocialLinks />
+      <ProfileData profile={profile} />
+      <ProfileResume profile={profile} />
+      <ProfileProjectList profileId={profile?.id} />
+      <ProfileSocialLinks profileId={profile?.id} />
     </div>
   )
 }

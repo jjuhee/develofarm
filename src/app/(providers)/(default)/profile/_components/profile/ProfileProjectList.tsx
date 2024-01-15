@@ -1,7 +1,7 @@
 import React from "react"
 import ProfileProjectCard from "./ProfileProjectCard"
 
-const ProfileProjectList = () => {
+const ProfileProjectList = ({ profileId }: { profileId: string }) => {
   return (
     <div>
       <h2 className="text-2xl font-bold pt-5">참여 중인 프로젝트</h2>
