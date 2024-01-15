@@ -111,12 +111,17 @@ export async function removeBookmarks({
 }
 
 export async function getProjectTech(projectId: string) {
+  console.log(projectId)
   const { data, error } = await supabaseForClient
     .from("project_tech")
-    .select("*")
+    .select("*, techs:techs(*)")
     .eq("project_id", projectId)
+
+  const techs = data?.map((tech) => tech.techs?.tech_name)
+
+  console.log(techs)
 
   if (error) console.log("error", error)
 
-  return data
+  return techs
 }

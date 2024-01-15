@@ -36,10 +36,12 @@ const ProjectCard = ({ project }: Props) => {
   } = project
 
   const { data: techs } = useQuery({
-    queryKey: ["techs"],
+    queryKey: ["techs", id],
     queryFn: () => getProjectTech(id),
     enabled: !!id,
   })
+
+  console.log(techs)
 
   const cardContent =
     content?.length > 100 ? content.slice(0, 100) + "..." : content
@@ -70,18 +72,14 @@ const ProjectCard = ({ project }: Props) => {
         </div>
         <div className="flex justify-between items-center">
           <ul className="flex gap-3 ">
-            <li className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl">
-              NestJS
-            </li>
-            <li className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl">
-              Spring
-            </li>
-            <li className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl ">
-              C#
-            </li>
-            <li className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl">
-              JAVA
-            </li>
+            {techs?.map((tech, i) => (
+              <li
+                key={i}
+                className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl"
+              >
+                {tech}
+              </li>
+            ))}
           </ul>
           <Link
             href={`projects/${id}`}
