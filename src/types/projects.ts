@@ -12,4 +12,6 @@ declare interface TProjects {
   title: string
   updated_at: string | null
   user_id: string | null
+  users?: string[] | null
+  project_regions?: string[] | null
 }

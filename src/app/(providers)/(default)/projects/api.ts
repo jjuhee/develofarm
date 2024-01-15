@@ -33,6 +33,23 @@ export async function getProjects({
   return data
 }
 
+export async function getProject(projectId: string) {
+  const { data: projectData, error: projectError } = await supabaseForClient
+    .from("projects")
+    .select("*, user:users(id, user_nickname), region:project_regions(*)")
+    .eq("id", projectId)
+    .single()
+
+  if (projectError) console.log("error", projectError)
+
+  return projectData || null
+}
+
+export async function getUser() {
+  const { data } = await supabaseForClient.auth.getUser()
+  console.log(data)
+}
+
 export async function getBookmarks() {
   const { data, error } = await supabaseForClient.from("bookmarks").select("*")
 
