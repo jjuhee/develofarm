@@ -1,11 +1,11 @@
 "use client"
 
-import React, { useState } from "react"
+import React from "react"
 import Spacer from "@/components/ui/Spacer"
 import Image from "next/image"
 import { useParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
-import { getProject, getProjects } from "../api"
+import { getProject } from "../api"
 import dayjs from "dayjs"
 import ProjectDetailMenu from "./_components/ProjectDetailMenu"
 
@@ -100,6 +100,8 @@ const DetailPage = () => {
             <div className="pr-24 mt-7 mb-12">
               <h3 className="font-semibold">모집분야</h3>
               <select>
+                <option>프론트엔드</option>
+                <option>프론트엔드</option>
                 <option>프론트엔드</option>
               </select>
               <select>
