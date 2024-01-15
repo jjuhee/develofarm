@@ -16,16 +16,6 @@ import { supabaseForServer } from "@/supabase/supabase.server"
 import EmptyState from "@/components/EmptyState"
 
 const MembersPage = () => {
-  useEffect(() => {
-    getAuth()
-  }, [])
-
-  const getAuth = async () => {
-    const { data, error } = await supabaseForClient.auth.getSession()
-    console.log(data)
-    return data
-  }
-
   const { data: users } = useQuery({ queryKey: ["users"], queryFn: getUsers })
 
   const title = useCategoryStore((state) => state.title)

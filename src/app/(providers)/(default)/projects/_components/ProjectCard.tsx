@@ -4,13 +4,24 @@ import Image from "next/image"
 import Link from "next/link"
 import { getProjectTech } from "../api"
 import formatDate from "@/utils/formatDate"
+import { useEffect, useState } from "react"
+import { supabaseForClient } from "@/supabase/supabase.client"
 
 interface Props {
   project: TProjects
 }
 
 const ProjectCard = ({ project }: Props) => {
-  const currentUser = "3a148d55-cd4e-421e-a35e-5f3cc0e8c847"
+  const [currentUser, setCurrentUser] = useState("")
+
+  useEffect(() => {
+    const getAuth = async () => {
+      const newUser = await supabaseForClient.auth.getUser()
+      console.log(newUser.data.user?.id)
+      setCurrentUser(newUser.data.user?.id as string)
+    }
+    getAuth()
+  }, [])
 
   const {
     id,

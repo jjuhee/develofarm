@@ -3,15 +3,25 @@ import useMembersStore from "@/store/members"
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import { getProjectByUserId } from "../api"
 import { Tables } from "@/types/supabase"
+import { supabaseForClient } from "@/supabase/supabase.client"
 
 const MemberProfile = () => {
   const dropdownRef = useRef<HTMLInputElement>(null)
 
-  const currentUser = "3a148d55-cd4e-421e-a35e-5f3cc0e8c847"
+  const [currentUser, setCurrentUser] = useState("")
+
+  useEffect(() => {
+    const getAuth = async () => {
+      const newUser = await supabaseForClient.auth.getUser()
+      console.log(newUser.data.user?.id)
+      setCurrentUser(newUser.data.user?.id as string)
+    }
+    getAuth()
+  }, [])
 
   const { selectedMember, memberPosition } = useMembersStore((state) => state)
 
