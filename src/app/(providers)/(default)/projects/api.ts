@@ -46,17 +46,17 @@ export async function getProject(projectId: string) {
 }
 
 export async function getUser() {
-  const { data: user } = await supabaseForClient.auth.getUser()
+  const { data: userData } = await supabaseForClient.auth.getUser()
 
-  const { data: userData, error: userError } = await supabaseForClient
-    .from("users")
+  const { data, error: userError } = await supabaseForClient
+    .from("projects")
     .select("*")
-    .eq("id", user.user!.id)
+    .eq("user_id", userData.user!.id)
     .single()
 
   if (userError) console.log("error", userError)
 
-  return userData || null
+  return data || null
 }
 
 export async function getBookmarks() {
