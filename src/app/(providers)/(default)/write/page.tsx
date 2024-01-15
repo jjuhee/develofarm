@@ -5,13 +5,17 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { FormEvent, useRef, useState } from "react"
 import { addProject } from "./api"
 import { EditorContentProps } from "@tiptap/react"
+import Category from "./_components/Category"
 
 const Write = () => {
   const [title, setTitle] = useState<string>("")
   const [content, setContent] = useState<string>("")
+  const [isActive, setIsActive] = useState(false)
   const [startDate, setStartDate] = useState<string>("")
   const [endDate, setEndDate] = useState<string>("")
+  const [region, setRegion] = useState<string>("")
   const [numberOfMembers, setNumberOfMembers] = useState<number>(0)
+
   const queryClient = useQueryClient()
   const { isPending, isError, error, mutate } = useMutation({
     mutationFn: addProject,
@@ -55,7 +59,7 @@ const Write = () => {
         </div>
       </div>
       {/* TODO: (jhee) 선택 박스 추가, 위아래 border */}
-      <div className="flex flex-col border-solid border-y border-black">
+      {/* <div className="flex flex-col border-solid border-y border-black">
         <Spacer y={30} />
         <input
           type="date"
@@ -77,8 +81,10 @@ const Write = () => {
           onChange={(e) => setNumberOfMembers(e.target.value)}
         />
         <Spacer y={30} />
-      </div>
+      </div> */}
+      <Category isWritePage={true} />
       <Spacer y={30} />
+      {/* Tiptap editor box */}
       <div className="border-solid border-b border-black">
         <Spacer y={20} />
         <Tiptap content={content} setContent={setContent} />
