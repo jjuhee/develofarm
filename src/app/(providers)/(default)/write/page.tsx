@@ -4,44 +4,69 @@ import Spacer from "@/components/ui/Spacer"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { FormEvent, useRef, useState } from "react"
 import { addProject } from "./api"
-import { EditorContentProps } from "@tiptap/react"
+import { EditorContentProps, isActive } from "@tiptap/react"
 import Category from "./_components/Category"
+import { useRouter } from "next/navigation"
 
 const Write = () => {
+  const initialCategoryData = {
+    startDate: "",
+    endDate: "",
+    isOffline: false,
+    region: "",
+    numberOfMembers: 0,
+    position: [{ name: "" }],
+    techs: [{ name: "" }], // TODO: tech에 여러개 받고 한번에 넣는 법..
+  }
   const [title, setTitle] = useState<string>("")
   const [content, setContent] = useState<string>("")
-  const [isActive, setIsActive] = useState(false)
-  const [startDate, setStartDate] = useState<string>("")
-  const [endDate, setEndDate] = useState<string>("")
-  const [region, setRegion] = useState<string>("")
-  const [numberOfMembers, setNumberOfMembers] = useState<number>(0)
+  const [categoryData, setCategoryData] = useState(initialCategoryData)
+  const router = useRouter()
 
   const queryClient = useQueryClient()
   const { isPending, isError, error, mutate } = useMutation({
     mutationFn: addProject,
     onSuccess: () => {
       queryClient.invalidateQueries()
+      alert("게시물 작성 완료~!")
+      router.push("/")
     },
   })
 
   const submitProjectHandler = (e: FormEvent) => {
     e.preventDefault()
-    const dummyData = {
-      user_id: "51aa9a6d-70ee-4123-af62-c8831421d4cb", //TODO:(jhee) 임시
-      title,
-      content,
-      project_start_date: startDate,
-      project_end_date: endDate,
-      is_offline: false,
-      number_of_people: 2,
+    if (
+      !title &&
+      !content &&
+      !categoryData.startDate &&
+      !categoryData.endDate &&
+      categoryData.numberOfMembers == 0
+    ) {
+      alert("data를 모두 입력 해주세요~")
+      return
     }
-    console.log(dummyData)
-    mutate(dummyData)
+    if (categoryData.isOffline && !categoryData.region) {
+      alert("오프라인 프로젝트이면 지역을 입력하세요~")
+      return
+    }
+    {
+      const newData = {
+        user_id: "51aa9a6d-70ee-4123-af62-c8831421d4cb", //TODO:(jhee) 임시 유저 변경
+        title,
+        content,
+        project_start_date: categoryData.startDate,
+        project_end_date: categoryData.endDate,
+        is_offline: categoryData.isOffline,
+        number_of_people: categoryData.numberOfMembers,
+      }
+
+      console.log(newData)
+      mutate(newData)
+    }
   }
 
   return (
     <form onSubmit={submitProjectHandler}>
-      {/* TODO : (jhee) 첨부파일 넣는 곳? */}
       <div className="flex flex-col mt-10 mb-10">
         <div className="flex">
           <input
@@ -58,37 +83,19 @@ const Write = () => {
           </button>
         </div>
       </div>
-      {/* TODO: (jhee) 선택 박스 추가, 위아래 border */}
-      {/* <div className="flex flex-col border-solid border-y border-black">
-        <Spacer y={30} />
-        <input
-          type="date"
-          name="project_start_date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-
-        <input
-          type="date"
-          name="project_end_date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-        <label>인원 수</label>
-        <input
-          type="number"
-          value={numberOfMembers}
-          onChange={(e) => setNumberOfMembers(e.target.value)}
-        />
-        <Spacer y={30} />
-      </div> */}
-      <Category isWritePage={true} />
+      {/*  카테고리 선택 box  */}
+      <Category
+        categoryData={categoryData}
+        setCategoryData={setCategoryData}
+        isWritePage={true}
+      />
       <Spacer y={30} />
       {/* Tiptap editor box */}
       <div className="border-solid border-b border-black">
         <Spacer y={20} />
         <Tiptap content={content} setContent={setContent} />
       </div>
+      {/* TODO : (jhee) 첨부파일 넣는 곳? */}
     </form>
   )
 }

@@ -15,3 +15,11 @@ declare interface TProjects {
   users?: string[] | null
   project_regions?: string[] | null
 }
+
+declare interface TCategoryData {
+  startDate: string
+  endDate: string
+  isOffline: boolean
+  region: string
+  numberOfMembers: number
+}
