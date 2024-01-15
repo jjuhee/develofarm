@@ -1,31 +1,27 @@
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
-import { getProjectTech } from "../api"
+import { getProjectTech, getUser } from "../api"
 import formatDate from "@/utils/formatDate"
 import BookmarkButton from "@/components/BookmarkButton"
-
 import type { Tables } from "@/types/supabase"
 import { supabaseForClient } from "@/supabase/supabase.client"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 interface Props {
   project: Tables<"projects">
 }
 
 const ProjectCard = ({ project }: Props) => {
-  // TODO: 현재 유저 정보 가져오기
-  // useEffect(() => {
-  //   const getAuth = async () => {
-  //     const auth = await supabaseForClient.auth.getUser()
-  //     console.log(auth)
-  //     return auth
-  //   }
+  const [currentUser, setCurrentUser] = useState("")
 
-  //   getAuth()
-  // }, [])
-
-  const currentUser = "3a148d55-cd4e-421e-a35e-5f3cc0e8c847"
+  useEffect(() => {
+    const getAuth = async () => {
+      const user = await supabaseForClient.auth.getUser()
+      setCurrentUser(user.data.user?.id as string)
+    }
+    getAuth()
+  }, [currentUser])
 
   const {
     id,
