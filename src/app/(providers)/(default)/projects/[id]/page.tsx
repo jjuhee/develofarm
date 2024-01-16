@@ -61,7 +61,7 @@ const DetailPage = () => {
             <Image
               width={48}
               height={48}
-              src={"/images/profile_logo.jpg"}
+              src={`${project.user!.avatar_url}`}
               alt="프로필이미지"
               className="w-12 h-12 rounded-full object-cover"
             />
@@ -118,6 +118,9 @@ const DetailPage = () => {
           </div>
         </section>
         <Spacer y={50} />
+        <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 min-h-96">
+          <div className="leading-7">{project.content}</div>
+        </section>
         <ProjectDetailMenu project={project} />
         <Spacer y={30} />
         <section className="">
