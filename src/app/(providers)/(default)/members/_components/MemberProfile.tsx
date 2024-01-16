@@ -1,13 +1,27 @@
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import useMembersStore from "@/store/members"
-import { Tables } from "@/types/supabase"
+import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
+import { getProjectByUserId } from "../api"
+import { Tables } from "@/types/supabase"
+import { supabaseForClient } from "@/supabase/supabase.client"
 
 const MemberProfile = () => {
   const dropdownRef = useRef<HTMLInputElement>(null)
+
+  const [currentUser, setCurrentUser] = useState("")
+
+  useEffect(() => {
+    const getAuth = async () => {
+      const newUser = await supabaseForClient.auth.getUser()
+      console.log(newUser.data.user?.id)
+      setCurrentUser(newUser.data.user?.id as string)
+    }
+    getAuth()
+  }, [])
 
   const { selectedMember, memberPosition } = useMembersStore((state) => state)
 
@@ -16,6 +30,11 @@ const MemberProfile = () => {
   useOnClickOutSide({ ref: dropdownRef, handler: () => setIsActive(false) })
 
   // TODO: 현재 유저 프로젝트 가져오기
+  const { data: projects } = useQuery({
+    queryKey: ["projects", currentUser],
+    queryFn: () => getProjectByUserId(currentUser),
+    enabled: !!currentUser,
+  })
 
   // TODO: 유저 기술 스택 가져오기
 
@@ -39,7 +58,7 @@ const MemberProfile = () => {
               {selectedMember.user_nickname}
             </h3>
             <p className="text-[20px] font-[600]">
-              {memberPosition.position_name}
+              {memberPosition?.position_name || "포지션을 정해주세요."}
             </p>
           </div>
         </div>
@@ -60,16 +79,38 @@ const MemberProfile = () => {
             </p>
 
             <ul
-              className={`absolute py-[15px] px-[20px] border-2 w-full mt-2 rounded-2xl transition-all ${
+              className={`flex flex-col gap-2 absolute py-[15px] px-[20px] border-2 w-full mt-2 rounded-2xl transition-all ${
                 isActive ? "opacity-100" : "opacity-0"
               }`}
             >
-              <li className="flex items-center justify-between ">
-                <p className="text-[15px] font-[500]">프로젝트1</p>
-                <span className="text-[10px] font-[700] px-3 py-1 rounded-2xl text-center text-white bg-black cursor-pointer">
-                  초청
-                </span>
-              </li>
+              {(projects?.length as number) > 0 ? (
+                <>
+                  {projects?.map((project: Tables<"projects">) => (
+                    <li
+                      className="flex items-center justify-between "
+                      key={project.id}
+                    >
+                      <p className="text-[15px] font-[500]">{project.title}</p>
+                      <span className="text-[10px] font-[700] px-3 py-1 rounded-2xl text-center text-white bg-black cursor-pointer">
+                        초청
+                      </span>
+                    </li>
+                  ))}
+                </>
+              ) : (
+                <div>
+                  <p className="text-[15px] font-[500]">
+                    현재 초청할 수 있는 프로젝트가 없습니다.
+                  </p>
+                  <Link
+                    href={"/write"}
+                    className="text-[11px] font-[700] px-3 py-1 rounded-2xl text-center text-white bg-black cursor-pointer"
+                  >
+                    {/* TODO: 프로젝트 게시 페이지로 연결 */}새 프로젝트 올리기{" "}
+                    {"->"}
+                  </Link>
+                </div>
+              )}
             </ul>
           </div>
         </div>
