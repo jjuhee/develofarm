@@ -9,7 +9,7 @@ type Props = {
   project: Tables<"projects">
 }
 
-const WriterButtonUi = ({ project }: Props) => {
+const WriterEditRemoveButtons = ({ project }: Props) => {
   const currentUser = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
     ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
     : null
@@ -52,4 +52,4 @@ const WriterButtonUi = ({ project }: Props) => {
   )
 }
 
-export default WriterButtonUi
+export default WriterEditRemoveButtons

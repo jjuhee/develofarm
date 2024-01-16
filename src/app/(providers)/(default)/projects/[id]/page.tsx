@@ -7,10 +7,10 @@ import { useParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { getProject } from "../api"
 import dayjs from "dayjs"
-import WriterButtonUi from "./_components/WriterButtonUi"
+import WriterEditRemoveButtons from "./_components/WriterEditRemoveButtons"
 import { FaRegMessage } from "react-icons/fa6"
 import { CiUser } from "react-icons/ci"
-import ProjectDetailFooter from "./_components/ProjectDetailFooter"
+import FooterMenu from "./_components/FooterMenu"
 
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -37,7 +37,7 @@ const DetailPage = () => {
   ]
 
   return (
-    <div className="flex flex-col w-auto my-0 mx-auto">
+    <div className="flex flex-col w-full my-0 mx-auto">
       <Spacer y={90} />
       <header>
         <h1 className="text-3xl font-semibold">{project.title}</h1>
@@ -71,7 +71,7 @@ const DetailPage = () => {
           </li>
           <li>{FORMATTED_DATE}</li>
           <li>조회수 190</li>
-          <WriterButtonUi project={project} />
+          <WriterEditRemoveButtons project={project} />
         </ul>
       </header>
       <main className="h-full">
@@ -121,7 +121,7 @@ const DetailPage = () => {
         <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 min-h-96">
           <div className="leading-7">{project.content}</div>
         </section>
-        <ProjectDetailFooter project={project} />
+        <FooterMenu project={project} />
         <Spacer y={30} />
         <section className="border-2 border-blue-500">
           <p>이전게시물</p>
