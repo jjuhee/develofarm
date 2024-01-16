@@ -14,7 +14,6 @@ const Header = () => {
   const [isAlarmData, setIsAlarmData] = useState<any>()
   const client = supabaseForClient
 
-  const arr = []
   const channelA = client
     .channel("schema-db-changes")
     .on(
