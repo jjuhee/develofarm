@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import React from "react"
 import { deleteProject } from "../../api"
-import { useParams, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 type Props = {
   project: Tables<"projects">
@@ -16,7 +16,6 @@ const WriterButton = ({ project }: Props) => {
   const isWriter = currentUser?.user?.id === project.user_id
   const queryClient = useQueryClient()
   const router = useRouter()
-  const { id } = useParams()
 
   const deleteProjectMutate = useMutation({
     mutationFn: deleteProject,
