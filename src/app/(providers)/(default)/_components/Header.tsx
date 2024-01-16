@@ -1,10 +1,23 @@
 "use client"
+
+import useCategoryStore from "@/store/category"
+import useMembersStore from "@/store/members"
 import Link from "next/link"
 import React, { useState } from "react"
 import { IoMdSearch } from "react-icons/io"
 import { VscBell } from "react-icons/vsc"
 import { supabaseForClient } from "@/supabase/supabase.client"
 const Header = () => {
+  const { selectCategory } = useCategoryStore((state) => state)
+  const setViewMemberModal = useMembersStore(
+    (state) => state.setViewMemberModal,
+  )
+
+  const onClickMemberCategoryHandler = () => {
+    selectCategory("전체보기")
+    setViewMemberModal(false)
+  }
+
   const [showTooltip, setShowTooltip] = useState(false)
 
   const onHandleClick = (event: React.MouseEvent) => {
@@ -31,11 +44,13 @@ const Header = () => {
 
   return (
     <div className="flex w-full bg-gray-200">
-      <div className="flex justify-between items-center w-[1440px] h-[108px] my-0 mx-auto">
+      <div className="flex justify-between items-center w-[1250px] h-[108px] my-0 mx-auto px-2">
         <Link href={"/"}>home</Link>
         <nav className="flex items-center gap-5 ml-40">
           <Link href={"/projects"}>프로젝트</Link>
-          <Link href={"/members"}>인재풀</Link>
+          <Link href={"/members"} onClick={onClickMemberCategoryHandler}>
+            인재풀
+          </Link>
         </nav>
         <nav className="flex items-center  gap-4">
           <Link href={"/search"} className="text-lg">

@@ -1,13 +1,9 @@
 import React from "react"
-import ProfileCategory from "../_components/ProfileCategory"
 
 const NotificationPage = () => {
   return (
     <div>
-      <div className="flex items-center w-[1440px] h-[108px] my-0 mx-auto">
-        <ProfileCategory />
-      </div>
-      <div className="flex justify-between items-center my-0 mx-auto">
+      <div className="flex justify-between items-center my-0 mx-auto pt-[10px]">
         <div className="flex items-center">
           <input
             type="checkbox"
@@ -26,7 +22,7 @@ const NotificationPage = () => {
         <div className="border-t-4 my-4">
           <h2 className="pt-3 pb-2">알림</h2>
           <p className="pb-3">
-            프로젝트 구인 사이트 개발' 프로젝트 신청이 수락되었습니다.
+            프로젝트 구인 사이트 개발 프로젝트 신청이 수락되었습니다.
           </p>
           <hr className=" border-t-4" />
           <h2 className="pt-3 pb-2">알림</h2>

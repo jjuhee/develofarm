@@ -8,7 +8,7 @@ interface Props {
 const EmptyState = () => {
   return (
     <div>
-      <h2>일치하는 게 없습니다.</h2>
+      <h2>현재 데이터가 없습니다.</h2>
     </div>
   )
 }

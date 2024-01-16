@@ -3,11 +3,25 @@ import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
 import { getProjectTech } from "../api"
-import dayjs from "dayjs"
 import formatDate from "@/utils/formatDate"
+import { useEffect, useState } from "react"
+import { supabaseForClient } from "@/supabase/supabase.client"
 
-const ProjectCard = ({ project }: Projects) => {
-  const currentUser = "75085234-4b65-4dc7-8efc-679331ad0da2"
+interface Props {
+  project: TProjects
+}
+
+const ProjectCard = ({ project }: Props) => {
+  const [currentUser, setCurrentUser] = useState("")
+
+  useEffect(() => {
+    const getAuth = async () => {
+      const newUser = await supabaseForClient.auth.getUser()
+      console.log(newUser.data.user?.id)
+      setCurrentUser(newUser.data.user?.id as string)
+    }
+    getAuth()
+  }, [])
 
   const {
     id,
@@ -28,7 +42,7 @@ const ProjectCard = ({ project }: Projects) => {
   })
 
   const cardContent =
-    content.length > 100 ? content.slice(0, 100) + "..." : content
+    content?.length > 100 ? content.slice(0, 100) + "..." : content
 
   return (
     <div className="flex">

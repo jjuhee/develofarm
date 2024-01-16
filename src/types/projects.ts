@@ -1,4 +1,4 @@
-declare interface Projects {
+declare interface TProjects {
   content: string
   created_at: string | null
   id: string
@@ -12,4 +12,14 @@ declare interface Projects {
   title: string
   updated_at: string | null
   user_id: string | null
+  users?: string[] | null
+  project_regions?: string[] | null
+}
+
+declare interface TCategoryData {
+  startDate: string
+  endDate: string
+  isOffline: boolean
+  region: string
+  numberOfMembers: number
 }
