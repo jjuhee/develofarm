@@ -47,12 +47,6 @@ export async function getProject(projectId: string) {
   return projectData || null
 }
 
-export async function getUser() {
-  const { data: userData } = await supabaseForClient.auth.getUser()
-
-  return userData || null
-}
-
 export async function deleteProject(projectId: string) {
   const { data: projectData } = await supabaseForClient
     .from("projects")

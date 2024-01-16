@@ -12,16 +12,14 @@ type Props = {
 
 const ProjectDetailMenu = ({ project }: Props) => {
   const [isSelected, setIsSelected] = useState(0)
-  //   const { data: user } = useQuery({
-  //     queryKey: ["user"],
-  //     queryFn: () => getUser(),
-  //   })
-  // const isWriter = user?.user?.id === project.user_id
   const tapMenu = [
     { id: 1, title: "댓글 총 갯수", component: FaRegMessage },
     { id: 2, title: "총 신청자 수", component: CiUser },
   ]
 
+  /**
+   *@ param1 현재 로그인한 유저 정보를 담은 변수입니다
+   *@ param2 글 작성자가 현재 로그인한 유저랑 같은지 판별하는 변수입니다*/
   const currentUser = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
     ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
     : null
