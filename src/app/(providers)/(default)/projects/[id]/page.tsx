@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getProject } from "../api"
 import dayjs from "dayjs"
 import ProjectDetailMenu from "./_components/ProjectDetailMenu"
+import WriterButton from "./_components/WriterButton"
 
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -26,13 +27,16 @@ const DetailPage = () => {
   const END_DATE = dayjs(project?.project_end_date).format("YYYY.MM.DD")
 
   if (isLoading || !project) return <div>is Loading...</div>
-
   const techStack = [
     { id: "1", tech: "React" },
     { id: "2", tech: "TypeScript" },
     { id: "3", tech: "JAVA" },
     { id: "4", tech: "Figma" },
   ]
+  const user = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
+    ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
+    : null
+  console.log(user.user.id)
 
   return (
     <div className="flex flex-col w-full my-0 mx-auto">
@@ -72,6 +76,7 @@ const DetailPage = () => {
           </li>
           <li>{FORMATTED_DATE}</li>
           <li>조회수 190</li>
+          <WriterButton project={project} />
         </ul>
       </header>
       <main className="h-full">

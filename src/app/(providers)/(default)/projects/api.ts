@@ -53,6 +53,15 @@ export async function getUser() {
   return userData || null
 }
 
+export async function deleteProject(projectId: string) {
+  const { data: projectData } = await supabaseForClient
+    .from("projects")
+    .delete()
+    .match({ id: projectId })
+
+  return projectData
+}
+
 export async function getBookmarks() {
   const { data, error } = await supabaseForClient.from("bookmarks").select("*")
 
