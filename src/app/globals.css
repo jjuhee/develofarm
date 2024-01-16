@@ -34,3 +34,7 @@ a {
 button {
   cursor: pointer;
 }
+
+.category {
+  @apply border-[1.8px] px-[20px] py-[5px] rounded-full;
+}
