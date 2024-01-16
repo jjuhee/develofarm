@@ -33,10 +33,6 @@ const DetailPage = () => {
     { id: "3", tech: "JAVA" },
     { id: "4", tech: "Figma" },
   ]
-  const user = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
-    ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
-    : null
-  console.log(user.user.id)
 
   return (
     <div className="flex flex-col w-full my-0 mx-auto">

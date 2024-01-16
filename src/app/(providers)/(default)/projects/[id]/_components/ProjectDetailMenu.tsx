@@ -1,7 +1,5 @@
 import React, { useState } from "react"
 import { Tables } from "@/types/supabase"
-import { getUser } from "../../api"
-import { useQuery } from "@tanstack/react-query"
 import { CiBookmark } from "react-icons/ci"
 import { FaRegMessage } from "react-icons/fa6"
 import { IoShareSocialOutline } from "react-icons/io5"
@@ -14,15 +12,20 @@ type Props = {
 
 const ProjectDetailMenu = ({ project }: Props) => {
   const [isSelected, setIsSelected] = useState(0)
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getUser(),
-  })
-  const isWriter = user?.user?.id === project.user_id
+  //   const { data: user } = useQuery({
+  //     queryKey: ["user"],
+  //     queryFn: () => getUser(),
+  //   })
+  // const isWriter = user?.user?.id === project.user_id
   const tapMenu = [
     { id: 1, title: "댓글 총 갯수", component: FaRegMessage },
     { id: 2, title: "총 신청자 수", component: CiUser },
   ]
+
+  const currentUser = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
+    ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
+    : null
+  const isWriter = currentUser?.user?.id === project.user_id
 
   const onToggleHandler = (index: number) => {
     setIsSelected(index)
