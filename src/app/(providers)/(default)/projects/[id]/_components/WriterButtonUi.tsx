@@ -2,14 +2,14 @@ import { Tables } from "@/types/supabase"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import React from "react"
-import { deleteProject } from "../../api"
+import { removeProject } from "../../api"
 import { useRouter } from "next/navigation"
 
 type Props = {
   project: Tables<"projects">
 }
 
-const WriterButton = ({ project }: Props) => {
+const WriterButtonUi = ({ project }: Props) => {
   const currentUser = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
     ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
     : null
@@ -18,7 +18,7 @@ const WriterButton = ({ project }: Props) => {
   const router = useRouter()
 
   const deleteProjectMutate = useMutation({
-    mutationFn: deleteProject,
+    mutationFn: removeProject,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["projects"],
@@ -52,4 +52,4 @@ const WriterButton = ({ project }: Props) => {
   )
 }
 
-export default WriterButton
+export default WriterButtonUi

@@ -1,14 +1,16 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import Spacer from "@/components/ui/Spacer"
 import Image from "next/image"
 import { useParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { getProject } from "../api"
 import dayjs from "dayjs"
-import ProjectDetailMenu from "./_components/ProjectDetailMenu"
-import WriterButton from "./_components/WriterButton"
+import WriterButtonUi from "./_components/WriterButtonUi"
+import { FaRegMessage } from "react-icons/fa6"
+import { CiUser } from "react-icons/ci"
+import ProjectDetailFooter from "./_components/ProjectDetailFooter"
 
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -35,13 +37,10 @@ const DetailPage = () => {
   ]
 
   return (
-    <div className="flex flex-col w-full my-0 mx-auto">
+    <div className="flex flex-col w-auto my-0 mx-auto">
       <Spacer y={90} />
       <header>
-        <h1 className="text-3xl font-semibold">
-          {/* 책 커뮤니티 관련 프로젝트 멤버 구합니다! */}
-          {project.title}
-        </h1>
+        <h1 className="text-3xl font-semibold">{project.title}</h1>
         <Spacer y={30} />
         <ul className="flex text-sm">
           {techStack.map((tech) => {
@@ -72,7 +71,7 @@ const DetailPage = () => {
           </li>
           <li>{FORMATTED_DATE}</li>
           <li>조회수 190</li>
-          <WriterButton project={project} />
+          <WriterButtonUi project={project} />
         </ul>
       </header>
       <main className="h-full">
@@ -122,25 +121,8 @@ const DetailPage = () => {
         <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 min-h-96">
           <div className="leading-7">{project.content}</div>
         </section>
-        <ProjectDetailMenu project={project} />
+        <ProjectDetailFooter project={project} />
         <Spacer y={30} />
-        <section className="">
-          <div className="border-2 border-yellow-600">
-            {/* <Image /> */}
-            <span className="mr-2">작성자</span>
-            {/* <span className="text-sm">{TODAY.toLocaleString()}</span> */}
-            <div>댓글내용</div>
-            <span>
-              <button>대댓글</button>
-            </span>
-          </div>
-        </section>
-        <section>
-          <textarea placeholder="댓글 내용을 입력하세요" />
-          <button className="hover:bg-violet-600 hover:text-white">
-            댓글 등록하기
-          </button>
-        </section>
         <section className="border-2 border-blue-500">
           <p>이전게시물</p>
           <p>다음게시물</p>

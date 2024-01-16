@@ -1,24 +1,21 @@
-import React, { useState } from "react"
 import { Tables } from "@/types/supabase"
-import { IconType } from "react-icons"
+import React, { useState } from "react"
 import { CiBookmark } from "react-icons/ci"
 import { IoShareSocialOutline } from "react-icons/io5"
 import { IoIosPeople } from "react-icons/io"
 import { FaRegMessage } from "react-icons/fa6"
+import { CiUser } from "react-icons/ci"
 
 type Props = {
   project: Tables<"projects">
-  tapMenu: { id: number; title: string; component: IconType }[]
-  isSelected: number
-  setIsSelected: React.Dispatch<React.SetStateAction<number>>
 }
 
-const ProjectDetailMenu = ({
-  project,
-  tapMenu,
-  isSelected,
-  setIsSelected,
-}: Props) => {
+const ProjectDetailFooter = ({ project }: Props) => {
+  const [isSelected, setIsSelected] = useState(0)
+  const tapMenu = [
+    { id: 1, title: "댓글 총 갯수", component: FaRegMessage },
+    { id: 2, title: "총 신청자 수", component: CiUser },
+  ]
   /**
    *@ param1 현재 로그인한 유저 정보를 담은 변수입니다
    *@ param2 글 작성자가 현재 로그인한 유저랑 같은지 판별하는 변수입니다*/
@@ -30,64 +27,7 @@ const ProjectDetailMenu = ({
   const onToggleHandler = (index: number) => {
     setIsSelected(index)
   }
-  // return (
-  //   <>
-  //     {isWriter ? (
-  //       <section className="flex items-center">
-  //         <span
-  //           className={
-  //             "pr-12 pb-2 border-b-2" + (isSelected ? " border-slate-600" : "")
-  //           }
-  //           onClick={onToggleHandler}
-  //         >
-  //           <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
-  //         </span>
-  //         <span
-  //           className={
-  //             "pr-8 pb-1 border-b-2" + (isSelected ? " border-slate-600" : "")
-  //           }
-  //           onClick={onToggleHandler}
-  //         >
-  //           <CiUser size={35} className="inline-block ml-8 mr-1" /> 24
-  //         </span>
-  //         <span className="ml-auto pr-5">
-  //           <span>
-  //             <CiBookmark size={30} className="inline-block" />
-  //           </span>
-  //           5
-  //         </span>
-  //         <span className="pr-5">
-  //           <IoShareSocialOutline size={30} />
-  //         </span>
-  //         <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
-  //           마감하기
-  //         </button>
-  //       </section>
-  //     ) : (
-  //       <section className="flex items-center">
-  //         <span className="pr-14">
-  //           <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
-  //         </span>
-  //         <span className="pr-8">
-  //           <IoIosPeople size={40} className="inline-block ml-8 mr-1" />{" "}
-  //           모집정원 3/{project.number_of_people}
-  //         </span>
-  //         <span className="ml-auto pr-5">
-  //           <span>
-  //             <CiBookmark size={30} className="inline-block" />
-  //           </span>
-  //           5
-  //         </span>
-  //         <span className="pr-5">
-  //           <IoShareSocialOutline size={30} />
-  //         </span>
-  //         <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
-  //           참여 신청
-  //         </button>
-  //       </section>
-  //     )}
-  //   </>
-  // )
+
   return (
     <>
       {isWriter ? (
@@ -149,4 +89,4 @@ const ProjectDetailMenu = ({
   )
 }
 
-export default ProjectDetailMenu
+export default ProjectDetailFooter

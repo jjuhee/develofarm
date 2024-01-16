@@ -47,13 +47,13 @@ export async function getProject(projectId: string) {
   return projectData || null
 }
 
-export async function deleteProject(projectId: string) {
-  const { data: projectData } = await supabaseForClient
+export async function removeProject(projectId: string) {
+  const { error: projectError } = await supabaseForClient
     .from("projects")
     .delete()
     .match({ id: projectId })
 
-  return projectData
+  if (projectError) console.log("error", projectError)
 }
 
 export async function getBookmarks() {
