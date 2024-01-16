@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Tables } from "@/types/supabase"
 import { getUser } from "../../api"
 import { useQuery } from "@tanstack/react-query"
@@ -13,68 +13,134 @@ type Props = {
 }
 
 const ProjectDetailMenu = ({ project }: Props) => {
+  const [isSelected, setIsSelected] = useState(0)
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUser(),
   })
+  const isWriter = user?.user?.id === project.user_id
+  const tapMenu = [
+    { id: 1, title: "댓글 총 갯수", component: FaRegMessage },
+    { id: 2, title: "총 신청자 수", component: CiUser },
+  ]
 
-  console.log("현재유저", user)
-
+  const onToggleHandler = (index: number) => {
+    setIsSelected(index)
+  }
+  // return (
+  //   <>
+  //     {isWriter ? (
+  //       <section className="flex items-center">
+  //         <span
+  //           className={
+  //             "pr-12 pb-2 border-b-2" + (isSelected ? " border-slate-600" : "")
+  //           }
+  //           onClick={onToggleHandler}
+  //         >
+  //           <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
+  //         </span>
+  //         <span
+  //           className={
+  //             "pr-8 pb-1 border-b-2" + (isSelected ? " border-slate-600" : "")
+  //           }
+  //           onClick={onToggleHandler}
+  //         >
+  //           <CiUser size={35} className="inline-block ml-8 mr-1" /> 24
+  //         </span>
+  //         <span className="ml-auto pr-5">
+  //           <span>
+  //             <CiBookmark size={30} className="inline-block" />
+  //           </span>
+  //           5
+  //         </span>
+  //         <span className="pr-5">
+  //           <IoShareSocialOutline size={30} />
+  //         </span>
+  //         <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
+  //           마감하기
+  //         </button>
+  //       </section>
+  //     ) : (
+  //       <section className="flex items-center">
+  //         <span className="pr-14">
+  //           <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
+  //         </span>
+  //         <span className="pr-8">
+  //           <IoIosPeople size={40} className="inline-block ml-8 mr-1" />{" "}
+  //           모집정원 3/{project.number_of_people}
+  //         </span>
+  //         <span className="ml-auto pr-5">
+  //           <span>
+  //             <CiBookmark size={30} className="inline-block" />
+  //           </span>
+  //           5
+  //         </span>
+  //         <span className="pr-5">
+  //           <IoShareSocialOutline size={30} />
+  //         </span>
+  //         <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
+  //           참여 신청
+  //         </button>
+  //       </section>
+  //     )}
+  //   </>
+  // )
   return (
     <>
-      {user ? (
-        <>
-          <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 min-h-96">
-            <div className="leading-7">{project.content}</div>
-          </section>
-          <section className="flex items-center">
-            <span className="pr-12 pb-2 border-b-2">
-              <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
-            </span>
-            <span className="pr-8 pb-1 border-b-2">
-              <CiUser size={35} className="inline-block ml-8 mr-1" /> 24
-            </span>
-            <span className="ml-auto pr-5">
-              <span>
-                <CiBookmark size={30} className="inline-block" />
+      {isWriter ? (
+        <section className="flex items-center">
+          {tapMenu.map((menu, index) => {
+            return (
+              <span
+                key={menu.id}
+                className={
+                  index === isSelected
+                    ? "pr-12 pb-2 border-b-2 border-slate-600 cursor-pointer"
+                    : "pr-12 pb-2 border-b-2 cursor-pointer"
+                }
+                onClick={() => onToggleHandler(index)}
+              >
+                <menu.component size={30} className="inline-block ml-10 mr-2" />
+                {menu.title}
+                {/* <CiUser size={35} className="inline-block ml-8 mr-1" /> 24 */}
               </span>
-              5
+            )
+          })}
+          <span className="ml-auto pr-5">
+            <span>
+              <CiBookmark size={30} className="inline-block" />
             </span>
-            <span className="pr-5">
-              <IoShareSocialOutline size={30} />
-            </span>
-            <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
-              마감하기
-            </button>
-          </section>
-        </>
+            5
+          </span>
+          <span className="pr-5">
+            <IoShareSocialOutline size={30} />
+          </span>
+          <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
+            마감하기
+          </button>
+        </section>
       ) : (
-        <>
-          <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 min-h-96">
-            <div className="leading-7">{project.content}</div>
-          </section>
-          <section className="flex items-center">
-            <span className="pr-14">
-              <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
+        <section className="flex items-center">
+          <span className="pr-14">
+            <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
+          </span>
+          <span className="pr-8">
+            <IoIosPeople size={40} className="inline-block ml-8 mr-1" />{" "}
+            모집정원 3/{project.number_of_people}
+          </span>
+          <span className="ml-auto pr-5">
+            <span>
+              <CiBookmark size={30} className="inline-block" />
             </span>
-            <span className="pr-8">
-              <IoIosPeople size={40} className="inline-block ml-8 mr-1" />{" "}
-              모집정원 3/{project.number_of_people}
-            </span>
-            <span className="ml-auto pr-5">
-              <span>
-                <CiBookmark size={30} className="inline-block" />
-              </span>
-              5
-            </span>
-            <span className="pr-5">
-              <IoShareSocialOutline size={30} />
-            </span>
-            <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
-              참여 신청
-            </button>
-          </section>
-        </>
+            5
+          </span>
+          <span className="pr-5">
+            <IoShareSocialOutline size={30} />
+          </span>
+          <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
+            참여 신청
+          </button>
+        </section>
       )}
     </>
   )
