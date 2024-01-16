@@ -3,8 +3,9 @@
 import { useQuery } from "@tanstack/react-query"
 // import Button from "@/components/ui/Button"
 import React, { useState } from "react"
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import { getTechs } from "../../projects/api"
+import SelectStackButton from "./SelectStackButton"
+import { Tables } from "@/types/supabase"
 
 interface Props {
   categoryData: TCategoryData
@@ -15,13 +16,6 @@ interface Props {
   /* TODO 1: child 모두에 같은 스타일링 하는 법 있음 !.... */
 }
 const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
-  console.log(categoryData.techs)
-
-  const [isActive, setIsActive] =
-    useState("") /* 기술 stack 드롭다운 열렸는지 닫혔는지 */
-
-  const [selectedPositionName, setSelectedPositionName] = useState("")
-
   const {
     startDate,
     endDate,
@@ -36,25 +30,6 @@ const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
     queryKey: ["allTechs"],
     queryFn: getTechs,
   })
-
-  console.log(allTechs)
-
-  const onClickTechStackHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log(e.target.innerText)
-    setSelectedPositionName(e.target.innerText)
-    setIsActive(e.target.innerText)
-  }
-
-  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.id)
-
-    const newTech = { name: e.target.id }
-    const isIdAlreadySelected = techs.some((tech) => tech.name === e.target.id)
-
-    if (e.target.checked && !isIdAlreadySelected) {
-      setCategoryData({ ...categoryData, techs: [...techs, newTech] })
-    }
-  }
 
   return (
     <section className="flex flex-col gap-3 pb-[25px]">
@@ -145,43 +120,14 @@ const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
             </li>
           </ul>
         </div>
-        {/* TODO 4 : (jhee) 포지션/스택 입력받기 체크박스? tech 배열로 저장?, 컴포넌트로 분리... */}
-        {/* TODO 5 : 나중에.. 서버에서 받아온것들로 뿌려주기 */}
         <div className="flex flex-col gap-[16px] py-[15px]">
           <h5 className="text-[20px] font-[600]">기술 스택</h5>
           <ul className="flex gap-3 items-center">
-            <li className="relative" onMouseLeave={() => setIsActive("")}>
-              <div
-                className="flex items-center mb-2 justify-center gap-2 border-[1.5px] border-slate-400 px-[20px] py-[5px] rounded-full cursor-pointer"
-                onClick={onClickTechStackHandler}
-              >
-                프론트엔드
-                {isActive === "프론트엔드" ? (
-                  <IoIosArrowUp />
-                ) : (
-                  <IoIosArrowDown />
-                )}
-              </div>
-              <ul
-                className={`absolute flex flex-col bg-slate-50 w-[150px] rounded-lg py-[15px] px-[20px] transition-all ${
-                  isActive === "프론트엔드" ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                {allTechs?.map((tech, i) => (
-                  <li key={i}>
-                    <label htmlFor={tech?.tech_name} className="cursor-pointer">
-                      <input
-                        type="checkbox"
-                        id={tech?.tech_name}
-                        className="mr-2"
-                        onChange={onChangeHandler}
-                      />
-                      {tech?.tech_name}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </li>
+            <SelectStackButton
+              allTechs={allTechs as Tables<"techs">[][]}
+              categoryData={categoryData}
+              setCategoryData={setCategoryData}
+            />
           </ul>
         </div>
         {/* 글쓰기page vs 메인page */}

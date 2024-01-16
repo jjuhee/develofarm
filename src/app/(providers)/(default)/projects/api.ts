@@ -117,32 +117,70 @@ export async function getProjectTech(projectId: string) {
   return techs
 }
 
+// export async function getTechs() {
+//   const { data: position } = await supabaseForClient
+//     .from("positions")
+//     .select("*")
+
+//   // console.log(position?.[0]?.id)
+//   // 1. 모든 포지션을 가져온다
+//   // 2. 포지션테크 에서 포지션 id가 같은.. 컬럼을 techs 를 엮어서 읽어와 .
+//   // 3. data [, ,]
+
+//   const { data, error } = await supabaseForClient
+//     .from("position_tech")
+//     .select("*, techs: techs(*)")
+//   // .eq("position_id", position?.[0]?.id)
+
+//   console.log(data)
+
+//   const techs = data?.map((tech) => tech.techs)
+
+//   if (error) console.log("error", error)
+
+//   return techs
+// }
+
 export async function getTechs() {
-  const { data: position } = await supabaseForClient
-    .from("positions")
-    .select("*")
+  try {
+    // 1. 모든 포지션을 가져온다
+    const { data: positions, error: positionError } = await supabaseForClient
+      .from("positions")
+      .select("*")
 
-  // console.log(position?.[0]?.id)
-  // 1. 모든 포지션을 가져온다
-  // 2. 포지션테크 에서 포지션 id가 같은.. 컬럼을 techs 를 엮어서 읽어와 .
-  // 3. data [, ,]
-
-  const { data, error } = await supabaseForClient
-    .from("position_tech")
-    .select("*, techs: techs(*)")
-  // .eq("position_id", position?.[0]?.id)
-
-  const newArray = position?.map((position) => {
-    if (position.id === data?.[0].position_id) {
-      return data?.[0].techs
+    if (positionError) {
+      console.error("Error fetching positions:", positionError)
+      throw positionError
     }
-  })
 
-  console.log("dd", newArray)
+    // 2. 각 포지션에 대한 techs를 가져온다
+    const techsPromises = positions.map(async (position) => {
+      const { data: positionTechs, error: positionTechError } =
+        await supabaseForClient
+          .from("position_tech")
+          .select("*, techs: techs(*)")
+          .eq("position_id", position.id)
 
-  const techs = data?.map((tech) => tech.techs)
+      if (positionTechError) {
+        console.error(
+          `Error fetching techs for position ${position.id}:`,
+          positionTechError,
+        )
+        throw positionTechError
+      }
 
-  if (error) console.log("error", error)
+      // 3. 가져온 techs 데이터를 반환한다
+      return positionTechs?.map((tech) => tech.techs)
+    })
 
-  return techs
+    // 모든 포지션에 대한 techs를 병렬로 가져오기
+    const techs = await Promise.all(techsPromises)
+
+    console.log("techs", techs)
+
+    return techs
+  } catch (error) {
+    console.error("Error in getTechs:", error)
+    throw error
+  }
 }

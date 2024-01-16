@@ -15,8 +15,8 @@ const Write = () => {
     isOffline: false,
     region: "",
     numberOfMembers: 0,
-    positions: [{ name: "" }],
-    techs: [{ name: "" }], // TODO: tech에 여러개 받고 한번에 넣는 법..
+    positions: [],
+    techs: [], // TODO: tech에 여러개 받고 한번에 넣는 법..
   }
 
   const [title, setTitle] = useState<string>("")

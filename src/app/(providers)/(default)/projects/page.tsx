@@ -19,8 +19,8 @@ const ProjectsPage = () => {
     isOffline: false,
     region: "",
     numberOfMembers: 0,
-    positions: [{ id: "", name: "" }],
-    techs: [{ id: "", name: "" }], // TODO: tech에 여러개 받고 한번에 넣는 법..
+    positions: [],
+    techs: [],
   }
 
   const [categoryData, setCategoryData] =
