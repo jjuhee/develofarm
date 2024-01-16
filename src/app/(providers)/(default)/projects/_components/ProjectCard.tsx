@@ -7,6 +7,7 @@ import BookmarkButton from "@/components/BookmarkButton"
 import type { Tables } from "@/types/supabase"
 import { supabaseForClient } from "@/supabase/supabase.client"
 import { useEffect, useState } from "react"
+import parse from "html-react-parser"
 
 interface Props {
   project: Tables<"projects">
@@ -41,16 +42,16 @@ const ProjectCard = ({ project }: Props) => {
     enabled: !!id,
   })
 
-  console.log(techs)
+  const parsedContent = parse(content) as string
 
   const cardContent =
-    content?.length > 100 ? content.slice(0, 100) + "..." : content
+    content?.length > 100 ? parsedContent.slice(0, 100) + "..." : parsedContent
 
   return (
     <div className="flex">
       <section className="relative overflow-hidden rounded-xl w-full md:max-w-[498px] md:h-[270px] max-w-[300px] h-[230px] transition-all bg-slate-200 mr-20">
         <Image
-          src={"/images/React.jpeg"}
+          src={picture_url || "/images/project_default.png"}
           alt="project"
           fill
           sizes="auto"

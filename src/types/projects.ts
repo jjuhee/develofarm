@@ -22,4 +22,14 @@ declare interface TCategoryData {
   isOffline: boolean
   region: string
   numberOfMembers: number
+  positions: TPositions[]
+  techs: TTechs[]
+}
+
+declare interface TPositions {
+  name: string
+}
+
+declare interface TTechs {
+  name: string
 }

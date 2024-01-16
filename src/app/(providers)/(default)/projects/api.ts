@@ -105,7 +105,6 @@ export async function removeBookmarks({
 }
 
 export async function getProjectTech(projectId: string) {
-  console.log(projectId)
   const { data, error } = await supabaseForClient
     .from("project_tech")
     .select("*, techs:techs(*)")
@@ -113,7 +112,35 @@ export async function getProjectTech(projectId: string) {
 
   const techs = data?.map((tech) => tech.techs?.tech_name)
 
-  console.log(techs)
+  if (error) console.log("error", error)
+
+  return techs
+}
+
+export async function getTechs() {
+  const { data: position } = await supabaseForClient
+    .from("positions")
+    .select("*")
+
+  // console.log(position?.[0]?.id)
+  // 1. 모든 포지션을 가져온다
+  // 2. 포지션테크 에서 포지션 id가 같은.. 컬럼을 techs 를 엮어서 읽어와 .
+  // 3. data [, ,]
+
+  const { data, error } = await supabaseForClient
+    .from("position_tech")
+    .select("*, techs: techs(*)")
+  // .eq("position_id", position?.[0]?.id)
+
+  const newArray = position?.map((position) => {
+    if (position.id === data?.[0].position_id) {
+      return data?.[0].techs
+    }
+  })
+
+  console.log("dd", newArray)
+
+  const techs = data?.map((tech) => tech.techs)
 
   if (error) console.log("error", error)
 

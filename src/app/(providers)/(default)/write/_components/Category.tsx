@@ -1,8 +1,10 @@
 "use client"
 
+import { useQuery } from "@tanstack/react-query"
 // import Button from "@/components/ui/Button"
 import React, { useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
+import { getTechs } from "../../projects/api"
 
 interface Props {
   categoryData: TCategoryData
@@ -13,11 +15,46 @@ interface Props {
   /* TODO 1: child 모두에 같은 스타일링 하는 법 있음 !.... */
 }
 const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
-  const [isActive, setIsActive] =
-    useState(false) /* 기술 stack 드롭다운 열렸는지 닫혔는지 */
+  console.log(categoryData.techs)
 
-  const { startDate, endDate, isOffline, region, numberOfMembers } =
-    categoryData
+  const [isActive, setIsActive] =
+    useState("") /* 기술 stack 드롭다운 열렸는지 닫혔는지 */
+
+  const [selectedPositionName, setSelectedPositionName] = useState("")
+
+  const {
+    startDate,
+    endDate,
+    isOffline,
+    region,
+    numberOfMembers,
+    techs,
+    positions,
+  } = categoryData
+
+  const { data: allTechs } = useQuery({
+    queryKey: ["allTechs"],
+    queryFn: getTechs,
+  })
+
+  console.log(allTechs)
+
+  const onClickTechStackHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    console.log(e.target.innerText)
+    setSelectedPositionName(e.target.innerText)
+    setIsActive(e.target.innerText)
+  }
+
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.id)
+
+    const newTech = { name: e.target.id }
+    const isIdAlreadySelected = techs.some((tech) => tech.name === e.target.id)
+
+    if (e.target.checked && !isIdAlreadySelected) {
+      setCategoryData({ ...categoryData, techs: [...techs, newTech] })
+    }
+  }
 
   return (
     <section className="flex flex-col gap-3 pb-[25px]">
@@ -49,27 +86,31 @@ const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
               </li>
             </ul>
           </div>
-          <div className="flex flex-col gap-[16px] py-[15px]">
-            <h5 className="text-[20px] font-[600]">활동 지역</h5>
-            <select
-              defaultValue="1"
-              className={`${
-                region ? "border-red-500" : "border-slate-400"
-              } border-[1.5px]  px-[20px] py-[5px] rounded-full`}
-              onChange={(e) =>
-                setCategoryData({ ...categoryData, region: e.target.value })
-              }
-            >
-              {/* TODO 2 : 옵션 스타일링... 왜안돼!!! -> li로 바꿔야하나, value가 1,2,3,4로 처리해도 될까 */}
-              <option value="1">지역을 선택하세요</option>
-              <option value="2">서울/경기/인천</option>
-              <option value="3">강원도</option>
-              <option value="4">경상도</option>
-              <option value="5">전라도</option>
-              <option value="6">충청도</option>
-              <option value="7">제주도</option>
-            </select>
-          </div>
+          {isOffline && (
+            <div className="flex flex-col gap-[16px] py-[15px]">
+              <h5 className="text-[20px] font-[600]">활동 지역</h5>
+              <select
+                defaultValue="1"
+                className={`border-[1.5px]  ${
+                  region === "1" || region === ""
+                    ? "border-slate-400"
+                    : "border-red-500"
+                }  px-[20px] py-[5px] rounded-full`}
+                onChange={(e) =>
+                  setCategoryData({ ...categoryData, region: e.target.value })
+                }
+              >
+                {/* TODO 2 : 옵션 스타일링... 왜안돼!!! -> li로 바꿔야하나, value가 1,2,3,4로 처리해도 될까 */}
+                <option value="1">지역을 선택하세요</option>
+                <option value="2">서울/경기/인천</option>
+                <option value="3">강원도</option>
+                <option value="4">경상도</option>
+                <option value="5">전라도</option>
+                <option value="6">충청도</option>
+                <option value="7">제주도</option>
+              </select>
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-[16px] py-[15px]">
           <h5 className="text-[20px] font-[600]">프로젝트 기간</h5>
@@ -109,44 +150,38 @@ const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
         <div className="flex flex-col gap-[16px] py-[15px]">
           <h5 className="text-[20px] font-[600]">기술 스택</h5>
           <ul className="flex gap-3 items-center">
-            <li className="relative" onMouseLeave={() => setIsActive(false)}>
+            <li className="relative" onMouseLeave={() => setIsActive("")}>
               <div
                 className="flex items-center mb-2 justify-center gap-2 border-[1.5px] border-slate-400 px-[20px] py-[5px] rounded-full cursor-pointer"
-                onClick={() => setIsActive(!isActive)}
+                onClick={onClickTechStackHandler}
               >
-                프론트엔드 {isActive ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                프론트엔드
+                {isActive === "프론트엔드" ? (
+                  <IoIosArrowUp />
+                ) : (
+                  <IoIosArrowDown />
+                )}
               </div>
               <ul
                 className={`absolute flex flex-col bg-slate-50 w-[150px] rounded-lg py-[15px] px-[20px] transition-all ${
-                  isActive ? "opacity-100" : "opacity-0"
+                  isActive === "프론트엔드" ? "opacity-100" : "opacity-0"
                 }`}
               >
-                <li>
-                  <label className="cursor-pointer">
-                    <input type="checkbox" id="react" className="mr-2" />
-                    React
-                  </label>
-                </li>
-                <li>
-                  <label className="cursor-pointer">
-                    <input type="checkbox" id="react" className="mr-2" />
-                    Vue
-                  </label>
-                </li>
-                <li>
-                  <label className="cursor-pointer">
-                    <input type="checkbox" id="react" className="mr-2" />
-                    NextJS
-                  </label>
-                </li>
+                {allTechs?.map((tech, i) => (
+                  <li key={i}>
+                    <label htmlFor={tech?.tech_name} className="cursor-pointer">
+                      <input
+                        type="checkbox"
+                        id={tech?.tech_name}
+                        className="mr-2"
+                        onChange={onChangeHandler}
+                      />
+                      {tech?.tech_name}
+                    </label>
+                  </li>
+                ))}
               </ul>
             </li>
-            <div className="flex items-center mb-2 justify-center gap-2 border-[1.5px] border-slate-400 px-[20px] py-[5px] rounded-full">
-              백엔드 <IoIosArrowDown />
-            </div>
-            <div className="flex items-center mb-2 justify-center gap-2 border-[1.5px] border-slate-400 px-[20px] py-[5px] rounded-full">
-              디자인 <IoIosArrowDown />
-            </div>
           </ul>
         </div>
         {/* 글쓰기page vs 메인page */}
