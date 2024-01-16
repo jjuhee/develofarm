@@ -210,6 +210,8 @@ export async function getTechs() {
 
       // 3. 가져온 techs 데이터를 반환한다
       return positionTechs?.map((tech) => tech.techs)
+      //3. (position + 연결된 tech)의 배열을 반환한다.
+      //return positionTechs
     })
 
     // 모든 포지션에 대한 techs를 병렬로 가져오기

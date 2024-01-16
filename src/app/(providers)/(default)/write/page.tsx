@@ -26,12 +26,16 @@ const Write = () => {
   const router = useRouter()
 
   const queryClient = useQueryClient()
-  const { isPending, isError, error, mutate } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: addProject,
     onSuccess: () => {
-      queryClient.invalidateQueries()
       alert("게시물 작성 완료~!")
       router.push("/")
+    },
+    onError: () => {
+      alert(
+        "DB에 알수 없는 에러로 게시물이 정상적으로 추가되지 않았을 수 있습니다(-.-)(_ _)",
+      )
     },
   })
 
@@ -63,7 +67,11 @@ const Write = () => {
       }
 
       console.log(newData)
-      mutate(newData)
+      mutate({
+        project: newData,
+        techs: categoryData.techs,
+        positions: categoryData.positions,
+      })
     }
   }
 
