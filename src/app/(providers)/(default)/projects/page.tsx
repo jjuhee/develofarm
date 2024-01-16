@@ -4,14 +4,27 @@ import EmptyState from "@/components/EmptyState"
 import React, { useState } from "react"
 import ProjectCard from "./_components/ProjectCard"
 import Spacer from "@/components/ui/Spacer"
-import Category from "./_components/Category"
 import { useQuery } from "@tanstack/react-query"
 import { getProjects } from "./api"
 import Pagination from "@mui/material/Pagination"
+import { Tables } from "@/types/supabase"
+import Category from "../write/_components/Category"
 
 const PAGE_SIZE = 5
 
 const ProjectsPage = () => {
+  const initialCategoryData: TCategoryData = {
+    startDate: "",
+    endDate: "",
+    isOffline: false,
+    region: "",
+    numberOfMembers: 0,
+    positions: [{ id: "", name: "" }],
+    techs: [{ id: "", name: "" }], // TODO: tech에 여러개 받고 한번에 넣는 법..
+  }
+
+  const [categoryData, setCategoryData] =
+    useState<TCategoryData>(initialCategoryData)
   const [page, setPage] = useState<number>(1)
   const [recruitStatus, setRecruitStatus] = useState(false)
   const [order, setOrder] = useState(1)
@@ -61,7 +74,11 @@ const ProjectsPage = () => {
       <Spacer y={60} />
 
       <div>
-        <Category />
+        <Category
+          categoryData={categoryData}
+          isWritePage={false}
+          setCategoryData={setCategoryData}
+        />
 
         <Spacer y={30} />
 
@@ -86,7 +103,7 @@ const ProjectsPage = () => {
 
         {(projects?.length as number) > 0 ? (
           <ul className="flex flex-col gap-8">
-            {paginatedProjects?.map((item: TProjects) => (
+            {paginatedProjects?.map((item: Tables<"projects">) => (
               <ProjectCard key={item?.id} project={item} />
             ))}
           </ul>

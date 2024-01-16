@@ -1,14 +1,16 @@
-import BookmarkButton from "@/components/BookmarkButton"
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
-import { getProjectTech } from "../api"
+import { getProjectTech, getUser } from "../api"
 import formatDate from "@/utils/formatDate"
-import { useEffect, useState } from "react"
+import BookmarkButton from "@/components/BookmarkButton"
+import type { Tables } from "@/types/supabase"
 import { supabaseForClient } from "@/supabase/supabase.client"
+import { useEffect, useState } from "react"
+import parse from "html-react-parser"
 
 interface Props {
-  project: TProjects
+  project: Tables<"projects">
 }
 
 const ProjectCard = ({ project }: Props) => {
@@ -16,12 +18,11 @@ const ProjectCard = ({ project }: Props) => {
 
   useEffect(() => {
     const getAuth = async () => {
-      const newUser = await supabaseForClient.auth.getUser()
-      console.log(newUser.data.user?.id)
-      setCurrentUser(newUser.data.user?.id as string)
+      const user = await supabaseForClient.auth.getUser()
+      setCurrentUser(user.data.user?.id as string)
     }
     getAuth()
-  }, [])
+  }, [currentUser])
 
   const {
     id,
@@ -36,19 +37,21 @@ const ProjectCard = ({ project }: Props) => {
   } = project
 
   const { data: techs } = useQuery({
-    queryKey: ["techs"],
+    queryKey: ["techs", id],
     queryFn: () => getProjectTech(id),
     enabled: !!id,
   })
 
+  const parsedContent = parse(content) as string
+
   const cardContent =
-    content?.length > 100 ? content.slice(0, 100) + "..." : content
+    content?.length > 100 ? parsedContent.slice(0, 100) + "..." : parsedContent
 
   return (
     <div className="flex">
       <section className="relative overflow-hidden rounded-xl w-full md:max-w-[498px] md:h-[270px] max-w-[300px] h-[230px] transition-all bg-slate-200 mr-20">
         <Image
-          src={"/images/React.jpeg"}
+          src={picture_url || "/images/project_default.png"}
           alt="project"
           fill
           sizes="auto"
@@ -70,18 +73,14 @@ const ProjectCard = ({ project }: Props) => {
         </div>
         <div className="flex justify-between items-center">
           <ul className="flex gap-3 ">
-            <li className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl">
-              NestJS
-            </li>
-            <li className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl">
-              Spring
-            </li>
-            <li className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl ">
-              C#
-            </li>
-            <li className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl">
-              JAVA
-            </li>
+            {techs?.map((tech, i) => (
+              <li
+                key={i}
+                className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl"
+              >
+                {tech}
+              </li>
+            ))}
           </ul>
           <Link
             href={`projects/${id}`}

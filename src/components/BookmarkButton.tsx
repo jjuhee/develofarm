@@ -1,5 +1,6 @@
 import {
   getBookmarks,
+  getBookmarksByUserId,
   removeBookmarks,
   setBookmarks,
 } from "@/app/(providers)/(default)/projects/api"
@@ -22,9 +23,14 @@ const BookmarkButton = ({ projectId, currentUser }: Props) => {
     },
   })
 
-  const { data: bookmarks, refetch: refetchBookmarks } = useQuery({
+  const { data: allBookmarks, refetch: refetchBookmarks } = useQuery({
     queryKey: ["bookmarks"],
     queryFn: getBookmarks,
+  })
+
+  const { data: bookmarks, refetch: refetchBookmarksByUser } = useQuery({
+    queryKey: ["bookmarks", currentUser],
+    queryFn: () => getBookmarksByUserId(currentUser),
   })
 
   const onClickHandler = async (e: React.MouseEvent<HTMLDivElement>) => {
@@ -42,8 +48,10 @@ const BookmarkButton = ({ projectId, currentUser }: Props) => {
       // 추가되어 있지 않을 경우 새로 추가
       addMutate({ projectId, currentUser })
       refetchBookmarks()
+      refetchBookmarksByUser()
     }
     refetchBookmarks()
+    refetchBookmarksByUser()
   }
 
   const isBookmarked =
