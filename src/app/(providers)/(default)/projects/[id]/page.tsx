@@ -7,7 +7,8 @@ import { useParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { getProject } from "../api"
 import dayjs from "dayjs"
-import ProjectDetailMenu from "./_components/ProjectDetailMenu"
+import WriterEditRemoveButtons from "./_components/WriterEditRemoveButtons"
+import FooterMenus from "./_components/FooterMenus"
 
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -26,7 +27,6 @@ const DetailPage = () => {
   const END_DATE = dayjs(project?.project_end_date).format("YYYY.MM.DD")
 
   if (isLoading || !project) return <div>is Loading...</div>
-
   const techStack = [
     { id: "1", tech: "React" },
     { id: "2", tech: "TypeScript" },
@@ -38,10 +38,7 @@ const DetailPage = () => {
     <div className="flex flex-col w-full my-0 mx-auto">
       <Spacer y={90} />
       <header>
-        <h1 className="text-3xl font-semibold">
-          {/* 책 커뮤니티 관련 프로젝트 멤버 구합니다! */}
-          {project.title}
-        </h1>
+        <h1 className="text-3xl font-semibold">{project.title}</h1>
         <Spacer y={30} />
         <ul className="flex text-sm">
           {techStack.map((tech) => {
@@ -72,6 +69,7 @@ const DetailPage = () => {
           </li>
           <li>{FORMATTED_DATE}</li>
           <li>조회수 190</li>
+          <WriterEditRemoveButtons project={project} />
         </ul>
       </header>
       <main className="h-full">
@@ -121,25 +119,8 @@ const DetailPage = () => {
         <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 min-h-96">
           <div className="leading-7">{project.content}</div>
         </section>
-        <ProjectDetailMenu project={project} />
+        <FooterMenus project={project} />
         <Spacer y={30} />
-        <section className="">
-          <div className="border-2 border-yellow-600">
-            {/* <Image /> */}
-            <span className="mr-2">작성자</span>
-            {/* <span className="text-sm">{TODAY.toLocaleString()}</span> */}
-            <div>댓글내용</div>
-            <span>
-              <button>대댓글</button>
-            </span>
-          </div>
-        </section>
-        <section>
-          <textarea placeholder="댓글 내용을 입력하세요" />
-          <button className="hover:bg-violet-600 hover:text-white">
-            댓글 등록하기
-          </button>
-        </section>
         <section className="border-2 border-blue-500">
           <p>이전게시물</p>
           <p>다음게시물</p>
