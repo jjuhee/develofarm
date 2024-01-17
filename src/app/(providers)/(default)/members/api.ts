@@ -1,14 +1,16 @@
+import useCategoryStore from "@/store/category"
 import { supabaseForClient } from "@/supabase/supabase.client"
 
-export const getUsers = async () => {
+export const getUsers = async ({ pageParam }: { pageParam: number }) => {
   const { data, error } = await supabaseForClient
     .from("users")
-    .select("*")
+    .select("*, position: positions(*)")
     .eq("user_status", "지원중")
+    .range(pageParam!, pageParam! + 2)
 
   if (error) return console.log(error.message)
 
-  return data
+  return data || null
 }
 
 export const getPositionById = async ({
@@ -37,4 +39,17 @@ export const getProjectByUserId = async (userId: string) => {
   return data
 }
 
-// TODO: 유저가 갖고 있는 techs 가져오기
+export const getTechsByUserId = async (userId: string) => {
+  const { data, error } = await supabaseForClient
+    .from("user_tech")
+    .select("*, techs:techs(*)")
+    .eq("user_id", userId)
+
+  const techs = data?.map((tech) => {
+    return tech.techs?.tech_name
+  })
+
+  if (error) return console.log(error.message)
+
+  return techs
+}

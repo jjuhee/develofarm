@@ -260,15 +260,15 @@ export interface Database {
       positions: {
         Row: {
           id: string
-          position_name: string
+          name: string
         }
         Insert: {
           id?: string
-          position_name: string
+          name: string
         }
         Update: {
           id?: string
-          position_name?: string
+          name?: string
         }
         Relationships: []
       }
@@ -369,7 +369,26 @@ export interface Database {
           project_id?: string
           tech_id?: string | null
         }
+<<<<<<< HEAD
         Relationships: []
+=======
+        Relationships: [
+          {
+            foreignKeyName: "project_tech_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_tech_tech_id_fkey"
+            columns: ["tech_id"]
+            isOneToOne: false
+            referencedRelation: "techs"
+            referencedColumns: ["id"]
+          },
+        ]
+>>>>>>> 834255aa4434aa66412d720c6d9bc7e587084d90
       }
       projects: {
         Row: {
