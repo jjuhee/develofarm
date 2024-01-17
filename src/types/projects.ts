@@ -41,9 +41,10 @@ declare interface TProjectsOptions {
 }
 
 declare interface TPositions {
-  id: string
+  position_id: string
 }
 
 declare interface TTechs {
-  id: string
+  tech_id: string
+  position_id: string
 }
