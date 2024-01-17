@@ -1,6 +1,6 @@
 import React from "react"
 import { useQuery } from "@tanstack/react-query"
-import { getProjects } from "../../../api"
+import { getProjectMembers } from "../../../api"
 import Link from "next/link"
 
 const ProfilePastProjectCard = ({ profileId }: { profileId: string }) => {
@@ -10,7 +10,7 @@ const ProfilePastProjectCard = ({ profileId }: { profileId: string }) => {
     isError,
   } = useQuery({
     queryKey: ["projects", profileId],
-    queryFn: () => getProjects({ userId: profileId }),
+    queryFn: () => getProjectMembers({ userId: profileId }),
     enabled: !!profileId,
   })
 
@@ -54,13 +54,15 @@ const ProfilePastProjectCard = ({ profileId }: { profileId: string }) => {
       <div className="border border-gray-300 bg-white rounded-lg shadow-md mt-4 mb-4">
         {pastProjects.map((project) => (
           <div key={project.projects?.id}>
-            <Link href={`/projects/${project.projects?.id}`}>
-              <div className="flex flex-col items-left">
+            <div className="flex flex-col items-left">
+              <Link href={`/projects/${project.projects?.id}`}>
                 <img
                   className="mb-2 w-full h-40 object-cover"
                   src={`${project.projects?.picture_url}`}
                   alt={`Image for ${project.projects?.title}`}
                 />
+              </Link>
+              <Link href={`/projects/${project.projects?.id}`}>
                 <div className="flex font-bold ml-5 mt-3 mb-2">
                   <span
                     className={`p-[5px] px-[10px] mr-3 border border-solid rounded-md ${
@@ -71,18 +73,17 @@ const ProfilePastProjectCard = ({ profileId }: { profileId: string }) => {
                   >
                     {project.projects?.recruit_status ? "모집완료" : "모집 중"}
                   </span>
-                  <h2 className="text-xl pt-[3px]">
+                  <h2 className="text-xl pt-[4px]">
                     {project.projects?.title}
                   </h2>
                 </div>
+              </Link>
+              <div className="flex">
+                <p className="text-gray-700 text-sm ml-5 mt-1 mb-3">
+                  {project.projects?.content}
+                </p>
+                {/* 북마크 버튼 */}
               </div>
-            </Link>
-
-            <div className="flex">
-              <p className="text-gray-700 text-sm ml-5 mt-1 mb-3">
-                {project.projects?.content}
-              </p>
-              {/* 북마크 버튼 */}
             </div>
           </div>
         ))}

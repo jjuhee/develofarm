@@ -24,19 +24,21 @@ const ProfileCategory = () => {
           }`}
           onClick={() => handleLinkClick(`/profile/${profile?.id}`)}
         >
-          내프로필
+          내 프로필
         </div>
       </Link>
-      <Link href={`/profile/${profile?.id}/bookmark`}>
+      <Link href={`/profile/${profile?.id}/profileProject`}>
         <div
           className={`${
-            activeLink === `/profile/${profile?.id}/bookmark`
+            activeLink === `/profile/${profile?.id}/profileProject`
               ? "text-blue-500"
               : "hover:text-blue-500 focus:text-blue-500 active:text-blue-500"
           }`}
-          onClick={() => handleLinkClick(`/profile/${profile?.id}/bookmark`)}
+          onClick={() =>
+            handleLinkClick(`/profile/${profile?.id}/profileProjects`)
+          }
         >
-          찜한 프로젝트
+          내 프로젝트
         </div>
       </Link>
       <Link href={`/profile/${profile?.id}/notification`}>

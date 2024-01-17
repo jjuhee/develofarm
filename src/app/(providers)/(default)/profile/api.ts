@@ -66,9 +66,31 @@ export async function getSocialLinks({ userId }: { userId: string }) {
   return data
 }
 
-export async function getProjects({ userId }: { userId: string }) {
+export async function getProjectMembers({ userId }: { userId: string }) {
   const { data, error } = await supabaseForClient
     .from("project_members")
+    .select("*, projects(*)")
+    .eq("user_id", userId)
+
+  if (error) console.log("error", error)
+
+  return data
+}
+
+export async function getProjects({ userId }: { userId: string }) {
+  const { data, error } = await supabaseForClient
+    .from("projects")
+    .select("*")
+    .eq("user_id", userId)
+
+  if (error) console.log("error", error)
+
+  return data
+}
+
+export async function getProfileBookmarks({ userId }: { userId: string }) {
+  const { data, error } = await supabaseForClient
+    .from("bookmarks")
     .select("*, projects(*)")
     .eq("user_id", userId)
 
