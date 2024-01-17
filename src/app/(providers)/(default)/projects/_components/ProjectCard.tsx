@@ -6,6 +6,7 @@ import BookmarkButton from "@/components/BookmarkButton"
 import type { Tables } from "@/types/supabase"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import parse from "html-react-parser"
+import { getProjectTech } from "../api"
 
 interface Props {
   project: Tables<"projects">
@@ -38,13 +39,11 @@ const ProjectCard = ({
     setProjectId(id)
   }, [id, setProjectId])
 
-  console.log(techs)
-
-  // const { data: techs } = useQuery({
-  //   queryKey: ["techs", id],
-  //   queryFn: () => getProjectTech(id),
-  //   enabled: !!id,
-  // })
+  const { data: projectTechs } = useQuery({
+    queryKey: ["techs", id],
+    queryFn: () => getProjectTech(id),
+    enabled: !!id,
+  })
 
   const parsedContent = parse(content) as string
 
@@ -77,7 +76,7 @@ const ProjectCard = ({
         </div>
         <div className="flex justify-between items-center">
           <ul className="flex gap-3 ">
-            {techs?.map((tech, i) => (
+            {projectTechs?.map((tech, i) => (
               <li
                 key={i}
                 className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl"

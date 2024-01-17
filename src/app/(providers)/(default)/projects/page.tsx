@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query"
 import {
   getBookmarks,
   getBookmarksByUserId,
+  getBookmarksCountByProject,
   getProjectTech,
   getProjects,
 } from "./api"
@@ -91,12 +92,6 @@ const ProjectsPage = () => {
         offset: (page - 1) * PAGE_SIZE,
       }),
     enabled: !!projects,
-  })
-
-  /** 북마크 데이터 불러오기 */
-  const { data: allBookmarks } = useQuery<Tables<"bookmarks">[]>({
-    queryKey: ["bookmarks"],
-    queryFn: getBookmarks,
   })
 
   const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({

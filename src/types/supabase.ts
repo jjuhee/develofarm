@@ -388,6 +388,7 @@ export interface Database {
       }
       projects: {
         Row: {
+          bookmark_count: number
           content: string
           created_at: string | null
           id: string
@@ -404,6 +405,7 @@ export interface Database {
           views: number
         }
         Insert: {
+          bookmark_count?: number
           content: string
           created_at?: string | null
           id?: string
@@ -420,6 +422,7 @@ export interface Database {
           views?: number
         }
         Update: {
+          bookmark_count?: number
           content?: string
           created_at?: string | null
           id?: string
