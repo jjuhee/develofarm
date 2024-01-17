@@ -8,11 +8,14 @@ const nextConfig = {
         hostname: "lh3.googleusercontent.com",
       },
       {
+        protocol: "https",
+        hostname: "i.imgur.com",
+      },
+      {
         protocol: "http",
         hostname: "k.kakaocdn.net",
       },
     ],
-    // domains: ["lh3.googleusercontent"],
   },
 }
 

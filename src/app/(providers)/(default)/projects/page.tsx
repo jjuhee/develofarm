@@ -1,56 +1,122 @@
 "use client"
 
 import EmptyState from "@/components/EmptyState"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import ProjectCard from "./_components/ProjectCard"
 import Spacer from "@/components/ui/Spacer"
-import Category from "./_components/Category"
 import { useQuery } from "@tanstack/react-query"
-import { getProjects } from "./api"
+import {
+  getBookmarks,
+  getBookmarksByUserId,
+  getProjectTech,
+  getProjects,
+} from "./api"
 import Pagination from "@mui/material/Pagination"
+import { Database, Tables } from "@/types/supabase"
+import Category from "../write/_components/Category"
+import { supabaseForClient } from "@/supabase/supabase.client"
 
 const PAGE_SIZE = 5
 
 const ProjectsPage = () => {
-  const initialState = {
-    // 지역
-    // 테크
-    // 오프라인
+  const [currentUser, setCurrentUser] = useState("")
+
+  /** 현재 인증된 유저 데이터 가져오기 */
+  useEffect(() => {
+    const getAuth = async () => {
+      const user = await supabaseForClient.auth.getUser()
+      setCurrentUser(user.data.user?.id as string)
+    }
+    getAuth()
+  }, [currentUser])
+
+  const initialCategoryData: TCategoryData = {
+    startDate: "",
+    endDate: "",
+    isOffline: null,
+    region: "",
+    numberOfMembers: 0,
+    positions: [],
+    techs: [],
   }
 
-  const [page, setPage] = useState<number>(1)
-  const [recruitStatus, setRecruitStatus] = useState(false)
-  const [order, setOrder] = useState(1)
-  const [categoryData, setCategoryData] = useState(initialState)
+  const [categoryData, setCategoryData] =
+    useState<TCategoryData>(initialCategoryData)
 
+  const [page, setPage] = useState<number>(1)
+
+  const [recruitStatus, setRecruitStatus] = useState(false)
+
+  const [order, setOrder] = useState(1)
+
+  const [projectId, setProjectId] = useState("")
+
+  /** 프로젝트 데이터를 가져오기 위한 useQuery 옵션 */
+  const queryOption = {
+    order: order,
+    recruitStatus: recruitStatus,
+    isOffline: categoryData.isOffline,
+    startDate: categoryData.startDate,
+    endDate: categoryData.endDate,
+    numberOfPeople: categoryData.numberOfMembers,
+    regionId: categoryData.region,
+    techs: categoryData.techs,
+  }
+
+  /** 전체 프로젝트 가져오기 */
   const { data: projects } = useQuery({
-    queryKey: ["projects", recruitStatus, { order: order }],
-    queryFn: () =>
-      getProjects({
-        orderBy: "created_at",
-        recruitStatus: recruitStatus,
-        order: order,
-      }),
+    queryKey: [
+      "projects",
+      recruitStatus,
+      { order: order },
+      { categoryData: categoryData },
+    ],
+    queryFn: () => getProjects(queryOption),
     enabled: !!page && !!order,
   })
 
-  const queryOption = {
-    limit: PAGE_SIZE + (page - 1) * PAGE_SIZE - 1,
-    offset: (page - 1) * PAGE_SIZE,
-    recruitStatus: recruitStatus,
-    order: order,
-  }
-
+  /** 페이지 단위 프로젝트 가져오기 */
   const { data: paginatedProjects } = useQuery({
-    queryKey: ["projects", page, recruitStatus, { order: order }],
-    queryFn: () => getProjects(queryOption),
+    queryKey: [
+      "projects",
+      page,
+      recruitStatus,
+      { order: order },
+      { categoryData: categoryData },
+    ],
+    queryFn: () =>
+      getProjects({
+        ...queryOption,
+        limit: PAGE_SIZE + (page - 1) * PAGE_SIZE - 1,
+        offset: (page - 1) * PAGE_SIZE,
+      }),
     enabled: !!projects,
+  })
+
+  /** 북마크 데이터 불러오기 */
+  const { data: allBookmarks } = useQuery<Tables<"bookmarks">[]>({
+    queryKey: ["bookmarks"],
+    queryFn: getBookmarks,
+  })
+
+  const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
+    queryKey: ["bookmarks", currentUser],
+    queryFn: () => getBookmarksByUserId(currentUser),
+    enabled: !!currentUser,
+  })
+
+  /** 프로젝트 기술 스택 가져오기 */
+  const { data: techs } = useQuery({
+    queryKey: ["techs", projectId],
+    queryFn: () => getProjectTech(projectId),
+    enabled: !!projectId,
   })
 
   const onClickPage = (e: React.ChangeEvent<unknown>, page: number) => {
     setPage(page)
   }
 
+  /** 모집 중 체크박스 */
   const onChangeRecruitHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setRecruitStatus(true)
@@ -68,7 +134,11 @@ const ProjectsPage = () => {
       <Spacer y={60} />
 
       <div>
-        <Category setCategoryData={setCategoryData} />
+        <Category
+          categoryData={categoryData}
+          isWritePage={false}
+          setCategoryData={setCategoryData}
+        />
 
         <Spacer y={30} />
 
@@ -93,9 +163,18 @@ const ProjectsPage = () => {
 
         {(projects?.length as number) > 0 ? (
           <ul className="flex flex-col gap-8">
-            {paginatedProjects?.map((item: TProjects) => (
-              <ProjectCard key={item?.id} project={item} />
-            ))}
+            {paginatedProjects?.map((item: Tables<"projects">) => {
+              return (
+                <ProjectCard
+                  key={item?.id}
+                  project={item}
+                  bookmarks={bookmarks}
+                  currentUser={currentUser}
+                  setProjectId={setProjectId}
+                  techs={techs}
+                />
+              )
+            })}
           </ul>
         ) : (
           <EmptyState />

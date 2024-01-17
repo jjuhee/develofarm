@@ -1,19 +1,21 @@
+import React from "react"
 import {
-  getBookmarks,
   removeBookmarks,
   setBookmarks,
 } from "@/app/(providers)/(default)/projects/api"
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query"
-import React from "react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { MdBookmarkBorder, MdOutlineBookmark } from "react-icons/md"
+
+import type { Tables } from "@/types/supabase"
 
 interface Props {
   projectId: string
   currentUser: string
+  bookmarks: Tables<"bookmarks">[]
 }
 
-const BookmarkButton = ({ projectId, currentUser }: Props) => {
-  const queryClient = new QueryClient()
+const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
+  const queryClient = useQueryClient()
 
   const { mutate: addMutate } = useMutation({
     mutationFn: setBookmarks,
@@ -22,28 +24,21 @@ const BookmarkButton = ({ projectId, currentUser }: Props) => {
     },
   })
 
-  const { data: bookmarks, refetch: refetchBookmarks } = useQuery({
-    queryKey: ["bookmarks"],
-    queryFn: getBookmarks,
-  })
-
   const onClickHandler = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
 
+    /** 로그인 되지 않았을 때 */
     if (!currentUser) return
 
-    // 로그인 됐을 때
+    /** 로그인 됐을 때 */
     if (isBookmarked) {
-      // 이미 추가 됐을 경우
-      console.log("pass")
+      /** 이미 추가 됐을 경우 */
       await removeBookmarks({ projectId, currentUser })
       queryClient.invalidateQueries({ queryKey: ["bookmarks"] })
     } else {
-      // 추가되어 있지 않을 경우 새로 추가
+      /** 추가되어 있지 않을 경우 새로 추가 */
       addMutate({ projectId, currentUser })
-      refetchBookmarks()
     }
-    refetchBookmarks()
   }
 
   const isBookmarked =

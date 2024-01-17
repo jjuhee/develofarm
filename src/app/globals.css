@@ -36,5 +36,5 @@ button {
 }
 
 .category {
-  @apply border-[1.8px] px-[20px] py-[5px] rounded-full;
+  @apply border-[1.8px] px-[20px] py-[5px] rounded-full cursor-pointer;
 }

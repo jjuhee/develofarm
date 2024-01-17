@@ -9,18 +9,20 @@ import Category from "./_components/Category"
 import { useRouter } from "next/navigation"
 
 const Write = () => {
-  const initialCategoryData = {
+  const initialCategoryData: TCategoryData = {
     startDate: "",
     endDate: "",
     isOffline: false,
     region: "",
     numberOfMembers: 0,
-    position: [{ name: "" }],
-    techs: [{ name: "" }], // TODO: tech에 여러개 받고 한번에 넣는 법..
+    positions: [],
+    techs: [], // TODO: tech에 여러개 받고 한번에 넣는 법..
   }
+
   const [title, setTitle] = useState<string>("")
   const [content, setContent] = useState<string>("")
-  const [categoryData, setCategoryData] = useState(initialCategoryData)
+  const [categoryData, setCategoryData] =
+    useState<TCategoryData>(initialCategoryData)
   const router = useRouter()
 
   const queryClient = useQueryClient()
