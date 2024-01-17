@@ -1,20 +1,20 @@
 import Link from "next/link"
-import { useProfileStore } from "@/store/profile"
+import useUserStore from "@/store/user"
 
 const ProfileActions = ({ profileId }: { profileId: string }) => {
-  const { profile } = useProfileStore()
+  const { user } = useUserStore()
 
   return (
     <div className="flex float-right">
-      {profile?.id === profileId && (
+      {user === profileId && (
         <Link
-          href={`/profile/${profile?.id}/update`}
+          href={`/profile/${user}/update`}
           className="inline-block px-4 py-2 border border-blue-500 rounded-full"
         >
           수정하기
         </Link>
       )}
-      {profile?.id !== profileId && (
+      {user !== profileId && (
         <button className="inline-block px-4 py-2 border border-blue-500 rounded-full">
           내 프로젝트에 초청하기
         </button>

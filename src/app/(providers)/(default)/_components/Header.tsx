@@ -3,13 +3,14 @@
 import useCategoryStore from "@/store/category"
 import useMembersStore from "@/store/members"
 import Link from "next/link"
-import React, { use, useEffect, useState } from "react"
+import React, { useState } from "react"
 import { IoMdSearch } from "react-icons/io"
 import { VscBell } from "react-icons/vsc"
 import { supabaseForClient } from "@/supabase/supabase.client"
-import { useProfileStore } from "@/store/profile"
+import useUserStore from "@/store/user"
 
 const Header = () => {
+  const { user } = useUserStore()
   const { selectCategory } = useCategoryStore((state) => state)
   const setViewMemberModal = useMembersStore(
     (state) => state.setViewMemberModal,
@@ -42,25 +43,6 @@ const Header = () => {
     )
     .subscribe()
 
-  const { profile, setProfile } = useProfileStore()
-
-  useEffect(() => {
-    supabaseForClient.auth.getUser().then((response) => {
-      if (!response.data.user) {
-        return
-      }
-
-      supabaseForClient
-        .from("users")
-        .select("*")
-        .eq("id", response.data.user.id)
-        .single()
-        .then((response) => {
-          setProfile(response.data)
-        })
-    })
-  }, [])
-
   return (
     <div className="flex w-full bg-gray-200">
       <div className="flex justify-between items-center w-[1250px] h-[108px] my-0 mx-auto px-2">
@@ -91,7 +73,7 @@ const Header = () => {
               </div>
             )}
           </span>
-          <Link href={`/profile/${profile?.id}`}>마이페이지</Link>
+          <Link href={`/profile/${user}`}>마이페이지</Link>
         </nav>
       </div>
     </div>

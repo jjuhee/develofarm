@@ -19,9 +19,11 @@ const ProfileBookmarkCard = ({ profileId }: { profileId: string }) => {
   }
 
   if (isError) {
-    return (
-      <div>참여 했던 프로젝트 데이터를 불러오는 중 오류가 발생했습니다.</div>
-    )
+    return <div>찜한 프로젝트 데이터를 불러오는 중 오류가 발생했습니다.</div>
+  }
+
+  if (!bookmarks || bookmarks.length === 0) {
+    return <div className="pt-[50px]">찜한 프로젝트가 없습니다.</div>
   }
 
   return (

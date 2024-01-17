@@ -19,9 +19,11 @@ const ProfileSharedProjectCard = ({ profileId }: { profileId: string }) => {
   }
 
   if (isError) {
-    return (
-      <div>참여 했던 프로젝트 데이터를 불러오는 중 오류가 발생했습니다.</div>
-    )
+    return <div>게시한 프로젝트 데이터를 불러오는 중 오류가 발생했습니다.</div>
+  }
+
+  if (!projects || projects.length === 0) {
+    return <div className="pt-[50px]">게시한 프로젝트글이 없습니다.</div>
   }
 
   return (
