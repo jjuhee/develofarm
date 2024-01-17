@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React from "react"
 import Spacer from "@/components/ui/Spacer"
 import Image from "next/image"
 import { useParams } from "next/navigation"
@@ -8,8 +8,6 @@ import { useQuery } from "@tanstack/react-query"
 import { getProject } from "../api"
 import dayjs from "dayjs"
 import WriterEditRemoveButtons from "./_components/WriterEditRemoveButtons"
-import { FaRegMessage } from "react-icons/fa6"
-import { CiUser } from "react-icons/ci"
 import FooterMenu from "./_components/FooterMenu"
 
 const DetailPage = () => {

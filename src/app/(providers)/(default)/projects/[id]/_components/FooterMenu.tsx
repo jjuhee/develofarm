@@ -7,6 +7,8 @@ import { FaRegMessage } from "react-icons/fa6"
 import { CiUser } from "react-icons/ci"
 import Comments from "./Comments"
 import Applicants from "./Applicants"
+import Spacer from "@/components/ui/Spacer"
+import FooterAuthButtons from "./FooterAuthButtons"
 
 type Props = {
   project: Tables<"projects">
@@ -35,63 +37,67 @@ const FooterMenu = ({ project }: Props) => {
   }
 
   return (
-    <section className="flex items-center">
-      {/* 글 작성자 여부에 따른 수정/삭제 버튼 유무 */}
-      {isWriter ? (
-        <>
-          <button
-            className={`pr-12 pb-2 border-b-2 ${
-              isSelected === "comments" && " border-slate-600"
-            }`}
-            onClick={() => toggleTapHandler("comments")}
-          >
-            <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
-          </button>
-          <button
-            className={`pr-8 pb-1 border-b-2 ${
-              isSelected === "applicants" && " border-slate-600"
-            }`}
-            onClick={() => toggleTapHandler("applicants")}
-          >
-            <CiUser size={35} className="inline-block ml-8 mr-1" /> 24
-          </button>
-        </>
-      ) : (
-        <>
-          <span className="pr-14">
-            <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
+    <>
+      <section className="flex items-center">
+        {/* 글 작성자 여부에 따른 하단 메뉴 */}
+        {isWriter ? (
+          <>
+            <button
+              className={`pr-12 pb-2 border-b-2 ${
+                isSelected === "comments" && " border-slate-600"
+              }`}
+              onClick={() => toggleTapHandler("comments")}
+            >
+              <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
+            </button>
+            <button
+              className={`pr-8 pb-1 border-b-2 ${
+                isSelected === "applicants" && " border-slate-600"
+              }`}
+              onClick={() => toggleTapHandler("applicants")}
+            >
+              <CiUser size={35} className="inline-block ml-8 mr-1" /> 24
+            </button>
+          </>
+        ) : (
+          <>
+            <span className="pr-14">
+              <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
+            </span>
+            <span className="pr-8">
+              <IoIosPeople size={40} className="inline-block ml-8 mr-1" />{" "}
+              모집정원 3/{project.number_of_people}
+            </span>
+          </>
+        )}
+        <span className="ml-auto pr-5">
+          <span>
+            <CiBookmark size={30} className="inline-block" />
           </span>
-          <span className="pr-8">
-            <IoIosPeople size={40} className="inline-block ml-8 mr-1" />{" "}
-            모집정원 3/{project.number_of_people}
-          </span>
-        </>
-      )}
-      <span className="ml-auto pr-5">
-        <span>
-          <CiBookmark size={30} className="inline-block" />
+          5
         </span>
-        5
-      </span>
-      <span className="pr-5">
-        <IoShareSocialOutline size={30} />
-      </span>
-      {/* 글 작성자 여부에 따른 버튼 */}
-      {isWriter ? (
-        <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
-          마감하기
-        </button>
-      ) : (
-        <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
-          참여 신청
-        </button>
-      )}
+        <span className="pr-5">
+          <IoShareSocialOutline size={30} />
+        </span>
+        {/* 글 작성자 여부에 따른 버튼 */}
+        {isWriter ? (
+          <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
+            마감하기
+          </button>
+        ) : (
+          <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
+            참여 신청
+          </button>
+        )}
+        {/* <FooterAuthButtons isWriter={isWriter} /> */}
+      </section>
+      <Spacer y={35} />
       {/* 탭 메뉴에 따라 나오는 컴포넌트 */}
-      <article>
+      <section>
         {isSelected === "comments" && <Comments />}
         {isSelected === "applicants" && <Applicants />}
-      </article>
-    </section>
+      </section>
+    </>
   )
 }
 
