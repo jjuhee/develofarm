@@ -25,10 +25,10 @@ const ProfileSpec = ({ profileId }: { profileId: string }) => {
     <div className="flex justify-between items-center ">
       <div>
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold pb-[40px]">자격/어학/수상</h2>
+          <h2 className="text-2xl font-bold ">자격/어학/수상</h2>
         </div>
 
-        {specs ? (
+        {specs && specs.length > 0 ? (
           specs.map((spec) => (
             <div
               key={spec.id}
@@ -46,9 +46,10 @@ const ProfileSpec = ({ profileId }: { profileId: string }) => {
             </div>
           ))
         ) : (
-          <p>자격/어학/수상 데이터가 없습니다</p>
+          <p className="pt-[30px] pl-[135px] px-[135px]">
+            자격/어학/수상 내용이 없습니다.
+          </p>
         )}
-
         <hr className="my-8 border-t-2 border-gray-300" />
       </div>
     </div>

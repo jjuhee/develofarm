@@ -367,24 +367,9 @@ export interface Database {
         Update: {
           id?: string
           project_id?: string
-          tech_id?: string
+          tech_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "project_tech_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "projects"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "project_tech_tech_id_fkey"
-            columns: ["tech_id"]
-            isOneToOne: false
-            referencedRelation: "techs"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       projects: {
         Row: {

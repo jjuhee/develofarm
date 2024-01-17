@@ -28,7 +28,7 @@ const ProfileCareer = ({ profileId }: { profileId: string }) => {
           <h2 className="text-2xl font-bold">경력</h2>
         </div>
 
-        {careers ? (
+        {careers && careers.length > 0 ? (
           careers.map((job) => (
             <div
               key={job.id}
@@ -58,9 +58,10 @@ const ProfileCareer = ({ profileId }: { profileId: string }) => {
             </div>
           ))
         ) : (
-          <p>경력 데이터가 없습니다</p>
+          <p className="pt-[30px] pl-[180px] px-[180px]">
+            경력 내용이 없습니다.
+          </p>
         )}
-
         <hr className="my-8 border-t-2 border-gray-300" />
       </div>
     </div>

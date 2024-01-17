@@ -1,5 +1,5 @@
 import React from "react"
-import ProfileBookmarkCard from "../_components/bookmark/ProfileBookmarkCard"
+import ProfileBookmarkCard from "../../_components/bookmark/ProfileBookmarkCard"
 
 const BookmarkPage = () => {
   return (

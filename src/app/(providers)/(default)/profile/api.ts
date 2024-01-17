@@ -1,5 +1,16 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
 
+export async function getUser(profileId: string) {
+  const { data: userData, error: userError } = await supabaseForClient
+    .from("users")
+    .select("*")
+    .eq("id", profileId)
+    .single()
+  if (userError) console.log("error", userError)
+
+  return userData || null
+}
+
 export async function getCareers({ userId }: { userId: string }) {
   const { data, error } = await supabaseForClient
     .from("careers")
@@ -48,6 +59,17 @@ export async function getSocialLinks({ userId }: { userId: string }) {
   const { data, error } = await supabaseForClient
     .from("social_links")
     .select("*")
+    .eq("user_id", userId)
+
+  if (error) console.log("error", error)
+
+  return data
+}
+
+export async function getProjects({ userId }: { userId: string }) {
+  const { data, error } = await supabaseForClient
+    .from("project_members")
+    .select("*, projects(*)")
     .eq("user_id", userId)
 
   if (error) console.log("error", error)
