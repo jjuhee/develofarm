@@ -84,7 +84,7 @@ const FooterMenus = ({ project }: Props) => {
       <Spacer y={35} />
       {/* 탭 메뉴에 따라 나오는 컴포넌트 */}
       <section>
-        {isSelected === "comments" && <Comments />}
+        {isSelected === "comments" && <Comments project={project} />}
         {isSelected === "applicants" && <Applicants />}
       </section>
     </>
