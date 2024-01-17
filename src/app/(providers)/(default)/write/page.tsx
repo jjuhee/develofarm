@@ -2,7 +2,7 @@
 import Tiptap from "@/app/(providers)/(default)/write/_components/Tiptap"
 import Spacer from "@/components/ui/Spacer"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import React, { FormEvent, useRef, useState } from "react"
+import React, { FormEvent, useEffect, useRef, useState } from "react"
 import { setProject } from "./api"
 import Category from "./_components/Category"
 import { useRouter } from "next/navigation"
@@ -23,6 +23,7 @@ const Write = () => {
   const [content, setContent] = useState<string>("")
   const [categoryData, setCategoryData] =
     useState<TCategoryData>(initialCategoryData)
+  const [currentUser, setCurrentUser] = useState("")
   const router = useRouter()
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
@@ -41,9 +42,18 @@ const Write = () => {
     },
   })
 
-  const currentUser = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
-    ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
-    : null
+  // const currentUser = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
+  //   ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
+  //   : null
+
+  /** 현재 인증된 유저 데이터 가져오기 */
+  useEffect(() => {
+    const getAuth = async () => {
+      const user = await supabaseForClient.auth.getUser()
+      setCurrentUser(user.data.user?.id as string)
+    }
+    getAuth()
+  }, [currentUser])
 
   const submitProjectHandler = (e: FormEvent) => {
     e.preventDefault()
@@ -83,7 +93,7 @@ const Write = () => {
     }
     // TEMP END
     const newData: TablesInsert<"projects"> = {
-      user_id: currentUser.user.id, //TODO P0:(jhee) 임시 유저 변경
+      user_id: currentUser, //TODO P0:(jhee) 임시 유저 변경
       title,
       content,
       project_start_date: categoryData.startDate,
