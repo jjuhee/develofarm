@@ -9,13 +9,14 @@ import { VscBell } from "react-icons/vsc"
 import { supabaseForClient } from "@/supabase/supabase.client"
 const Header = () => {
   const { selectCategory } = useCategoryStore((state) => state)
-  const setViewMemberModal = useMembersStore(
-    (state) => state.setViewMemberModal,
+  const { setViewMemberModal, setMemberPosition } = useMembersStore(
+    (state) => state,
   )
 
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
     setViewMemberModal(false)
+    setMemberPosition(null)
   }
 
   const [showTooltip, setShowTooltip] = useState(false)
