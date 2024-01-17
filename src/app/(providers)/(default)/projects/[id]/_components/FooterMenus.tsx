@@ -79,22 +79,12 @@ const FooterMenus = ({ project }: Props) => {
         <span className="pr-5">
           <IoShareSocialOutline size={30} />
         </span>
-        {/* 글 작성자 여부에 따른 버튼 */}
-        {isWriter ? (
-          <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
-            마감하기
-          </button>
-        ) : (
-          <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
-            참여 신청
-          </button>
-        )}
-        {/* <FooterAuthButtons isWriter={isWriter} /> */}
+        <FooterAuthButtons project={project} isWriter={isWriter} />
       </section>
       <Spacer y={35} />
       {/* 탭 메뉴에 따라 나오는 컴포넌트 */}
       <section>
-        {isSelected === "comments" && <Comments />}
+        {isSelected === "comments" && <Comments project={project} />}
         {isSelected === "applicants" && <Applicants />}
       </section>
     </>

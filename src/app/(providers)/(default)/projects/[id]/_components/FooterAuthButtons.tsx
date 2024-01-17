@@ -1,7 +1,26 @@
+import { Tables } from "@/types/supabase"
 import React from "react"
 
-const FooterAuthButtons = () => {
-  return <div>참가하기&마감하기 버튼</div>
+type Props = {
+  project: Tables<"projects">
+  isWriter: boolean
+}
+
+const FooterAuthButtons = ({ project, isWriter }: Props) => {
+  return (
+    <>
+      {/* 글 작성자 여부에 따른 버튼 */}
+      {isWriter ? (
+        <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
+          마감하기
+        </button>
+      ) : (
+        <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
+          참여 신청
+        </button>
+      )}
+    </>
+  )
 }
 
 export default FooterAuthButtons
