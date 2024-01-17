@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getProject } from "../api"
 import dayjs from "dayjs"
 import WriterEditRemoveButtons from "./_components/WriterEditRemoveButtons"
-import FooterMenu from "./_components/FooterMenu"
+import FooterMenus from "./_components/FooterMenus"
 
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -119,7 +119,7 @@ const DetailPage = () => {
         <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 min-h-96">
           <div className="leading-7">{project.content}</div>
         </section>
-        <FooterMenu project={project} />
+        <FooterMenus project={project} />
         <Spacer y={30} />
         <section className="border-2 border-blue-500">
           <p>이전게시물</p>

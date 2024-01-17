@@ -14,7 +14,7 @@ type Props = {
   project: Tables<"projects">
 }
 
-const FooterMenu = ({ project }: Props) => {
+const FooterMenus = ({ project }: Props) => {
   /**
    *@ param 댓글목록과 신청자목록에 상태값을 담은 변수*/
   const [isSelected, setIsSelected] = useState<"comments" | "applicants">(
@@ -101,4 +101,4 @@ const FooterMenu = ({ project }: Props) => {
   )
 }
 
-export default FooterMenu
+export default FooterMenus
