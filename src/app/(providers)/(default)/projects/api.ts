@@ -94,13 +94,7 @@ export async function getProject(projectId: string) {
   return projectData || null
 }
 
-/** 현재 유저 데이터 가져오기 */
-export async function getUser() {
-  const { data: userData } = await supabaseForClient.auth.getUser()
-
-  return userData
-}
-
+/** projectId 값과 일치하는 해당 프로젝트 삭제 */
 export async function removeProject(projectId: string) {
   const { error: projectError } = await supabaseForClient
     .from("projects")
