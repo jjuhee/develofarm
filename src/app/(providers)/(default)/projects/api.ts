@@ -83,9 +83,7 @@ export async function getProjects({
 export async function getProject(projectId: string) {
   const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
-    .select(
-      "*, user:users(id, user_nickname, avatar_url), region:project_regions(*)",
-    )
+    .select("*, user:users(*), region:project_regions(*)")
     .eq("id", projectId)
     .single()
 

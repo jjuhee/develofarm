@@ -9,12 +9,14 @@ import Comments from "./Comments"
 import Applicants from "./Applicants"
 import Spacer from "@/components/ui/Spacer"
 import FooterAuthButtons from "./FooterAuthButtons"
+import useUserStore from "@/store/user"
 
 type Props = {
   project: Tables<"projects">
+  user: Tables<"users">
 }
 
-const FooterMenus = ({ project }: Props) => {
+const FooterMenus = ({ project, user }: Props) => {
   /**
    *@ param 댓글목록과 신청자목록에 상태값을 담은 변수*/
   const [isSelected, setIsSelected] = useState<"comments" | "applicants">(
@@ -23,10 +25,8 @@ const FooterMenus = ({ project }: Props) => {
   /**
    *@ param1 현재 로그인한 유저 정보를 담은 변수
    *@ param2 글 작성자가 현재 로그인한 유저랑 같은지 판별하는 변수*/
-  const currentUser = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
-    ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
-    : null
-  const isWriter = currentUser?.user?.id === project.user_id
+  const { user: currentUser } = useUserStore()
+  const isWriter = currentUser === project.user_id
 
   /**
    *@ function 클릭시 탭메뉴 선택 */
@@ -84,7 +84,9 @@ const FooterMenus = ({ project }: Props) => {
       <Spacer y={35} />
       {/* 탭 메뉴에 따라 나오는 컴포넌트 */}
       <section>
-        {isSelected === "comments" && <Comments project={project} />}
+        {isSelected === "comments" && (
+          <Comments project={project} user={user} isWriter={isWriter} />
+        )}
         {isSelected === "applicants" && <Applicants />}
       </section>
     </>

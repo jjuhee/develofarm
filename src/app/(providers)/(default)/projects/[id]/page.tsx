@@ -28,13 +28,20 @@ const DetailPage = () => {
   const STARED_DATE = dayjs(project?.project_start_date).format("YYYY.MM.DD")
   const END_DATE = dayjs(project?.project_end_date).format("YYYY.MM.DD")
 
-  if (isLoading || !project) return <div>is Loading...</div>
+  /**
+   *@ param1 현재 로그인한 유저 정보를 담은 변수
+   *@ param2 글 작성자가 현재 로그인한 유저랑 같은지 판별하는 변수*/
+  const { user: currentUser } = useUserStore()
+  const isWriter = currentUser === project?.user_id
+
   const techStack = [
     { id: "1", tech: "React" },
     { id: "2", tech: "TypeScript" },
     { id: "3", tech: "JAVA" },
     { id: "4", tech: "Figma" },
   ]
+
+  if (isLoading || !project) return <div>is Loading...</div>
 
   return (
     <div className="flex flex-col w-full my-0 mx-auto">
@@ -71,7 +78,7 @@ const DetailPage = () => {
           </li>
           <li>{FORMATTED_DATE}</li>
           <li>조회수 190</li>
-          <WriterEditRemoveButtons project={project} />
+          <WriterEditRemoveButtons project={project} isWriter={isWriter} />
         </ul>
       </header>
       <main className="h-full">
@@ -121,7 +128,7 @@ const DetailPage = () => {
         <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 min-h-96">
           <div className="leading-7">{project.content}</div>
         </section>
-        <FooterMenus project={project} />
+        {project && <FooterMenus project={project} user={project.user!} />}
         <Spacer y={30} />
         <section className="border-2 border-blue-500">
           <p>이전게시물</p>

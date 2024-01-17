@@ -4,15 +4,23 @@ import React from "react"
 
 type Props = {
   project: Tables<"projects">
+  user: Tables<"users">
+  isWriter: boolean
 }
 
-const Comments = ({ project }: Props) => {
+const Comments = ({ project, user, isWriter }: Props) => {
   return (
     <>
       <section className="">
         <div className="border-2 border-yellow-600">
-          {/* <Image src={`${project}`}/> */}
-          {/* <span className="mr-2">{project.user?.user_nickName}</span> */}
+          <Image
+            width={48}
+            height={48}
+            src={`${user.avatar_url}`}
+            alt="작성자 이미지"
+            className="w-12 h-12 rounded-full object-cover"
+          />
+          <span className="mr-2">{user.user_nickname}</span>
           {/* <span className="text-sm">{TODAY.toLocaleString()}</span> */}
           <div>댓글내용</div>
           <span>
