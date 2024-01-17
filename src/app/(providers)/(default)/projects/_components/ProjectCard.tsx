@@ -1,29 +1,27 @@
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
-import { getProjectTech, getUser } from "../api"
 import formatDate from "@/utils/formatDate"
 import BookmarkButton from "@/components/BookmarkButton"
 import type { Tables } from "@/types/supabase"
-import { supabaseForClient } from "@/supabase/supabase.client"
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import parse from "html-react-parser"
 
 interface Props {
   project: Tables<"projects">
+  bookmarks: Tables<"bookmarks">[]
+  currentUser: string
+  techs: Tables<"techs">[]
+  setProjectId: Dispatch<SetStateAction<string>>
 }
 
-const ProjectCard = ({ project }: Props) => {
-  const [currentUser, setCurrentUser] = useState("")
-
-  useEffect(() => {
-    const getAuth = async () => {
-      const user = await supabaseForClient.auth.getUser()
-      setCurrentUser(user.data.user?.id as string)
-    }
-    getAuth()
-  }, [currentUser])
-
+const ProjectCard = ({
+  project,
+  bookmarks,
+  currentUser,
+  techs,
+  setProjectId,
+}: Props) => {
   const {
     id,
     content,
@@ -36,11 +34,17 @@ const ProjectCard = ({ project }: Props) => {
     recruit_status,
   } = project
 
-  const { data: techs } = useQuery({
-    queryKey: ["techs", id],
-    queryFn: () => getProjectTech(id),
-    enabled: !!id,
-  })
+  useEffect(() => {
+    setProjectId(id)
+  }, [id, setProjectId])
+
+  console.log(techs)
+
+  // const { data: techs } = useQuery({
+  //   queryKey: ["techs", id],
+  //   queryFn: () => getProjectTech(id),
+  //   enabled: !!id,
+  // })
 
   const parsedContent = parse(content) as string
 
@@ -91,7 +95,11 @@ const ProjectCard = ({ project }: Props) => {
         </div>
 
         <div className="absolute top-4 right-2">
-          <BookmarkButton projectId={id} currentUser={currentUser} />
+          <BookmarkButton
+            projectId={id}
+            currentUser={currentUser}
+            bookmarks={bookmarks}
+          />
         </div>
       </section>
     </div>

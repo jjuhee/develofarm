@@ -1,9 +1,8 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
-// import Button from "@/components/ui/Button"
 import React, { useState } from "react"
-import { getTechs } from "../../projects/api"
+import { getRegions, getTechs } from "../../projects/api"
 import SelectStackButton from "./SelectStackButton"
 import { Tables } from "@/types/supabase"
 
@@ -12,9 +11,7 @@ interface Props {
   setCategoryData: React.Dispatch<React.SetStateAction<TCategoryData>>
   isWritePage: boolean
 }
-{
-  /* TODO 1: child 모두에 같은 스타일링 하는 법 있음 !.... */
-}
+
 const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
   const {
     startDate,
@@ -31,6 +28,11 @@ const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
     queryFn: getTechs,
   })
 
+  const { data: regions } = useQuery({
+    queryKey: ["regions"],
+    queryFn: getRegions,
+  })
+
   return (
     <section className="flex flex-col gap-3 pb-[25px]">
       {!isWritePage && <h3 className="text-[26px] font-[700]">필터링 검색</h3>}
@@ -44,7 +46,7 @@ const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
                   setCategoryData({ ...categoryData, isOffline: true })
                 }
                 className={`category ${
-                  isOffline ? "border-red-600" : "border-slate-400"
+                  !!isOffline ? "border-red-600" : "border-slate-400"
                 }`}
               >
                 오프라인
@@ -54,7 +56,7 @@ const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
                   setCategoryData({ ...categoryData, isOffline: false })
                 }
                 className={` category ${
-                  !isOffline ? "border-red-600" : "border-slate-400"
+                  isOffline === false ? "border-red-600" : "border-slate-400"
                 }`}
               >
                 온라인
@@ -76,13 +78,12 @@ const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
                 }
               >
                 {/* TODO 2 : 옵션 스타일링... 왜안돼!!! -> li로 바꿔야하나, value가 1,2,3,4로 처리해도 될까 */}
-                <option value="1">지역을 선택하세요</option>
-                <option value="2">서울/경기/인천</option>
-                <option value="3">강원도</option>
-                <option value="4">경상도</option>
-                <option value="5">전라도</option>
-                <option value="6">충청도</option>
-                <option value="7">제주도</option>
+                <option value="0">지역을 선택하세요</option>
+                {regions?.map((region) => (
+                  <option key={region.id} value={region.id}>
+                    {region.region}
+                  </option>
+                ))}
               </select>
             </div>
           )}
