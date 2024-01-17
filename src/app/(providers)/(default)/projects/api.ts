@@ -98,7 +98,16 @@ export async function getProject(projectId: string) {
 export async function getUser() {
   const { data: userData } = await supabaseForClient.auth.getUser()
 
-  return userData || null
+  return userData
+}
+
+export async function removeProject(projectId: string) {
+  const { error: projectError } = await supabaseForClient
+    .from("projects")
+    .delete()
+    .match({ id: projectId })
+
+  if (projectError) console.log("error", projectError)
 }
 
 /** 모든 북마크 데이터 가져오기 */
