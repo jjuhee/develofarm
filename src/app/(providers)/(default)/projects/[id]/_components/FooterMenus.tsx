@@ -65,7 +65,7 @@ const FooterMenus = ({ project }: Props) => {
               <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
             </span>
             <span className="pr-8">
-              <IoIosPeople size={40} className="inline-block ml-8 mr-1" />{" "}
+              <IoIosPeople size={40} className="inline-block ml-8 mr-1" />
               모집정원 3/{project.number_of_people}
             </span>
           </>
