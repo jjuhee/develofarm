@@ -16,10 +16,15 @@ import Pagination from "@mui/material/Pagination"
 import { Database, Tables } from "@/types/supabase"
 import Category from "../write/_components/Category"
 import { supabaseForClient } from "@/supabase/supabase.client"
+import Modal from "@/components/Modal"
+import CustomModal from "@/components/CustomModal"
+import useCustomModalStore from "@/store/customModal"
 
 const PAGE_SIZE = 5
 
 const ProjectsPage = () => {
+  const { setViewCustomModal } = useCustomModalStore((state) => state)
+
   const [currentUser, setCurrentUser] = useState("")
 
   /** 현재 인증된 유저 데이터 가져오기 */

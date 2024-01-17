@@ -5,6 +5,7 @@ import React, { useState } from "react"
 import { getRegions, getTechs } from "../../projects/api"
 import SelectStackButton from "./SelectStackButton"
 import { Tables } from "@/types/supabase"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 interface Props {
   categoryData: TCategoryData
@@ -13,6 +14,8 @@ interface Props {
 }
 
 const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
+  const { openCustomModalHandler } = useCustomModal()
+
   const {
     startDate,
     endDate,
@@ -32,6 +35,10 @@ const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
     queryKey: ["regions"],
     queryFn: getRegions,
   })
+
+  const onClickSearchHandler = () => {
+    openCustomModalHandler("검색되었습니다.", "alert")
+  }
 
   return (
     <section className="flex flex-col gap-3 pb-[25px]">
@@ -152,7 +159,10 @@ const Category = ({ categoryData, setCategoryData, isWritePage }: Props) => {
             </div>
           </div>
         ) : (
-          <button className="mt-auto bg-black text-white text-[16px] py-[12px] px-[34px] rounded-full">
+          <button
+            onClick={onClickSearchHandler}
+            className="mt-auto bg-black text-white text-[16px] py-[12px] px-[34px] rounded-full"
+          >
             검색
           </button>
         )}

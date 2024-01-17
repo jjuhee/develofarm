@@ -7,6 +7,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { MdBookmarkBorder, MdOutlineBookmark } from "react-icons/md"
 
 import type { Tables } from "@/types/supabase"
+import { useCustomModal } from "@/hooks/useCustomModal"
+import { useRouter } from "next/navigation"
 
 interface Props {
   projectId: string
@@ -17,6 +19,10 @@ interface Props {
 const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
   const queryClient = useQueryClient()
 
+  const router = useRouter()
+
+  const { openCustomModalHandler } = useCustomModal()
+
   const { mutate: addMutate } = useMutation({
     mutationFn: setBookmarks,
     onSuccess: () => {
@@ -24,11 +30,22 @@ const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
     },
   })
 
+  const handler = () => {
+    router.push("/signin")
+  }
+
   const onClickHandler = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
 
     /** 로그인 되지 않았을 때 */
-    if (!currentUser) return
+    if (!currentUser) {
+      openCustomModalHandler(
+        `로그인이 필요합니다.
+        로그인 페이지로 이동하시겠습니까?`,
+        "confirm",
+        handler,
+      )
+    }
 
     /** 로그인 됐을 때 */
     if (isBookmarked) {

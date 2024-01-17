@@ -1,8 +1,14 @@
+"use client"
+
 import { PropsWithChildren } from "react"
 import Header from "@/app/(providers)/(default)/_components/Header"
 import Footer from "@/app/(providers)/(default)/_components/Footer"
+import useCustomModalStore from "@/store/customModal"
+import CustomModal from "@/components/CustomModal"
 
 function ProvidersLayout({ children }: PropsWithChildren<{}>) {
+  const { viewCustomModal } = useCustomModalStore((state) => state)
+
   return (
     <>
       <Header />
@@ -12,6 +18,7 @@ function ProvidersLayout({ children }: PropsWithChildren<{}>) {
         </div>
       </div>
       <Footer />
+      {viewCustomModal && <CustomModal />}
     </>
   )
 }
