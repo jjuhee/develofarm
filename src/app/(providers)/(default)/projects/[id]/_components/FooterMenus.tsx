@@ -61,7 +61,7 @@ const FooterMenus = ({ project, user }: Props) => {
           </>
         ) : (
           <>
-            <span className="pr-14">
+            <span className="pr-12">
               <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
             </span>
             <span className="pr-8">
@@ -81,7 +81,7 @@ const FooterMenus = ({ project, user }: Props) => {
         </span>
         <FooterAuthButtons project={project} isWriter={isWriter} />
       </section>
-      <Spacer y={35} />
+      <Spacer y={25} />
       {/* 탭 메뉴에 따라 나오는 컴포넌트 */}
       <section>
         {isSelected === "comments" && (

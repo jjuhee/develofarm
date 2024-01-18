@@ -150,6 +150,7 @@ export interface Database {
           project_id: string
           updated_at: string | null
           user_id: string
+          user_nickname: string | null
         }
         Insert: {
           content: string
@@ -159,6 +160,7 @@ export interface Database {
           project_id: string
           updated_at?: string | null
           user_id: string
+          user_nickname?: string | null
         }
         Update: {
           content?: string
@@ -168,6 +170,7 @@ export interface Database {
           project_id?: string
           updated_at?: string | null
           user_id?: string
+          user_nickname?: string | null
         }
         Relationships: [
           {

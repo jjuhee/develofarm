@@ -16,7 +16,7 @@ const FooterAuthButtons = ({ project, isWriter }: Props) => {
         </button>
       ) : (
         <button className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold">
-          참여 신청
+          신청하기
         </button>
       )}
     </>
