@@ -1,9 +1,8 @@
 import { Tables } from "@/types/supabase"
-import formatDate from "@/utils/formatDate"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import Image from "next/image"
-import React, { SetStateAction, useEffect, useState } from "react"
+import React from "react"
 import { getComments } from "../../api"
 import Spacer from "@/components/ui/Spacer"
 import CommentForm from "./CommentForm"
@@ -11,25 +10,15 @@ import ReCommentForm from "./ReCommentForm"
 
 type Props = {
   project: Tables<"projects">
-  isWriter: boolean
 }
 
-type Comments = {
-  formattedData: Tables<"comments">
-}
-
-const Comments = ({ project, isWriter }: Props) => {
-  const [commentData, setCommentData] = useState<Comments[]>([])
+const Comments = ({ project }: Props) => {
+  /**
+   *@ query 해당 게시물 id를 구분해 댓글 목록 조회 */
   const { data: comments, isLoading: commentsIsLoading } = useQuery({
-    queryKey: ["comments"],
+    queryKey: ["comments", { projectId: project.id }],
     queryFn: () => getComments(project.id),
   })
-
-  // const commentWriter = comments?.filter(
-  //   (comment) => comment.user_id === usersId,
-  // )
-
-  console.log(comments, "댓글목록")
 
   if (commentsIsLoading || !comments) return <div>is Loading...</div>
 
@@ -55,13 +44,13 @@ const Comments = ({ project, isWriter }: Props) => {
               <div className="flex flex-col pl-14 min-h-28 border-b-2">
                 <div className="h-auto font-semibold">{comment.content}</div>
                 <Spacer y={10} />
-                {comment.user && <ReCommentForm user={comment.user} />}
+                {comment.user && <ReCommentForm />}
               </div>
-              <Spacer y={30} />
-              <CommentForm comment={comment} user={comment.user} />
             </div>
           )
         })}
+        <Spacer y={30} />
+        <CommentForm projectId={project.id} />
       </section>
     </>
   )

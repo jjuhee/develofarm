@@ -23,7 +23,7 @@ const FooterMenus = ({ project }: Props) => {
   /**
    *@ param1 현재 로그인한 유저 정보를 담은 변수
    *@ param2 글 작성자가 현재 로그인한 유저랑 같은지 판별하는 변수*/
-  const { user: currentUser } = useUserStore()
+  const { userId: currentUser } = useUserStore()
   const isWriter = currentUser === project.user_id
 
   /**
@@ -76,9 +76,7 @@ const FooterMenus = ({ project }: Props) => {
       <Spacer y={25} />
       {/* 탭 메뉴에 따라 나오는 컴포넌트 */}
       <section>
-        {isSelected === "comments" && (
-          <Comments project={project} isWriter={isWriter} />
-        )}
+        {isSelected === "comments" && <Comments project={project} />}
         {isSelected === "applicants" && <Applicants />}
       </section>
     </>

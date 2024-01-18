@@ -3,6 +3,8 @@ import React, { useState } from "react"
 const ReCommentForm = () => {
   const [showForm, setShowForm] = useState<boolean>(false)
 
+  /**
+   *@ funtion 대댓글 작성 폼 토글 기능 */
   const toggleFormHandler = () => {
     setShowForm(!showForm)
   }

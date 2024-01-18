@@ -1,5 +1,5 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
-import { Database, Tables } from "@/types/supabase"
+import { Database, Tables, TablesInsert } from "@/types/supabase"
 import { equal } from "assert"
 
 /** 전체 프로젝트 리스트 가져오기 */
@@ -240,10 +240,11 @@ export async function getComments(projectId: string) {
 }
 
 /** 프로젝트 게시물에 댓글 작성 데이터에 추가 */
-export async function setComment(newComment) {
-  const { error } = await supabaseForClient
+export async function setComment(comment: TablesInsert<"comments">) {
+  const { data, error } = await supabaseForClient
     .from("comments")
-    .insert([{ ...newComment }])
+    .insert(comment)
 
+  console.log(data)
   if (error) console.log("error", error)
 }

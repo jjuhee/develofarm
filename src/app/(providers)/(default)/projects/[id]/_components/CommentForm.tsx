@@ -1,39 +1,40 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { setComment } from "../../api"
-import { Tables, TablesInsert } from "@/types/supabase"
+import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 
-const CommentForm = () => {
+type Props = {
+  projectId: string
+}
+
+const CommentForm = ({ projectId }: Props) => {
   const [content, setContent] = useState<string>("")
   const queryClient = useQueryClient()
-  const TODAY = `${Date.now()}`
-  const { user } = useUserStore()
+  const { userId: user } = useUserStore()
 
   /**
-   *@ query 게시물 삭제 후 확인창 띄워주고 목록으로 이동
-   TODO: 목록으로 돌아갈때 캐시가 남아 지워주는 작업 필요 */
+   *@ mutation 댓글 등록 후 해당 게시물Id로 댓글 최신 목록 불러오기 */
   const AddCommentMutate = useMutation({
     mutationFn: setComment,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["comments"],
+        queryKey: ["comments", { projectId }],
       })
-      alert("댓글이 추가되었습니다")
     },
     onError: (error) => {
       console.log(error)
     },
   })
 
-  useEffect(() => {}, [])
+  /**
+   *@ function 버튼 누르면 입력한 폼 인자로 넣어서 댓글 추가하는 함수 실행 */
+  const onSubmitHandler: React.FormEventHandler = (e) => {
+    e.preventDefault()
 
-  const onSubmitHandler = () => {
     const newComment: TablesInsert<"comments"> = {
-      updated_at: TODAY,
-      created_at: TODAY,
-      project_id: comment.project_id,
-      user_id: user.id,
+      project_id: projectId,
+      user_id: user,
       content,
     }
 
