@@ -367,8 +367,11 @@ export interface Database {
         Update: {
           id?: string
           project_id?: string
-          tech_id?: string
+          tech_id?: string | null
         }
+<<<<<<< HEAD
+        Relationships: []
+=======
         Relationships: [
           {
             foreignKeyName: "project_tech_project_id_fkey"
@@ -385,6 +388,7 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
+>>>>>>> 834255aa4434aa66412d720c6d9bc7e587084d90
       }
       projects: {
         Row: {
