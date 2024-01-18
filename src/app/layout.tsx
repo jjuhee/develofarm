@@ -19,7 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-          <div className="flex flex-col">{children}</div>
+          <div className="flex flex-col">
+            {children}
+            <div id="portal"></div>
+          </div>
         </Provider>
       </body>
     </html>

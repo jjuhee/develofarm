@@ -6,8 +6,8 @@ interface TMembersState {
   setSelectedMember: (user: Tables<"users">) => void
   viewMemberModal: boolean
   setViewMemberModal: (value: boolean) => void
-  memberPosition: Tables<"positions">
-  setMemberPosition: (position: Tables<"positions">) => void
+  memberPosition: Tables<"positions"> | null
+  setMemberPosition: (position: Tables<"positions"> | null) => void
 }
 
 const useMembersStore = create<TMembersState>()((set) => ({
@@ -15,8 +15,8 @@ const useMembersStore = create<TMembersState>()((set) => ({
   setSelectedMember: (user: Tables<"users">) => set({ selectedMember: user }),
   viewMemberModal: false,
   setViewMemberModal: (value: boolean) => set({ viewMemberModal: value }),
-  memberPosition: {} as Tables<"positions">,
-  setMemberPosition: (position: Tables<"positions">) =>
+  memberPosition: {} as Tables<"positions"> | null,
+  setMemberPosition: (position: Tables<"positions"> | null) =>
     set({ memberPosition: position }),
 }))
 
