@@ -6,6 +6,7 @@ import Image from "next/image"
 import React, { SetStateAction, useEffect, useState } from "react"
 import { getComments } from "../../api"
 import Spacer from "@/components/ui/Spacer"
+import CommentForm from "./CommentForm"
 
 type Props = {
   project: Tables<"projects">
@@ -60,12 +61,8 @@ const Comments = ({ project, isWriter }: Props) => {
           )
         })}
       </section>
-      <section>
-        <textarea placeholder="댓글 내용을 입력하세요" />
-        <button className="hover:bg-violet-600 hover:text-white">
-          댓글 등록하기
-        </button>
-      </section>
+      <Spacer y={30} />
+      <CommentForm />
     </>
   )
 }

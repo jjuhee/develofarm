@@ -59,7 +59,7 @@ const FooterMenus = ({ project }: Props) => {
           </>
         ) : (
           <>
-            <span className="pr-12">
+            <span className="pr-10">
               <FaRegMessage size={30} className="inline-block ml-2 mr-2" /> 24
             </span>
             <span className="pr-8">
