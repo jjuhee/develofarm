@@ -27,7 +27,7 @@ const Comments = ({ project }: Props) => {
       <section>
         {comments.map((comment) => {
           return (
-            <div key={comment.id} className="">
+            <div key={comment.id} className="mb-3">
               <Image
                 width={48}
                 height={48}
