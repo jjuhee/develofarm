@@ -1,4 +1,3 @@
-import useCategoryStore from "@/store/category"
 import { supabaseForClient } from "@/supabase/supabase.client"
 
 export const getUsers = async ({
@@ -10,7 +9,7 @@ export const getUsers = async ({
 }) => {
   const query = supabaseForClient
     .from("users")
-    .select("*, position: positions(*)")
+    .select("*, position: positions(*), user_tech(*, techs(*))")
     .eq("user_status", "지원 중")
     .range(pageParam!, pageParam! + 2)
 
@@ -54,19 +53,4 @@ export const getProjectByUserId = async (userId: string) => {
   if (error) return console.log(error.message)
 
   return data
-}
-
-export const getTechsByUserId = async (userId: string) => {
-  const { data, error } = await supabaseForClient
-    .from("user_tech")
-    .select("*, techs:techs(*)")
-    .eq("user_id", userId)
-
-  const techs = data?.map((tech) => {
-    return tech.techs?.tech_name
-  })
-
-  if (error) return console.log(error.message)
-
-  return techs
 }
