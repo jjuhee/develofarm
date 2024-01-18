@@ -4,16 +4,13 @@ import { equal } from "assert"
 
 /** 전체 프로젝트 리스트 가져오기 */
 export async function getProjects({
-  orderBy = "created_at",
-  order = 1,
   limit = 0,
   offset = 0,
   recruitStatus = false,
   isOffline = null,
   startDate = "",
   endDate = "",
-  numberOfPeople,
-  regionId,
+  regionId = "",
   techs,
 }: TProjectsOptions) {
   const query = supabaseForClient.from("projects").select("*")
@@ -23,13 +20,6 @@ export async function getProjects({
 
   /** 모집중인 프로젝트 */
   recruitStatus && query.eq("recruit_status", false)
-
-  /** 정렬 */
-  order === 1
-    ? query.order("created_at", { ascending: false })
-    : order === 2
-      ? query.order("created_at", { ascending: true })
-      : query.order("recruit_status", { ascending: true })
 
   /** 프로젝트 방식(온오프라인) */
   if (isOffline !== null) {
@@ -50,33 +40,49 @@ export async function getProjects({
   /** 활동 지역 */
   regionId && regionId !== "0" && query.eq("region_id", regionId)
 
-  // TODO: 스택 필터링
+  /** 스택 필터링 */
   if ((techs?.length as number) > 0) {
-    const techIds = techs?.map((tech) => tech.id)
+    const techIds = techs?.map((tech) => tech.tech_id)
     const { data: projectIds, error: projectError } = await supabaseForClient
       .from("project_tech")
       .select("project_id")
       .in("tech_id", techIds || [])
 
-    // console.log("projectIds", projectIds)
-
     if (projectError) {
       console.error("Error fetching projectIds:", projectError.message)
-      return
+      return []
     }
 
-    if (projectIds && projectIds.length > 0) {
-      projectIds.map((projectId) => query.eq("id", projectId.project_id))
+    if (projectIds.length >= 0) {
+      const filteredProjectIds = projectIds.map(
+        (projectId) => projectId.project_id,
+      )
+
+      // 프로젝트 아이디 배열로 필터링
+      query.in("id", filteredProjectIds)
     }
   }
 
+  /** 프로젝트별 북마크 수 가져오기 */
+  const bookmarksCountByProject = await getBookmarksCountByProject()
+
   const { data, error } = await query
 
-  // console.log(data)
+  /** 북마크 수를 프로젝트에 추가 
+      북마크 수 정보가 있다면 업데이트, 없다면 기존 값 유지 */
+  const projectsWithBookmarkCount = data?.map((project) => {
+    const bookmarkCountInfo = bookmarksCountByProject.find(
+      (item) => item.projectId === project.id,
+    )
+    return {
+      ...project,
+      bookmark_count: bookmarkCountInfo
+        ? bookmarkCountInfo.count
+        : project.bookmark_count,
+    }
+  })
 
-  if (error) console.log("error", error)
-
-  return data
+  return projectsWithBookmarkCount
 }
 
 /** projectId 값과 일치하는 프로젝트 가져오기 */
@@ -94,13 +100,7 @@ export async function getProject(projectId: string) {
   return projectData || null
 }
 
-/** 현재 유저 데이터 가져오기 */
-export async function getUser() {
-  const { data: userData } = await supabaseForClient.auth.getUser()
-
-  return userData
-}
-
+/** projectId 값과 일치하는 해당 프로젝트 삭제 */
 export async function removeProject(projectId: string) {
   const { error: projectError } = await supabaseForClient
     .from("projects")
@@ -163,6 +163,44 @@ export async function removeBookmarks({
     .eq("project_id", projectId)
 
   if (error) console.log("error", error)
+}
+
+/** 프로젝트 북마크 수  가져오기 */
+export async function getBookmarksCountByProject() {
+  const { data: bookmarks, error } = await supabaseForClient
+    .from("bookmarks")
+    .select("*")
+
+  if (error) {
+    console.error("Error fetching bookmarks:", error)
+    return []
+  }
+
+  // 그룹화된 결과를 담을 객체
+  const bookmarksCountByProject = {}
+
+  // 각 북마크를 반복하면서 projectId를 기준으로 그룹화
+  bookmarks.forEach((bookmark) => {
+    const projectId = bookmark.project_id
+
+    if (bookmarksCountByProject[projectId] === undefined) {
+      // 새로운 프로젝트인 경우 초기화
+      bookmarksCountByProject[projectId] = 1
+    } else {
+      // 기존에 등장한 프로젝트인 경우 카운트 증가
+      bookmarksCountByProject[projectId]++
+    }
+  })
+
+  // 결과를 배열로 변환하여 반환
+  const result = Object.entries(bookmarksCountByProject).map(
+    ([projectId, count]) => ({
+      projectId,
+      count,
+    }),
+  )
+
+  return result
 }
 
 /** projectId와 일치하는 기술 스택 가져오기 */

@@ -29,6 +29,7 @@ const EditorMenu = ({ editor }: Props) => {
       3.2.TODO: 가운데정렬, 글자 색상, 사진 입력 등등 추가.
       */}
       <button
+        type="button"
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
         className={
           editor.isActive("heading", { level: 1 })
@@ -39,6 +40,7 @@ const EditorMenu = ({ editor }: Props) => {
         h1
       </button>
       <button
+        type="button"
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
         className={
           editor.isActive("heading", { level: 2 })
@@ -49,6 +51,7 @@ const EditorMenu = ({ editor }: Props) => {
         h2
       </button>
       <button
+        type="button"
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
         className={
           editor.isActive("heading", { level: 3 })
@@ -59,6 +62,7 @@ const EditorMenu = ({ editor }: Props) => {
         h3
       </button>
       <button
+        type="button"
         onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
         className={
           editor.isActive("heading", { level: 4 })
@@ -69,6 +73,7 @@ const EditorMenu = ({ editor }: Props) => {
         h4
       </button>
       <button
+        type="button"
         onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
         className={
           editor.isActive("heading", { level: 5 })
@@ -79,6 +84,7 @@ const EditorMenu = ({ editor }: Props) => {
         h5
       </button>
       <button
+        type="button"
         onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
         className={
           editor.isActive("heading", { level: 6 })
@@ -89,6 +95,7 @@ const EditorMenu = ({ editor }: Props) => {
         h6
       </button>
       <button
+        type="button"
         onClick={() => editor.chain().focus().setParagraph().run()}
         className={
           editor.isActive("paragraph")

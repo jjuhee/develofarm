@@ -1,12 +1,18 @@
+import { Tables } from "@/types/supabase"
+import Image from "next/image"
 import React from "react"
 
-const Comments = () => {
+type Props = {
+  project: Tables<"projects">
+}
+
+const Comments = ({ project }: Props) => {
   return (
     <>
       <section className="">
         <div className="border-2 border-yellow-600">
-          {/* <Image /> */}
-          <span className="mr-2">작성자</span>
+          {/* <Image src={`${project}`}/> */}
+          {/* <span className="mr-2">{project.user?.user_nickName}</span> */}
           {/* <span className="text-sm">{TODAY.toLocaleString()}</span> */}
           <div>댓글내용</div>
           <span>

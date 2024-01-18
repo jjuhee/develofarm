@@ -9,6 +9,8 @@ import { getProject } from "../api"
 import dayjs from "dayjs"
 import WriterEditRemoveButtons from "./_components/WriterEditRemoveButtons"
 import FooterMenus from "./_components/FooterMenus"
+import { useStore } from "zustand"
+import useUserStore from "@/store/user"
 
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
