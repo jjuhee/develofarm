@@ -1,7 +1,7 @@
 "use client"
 
 import EmptyState from "@/components/EmptyState"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useMemo } from "react"
 import ProjectCard from "./_components/ProjectCard"
 import Spacer from "@/components/ui/Spacer"
 import { useQuery } from "@tanstack/react-query"
@@ -15,6 +15,18 @@ const PAGE_SIZE = 5
 
 const ProjectsPage = () => {
   const [currentUser, setCurrentUser] = useState("")
+  const [page, setPage] = useState<number>(1)
+  const [recruitStatus, setRecruitStatus] = useState(false)
+  const [order, setOrder] = useState(1)
+  const [projectId, setProjectId] = useState("")
+
+  const [option, setOption] = useState<TProjectsOptions>({
+    isOffline: null,
+    startDate: "",
+    endDate: "",
+    regionId: "",
+    techs: [],
+  })
 
   /** 현재 인증된 유저 데이터 가져오기 */
   useEffect(() => {
@@ -34,25 +46,8 @@ const ProjectsPage = () => {
     positions: [],
     techs: [],
   }
-
   const [categoryData, setCategoryData] =
     useState<TCategoryData>(initialCategoryData)
-
-  const [page, setPage] = useState<number>(1)
-
-  const [recruitStatus, setRecruitStatus] = useState(false)
-
-  const [order, setOrder] = useState(1)
-
-  const [projectId, setProjectId] = useState("")
-
-  const [option, setOption] = useState<TProjectsOptions>({
-    isOffline: null,
-    startDate: "",
-    endDate: "",
-    regionId: "",
-    techs: [],
-  })
 
   /** 프로젝트 데이터를 가져오기 위한 useQuery 옵션 */
   const queryOption = {
@@ -68,34 +63,13 @@ const ProjectsPage = () => {
 
   /** 전체 프로젝트 가져오기 */
   const { data: projects } = useQuery({
-    queryKey: ["projects", recruitStatus, { order: order }, { option: option }],
+    queryKey: ["projects", recruitStatus, { option: option }],
     queryFn: () =>
       getProjects({
         ...option,
-        order: order,
         recruitStatus: recruitStatus,
       }),
-    enabled: !!page && !!order,
-  })
-
-  /** 페이지 단위 프로젝트 가져오기 */
-  const { data: paginatedProjects } = useQuery({
-    queryKey: [
-      "projects",
-      page,
-      recruitStatus,
-      { order: order },
-      { option: option },
-    ],
-    queryFn: () =>
-      getProjects({
-        ...option,
-        limit: PAGE_SIZE + (page - 1) * PAGE_SIZE - 1,
-        offset: (page - 1) * PAGE_SIZE,
-        order: order,
-        recruitStatus: recruitStatus,
-      }),
-    enabled: !!projects,
+    enabled: !!page,
   })
 
   /** 현재 유저 북마크 데이터 가져오기 */
@@ -128,6 +102,35 @@ const ProjectsPage = () => {
   const onChageOrder = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setOrder(Number(e.target.value))
   }
+
+  /** */
+  const sortedProjects = useMemo(() => {
+    const draft = projects ? [...projects] : []
+
+    draft.sort((a, b) => {
+      if (order === 1) {
+        return Date.parse(b.created_at!) - Date.parse(a.created_at!)
+      } else if (order === 2) {
+        return Date.parse(a.created_at!) - Date.parse(b.created_at!)
+      } else {
+        return (b.bookmark_count as number) - (a.bookmark_count as number)
+      }
+    })
+
+    return draft
+  }, [projects, order])
+
+  const paginatedSortedProjects = useMemo(() => {
+    const result = []
+    const chunkSize = PAGE_SIZE
+
+    for (let i = 0; i < sortedProjects.length; i += chunkSize) {
+      const chunk = sortedProjects.slice(i, i + chunkSize)
+      result.push(chunk)
+    }
+
+    return result
+  }, [sortedProjects])
 
   return (
     <div>
@@ -164,18 +167,20 @@ const ProjectsPage = () => {
 
         {(projects?.length as number) > 0 ? (
           <ul className="flex flex-col gap-8">
-            {paginatedProjects?.map((item: Tables<"projects">) => {
-              return (
-                <ProjectCard
-                  key={item?.id}
-                  project={item}
-                  bookmarks={bookmarks}
-                  currentUser={currentUser}
-                  setProjectId={setProjectId}
-                  techs={techs}
-                />
-              )
-            })}
+            {paginatedSortedProjects[page - 1]?.map(
+              (item: Tables<"projects">) => {
+                return (
+                  <ProjectCard
+                    key={item?.id}
+                    project={item}
+                    bookmarks={bookmarks}
+                    currentUser={currentUser}
+                    setProjectId={setProjectId}
+                    techs={techs}
+                  />
+                )
+              },
+            )}
           </ul>
         ) : (
           <EmptyState />
@@ -195,3 +200,36 @@ const ProjectsPage = () => {
 }
 
 export default ProjectsPage
+
+// /** 페이지 단위 프로젝트 가져오기 */
+// const { data: paginatedProjects } = useQuery({
+//   queryKey: [
+//     "projects",
+//     page,
+//     recruitStatus,
+//     { order: order },
+//     { option: option },
+//   ],
+//   queryFn: () =>
+//     getProjects({
+//       ...option,
+//       limit: PAGE_SIZE + (page - 1) * PAGE_SIZE - 1,
+//       offset: (page - 1) * PAGE_SIZE,
+//       order: order,
+//       recruitStatus: recruitStatus,
+//     }),
+//   enabled: !!projects,
+// })
+
+// /** 정렬 */
+// order === 1
+//   ? (projectsWithBookmarkCount || []).sort(
+//       (a, b) => new Date(b.created_at) - new Date(a.created_at),
+//     )
+//   : order === 2
+//     ? (projectsWithBookmarkCount || []).sort(
+//         (a, b) => new Date(a.created_at) - new Date(b.created_at),
+//       )
+//     : (projectsWithBookmarkCount || []).sort(
+//         (a, b) => b.bookmark_count - a.bookmark_count,
+//       ) // 유효한 날짜 형식인지 확인하고 반환하는 함수
