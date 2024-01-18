@@ -5,14 +5,9 @@ import React, { useEffect, useState } from "react"
 import ProjectCard from "./_components/ProjectCard"
 import Spacer from "@/components/ui/Spacer"
 import { useQuery } from "@tanstack/react-query"
-import {
-  getBookmarks,
-  getBookmarksByUserId,
-  getProjectTech,
-  getProjects,
-} from "./api"
+import { getBookmarksByUserId, getProjectTech, getProjects } from "./api"
 import Pagination from "@mui/material/Pagination"
-import { Database, Tables } from "@/types/supabase"
+import { Tables } from "@/types/supabase"
 import Category from "../write/_components/Category"
 import { supabaseForClient } from "@/supabase/supabase.client"
 
@@ -51,6 +46,14 @@ const ProjectsPage = () => {
 
   const [projectId, setProjectId] = useState("")
 
+  const [option, setOption] = useState<TProjectsOptions>({
+    isOffline: null,
+    startDate: "",
+    endDate: "",
+    regionId: "",
+    techs: [],
+  })
+
   /** 프로젝트 데이터를 가져오기 위한 useQuery 옵션 */
   const queryOption = {
     order: order,
@@ -65,13 +68,13 @@ const ProjectsPage = () => {
 
   /** 전체 프로젝트 가져오기 */
   const { data: projects } = useQuery({
-    queryKey: [
-      "projects",
-      recruitStatus,
-      { order: order },
-      { categoryData: categoryData },
-    ],
-    queryFn: () => getProjects(queryOption),
+    queryKey: ["projects", recruitStatus, { order: order }, { option: option }],
+    queryFn: () =>
+      getProjects({
+        ...option,
+        order: order,
+        recruitStatus: recruitStatus,
+      }),
     enabled: !!page && !!order,
   })
 
@@ -82,23 +85,20 @@ const ProjectsPage = () => {
       page,
       recruitStatus,
       { order: order },
-      { categoryData: categoryData },
+      { option: option },
     ],
     queryFn: () =>
       getProjects({
-        ...queryOption,
+        ...option,
         limit: PAGE_SIZE + (page - 1) * PAGE_SIZE - 1,
         offset: (page - 1) * PAGE_SIZE,
+        order: order,
+        recruitStatus: recruitStatus,
       }),
     enabled: !!projects,
   })
 
-  /** 북마크 데이터 불러오기 */
-  const { data: allBookmarks } = useQuery<Tables<"bookmarks">[]>({
-    queryKey: ["bookmarks"],
-    queryFn: getBookmarks,
-  })
-
+  /** 현재 유저 북마크 데이터 가져오기 */
   const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
     queryKey: ["bookmarks", currentUser],
     queryFn: () => getBookmarksByUserId(currentUser),
@@ -116,7 +116,7 @@ const ProjectsPage = () => {
     setPage(page)
   }
 
-  /** 모집 중 체크박스 */
+  /** 모집 중 체크박스 핸들러 */
   const onChangeRecruitHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setRecruitStatus(true)
@@ -138,6 +138,7 @@ const ProjectsPage = () => {
           categoryData={categoryData}
           isWritePage={false}
           setCategoryData={setCategoryData}
+          setOption={setOption}
         />
 
         <Spacer y={30} />

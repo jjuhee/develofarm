@@ -3,11 +3,16 @@ import React from "react"
 interface Props {
   type?: string
   text: string
+  color?: string
+  handler?: () => void
 }
 
-const Button = ({ type, text }: Props) => {
+const Button = ({ type, text, color, handler }: Props) => {
   return (
-    <button className="absolute bottom-5 right-5 bg-black text-white text-[16px] py-[12px] px-[34px] rounded-full">
+    <button
+      className="bg-black text-white text-[16px] py-[12px] px-[34px] rounded-full"
+      onClick={handler}
+    >
       {text}
     </button>
   )
