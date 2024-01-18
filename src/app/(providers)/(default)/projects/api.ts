@@ -1,6 +1,5 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
-import { Database, Tables } from "@/types/supabase"
-import { equal } from "assert"
+import { Tables } from "@/types/supabase"
 
 /** 전체 프로젝트 리스트 가져오기 */
 export async function getProjects({
@@ -13,7 +12,9 @@ export async function getProjects({
   regionId = "",
   techs,
 }: TProjectsOptions) {
-  const query = supabaseForClient.from("projects").select("*")
+  const query = supabaseForClient
+    .from("projects")
+    .select("*, project_tech(*, techs(*))")
 
   /** 페이지 네이션 */
   limit !== 0 && query.range(offset, limit)
@@ -83,21 +84,6 @@ export async function getProjects({
   })
 
   return projectsWithBookmarkCount
-}
-
-/** projectId 값과 일치하는 프로젝트 가져오기 */
-export async function getProject(projectId: string) {
-  const { data: projectData, error: projectError } = await supabaseForClient
-    .from("projects")
-    .select(
-      "*, user:users(id, user_nickname, avatar_url), region:project_regions(*)",
-    )
-    .eq("id", projectId)
-    .single()
-
-  if (projectError) console.log("error", projectError)
-
-  return projectData || null
 }
 
 /** projectId 값과 일치하는 해당 프로젝트 삭제 */
@@ -200,6 +186,8 @@ export async function getBookmarksCountByProject() {
     }),
   )
 
+  console.log("result", result)
+
   return result
 }
 
@@ -207,7 +195,7 @@ export async function getBookmarksCountByProject() {
 export async function getProjectTech(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("project_tech")
-    .select("*, techs:techs(*)")
+    .select("*, techs(*)")
     .eq("project_id", projectId)
 
   const techs = data?.map((tech) => tech.techs?.tech_name)
@@ -218,7 +206,7 @@ export async function getProjectTech(projectId: string) {
 }
 
 /** 포지션에 대한 기술 스택 가져오기 */
-export async function getTechs() {
+export async function getTechsByPositions() {
   try {
     // 1. 모든 포지션을 가져온다
     const { data: positions, error: positionError } = await supabaseForClient
