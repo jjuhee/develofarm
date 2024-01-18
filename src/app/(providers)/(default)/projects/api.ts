@@ -1,5 +1,5 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
-import { Tables } from "@/types/supabase"
+import { Tables, TablesInsert } from "@/types/supabase"
 
 /** 전체 프로젝트 리스트 가져오기 */
 export async function getProjects({
@@ -257,4 +257,26 @@ export async function getRegions() {
   if (error) console.log("error", error)
 
   return data
+}
+
+/** projectId와 일치하는 댓글 목록 가져오기 */
+export async function getComments(projectId: string) {
+  const { data, error } = await supabaseForClient
+    .from("comments")
+    .select("*, user:users(*)")
+    .eq("project_id", projectId)
+
+  if (error) console.log("error", error)
+
+  return data
+}
+
+/** 프로젝트 게시물에 댓글 작성 데이터에 추가 */
+export async function setComment(comment: TablesInsert<"comments">) {
+  const { data, error } = await supabaseForClient
+    .from("comments")
+    .insert(comment)
+
+  console.log(data)
+  if (error) console.log("error", error)
 }

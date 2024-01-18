@@ -146,8 +146,8 @@ export interface Database {
           content: string
           created_at: string
           id: string
-          project_apply: boolean | null
           project_id: string
+          re_comment_id: string | null
           updated_at: string | null
           user_id: string
         }
@@ -155,8 +155,8 @@ export interface Database {
           content: string
           created_at?: string
           id?: string
-          project_apply?: boolean | null
           project_id: string
+          re_comment_id?: string | null
           updated_at?: string | null
           user_id: string
         }
@@ -164,8 +164,8 @@ export interface Database {
           content?: string
           created_at?: string
           id?: string
-          project_apply?: boolean | null
           project_id?: string
+          re_comment_id?: string | null
           updated_at?: string | null
           user_id?: string
         }

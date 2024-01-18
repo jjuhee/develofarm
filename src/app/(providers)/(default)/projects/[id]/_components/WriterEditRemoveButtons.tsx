@@ -7,23 +7,17 @@ import { useRouter } from "next/navigation"
 
 type Props = {
   project: Tables<"projects">
+  isWriter: boolean
 }
 
-const WriterEditRemoveButtons = ({ project }: Props) => {
-  /**
-   *@ param1 현재 로그인한 유저 정보를 담은 변수
-   *@ param2 글 작성자가 현재 로그인한 유저랑 같은지 판별하는 변수*/
-  const currentUser = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
-    ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
-    : null
-  const isWriter = currentUser?.user?.id === project.user_id
+const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
   const queryClient = useQueryClient()
   const router = useRouter()
 
   /**
-   *@ query 게시물 삭제 후 확인창 띄워주고 목록으로 이동
+   *@ mutaion 게시물 삭제 후 확인창 띄워주고 목록으로 이동
    TODO: 목록으로 돌아갈때 캐시가 남아 지워주는 작업 필요 */
-  const deleteProjectMutate = useMutation({
+  const removeProjectMutate = useMutation({
     mutationFn: removeProject,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -42,7 +36,7 @@ const WriterEditRemoveButtons = ({ project }: Props) => {
   const isDeleteClickHandler = (id: string) => {
     const isDelCheck = window.confirm("정말로 삭제하시겠습니까?")
     if (isDelCheck) {
-      deleteProjectMutate.mutate(id)
+      removeProjectMutate.mutate(id)
     }
   }
 
