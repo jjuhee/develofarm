@@ -5,6 +5,7 @@ import Header from "@/app/(providers)/(default)/_components/Header"
 import Footer from "@/app/(providers)/(default)/_components/Footer"
 import useCustomModalStore from "@/store/customModal"
 import CustomModal from "@/components/CustomModal"
+import FloatingButton from "@/components/ui/FloatingButton"
 
 function ProvidersLayout({ children }: PropsWithChildren<{}>) {
   const { viewCustomModal } = useCustomModalStore((state) => state)
@@ -18,6 +19,7 @@ function ProvidersLayout({ children }: PropsWithChildren<{}>) {
         </div>
       </div>
       <Footer />
+      <FloatingButton mode={"default"} />
       {viewCustomModal && <CustomModal />}
     </>
   )

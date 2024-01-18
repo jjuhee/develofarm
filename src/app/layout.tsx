@@ -2,8 +2,6 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import Provider from "./provider"
-import useCustomModalStore from "@/store/customModal"
-import CustomModal from "@/components/CustomModal"
 
 const inter = Inter({ subsets: ["latin"] })
 
