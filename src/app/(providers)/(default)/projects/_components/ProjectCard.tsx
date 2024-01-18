@@ -1,28 +1,23 @@
-import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
 import formatDate from "@/utils/formatDate"
 import BookmarkButton from "@/components/BookmarkButton"
 import type { Tables } from "@/types/supabase"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import parse from "html-react-parser"
-import { getProjectTech } from "../api"
+import { useCustomModal } from "@/hooks/useCustomModal"
+import { useRouter } from "next/navigation"
 
 interface Props {
   project: Tables<"projects">
   bookmarks: Tables<"bookmarks">[]
   currentUser: string
-  techs: Tables<"techs">[]
-  setProjectId: Dispatch<SetStateAction<string>>
 }
 
-const ProjectCard = ({
-  project,
-  bookmarks,
-  currentUser,
-  techs,
-  setProjectId,
-}: Props) => {
+const ProjectCard = ({ project, bookmarks, currentUser, techs }: Props) => {
+  const { openCustomModalHandler } = useCustomModal()
+
+  const router = useRouter()
+
   const {
     id,
     content,
@@ -33,22 +28,30 @@ const ProjectCard = ({
     title,
     user_id,
     recruit_status,
+    project_tech,
   } = project
-
-  useEffect(() => {
-    setProjectId(id)
-  }, [id, setProjectId])
-
-  const { data: projectTechs } = useQuery({
-    queryKey: ["techs", id],
-    queryFn: () => getProjectTech(id),
-    enabled: !!id,
-  })
 
   const parsedContent = parse(content) as string
 
   const cardContent =
     content?.length > 100 ? parsedContent.slice(0, 100) + "..." : parsedContent
+
+  const onClickToDetailPage = () => {
+    const handler = () => {
+      router.push("/signin")
+    }
+
+    if (!currentUser) {
+      openCustomModalHandler(
+        `로그인이 필요합니다.
+        로그인 페이지로 이동하시겠습니까?`,
+        "confirm",
+        handler,
+      )
+    } else {
+      router.push(`projects/${id}`)
+    }
+  }
 
   return (
     <div className="flex">
@@ -80,21 +83,21 @@ const ProjectCard = ({
         </div>
         <div className="flex justify-between items-center">
           <ul className="flex gap-3 ">
-            {projectTechs?.map((tech, i) => (
+            {project_tech?.map((tech, i) => (
               <li
                 key={i}
                 className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl"
               >
-                {tech}
+                {tech && tech?.techs?.tech_name}
               </li>
             ))}
           </ul>
-          <Link
-            href={`projects/${id}`}
+          <button
             className="absolute bottom-0 right-2 border-2 border-[#297A5F] text-[#297A5F] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#297A5F] hover:text-white transition-all duration-300"
+            onClick={onClickToDetailPage}
           >
             상세보기
-          </Link>
+          </button>
         </div>
 
         <div className="absolute top-4 right-2">

@@ -6,7 +6,7 @@ import Spacer from "@/components/ui/Spacer"
 import MemberCategory from "./_components/MemberCategory"
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { useInView } from "react-intersection-observer"
-import { getPositions, getUsers } from "./api"
+import { getPositions as Tables<'positions'>[], getUsers } from "./api"
 import { Tables } from "@/types/supabase"
 import useCategoryStore from "@/store/category"
 import useMembersStore from "@/store/members"
@@ -85,7 +85,7 @@ const MembersPage = () => {
     <div>
       <Spacer y={90} />
       <div className="flex w-full">
-        <MemberCategory positions={positions} />
+        <MemberCategory positions={positions as Tables<'positions'>[]} />
 
         <section className="flex flex-col ml-[17rem] py-5 gap-[24px] w-full ">
           <h3 className="text-[40px] font-[700]">{title}</h3>
