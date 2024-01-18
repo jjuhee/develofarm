@@ -17,7 +17,7 @@ const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
   /**
    *@ query 게시물 삭제 후 확인창 띄워주고 목록으로 이동
    TODO: 목록으로 돌아갈때 캐시가 남아 지워주는 작업 필요 */
-  const deleteProjectMutate = useMutation({
+  const removeProjectMutate = useMutation({
     mutationFn: removeProject,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -36,7 +36,7 @@ const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
   const isDeleteClickHandler = (id: string) => {
     const isDelCheck = window.confirm("정말로 삭제하시겠습니까?")
     if (isDelCheck) {
-      deleteProjectMutate.mutate(id)
+      removeProjectMutate.mutate(id)
     }
   }
 

@@ -238,3 +238,12 @@ export async function getComments(projectId: string) {
 
   return data
 }
+
+/** 프로젝트 게시물에 댓글 작성 데이터에 추가 */
+export async function setComment(newComment: string[]) {
+  const { error } = await supabaseForClient
+    .from("comments")
+    .insert([{ ...newComment }])
+
+  if (error) console.log("error", error)
+}
