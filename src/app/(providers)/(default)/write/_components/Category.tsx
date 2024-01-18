@@ -42,13 +42,14 @@ const Category = ({
 
   /** 프로젝트 필터링 검색 핸들러 */
   const onClickSearchHandler = () => {
-    setOption({
-      isOffline: isOffline,
-      startDate: startDate,
-      endDate: endDate,
-      regionId: region,
-      techs: techs,
-    })
+    setOption &&
+      setOption({
+        isOffline: isOffline,
+        startDate: startDate,
+        endDate: endDate,
+        regionId: region,
+        techs: techs,
+      })
   }
 
   return (

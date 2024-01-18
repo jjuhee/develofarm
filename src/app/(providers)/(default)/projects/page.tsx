@@ -49,18 +49,6 @@ const ProjectsPage = () => {
   const [categoryData, setCategoryData] =
     useState<TCategoryData>(initialCategoryData)
 
-  /** 프로젝트 데이터를 가져오기 위한 useQuery 옵션 */
-  const queryOption = {
-    order: order,
-    recruitStatus: recruitStatus,
-    isOffline: categoryData.isOffline,
-    startDate: categoryData.startDate,
-    endDate: categoryData.endDate,
-    numberOfPeople: categoryData.numberOfMembers,
-    regionId: categoryData.region,
-    techs: categoryData.techs,
-  }
-
   /** 전체 프로젝트 가져오기 */
   const { data: projects } = useQuery({
     queryKey: ["projects", recruitStatus, { option: option }],
@@ -103,7 +91,7 @@ const ProjectsPage = () => {
     setOrder(Number(e.target.value))
   }
 
-  /** */
+  /** 프로젝트 리스트 정렬 */
   const sortedProjects = useMemo(() => {
     const draft = projects ? [...projects] : []
 
@@ -173,7 +161,7 @@ const ProjectsPage = () => {
                   <ProjectCard
                     key={item?.id}
                     project={item}
-                    bookmarks={bookmarks}
+                    bookmarks={bookmarks as Tables<"bookmarks">[]}
                     currentUser={currentUser}
                     setProjectId={setProjectId}
                     techs={techs}
@@ -200,36 +188,3 @@ const ProjectsPage = () => {
 }
 
 export default ProjectsPage
-
-// /** 페이지 단위 프로젝트 가져오기 */
-// const { data: paginatedProjects } = useQuery({
-//   queryKey: [
-//     "projects",
-//     page,
-//     recruitStatus,
-//     { order: order },
-//     { option: option },
-//   ],
-//   queryFn: () =>
-//     getProjects({
-//       ...option,
-//       limit: PAGE_SIZE + (page - 1) * PAGE_SIZE - 1,
-//       offset: (page - 1) * PAGE_SIZE,
-//       order: order,
-//       recruitStatus: recruitStatus,
-//     }),
-//   enabled: !!projects,
-// })
-
-// /** 정렬 */
-// order === 1
-//   ? (projectsWithBookmarkCount || []).sort(
-//       (a, b) => new Date(b.created_at) - new Date(a.created_at),
-//     )
-//   : order === 2
-//     ? (projectsWithBookmarkCount || []).sort(
-//         (a, b) => new Date(a.created_at) - new Date(b.created_at),
-//       )
-//     : (projectsWithBookmarkCount || []).sort(
-//         (a, b) => b.bookmark_count - a.bookmark_count,
-//       ) // 유효한 날짜 형식인지 확인하고 반환하는 함수
