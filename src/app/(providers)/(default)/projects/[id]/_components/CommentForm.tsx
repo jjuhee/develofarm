@@ -11,7 +11,7 @@ type Props = {
 const CommentForm = ({ projectId }: Props) => {
   const [content, setContent] = useState<string>("")
   const queryClient = useQueryClient()
-  const { userId: user } = useUserStore()
+  const { userId } = useUserStore()
 
   /**
    *@ mutation 댓글 등록 후 해당 게시물Id로 댓글 최신 목록 불러오기 */
@@ -34,7 +34,7 @@ const CommentForm = ({ projectId }: Props) => {
 
     const newComment: TablesInsert<"comments"> = {
       project_id: projectId,
-      user_id: user,
+      user_id: userId,
       content,
     }
 

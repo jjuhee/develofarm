@@ -23,8 +23,8 @@ const FooterMenus = ({ project }: Props) => {
   /**
    *@ param1 현재 로그인한 유저 정보를 담은 변수
    *@ param2 글 작성자가 현재 로그인한 유저랑 같은지 판별하는 변수*/
-  const { userId: currentUser } = useUserStore()
-  const isWriter = currentUser === project.user_id
+  const { userId } = useUserStore()
+  const isWriter = userId === project.user_id
 
   /**
    *@ function 클릭시 탭메뉴 선택 */
