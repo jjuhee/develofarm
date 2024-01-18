@@ -231,7 +231,7 @@ export async function getRegions() {
 export async function getComments(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("comments")
-    .select("*, users(*)")
+    .select("*, user:users(*)")
     .eq("project_id", projectId)
 
   if (error) console.log("error", error)
@@ -240,7 +240,7 @@ export async function getComments(projectId: string) {
 }
 
 /** 프로젝트 게시물에 댓글 작성 데이터에 추가 */
-export async function setComment(newComment: string[]) {
+export async function setComment(newComment) {
   const { error } = await supabaseForClient
     .from("comments")
     .insert([{ ...newComment }])

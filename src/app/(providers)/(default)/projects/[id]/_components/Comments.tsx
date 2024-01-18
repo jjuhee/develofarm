@@ -42,12 +42,12 @@ const Comments = ({ project, isWriter }: Props) => {
               <Image
                 width={48}
                 height={48}
-                src={`${comment.users?.avatar_url}`}
+                src={`${comment.user?.avatar_url}`}
                 alt="댓글 작성자 이미지"
                 className="w-12 h-12 rounded-full object-cover inline-block"
               />
               <span className="mr-2 pl-2 font-semibold">
-                {comment.users?.user_nickname}
+                {comment.user?.user_nickname}
               </span>
               <span className="text-xs">
                 {dayjs(comment.created_at).format("YYYY-MM-DD HH:mm:ss")}
@@ -55,14 +55,14 @@ const Comments = ({ project, isWriter }: Props) => {
               <div className="flex flex-col pl-14 min-h-28 border-b-2">
                 <div className="h-auto font-semibold">{comment.content}</div>
                 <Spacer y={10} />
-                <ReCommentForm />
+                {comment.user && <ReCommentForm user={comment.user} />}
               </div>
+              <Spacer y={30} />
+              <CommentForm comment={comment} user={comment.user} />
             </div>
           )
         })}
       </section>
-      <Spacer y={30} />
-      <CommentForm />
     </>
   )
 }
