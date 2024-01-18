@@ -14,48 +14,32 @@ const ProfileCategory = () => {
     setActiveLink(link)
   }
 
-  const profileId = user === id
+  if (user !== id) {
+    return null
+  }
 
-  return profileId ? (
-    <div className="flex gap-8 text-xl font-bold">
-      <Link href={`/profile/${user}`}>
-        <div
-          className={`${
-            activeLink === `/profile/${user}`
-              ? "text-blue-500"
-              : "hover:text-blue-500 focus:text-blue-500 active:text-blue-500"
-          }`}
-          onClick={() => handleLinkClick(`/profile/${user}`)}
-        >
-          내 프로필
-        </div>
-      </Link>
-      <Link href={`/profile/${user}/profileProject`}>
-        <div
-          className={`${
-            activeLink === `/profile/${user}/profileProject`
-              ? "text-blue-500"
-              : "hover:text-blue-500 focus:text-blue-500 active:text-blue-500"
-          }`}
-          onClick={() => handleLinkClick(`/profile/${user}/profileProjects`)}
-        >
-          내 프로젝트
-        </div>
-      </Link>
-      <Link href={`/profile/${user}/notification`}>
-        <div
-          className={`${
-            activeLink === `/profile/${user}/notification`
-              ? "text-blue-500"
-              : "hover:text-blue-500 focus:text-blue-500 active:text-blue-500"
-          }`}
-          onClick={() => handleLinkClick(`/profile/${user}/notification`)}
-        >
-          알림
-        </div>
-      </Link>
+  const renderLink = (to: string, text: string) => (
+    <Link href={to}>
+      <div
+        className={`${
+          activeLink === to
+            ? "text-black"
+            : "text-gray-500 hover:text-black focus:text-black active:text-black"
+        }`}
+        onClick={() => handleLinkClick(to)}
+      >
+        {text}
+      </div>
+    </Link>
+  )
+
+  return (
+    <div className="flex gap-[50px] text-[36px] font-bold py-[40px]">
+      {renderLink(`/profile/${user}`, "내 프로필")}
+      {renderLink(`/profile/${user}/profileProject`, "내 프로젝트")}
+      {renderLink(`/profile/${user}/notification`, "알림")}
     </div>
-  ) : null
+  )
 }
 
 export default ProfileCategory

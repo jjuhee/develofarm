@@ -25,7 +25,7 @@ const ProfileEducation = ({ profileId }: { profileId: string }) => {
     <div className="flex justify-between items-center">
       <div>
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">최종학력</h2>
+          <h2 className="text-[26px] font-bold">최종학력</h2>
         </div>
 
         {education && education.length > 0 ? (

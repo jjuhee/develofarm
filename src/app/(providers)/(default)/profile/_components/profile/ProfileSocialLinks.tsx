@@ -26,9 +26,9 @@ const ProfileSocialLinks = ({ profileId }: { profileId: string }) => {
   return (
     <div className="flex justify-between items-center w-[800px]">
       <div>
-        <h2 className="flex text-lg font-semibold h-[40px]">Blog</h2>
+        <h2 className="flex text-[20px] font-bold h-[40px]">Blog</h2>
         {socialLink?.blog_url ? (
-          <p>
+          <p className="text-[14px] font-bold">
             <a
               href={`${socialLink.blog_url}`}
               target="_blank"
@@ -38,14 +38,14 @@ const ProfileSocialLinks = ({ profileId }: { profileId: string }) => {
             </a>
           </p>
         ) : (
-          <p>블로그 주소가 없습니다</p>
+          <p className="text-[14px] font-bold">블로그 주소가 없습니다</p>
         )}
       </div>
 
       <div>
-        <h2 className="flex text-lg font-semibold h-[40px]">Github</h2>
+        <h2 className="flex text-[20px] font-bold h-[40px]">Github</h2>
         {socialLink?.github_url ? (
-          <p>
+          <p className="text-[14px] font-bold">
             <a
               href={`${socialLink.github_url}`}
               target="_blank"
@@ -55,7 +55,7 @@ const ProfileSocialLinks = ({ profileId }: { profileId: string }) => {
             </a>
           </p>
         ) : (
-          <p>GitHub 주소가 없습니다</p>
+          <p className="text-[14px] font-bold">GitHub 주소가 없습니다</p>
         )}
       </div>
     </div>

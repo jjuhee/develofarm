@@ -3,7 +3,7 @@ import { supabaseForClient } from "@/supabase/supabase.client"
 export async function getUser(profileId: string) {
   const { data: userData, error: userError } = await supabaseForClient
     .from("users")
-    .select("*")
+    .select("*, positions(*), user_tech(*, techs(*))")
     .eq("id", profileId)
     .single()
   if (userError) console.log("error", userError)
@@ -98,3 +98,14 @@ export async function getProfileBookmarks({ userId }: { userId: string }) {
 
   return data
 }
+
+// export async function getTechsByUserId({ userId }: { userId: string }) {
+//   const { data, error } = await supabaseForClient
+//     .from("user_tech")
+//     .select("*")
+//     .eq("user_id", userId)
+
+//   if (error) console.log("error", error)
+
+//   return data
+// }

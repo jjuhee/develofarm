@@ -3,7 +3,7 @@ import ProfileCategory from "./_components/ProfileCategory"
 
 const ProfileLayout = ({ children }: PropsWithChildren<{}>) => {
   return (
-    <div className="pt-[20px]">
+    <div>
       <ProfileCategory />
       {children}
     </div>

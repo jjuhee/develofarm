@@ -29,32 +29,37 @@ const ProfileSharedProjectCard = ({ profileId }: { profileId: string }) => {
   return (
     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 mt-5">
       {projects?.map((project) => (
-        <div key={project.id} className="mb-4">
-          <div className="border border-gray-300 bg-white rounded-lg shadow-md">
-            <div className="flex flex-col items-left">
+        <div
+          key={project.id}
+          className="border border-gray-300 h-[356px] w-[371px] bg-white rounded-[20px]  shadow-md mt-4 mb-4 transition-transform transform hover:scale-105"
+        >
+          <div className="flex flex-col items-left">
+            <Link href={`/projects/${project.id}`}>
+              <img
+                className="h-[222.98px] w-full bg-[#3498db] object-cover rounded-t-[20px]"
+                src={`${project.picture_url}`}
+                alt={`Image for ${project.title}`}
+              />
+            </Link>
+            <div className="p-[20px]">
               <Link href={`/projects/${project.id}`}>
-                <img
-                  className="mb-2 w-full h-40 object-cover"
-                  src={`${project.picture_url}`}
-                  alt={`Image for ${project.title}`}
-                />
-              </Link>
-              <Link href={`/projects/${project.id}`}>
-                <div className="flex font-bold ml-5 mt-3 mb-2">
-                  <span
-                    className={`p-[5px] px-[10px] mr-3 border border-solid rounded-md ${
-                      project.recruit_status ? "bg-[#555555]" : "bg-[#297A5F]"
-                    } text-white`}
-                  >
-                    {project.recruit_status ? "모집완료" : "모집 중"}
-                  </span>
-                  <h2 className="text-xl pt-[4px]">{project.title}</h2>
+                <div className="flex font-bold">
+                  <div>
+                    <p
+                      className={`p-[5px] px-[10px] mr-3 border border-solid rounded-[5px] ${
+                        project.recruit_status ? "bg-[#666666]" : "bg-[#297A5F]"
+                      } text-white text-[14px]`}
+                    >
+                      {project.recruit_status ? "모집완료" : "모집 중"}
+                    </p>
+                  </div>
+                  <div>
+                    <h2 className="text-[20px]">{project.title}</h2>
+                  </div>
                 </div>
               </Link>
-              <div className="flex">
-                <p className="text-gray-700 text-sm ml-5 mt-1 mb-3">
-                  {project.content}
-                </p>
+              <div className="pt-[20px] text-[14px]">
+                <p>{project.content}</p>
                 {/* 북마크 버튼 */}
               </div>
             </div>
