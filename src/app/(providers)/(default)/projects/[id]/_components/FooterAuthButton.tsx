@@ -6,7 +6,7 @@ type Props = {
   isWriter: boolean
 }
 
-const FooterAuthButtons = ({ project, isWriter }: Props) => {
+const FooterAuthButton = ({ project, isWriter }: Props) => {
   return (
     <>
       {/* 글 작성자 여부에 따른 버튼 */}
@@ -23,4 +23,4 @@ const FooterAuthButtons = ({ project, isWriter }: Props) => {
   )
 }
 
-export default FooterAuthButtons
+export default FooterAuthButton

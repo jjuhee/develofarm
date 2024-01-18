@@ -1,22 +1,20 @@
 import { Tables } from "@/types/supabase"
 import React, { SetStateAction, useState } from "react"
-import { CiBookmark } from "react-icons/ci"
-import { IoShareSocialOutline } from "react-icons/io5"
-import { IoIosPeople } from "react-icons/io"
-import { FaRegMessage } from "react-icons/fa6"
-import { CiUser } from "react-icons/ci"
 import Comments from "./Comments"
 import Applicants from "./Applicants"
 import Spacer from "@/components/ui/Spacer"
-import FooterAuthButtons from "./FooterAuthButtons"
+import FooterAuthButton from "./FooterAuthButton"
 import useUserStore from "@/store/user"
+import FooterPublicIcon from "./FooterPublicIcon"
+import { IoIosPeople } from "react-icons/io"
+import { FaRegMessage } from "react-icons/fa6"
+import { CiUser } from "react-icons/ci"
 
 type Props = {
   project: Tables<"projects">
-  user: Tables<"users">
 }
 
-const FooterMenus = ({ project, user }: Props) => {
+const FooterMenus = ({ project }: Props) => {
   /**
    *@ param 댓글목록과 신청자목록에 상태값을 담은 변수*/
   const [isSelected, setIsSelected] = useState<"comments" | "applicants">(
@@ -70,22 +68,16 @@ const FooterMenus = ({ project, user }: Props) => {
             </span>
           </>
         )}
-        <span className="ml-auto pr-5">
-          <span>
-            <CiBookmark size={30} className="inline-block" />
-          </span>
-          5
-        </span>
-        <span className="pr-5">
-          <IoShareSocialOutline size={30} />
-        </span>
-        <FooterAuthButtons project={project} isWriter={isWriter} />
+        {/* 모두가 볼 수 있는 아이콘 */}
+        <FooterPublicIcon />
+        {/* 사용자에 따라서 다른 버튼 */}
+        <FooterAuthButton project={project} isWriter={isWriter} />
       </section>
       <Spacer y={25} />
       {/* 탭 메뉴에 따라 나오는 컴포넌트 */}
       <section>
         {isSelected === "comments" && (
-          <Comments project={project} user={user} isWriter={isWriter} />
+          <Comments project={project} isWriter={isWriter} />
         )}
         {isSelected === "applicants" && <Applicants />}
       </section>

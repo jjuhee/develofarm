@@ -231,20 +231,8 @@ export async function getRegions() {
 export async function getComments(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("comments")
-    .select("*")
+    .select("*, users(*)")
     .eq("project_id", projectId)
-
-  if (error) console.log("error", error)
-
-  return data
-}
-
-/** commentId와 일치하는 users 목록 가져오기 */
-export async function getCommentsUsers() {
-  const { data, error } = await supabaseForClient
-    .from("comments")
-    .select("*")
-    .eq()
 
   if (error) console.log("error", error)
 

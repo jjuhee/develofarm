@@ -128,7 +128,7 @@ const DetailPage = () => {
         <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 min-h-96">
           <div className="leading-7">{project.content}</div>
         </section>
-        {project && <FooterMenus project={project} user={project.user!} />}
+        <FooterMenus project={project} />
         <Spacer y={30} />
         <section className="border-2 border-blue-500">
           <p>이전게시물</p>

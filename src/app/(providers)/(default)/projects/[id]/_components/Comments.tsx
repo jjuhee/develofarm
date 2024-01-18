@@ -5,11 +5,10 @@ import dayjs from "dayjs"
 import Image from "next/image"
 import React, { SetStateAction, useEffect, useState } from "react"
 import { getComments } from "../../api"
-import { getUsers } from "@/app/(providers)/api"
+import Spacer from "@/components/ui/Spacer"
 
 type Props = {
   project: Tables<"projects">
-  user: Tables<"users">
   isWriter: boolean
 }
 
@@ -17,35 +16,18 @@ type Comments = {
   formattedData: Tables<"comments">
 }
 
-const Comments = ({ project, user, isWriter }: Props) => {
+const Comments = ({ project, isWriter }: Props) => {
   const [commentData, setCommentData] = useState<Comments[]>([])
   const { data: comments, isLoading: commentsIsLoading } = useQuery({
-    queryKey: ["comments", project.id],
+    queryKey: ["comments"],
     queryFn: () => getComments(project.id),
   })
-
-  const { data: users, isLoading: usersIsLoading } = useQuery({
-    queryKey: ["users"],
-    queryFn: () => getUsers(),
-  })
-
-  const usersId = users?.map((user) => user.id)
 
   // const commentWriter = comments?.filter(
   //   (comment) => comment.user_id === usersId,
   // )
-  console.log(usersId)
 
-  console.log(comments?.map((comment) => comment.id))
-  // useEffect(() => {
-  //   if (comments) {
-  //     const formattedData: Comments = comments.map((comment) => ({
-  //       ...comment,
-  //       created_at: dayjs(comment.created_at).format("YYYY-MM-DD HH:mm:ss"),
-  //     }))
-  //     setCommentData(formattedData)
-  //   }
-  // }, [comments])
+  console.log(comments, "댓글목록")
 
   if (commentsIsLoading || !comments) return <div>is Loading...</div>
 
@@ -54,22 +36,26 @@ const Comments = ({ project, user, isWriter }: Props) => {
       <section className="">
         {comments.map((comment) => {
           return (
-            <div key={comment.id} className="border-2 border-yellow-600">
+            <div key={comment.id} className="">
               <Image
                 width={48}
                 height={48}
-                src={`${user.avatar_url}`}
-                alt="작성자 이미지"
+                src={`${comment.users?.avatar_url}`}
+                alt="댓글 작성자 이미지"
                 className="w-12 h-12 rounded-full object-cover inline-block"
               />
-              <span className="mr-2 pl-3">{}</span>
-              <span className="text-sm">
+              <span className="mr-2 pl-2 font-semibold">
+                {comment.users?.user_nickname}
+              </span>
+              <span className="text-xs">
                 {dayjs(comment.created_at).format("YYYY-MM-DD HH:mm:ss")}
               </span>
-              <div>댓글내용</div>
-              <span>
-                <button>대댓글</button>
-              </span>
+              <div className="flex flex-col pl-14 min-h-24 border-b-2">
+                <div className="h-auto font-semibold">{comment.content}</div>
+                <Spacer y={10} />
+                <button className="w-8">댓글</button>
+              </div>
+              <span></span>
             </div>
           )
         })}
