@@ -11,7 +11,7 @@ export const getUsers = async ({
   const query = supabaseForClient
     .from("users")
     .select("*, position: positions(*)")
-    .eq("user_status", "지원중")
+    .eq("user_status", "지원 중")
     .range(pageParam!, pageParam! + 2)
 
   !!positionId && query.eq("positionId", positionId)
