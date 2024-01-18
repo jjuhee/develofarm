@@ -28,7 +28,7 @@ const ProfileEducation = ({ profileId }: { profileId: string }) => {
           <h2 className="text-2xl font-bold">최종학력</h2>
         </div>
 
-        {education ? (
+        {education && education.length > 0 ? (
           education.map((school) => (
             <div
               key={school.id}
@@ -73,7 +73,9 @@ const ProfileEducation = ({ profileId }: { profileId: string }) => {
             </div>
           ))
         ) : (
-          <p>최종학력 데이터가 없습니다</p>
+          <p className="pt-[30px] pl-[160px] px-[160px]">
+            최종학력 내용이 없습니다.
+          </p>
         )}
 
         <hr className="my-8 border-t-2 border-gray-300" />

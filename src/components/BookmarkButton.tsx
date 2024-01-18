@@ -5,10 +5,9 @@ import {
 } from "@/app/(providers)/(default)/projects/api"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { MdBookmarkBorder, MdOutlineBookmark } from "react-icons/md"
-
 import type { Tables } from "@/types/supabase"
-import { useCustomModal } from "@/hooks/useCustomModal"
 import { useRouter } from "next/navigation"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 interface Props {
   projectId: string

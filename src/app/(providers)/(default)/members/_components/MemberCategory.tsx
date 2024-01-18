@@ -1,10 +1,16 @@
 "use client"
 
 import useCategoryStore from "@/store/category"
+import useMembersStore from "@/store/members"
+import { Tables } from "@/types/supabase"
 import React, { useState } from "react"
 import { useStore } from "zustand"
 
-const MemberCategory = () => {
+interface Props {
+  positions: Tables<"positions">[]
+}
+
+const MemberCategory = ({ positions }: Props) => {
   const category = [
     {
       id: 0,
@@ -30,25 +36,42 @@ const MemberCategory = () => {
 
   const { selectCategory } = useCategoryStore((state) => state)
 
+  const { setMemberPosition } = useMembersStore((state) => state)
+
   const [isActive, setIsActive] = useState("전체보기")
 
-  const onClickCategoryHandler = (title: string) => {
+  const onClickAllViewHandler = (title: string) => {
     setIsActive(title)
     selectCategory(title)
+    setMemberPosition(null)
+  }
+
+  const onClickCategoryHandler = (position: Tables<"positions">) => {
+    setIsActive(position.name)
+    selectCategory(position.name)
+    setMemberPosition(position)
   }
 
   return (
     <ul className="flex flex-col fixed top-40 left-30 px-[32px] py-[48px] w-[220px] h-[328px] gap-[20px] rounded-2xl text-[17px] text-[#777E90] font-[700] shadow-2xl">
       {/* TODO: isActive 시 bold 지정하기*/}
-      {category.map((item) => (
+      <li
+        onClick={() => onClickAllViewHandler("전체보기")}
+        className={`cursor-pointer ${
+          isActive === "전체보기" ? "font-bold text-black" : "font-[400]"
+        }`}
+      >
+        전체보기
+      </li>
+      {positions?.map((position) => (
         <li
-          key={item.id}
-          onClick={() => onClickCategoryHandler(item.title)}
+          key={position.id}
+          onClick={() => onClickCategoryHandler(position)}
           className={`cursor-pointer ${
-            isActive === item.title ? "font-bold text-black" : "font-[400]"
+            isActive === position.name ? "font-bold text-black" : "font-[400]"
           }`}
         >
-          {item.title}
+          {position.name}
         </li>
       ))}
     </ul>

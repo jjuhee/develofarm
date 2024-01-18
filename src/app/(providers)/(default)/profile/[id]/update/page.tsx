@@ -1,7 +1,7 @@
 import React from "react"
-import ProfileForm from "../_components/update/ProfileForm"
-import ProfileResumeForm from "../_components/update/ProfileResumeForm"
-import ProfileSocialForm from "../_components/update/ProfileSocialForm"
+import ProfileForm from "../../_components/update/ProfileForm"
+import ProfileResumeForm from "../../_components/update/ProfileResumeForm"
+import ProfileSocialForm from "../../_components/update/ProfileSocialForm"
 
 const UpdatePage = () => {
   return (

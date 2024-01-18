@@ -1,11 +1,27 @@
 "use client"
 
 import Button from "@/components/ui/Button"
-import React, { useState } from "react"
+import React, { Dispatch, SetStateAction, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 
-const Category = () => {
+interface Props {
+  setCategoryData: Dispatch<SetStateAction<{}>>
+}
+
+const Category = ({ setCategoryData }: Props) => {
   const [isActive, setIsActive] = useState(false)
+
+  // TODO: 카테고리 데이터 저장
+  // const onClickHandler = () => {
+  //   const newData = {
+  //     //
+
+  //     stack: {
+  //       front: {},
+  //     },
+  //   }
+  //   setCategoryData(newData)
+  // }
 
   return (
     <section className="flex flex-col gap-3 pb-[25px]">

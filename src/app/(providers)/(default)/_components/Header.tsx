@@ -7,15 +7,19 @@ import React, { useState } from "react"
 import { IoMdSearch } from "react-icons/io"
 import { VscBell } from "react-icons/vsc"
 import { supabaseForClient } from "@/supabase/supabase.client"
+import useUserStore from "@/store/user"
+
 const Header = () => {
+  const { user } = useUserStore()
   const { selectCategory } = useCategoryStore((state) => state)
-  const setViewMemberModal = useMembersStore(
-    (state) => state.setViewMemberModal,
+  const { setViewMemberModal, setMemberPosition } = useMembersStore(
+    (state) => state,
   )
 
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
     setViewMemberModal(false)
+    setMemberPosition(null)
   }
 
   const [showTooltip, setShowTooltip] = useState(false)
@@ -39,8 +43,6 @@ const Header = () => {
       (payload) => setIsAlarmData(payload),
     )
     .subscribe()
-
-  console.log("얍얍얍", isAlarmData)
 
   return (
     <div className="flex w-full bg-gray-200">
@@ -72,7 +74,7 @@ const Header = () => {
               </div>
             )}
           </span>
-          <Link href={"/profile"}>마이페이지</Link>
+          <Link href={`/profile/${user}`}>마이페이지</Link>
         </nav>
       </div>
     </div>

@@ -367,7 +367,7 @@ export interface Database {
         Update: {
           id?: string
           project_id?: string
-          tech_id?: string
+          tech_id?: string | null
         }
         Relationships: [
           {

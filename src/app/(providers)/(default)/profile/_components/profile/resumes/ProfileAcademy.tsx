@@ -28,7 +28,7 @@ const ProfileAcademy = ({ profileId }: { profileId: string }) => {
           <h2 className="text-2xl font-bold">교육/활동</h2>
         </div>
 
-        {academies ? (
+        {academies && academies.length > 0 ? (
           academies.map((academy) => (
             <div
               key={academy.id}
@@ -53,9 +53,10 @@ const ProfileAcademy = ({ profileId }: { profileId: string }) => {
             </div>
           ))
         ) : (
-          <p>교육/활동 데이터가 없습니다</p>
+          <p className="pt-[30px] pl-[160px] px-[160px]">
+            교육/활동 내용이 없습니다.
+          </p>
         )}
-
         <hr className="my-8 border-t-2 border-gray-300" />
       </div>
     </div>

@@ -4,16 +4,13 @@ import { equal } from "assert"
 
 /** 전체 프로젝트 리스트 가져오기 */
 export async function getProjects({
-  orderBy = "created_at",
-  order = 1,
   limit = 0,
   offset = 0,
   recruitStatus = false,
   isOffline = null,
   startDate = "",
   endDate = "",
-  numberOfPeople,
-  regionId,
+  regionId = "",
   techs,
 }: TProjectsOptions) {
   const query = supabaseForClient.from("projects").select("*")
@@ -43,16 +40,13 @@ export async function getProjects({
   /** 활동 지역 */
   regionId && regionId !== "0" && query.eq("region_id", regionId)
 
-  // TODO: 스택 필터링
+  /** 스택 필터링 */
   if ((techs?.length as number) > 0) {
-    console.log("techs", techs)
-    const techIds = techs?.map((tech) => tech.id)
+    const techIds = techs?.map((tech) => tech.tech_id)
     const { data: projectIds, error: projectError } = await supabaseForClient
       .from("project_tech")
       .select("project_id")
       .in("tech_id", techIds || [])
-
-    console.log("projectIds", projectIds)
 
     if (projectError) {
       console.error("Error fetching projectIds:", projectError.message)
@@ -88,23 +82,6 @@ export async function getProjects({
     }
   })
 
-  /** 정렬 */
-  order === 1
-    ? (projectsWithBookmarkCount || []).sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at),
-      )
-    : order === 2
-      ? (projectsWithBookmarkCount || []).sort(
-          (a, b) => new Date(a.created_at) - new Date(b.created_at),
-        )
-      : (projectsWithBookmarkCount || []).sort(
-          (a, b) => b.bookmark_count - a.bookmark_count,
-        ) // 유효한 날짜 형식인지 확인하고 반환하는 함수
-  function getValidDate(dateString: string): Date {
-    const date = new Date(dateString)
-    return isNaN(date.getTime()) ? new Date(0) : date
-  }
-
   return projectsWithBookmarkCount
 }
 
@@ -123,13 +100,7 @@ export async function getProject(projectId: string) {
   return projectData || null
 }
 
-/** 현재 유저 데이터 가져오기 */
-export async function getUser() {
-  const { data: userData } = await supabaseForClient.auth.getUser()
-
-  return userData
-}
-
+/** projectId 값과 일치하는 해당 프로젝트 삭제 */
 export async function removeProject(projectId: string) {
   const { error: projectError } = await supabaseForClient
     .from("projects")

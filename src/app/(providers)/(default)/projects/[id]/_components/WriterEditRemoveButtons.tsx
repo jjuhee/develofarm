@@ -21,7 +21,8 @@ const WriterEditRemoveButtons = ({ project }: Props) => {
   const router = useRouter()
 
   /**
-   *@ query 게시물 삭제 후 확인창 띄워주고 목록으로 이동 */
+   *@ query 게시물 삭제 후 확인창 띄워주고 목록으로 이동
+   TODO: 목록으로 돌아갈때 캐시가 남아 지워주는 작업 필요 */
   const deleteProjectMutate = useMutation({
     mutationFn: removeProject,
     onSuccess: async () => {

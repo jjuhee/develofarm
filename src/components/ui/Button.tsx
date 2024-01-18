@@ -3,12 +3,11 @@ import React from "react"
 interface Props {
   type?: string
   text: string
+  color?: string
   handler?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-//absolute bottom-5 right-5
-
-const Button = ({ type, text, handler }: Props) => {
+const Button = ({ type, text, color, handler }: Props) => {
   return (
     <button
       className={`${

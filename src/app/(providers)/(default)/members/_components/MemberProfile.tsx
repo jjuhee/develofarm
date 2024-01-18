@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import React, { useEffect, useRef, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
-import { getProjectByUserId } from "../api"
+import { getProjectByUserId, getTechsByUserId } from "../api"
 import { Tables } from "@/types/supabase"
 import { supabaseForClient } from "@/supabase/supabase.client"
 
@@ -23,20 +23,23 @@ const MemberProfile = () => {
     getAuth()
   }, [])
 
-  const { selectedMember, memberPosition } = useMembersStore((state) => state)
+  const { selectedMember } = useMembersStore((state) => state)
 
   const [isActive, setIsActive] = useState(false)
 
   useOnClickOutSide({ ref: dropdownRef, handler: () => setIsActive(false) })
 
-  // TODO: 현재 유저 프로젝트 가져오기
   const { data: projects } = useQuery({
     queryKey: ["projects", currentUser],
     queryFn: () => getProjectByUserId(currentUser),
     enabled: !!currentUser,
   })
 
-  // TODO: 유저 기술 스택 가져오기
+  const { data: userTechs } = useQuery({
+    queryKey: ["techs", selectedMember.id],
+    queryFn: () => getTechsByUserId(selectedMember.id),
+    enabled: !!selectedMember,
+  })
 
   return (
     <>
@@ -58,7 +61,7 @@ const MemberProfile = () => {
               {selectedMember.user_nickname}
             </h3>
             <p className="text-[20px] font-[600]">
-              {memberPosition?.position_name || "포지션을 정해주세요."}
+              {selectedMember.position?.name || "포지션을 정해주세요."}
             </p>
           </div>
         </div>
@@ -118,24 +121,30 @@ const MemberProfile = () => {
       <div className="flex flex-col w-full gap-2">
         <h3 className="text-[18px] font-[700]">보유 기술</h3>
         <ul className="flex gap-5 items-center">
-          <li className="text-[16px] font-[500] py-1 px-3 border-gray-70 border-2 rounded-3xl">
-            React
-          </li>
+          {(userTechs?.length as number) > 0 ? (
+            <>
+              {userTechs?.map((tech, i) => (
+                <li
+                  key={i}
+                  className="text-[16px] font-[500] py-1 px-3 border-gray-70 border-2 rounded-3xl"
+                >
+                  {tech}
+                </li>
+              ))}
+            </>
+          ) : (
+            <p className="text-[16px] text-gray-500">
+              현재 보유기술이 없습니다.
+            </p>
+          )}
         </ul>
       </div>
       <div className="flex flex-col w-full gap-2">
         <h3 className="text-[18px] font-[700]">소개글</h3>
-        <p className="text-[13px] font-[300] ">
-          {" "}
-          Volutpat, est id tincidunt dolor eu. Enim dictum aenean ultrices
-          pharetra lorem leo cursus. Mollis dui turpis sed suscipit. Mauris
-          vestibulum in phasellus velit morbi lobortis varius egestas posuere.
-          Commodo purus non adipiscing porttitor lectus nunc, nisi. Urna amet,
-          nisl, lectus vel. Aliquam, porttitor quis at vel sed ut montes,
-          egestas. Nisl, vestibulum tempor natoque lacinia posuere. Risus id
-          tempor turpis faucibus ante volutpat nunc. Viverra iaculis iaculis at
-          convallis tellus. Condimentum massa faucibus at porttitor vestibulum
-          in.
+        <p className="text-[15px] font-[400] ">
+          {selectedMember.user_comment
+            ? selectedMember.user_comment
+            : "현재 소개글이 없습니다."}
         </p>
       </div>
       <div className="flex flex-col w-full gap-2">

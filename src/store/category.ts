@@ -1,3 +1,4 @@
+import { Tables } from "@/types/supabase"
 import { create } from "zustand"
 
 type TCategoryState = {
