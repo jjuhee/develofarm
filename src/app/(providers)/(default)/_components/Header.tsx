@@ -9,6 +9,8 @@ import { VscBell } from "react-icons/vsc"
 import { supabaseForClient } from "@/supabase/supabase.client"
 const Header = () => {
   const { selectCategory } = useCategoryStore((state) => state)
+
+  const [isLoggedOut, setIsLoggedOut] = useState(false)
   const setViewMemberModal = useMembersStore(
     (state) => state.setViewMemberModal,
   )
@@ -40,7 +42,14 @@ const Header = () => {
     )
     .subscribe()
 
-  console.log("얍얍얍", isAlarmData)
+  const onLogoutHandler = () => {
+    //-- 이 부분은 주석이 있어야만 정상적으로 수행되는 코드 입니다.
+
+    // localStorage.removeItem('keywords');
+    supabaseForClient.auth.signOut()
+    setIsLoggedOut(true)
+    alert("로그아웃이 되었습니다")
+  }
 
   return (
     <div className="flex w-full bg-gray-200">
@@ -56,7 +65,14 @@ const Header = () => {
           <Link href={"/search"} className="text-lg">
             <IoMdSearch />
           </Link>
-          <Link href={"/signin"}>통합로그인</Link>
+          {!isLoggedOut ? (
+            <span>
+              <button onClick={onLogoutHandler}>로그아웃</button>
+            </span>
+          ) : (
+            <Link href={"/signin"}>통합로그인</Link>
+          )}
+
           <span
             className={`text-md hover:cursor-pointer ${
               showTooltip ? "show" : ""

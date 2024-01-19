@@ -1,19 +1,97 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import BookmarkButton from "@/components/BookmarkButton"
+import Image from "next/image"
+import Link from "next/link"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { FaSearch } from "react-icons/fa"
 import { MdOutlineCancel } from "react-icons/md"
+import { getSearchedProject } from "../../(default)/projects/api"
+import { useQuery } from "@tanstack/react-query"
+import ProjectCard from "../../(default)/projects/_components/ProjectCard"
+import EmptyState from "@/components/EmptyState"
+import Spacer from "@/components/ui/Spacer"
+import {
+  getBookmarks,
+  getBookmarksByUserId,
+  getProjectTech,
+  getProjects,
+} from "../../(default)/projects/api"
+import Pagination from "@mui/material/Pagination"
+import { Database, Tables } from "@/types/supabase"
+import Category from "../../(default)/projects/_components/Category"
+import { supabaseForClient } from "@/supabase/supabase.client"
+
 //해당 이용자의 localstorage 가져오기
 interface keywordsInterface {
   id?: number
   num: number
   text?: string
 }
-
+interface Props {
+  project: Tables<"projects">
+  bookmarks: Tables<"bookmarks">[]
+  currentUser: string
+  techs: Tables<"techs">[]
+  setProjectId: Dispatch<SetStateAction<string>>
+}
 //
+
+const PAGE_SIZE = 5
 const SearchPage = () => {
+  const [currentUser, setCurrentUser] = useState("")
+
+  /** 현재 인증된 유저 데이터 가져오기 */
+  useEffect(() => {
+    const getAuth = async () => {
+      const user = await supabaseForClient.auth.getUser()
+      setCurrentUser(user.data.user?.id as string)
+    }
+    getAuth()
+  }, [currentUser])
+
+  const initialCategoryData: TCategoryData = {
+    startDate: "",
+    endDate: "",
+    isOffline: null,
+    region: "",
+    numberOfMembers: 0,
+    positions: [],
+    techs: [],
+  }
+
+  const [categoryData, setCategoryData] =
+    useState<TCategoryData>(initialCategoryData)
+
+  const [page, setPage] = useState<number>(1)
+
+  const [recruitStatus, setRecruitStatus] = useState(false)
+
+  const [order, setOrder] = useState(1)
+
+  const [projectId, setProjectId] = useState("")
+
   const [keywords, setKeywords] = useState<keywordsInterface[]>([])
   const [userId, setUserId] = useState<number>()
   const [text, setText] = useState<string>()
+
+  //북마크
+  const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
+    queryKey: ["bookmarks", currentUser],
+    queryFn: () => getBookmarksByUserId(currentUser),
+    enabled: !!currentUser,
+  })
+
+  //프로젝트 기술 스택
+  /** 프로젝트 기술 스택 가져오기 */
+  const { data: techs } = useQuery({
+    queryKey: ["techs", projectId],
+    queryFn: () => getProjectTech(projectId),
+    enabled: !!projectId,
+  })
+
+  // ------PageCard--------------
+
+  // ------PageCard--------------
 
   //1.들어오자마자 로컬 스토리지의 keywords의 값이 있는지 확인하고 , 있으면 keywods state에 값을 넣는다
   //2.keywords에 값이 있으면 map으로 돌려 ui에 보여준다
@@ -44,7 +122,7 @@ const SearchPage = () => {
         //여기서 setKeywords를 해야하는데, 왜 자꾸 무한 loop됨?
       }
     }
-  }, [text])
+  }, [])
 
   //검색버튼 클릭하여 데이터(아이디,num,검색어) 추가
   const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
@@ -68,14 +146,14 @@ const SearchPage = () => {
       .some((keyword) => keyword.text === newKeyword.text)
     if (isKeywordExist) {
       setText(searchInput)
+      refetch()
     } else {
       setKeywords([newKeyword, ...keywords])
       localStorage.setItem(
         "keywords",
         JSON.stringify([newKeyword, ...keywords]),
-
-        //여기서 api 진행할 것
       )
+      refetch()
     }
   }
   //검색어 추가
@@ -104,6 +182,18 @@ const SearchPage = () => {
   const onSearchKeywordChangeHandler = (text: string) => {
     setText(text)
   }
+
+  const { data: searchedData, refetch } = useQuery({
+    queryKey: ["searchedProjecs", text],
+    queryFn: () => {
+      if (text) {
+        return getSearchedProject(text)
+      }
+    },
+    enabled: false,
+  })
+
+  console.log("data", searchedData)
   return (
     <>
       <section className="flex justify-center align-center mt-40 ">
@@ -175,13 +265,32 @@ const SearchPage = () => {
                 </div>
               ))
             ) : (
-              <>최근 검색어가 없습니다</>
+              <>당신의 꿈을 펼쳐보세요!</>
             )}
           </ul>
         </div>
       </section>
 
-      <div>검색한 데이터 들어오는 곳 프로젝트와 인재풀!</div>
+      {/* -------프로젝트 리스트 들어오기 ---------- */}
+      {(searchedData?.length as number) > 0 ? (
+        <ul className="flex flex-col gap-8">
+          {searchedData?.map((item: Tables<"projects">) => {
+            return (
+              <ProjectCard
+                key={item?.id}
+                project={item}
+                bookmarks={bookmarks}
+                currentUser={currentUser}
+                setProjectId={setProjectId}
+                techs={techs}
+              />
+            )
+          })}
+        </ul>
+      ) : (
+        <></>
+        // <EmptyState />
+      )}
     </>
   )
 }

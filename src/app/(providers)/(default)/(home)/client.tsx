@@ -9,6 +9,7 @@ import "swiper/css/pagination"
 import "swiper/css/navigation"
 import "swiper/css/effect-coverflow"
 import "swiper/css/effect-fade"
+import Image from "next/image"
 
 export default function Client({ children }: { children: React.ReactNode }) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
@@ -18,7 +19,7 @@ export default function Client({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="border border-black flex flex-col justify-center items-center min-h-screen relative">
-        <div className="w-[400px]">
+        <div className="w-[100%] h-[100%]">
           <Swiper
             spaceBetween={10}
             centeredSlides={true}
@@ -37,11 +38,9 @@ export default function Client({ children }: { children: React.ReactNode }) {
             modules={[Autoplay, Pagination, Navigation]}
             className="mySwiper"
           >
-            <SwiperSlide>
-              <div className="ml-5">Slide 1</div>
-            </SwiperSlide>
-            <SwiperSlide>Slide 2</SwiperSlide>
-            <SwiperSlide>Slide 3</SwiperSlide>
+            <SwiperSlide>슬라이드</SwiperSlide>
+            <SwiperSlide>슬라이드</SwiperSlide>
+            <SwiperSlide>슬라이드</SwiperSlide>
           </Swiper>
           {/* 추가된 부분: 직접 요소를 지정하여 위치를 조절 */}
           <div className="swiper-pagination swiper-pagination-custom"></div>
