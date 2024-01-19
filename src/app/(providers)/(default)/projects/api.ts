@@ -293,18 +293,26 @@ export async function getComments(projectId: string) {
     .from("comments")
     .select("*, user:users(*)")
     .eq("project_id", projectId)
+    .is("re_comment_id", null)
 
   if (error) console.log("error", error)
 
   return data
 }
 
-/** 프로젝트 게시물에 댓글 작성 데이터에 추가 */
+/** 프로젝트 게시물에 댓글 추가 */
 export async function setComment(comment: TablesInsert<"comments">) {
-  const { data, error } = await supabaseForClient
-    .from("comments")
-    .insert(comment)
+  const { error } = await supabaseForClient.from("comments").insert(comment)
 
-  console.log(data)
+  if (error) console.log("error", error)
+}
+
+/** 프로젝트 게시물에 댓글 삭제 */
+export async function removeComment(commentId: string) {
+  const { error } = await supabaseForClient
+    .from("comments")
+    .delete()
+    .match({ id: commentId })
+
   if (error) console.log("error", error)
 }
