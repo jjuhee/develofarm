@@ -7,8 +7,14 @@ import React, { useState } from "react"
 import { IoMdSearch } from "react-icons/io"
 import { VscBell } from "react-icons/vsc"
 import { supabaseForClient } from "@/supabase/supabase.client"
+import useUserStore from "@/store/user"
+
 const Header = () => {
+  const { userId } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
+  const { setViewMemberModal, setMemberPosition } = useMembersStore(
+    (state) => state,
+  )
 
   const [isLoggedOut, setIsLoggedOut] = useState(false)
   const setViewMemberModal = useMembersStore(
@@ -18,6 +24,7 @@ const Header = () => {
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
     setViewMemberModal(false)
+    setMemberPosition(null)
   }
 
   const [showTooltip, setShowTooltip] = useState(false)
@@ -88,7 +95,7 @@ const Header = () => {
               </div>
             )}
           </span>
-          <Link href={"/profile"}>마이페이지</Link>
+          <Link href={`/profile/${userId}`}>마이페이지</Link>
         </nav>
       </div>
     </div>

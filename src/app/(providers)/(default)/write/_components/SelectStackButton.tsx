@@ -61,13 +61,12 @@ const SelectStackButton = ({
     <>
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
-          className={`flex items-center mb-2 justify-center gap-2 border-[1.5px] px-[20px] py-[5px] rounded-full cursor-pointer
+          className={`flex items-center mb-2 justify-center gap-2 border-[1.5px]  px-[20px] py-[5px] rounded-full cursor-pointer transition-all
           ${
             isPositionChecked(POSITION_ID.front)
-              ? "border-red-500"
+              ? "border-[#297A5F] text-[#297A5F]"
               : "border-slate-400"
-          } 
-          `}
+          }  `}
           onClick={onClickTechStackHandler}
         >
           프론트엔드
@@ -75,13 +74,16 @@ const SelectStackButton = ({
         </div>
 
         <ul
-          className={`absolute flex flex-col bg-slate-50 w-[150px] rounded-lg py-[15px] px-[20px] transition-all ${
+          className={`absolute flex flex-col bg-white border-[1.5px] border-[#297A5F] rounded-2xl py-[15px] px-[20px] transition-all z-5 ${
             isActive === "프론트엔드" ? "visible" : "invisible"
           }`}
         >
           {allTechs?.[0]?.map((tech, i) => (
             <li key={i}>
-              <label htmlFor={tech?.id} className="cursor-pointer">
+              <label
+                htmlFor={tech?.id}
+                className="cursor-pointer text-[16px] text-[#297A5F]"
+              >
                 <input
                   type="checkbox"
                   id={tech?.id}
@@ -98,12 +100,12 @@ const SelectStackButton = ({
       </li>
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
-          className={`flex items-center mb-2 justify-center gap-2 border-[1.5px] px-[20px] py-[5px] rounded-full cursor-pointer
+          className={`flex items-center mb-2 justify-center gap-2 border-[1.5px] px-[20px] py-[5px] rounded-full cursor-pointer transition-all
           ${
             isPositionChecked(POSITION_ID.back)
-              ? "border-red-500"
+              ? "border-[#297A5F] text-[#297A5F]"
               : "border-slate-400"
-          } 
+          }
           `}
           onClick={onClickTechStackHandler}
         >
@@ -111,13 +113,16 @@ const SelectStackButton = ({
           {isActive === "백엔드" ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col bg-slate-50 w-[150px] rounded-lg py-[15px] px-[20px] transition-all ${
+          className={`absolute flex flex-col w-[150px] bg-white border-[1.5px] border-[#297A5F] rounded-2xl py-[15px] px-[20px] transition-all z-5 ${
             isActive === "백엔드" ? "visible" : "invisible"
           }`}
         >
           {allTechs?.[1]?.map((tech, i) => (
             <li key={i}>
-              <label htmlFor={tech?.id} className="cursor-pointer">
+              <label
+                htmlFor={tech?.id}
+                className="cursor-pointer text-[16px] text-[#297A5F]"
+              >
                 <input
                   type="checkbox"
                   id={tech?.id}
@@ -134,12 +139,12 @@ const SelectStackButton = ({
       </li>
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
-          className={`flex items-center mb-2 justify-center gap-2 border-[1.5px] px-[20px] py-[5px] rounded-full cursor-pointer
+          className={`flex items-center mb-2 justify-center gap-2 border-[1.5px] px-[20px] py-[5px] rounded-full cursor-pointer tranition-all
           ${
             isPositionChecked(POSITION_ID.design)
-              ? "border-red-500"
+              ? "border-[#297A5F] text-[#297A5F]"
               : "border-slate-400"
-          } 
+          }
           `}
           onClick={onClickTechStackHandler}
         >
@@ -147,13 +152,16 @@ const SelectStackButton = ({
           {isActive === "디자인" ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col bg-slate-50 w-[150px] rounded-lg py-[15px] px-[20px] transition-all ${
+          className={`absolute flex flex-col w-[150px] bg-white border-[1.5px] border-[#297A5F] rounded-2xl py-[15px] px-[20px] transition-all z-5 ${
             isActive === "디자인" ? "visible" : "invisible"
           }`}
         >
           {allTechs?.[3]?.map((tech, i) => (
             <li key={i}>
-              <label htmlFor={tech?.id} className="cursor-pointer">
+              <label
+                htmlFor={tech?.id}
+                className="cursor-pointer text-[16px] text-[#297A5F]"
+              >
                 <input
                   type="checkbox"
                   name="디자인"

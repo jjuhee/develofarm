@@ -31,8 +31,6 @@ interface Props {
   project: Tables<"projects">
   bookmarks: Tables<"bookmarks">[]
   currentUser: string
-  techs: Tables<"techs">[]
-  setProjectId: Dispatch<SetStateAction<string>>
 }
 //
 
@@ -68,8 +66,6 @@ const SearchPage = () => {
 
   const [order, setOrder] = useState(1)
 
-  const [projectId, setProjectId] = useState("")
-
   const [keywords, setKeywords] = useState<keywordsInterface[]>([])
   const [userId, setUserId] = useState<number>()
   const [text, setText] = useState<string>()
@@ -83,11 +79,11 @@ const SearchPage = () => {
 
   //프로젝트 기술 스택
   /** 프로젝트 기술 스택 가져오기 */
-  const { data: techs } = useQuery({
-    queryKey: ["techs", projectId],
-    queryFn: () => getProjectTech(projectId),
-    enabled: !!projectId,
-  })
+  // const { data: techs } = useQuery({
+  //   queryKey: ["techs", projectId],
+  //   queryFn: () => getProjectTech(projectId),
+  //   enabled: !!projectId,
+  // })
 
   // ------PageCard--------------
 
@@ -279,10 +275,8 @@ const SearchPage = () => {
               <ProjectCard
                 key={item?.id}
                 project={item}
-                bookmarks={bookmarks}
+                bookmarks={bookmarks as Tables<"bookmarks">[]}
                 currentUser={currentUser}
-                setProjectId={setProjectId}
-                techs={techs}
               />
             )
           })}

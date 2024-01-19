@@ -4,22 +4,24 @@ import React, { useEffect, useRef } from "react"
 import MemberCard from "./_components/MemberCard"
 import Spacer from "@/components/ui/Spacer"
 import MemberCategory from "./_components/MemberCategory"
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { useInView } from "react-intersection-observer"
-import { getUsers } from "./api"
+import { getPositions, getUsers } from "./api"
 import { Tables } from "@/types/supabase"
 import useCategoryStore from "@/store/category"
 import useMembersStore from "@/store/members"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import MemberProfile from "./_components/MemberProfile"
 import EmptyState from "@/components/EmptyState"
+import useUserStore from "@/store/user"
 
 const MembersPage = () => {
+  const userId = useUserStore((state) => state.userId)
+
   const title = useCategoryStore((state) => state.title)
 
-  const { viewMemberModal, setViewMemberModal } = useMembersStore(
-    (state) => state,
-  )
+  const { viewMemberModal, setViewMemberModal, memberPosition } =
+    useMembersStore((state) => state)
 
   const modalRef = useRef<HTMLInputElement>(null)
 
@@ -38,7 +40,6 @@ const MembersPage = () => {
     }
   }, [viewMemberModal])
 
-  // TODO: 무한 스크롤 구현
   const {
     data: infinityUsers,
     error,
@@ -48,20 +49,24 @@ const MembersPage = () => {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ["users", title],
-    queryFn: ({ pageParam }) => getUsers({ pageParam }),
+    queryFn: ({ pageParam }) =>
+      getUsers({ pageParam, positionId: memberPosition?.id }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      // console.log("lastPage: ", lastPage)
-      if (lastPage.length < 3) {
+      if ((lastPage?.length as number) < 3) {
         return null
       }
       return allPages.length * 3
     },
     select: (data) => {
-      // console.log(data.pages.reduce((a, b) => a.concat(b), []))
       return data.pages.reduce((a, b) => a.concat(b), [])
     },
     enabled: !!title,
+  })
+
+  const { data: positions } = useQuery({
+    queryKey: ["positions"],
+    queryFn: getPositions,
   })
 
   const { ref } = useInView({
@@ -78,7 +83,7 @@ const MembersPage = () => {
     <div>
       <Spacer y={90} />
       <div className="flex w-full">
-        <MemberCategory />
+        <MemberCategory positions={positions as Tables<"positions">[]} />
 
         <section className="flex flex-col ml-[17rem] py-5 gap-[24px] w-full ">
           <h3 className="text-[40px] font-[700]">{title}</h3>
@@ -92,7 +97,12 @@ const MembersPage = () => {
               {(infinityUsers?.length as number) > 0 ? (
                 <>
                   {infinityUsers?.map((user: Tables<"users">) => (
-                    <MemberCard key={user.id} user={user} title={title} />
+                    <MemberCard
+                      key={user?.id}
+                      user={user}
+                      title={title}
+                      currentUserId={userId}
+                    />
                   ))}
                 </>
               ) : (

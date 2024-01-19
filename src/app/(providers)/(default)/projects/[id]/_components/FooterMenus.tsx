@@ -1,14 +1,14 @@
 import { Tables } from "@/types/supabase"
 import React, { SetStateAction, useState } from "react"
-import { CiBookmark } from "react-icons/ci"
-import { IoShareSocialOutline } from "react-icons/io5"
-import { IoIosPeople } from "react-icons/io"
-import { FaRegMessage } from "react-icons/fa6"
-import { CiUser } from "react-icons/ci"
 import Comments from "./Comments"
 import Applicants from "./Applicants"
 import Spacer from "@/components/ui/Spacer"
-import FooterAuthButtons from "./FooterAuthButtons"
+import FooterAuthButton from "./FooterAuthButton"
+import useUserStore from "@/store/user"
+import FooterPublicIcon from "./FooterPublicIcon"
+import { IoIosPeople } from "react-icons/io"
+import { FaRegMessage } from "react-icons/fa6"
+import { CiUser } from "react-icons/ci"
 
 type Props = {
   project: Tables<"projects">
@@ -23,10 +23,8 @@ const FooterMenus = ({ project }: Props) => {
   /**
    *@ param1 현재 로그인한 유저 정보를 담은 변수
    *@ param2 글 작성자가 현재 로그인한 유저랑 같은지 판별하는 변수*/
-  const currentUser = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
-    ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
-    : null
-  const isWriter = currentUser?.user?.id === project.user_id
+  const { userId } = useUserStore()
+  const isWriter = userId === project.user_id
 
   /**
    *@ function 클릭시 탭메뉴 선택 */
@@ -61,8 +59,8 @@ const FooterMenus = ({ project }: Props) => {
           </>
         ) : (
           <>
-            <span className="pr-14">
-              <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
+            <span className="pr-10">
+              <FaRegMessage size={30} className="inline-block ml-2 mr-2" /> 24
             </span>
             <span className="pr-8">
               <IoIosPeople size={40} className="inline-block ml-8 mr-1" />
@@ -70,18 +68,12 @@ const FooterMenus = ({ project }: Props) => {
             </span>
           </>
         )}
-        <span className="ml-auto pr-5">
-          <span>
-            <CiBookmark size={30} className="inline-block" />
-          </span>
-          5
-        </span>
-        <span className="pr-5">
-          <IoShareSocialOutline size={30} />
-        </span>
-        <FooterAuthButtons project={project} isWriter={isWriter} />
+        {/* 모두가 볼 수 있는 아이콘 */}
+        <FooterPublicIcon />
+        {/* 사용자에 따라서 다른 버튼 */}
+        <FooterAuthButton project={project} isWriter={isWriter} />
       </section>
-      <Spacer y={35} />
+      <Spacer y={25} />
       {/* 탭 메뉴에 따라 나오는 컴포넌트 */}
       <section>
         {isSelected === "comments" && <Comments project={project} />}
