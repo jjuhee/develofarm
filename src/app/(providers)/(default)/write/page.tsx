@@ -1,15 +1,22 @@
 "use client"
 import Tiptap from "@/app/(providers)/(default)/write/_components/Tiptap"
 import Spacer from "@/components/ui/Spacer"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import React, { FormEvent, useEffect, useRef, useState } from "react"
 import { setProject } from "./api"
 import Category from "./_components/Category"
 import { useRouter } from "next/navigation"
-import { TablesInsert } from "@/types/supabase"
+import { TablesInsert, TablesUpdate } from "@/types/supabase"
 import { supabaseForClient } from "@/supabase/supabase.client"
+import { getProject, getProjectTechWithPosition } from "../projects/api"
+import useUserStore from "@/store/user"
+import formatDate from "@/utils/formatDate"
 
-const Write = () => {
+interface Props {
+  projectId: string
+}
+const WritePage = ({ projectId }: Props) => {
+  const isEditMode = !!projectId
   const initialCategoryData: TCategoryData = {
     startDate: "",
     endDate: "",
@@ -23,14 +30,11 @@ const Write = () => {
   const [content, setContent] = useState<string>("")
   const [categoryData, setCategoryData] =
     useState<TCategoryData>(initialCategoryData)
-  const [currentUser, setCurrentUser] = useState("")
   const router = useRouter()
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: setProject,
     onSuccess: () => {
-      // TODO: (jhee) 일단 저 쿼리키를 쓰는 곳은 없는데,
-      // 페이지네이션 같은 경우에 글 추가했을때 업데이트 되려면? 쿼리키 관리 궁금.
       queryClient.invalidateQueries({ queryKey: ["projects"] })
       alert("게시물 작성 완료~!")
       router.push("/")
@@ -41,20 +45,48 @@ const Write = () => {
       )
     },
   })
-
-  // const currentUser = localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")
-  //   ? JSON.parse(localStorage.getItem("sb-aksbymviolrkiainilpq-auth-token")!)
-  //   : null
-
   /** 현재 인증된 유저 데이터 가져오기 */
-  useEffect(() => {
-    const getAuth = async () => {
-      const user = await supabaseForClient.auth.getUser()
-      setCurrentUser(user.data.user?.id as string)
-    }
-    getAuth()
-  }, [currentUser])
+  const { userId } = useUserStore()
 
+  /** 수정시1 : 프로젝트 가져오기 */
+  const { data: project, isLoading } = useQuery({
+    queryKey: ["project", projectId],
+    queryFn: () => getProject(projectId),
+    enabled: !!projectId,
+  })
+
+  /** 수정시2 : 프로젝트의 기술 스택 + 연계된 포지션 가져오기 */
+  const { data: techsWithPosition } = useQuery<TTechs[]>({
+    queryKey: ["techs", projectId],
+    queryFn: () => getProjectTechWithPosition(projectId),
+    enabled: !!projectId,
+  })
+
+  // /** 기본 POSITION_ID 대신 이걸로할까 : 프로젝트의 포지션 가져오기 */
+  // const { data: positions } = useQuery({
+  //   queryKey: ["postions", projectId],
+  //   queryFn: () => getProjectPosition(projectId),
+  //   enabled: !!projectId,
+  // })
+
+  /** 수정시4 : 내용 가져오기 */
+  useEffect(() => {
+    if (!isEditMode) return
+    if (!project) return
+    setTitle(project.title)
+    setContent(project.content)
+    setCategoryData((prev) => ({
+      ...prev,
+      startDate: formatDate(project.project_start_date),
+      endDate: formatDate(project.project_end_date),
+      isOffline: project.is_offline,
+      numberOfMembers: project.number_of_people,
+      region: project.is_offline ? project.region?.id! : "",
+      techs: techsWithPosition as TTechs[],
+    }))
+  }, [project])
+
+  /** 제출하기 */
   const submitProjectHandler = (e: FormEvent) => {
     e.preventDefault()
     if (
@@ -93,7 +125,7 @@ const Write = () => {
     }
     // TEMP END
     const newData: TablesInsert<"projects"> = {
-      user_id: currentUser, //TODO P0:(jhee) 임시 유저 변경
+      user_id: userId,
       title,
       content,
       project_start_date: categoryData.startDate,
@@ -102,6 +134,7 @@ const Write = () => {
       number_of_people: categoryData.numberOfMembers,
       region_id: categoryData.region,
     }
+
     mutate({
       project: newData,
       techs: categoryData.techs,
@@ -152,4 +185,4 @@ const Write = () => {
   )
 }
 
-export default Write
+export default WritePage

@@ -218,7 +218,28 @@ export async function getProjectTech(projectId: string) {
   return techs
 }
 
-/** 포지션에 대한 기술 스택 가져오기 */
+/** projectId와 일치하는 기술 스택 + 연결된 포지션 가져오기 (position name까지 가져오려면 한번더 join)*/
+export async function getProjectTechWithPosition(projectId: string) {
+  const { data: techs, error: techError } = await supabaseForClient
+    .from("project_tech")
+    .select("*,techs(position_tech(*))")
+    .eq("project_id", projectId)
+
+  if (!techs) {
+    console.log(techError)
+    return
+  }
+  //  return techs
+  const techPosition = techs.map((techs) => {
+    return {
+      tech_id: techs.tech_id,
+      position_id: techs.techs?.position_tech[0].position_id,
+    }
+  })
+  return techPosition
+}
+
+/** 모든 포지션에 대한 기술 스택 가져오기 */
 export async function getTechsByPositions() {
   try {
     // 1. 모든 포지션을 가져온다

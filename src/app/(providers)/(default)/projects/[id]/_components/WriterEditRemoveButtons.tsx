@@ -40,12 +40,13 @@ const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
     }
   }
 
+  console.log("writeEditRemove", project.id)
   return (
     // 작성자가 맞다면 수정/삭제 버튼 보여주기
     isWriter && (
       <>
         <li className="ml-auto">
-          <Link href="/update">수정</Link>
+          <Link href={`/write/${project.id}`}>수정</Link>
         </li>
         <li>
           <button onClick={() => isDeleteClickHandler(project.id)}>삭제</button>
