@@ -60,8 +60,8 @@ const CustomModal = () => {
 
   return ReactDOM.createPortal(
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-100" />
-      <div className="fixed top-[50%] left-[50%] transform: translate-x-[-50%] translate-y-[-50%] p-[50px] w-[450px] h-[260px] bg-white z-200 rounded-3xl">
+      <div className="fixed top-0 left-0 right-0 bottom-0 flex bg-black bg-opacity-50 z-100" />
+      <div className="fixed top-[50%] left-[50%] flex transform: translate-x-[-50%] translate-y-[-50%] p-[50px] w-[450px] h-[260px] bg-white z-200 rounded-3xl">
         <div className="w-full h-full flex flex-col justify-around">
           <h3 className="text-[20px] font-[600] whitespace-pre-line text-center">
             {modalMessage}
