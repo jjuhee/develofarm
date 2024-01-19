@@ -1,57 +1,69 @@
-import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
-import React, { useEffect, useRef } from "react"
-import { getPositionById, getTechsByUserId } from "../api"
+import React from "react"
 import { Tables } from "@/types/supabase"
 import useMembersStore from "@/store/members"
-import MemberProfile from "./MemberProfile"
-import useOnClickOutSide from "@/hooks/useOnClickOutSide"
+import { useCustomModal } from "@/hooks/useCustomModal"
+import { useRouter } from "next/navigation"
 
 interface Props {
   user: Tables<"users">
   title: string
+  currentUserId: string
 }
 
-const MemberCard = ({ user, title }: Props) => {
-  const { setViewMemberModal, setSelectedMember, setMemberPosition } =
-    useMembersStore((state) => state)
+const MemberCard = ({ user, title, currentUserId }: Props) => {
+  const router = useRouter()
 
-  const { data: userTechs } = useQuery({
-    queryKey: ["techs", user?.id],
-    queryFn: () => getTechsByUserId(user.id),
-    enabled: !!user,
-  })
+  const { openCustomModalHandler } = useCustomModal()
 
-  const openModalHandler = () => {
-    setSelectedMember(user)
-    // setMemberPosition(user?.position)
-    setViewMemberModal(true)
+  const { setViewMemberModal, setSelectedMember } = useMembersStore(
+    (state) => state,
+  )
+
+  const { user_nickname, position, user_comment, user_tech } = user
+
+  const onClickMemberCardHandler = () => {
+    const handler = () => {
+      router.push("/signin")
+    }
+
+    if (!currentUserId) {
+      openCustomModalHandler(
+        `로그인이 필요합니다.
+        로그인 페이지로 이동하시겠습니까?`,
+        "confirm",
+        handler,
+      )
+    } else {
+      setSelectedMember(user)
+      setViewMemberModal(true)
+    }
   }
 
   return (
     <li
       className="relative flex justify-center items-end  w-[280px] h-[380px] rounded-3xl my-[20px] shadow-2xl mt-20 transition-all duration-200 cursor-pointer hover:scale-105"
-      onClick={openModalHandler}
+      onClick={onClickMemberCardHandler}
     >
       <section className="flex flex-col z-1 p-[12px] gap-[5px] items-center pb-5 px-10 ">
         <span className="text-[20px] font-[700] leading-[24px]">
-          {user?.user_nickname}
+          {user_nickname}
         </span>
         <span className="text-[16px] font-[500] leading-[28px]">
-          {user?.position?.name}
+          {position?.name}
         </span>
         <p className="w-full text-[14px] font-[400] leading-[28px] text-center">
-          {user?.user_comment ? user?.user_comment : "한줄소개가 없습니다."}
+          {user_comment ? user_comment : "한줄소개가 없습니다."}
         </p>
         <ul className="flex gap-[5px] mt-3">
-          {(userTechs?.length as number) > 0 ? (
+          {(user_tech?.length as number) > 0 ? (
             <>
-              {userTechs?.map((tech, i) => (
+              {user_tech?.map((tech, i: string) => (
                 <li
                   key={i}
                   className="px-3 py-1 rounded-full border-2 text-[12px] font-[400]"
                 >
-                  {tech}
+                  {tech?.techs.tech_name}
                 </li>
               ))}
             </>
@@ -66,7 +78,7 @@ const MemberCard = ({ user, title }: Props) => {
           alt="user"
           fill
           sizes="auto"
-          className="object-cover overflow-hidden w-full h-full transition group-hover:scale-110 rounded-full "
+          className="object-cover overflow-hidden w-full h-full transition group-hover:scale-110 rounded-full z-11"
         />
       </div>
     </li>

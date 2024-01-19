@@ -9,21 +9,19 @@ import { getBookmarksByUserId, getProjectTech, getProjects } from "./api"
 import Pagination from "@mui/material/Pagination"
 import { Tables } from "@/types/supabase"
 import Category from "../write/_components/Category"
-import { supabaseForClient } from "@/supabase/supabase.client"
-import CustomModal from "@/components/CustomModal"
-import useCustomModalStore from "@/store/customModal"
+import useUserStore from "@/store/user"
+import scrollToTop from "@/utils/scrollTop"
 
 const PAGE_SIZE = 5
 
 const ProjectsPage = () => {
-  const { setViewCustomModal } = useCustomModalStore((state) => state)
+  const user = useUserStore((state) => state.user)
 
-  const [currentUser, setCurrentUser] = useState("")
   const [page, setPage] = useState<number>(1)
   const [recruitStatus, setRecruitStatus] = useState(false)
   const [order, setOrder] = useState(1)
-  const [projectId, setProjectId] = useState("")
 
+  /** 필터링 검색 옵션 */
   const [option, setOption] = useState<TProjectsOptions>({
     isOffline: null,
     startDate: "",
@@ -31,15 +29,6 @@ const ProjectsPage = () => {
     regionId: "",
     techs: [],
   })
-
-  /** 현재 인증된 유저 데이터 가져오기 */
-  useEffect(() => {
-    const getAuth = async () => {
-      const user = await supabaseForClient.auth.getUser()
-      setCurrentUser(user.data.user?.id as string)
-    }
-    getAuth()
-  }, [currentUser])
 
   const initialCategoryData: TCategoryData = {
     startDate: "",
@@ -54,7 +43,7 @@ const ProjectsPage = () => {
     useState<TCategoryData>(initialCategoryData)
 
   /** 전체 프로젝트 가져오기 */
-  const { data: projects } = useQuery({
+  const { data: projects, refetch: projectRefetch } = useQuery({
     queryKey: ["projects", recruitStatus, { option: option }],
     queryFn: () =>
       getProjects({
@@ -66,20 +55,16 @@ const ProjectsPage = () => {
 
   /** 현재 유저 북마크 데이터 가져오기 */
   const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
-    queryKey: ["bookmarks", currentUser],
-    queryFn: () => getBookmarksByUserId(currentUser),
-    enabled: !!currentUser,
-  })
-
-  /** 프로젝트 기술 스택 가져오기 */
-  const { data: techs } = useQuery({
-    queryKey: ["techs", projectId],
-    queryFn: () => getProjectTech(projectId),
-    enabled: !!projectId,
+    queryKey: ["bookmarks", user],
+    queryFn: () => getBookmarksByUserId(user as string),
+    enabled: !!user,
   })
 
   const onClickPage = (e: React.ChangeEvent<unknown>, page: number) => {
     setPage(page)
+    window.scroll({
+      top: 0,
+    })
   }
 
   /** 모집 중 체크박스 핸들러 */
@@ -166,9 +151,7 @@ const ProjectsPage = () => {
                     key={item?.id}
                     project={item}
                     bookmarks={bookmarks as Tables<"bookmarks">[]}
-                    currentUser={currentUser}
-                    setProjectId={setProjectId}
-                    techs={techs}
+                    currentUser={user as string}
                   />
                 )
               },

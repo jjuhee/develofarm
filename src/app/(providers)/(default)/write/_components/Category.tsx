@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 import React, { Dispatch, useState } from "react"
-import { getRegions, getTechs } from "../../projects/api"
+import { getRegions, getTechsByPositions } from "../../projects/api"
 import SelectStackButton from "./SelectStackButton"
 import { Tables } from "@/types/supabase"
 import Button from "@/components/ui/Button"
@@ -34,8 +34,8 @@ const Category = ({
   } = categoryData
 
   const { data: allTechs } = useQuery({
-    queryKey: ["allTechs"],
-    queryFn: getTechs,
+    queryKey: ["techsByPositions"],
+    queryFn: getTechsByPositions,
   })
 
   const { data: regions } = useQuery({

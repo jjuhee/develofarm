@@ -5,23 +5,16 @@ import Image from "next/image"
 import Link from "next/link"
 import React, { useEffect, useRef, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
-import { getProjectByUserId, getTechsByUserId } from "../api"
+import { getProjectByUserId } from "../api"
 import { Tables } from "@/types/supabase"
-import { supabaseForClient } from "@/supabase/supabase.client"
+import useUserStore from "@/store/user"
 
-const MemberProfile = () => {
+interface Props {
+  currentUserId: string
+}
+
+const MemberProfile = ({ currentUserId }: Props) => {
   const dropdownRef = useRef<HTMLInputElement>(null)
-
-  const [currentUser, setCurrentUser] = useState("")
-
-  useEffect(() => {
-    const getAuth = async () => {
-      const newUser = await supabaseForClient.auth.getUser()
-      console.log(newUser.data.user?.id)
-      setCurrentUser(newUser.data.user?.id as string)
-    }
-    getAuth()
-  }, [])
 
   const { selectedMember } = useMembersStore((state) => state)
 
@@ -30,16 +23,16 @@ const MemberProfile = () => {
   useOnClickOutSide({ ref: dropdownRef, handler: () => setIsActive(false) })
 
   const { data: projects } = useQuery({
-    queryKey: ["projects", currentUser],
-    queryFn: () => getProjectByUserId(currentUser),
-    enabled: !!currentUser,
+    queryKey: ["projects", currentUserId],
+    queryFn: () => getProjectByUserId(currentUserId),
+    enabled: !!currentUserId,
   })
 
-  const { data: userTechs } = useQuery({
-    queryKey: ["techs", selectedMember.id],
-    queryFn: () => getTechsByUserId(selectedMember.id),
-    enabled: !!selectedMember,
-  })
+  const onClickToProfilePageHandler = () => {
+    window.scroll({
+      top: 0,
+    })
+  }
 
   return (
     <>
@@ -121,14 +114,14 @@ const MemberProfile = () => {
       <div className="flex flex-col w-full gap-2">
         <h3 className="text-[18px] font-[700]">보유 기술</h3>
         <ul className="flex gap-5 items-center">
-          {(userTechs?.length as number) > 0 ? (
+          {(selectedMember?.user_tech?.length as number) > 0 ? (
             <>
-              {userTechs?.map((tech, i) => (
+              {selectedMember?.user_tech?.map((tech, i: string) => (
                 <li
                   key={i}
                   className="text-[16px] font-[500] py-1 px-3 border-gray-70 border-2 rounded-3xl"
                 >
-                  {tech}
+                  {tech?.techs?.tech_name}
                 </li>
               ))}
             </>
@@ -165,6 +158,7 @@ const MemberProfile = () => {
         <Link
           href={`/profile/${selectedMember?.id}`}
           className="border-2 border-black py-2 px-4 rounded-3xl cursor-pointer hover:bg-black hover:text-white transition-all duration-300"
+          onClick={onClickToProfilePageHandler}
         >
           자세히 보기
         </Link>
