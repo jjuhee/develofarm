@@ -17,9 +17,6 @@ const Header = () => {
   )
 
   const [isLoggedOut, setIsLoggedOut] = useState(false)
-  const setViewMemberModal = useMembersStore(
-    (state) => state.setViewMemberModal,
-  )
 
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
