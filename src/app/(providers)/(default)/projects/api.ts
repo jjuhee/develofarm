@@ -1,6 +1,12 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
 import { Tables, TablesInsert } from "@/types/supabase"
 
+type ExtendProjectType = Tables<"projects"> & {
+  bookmark_count: number
+}
+
+type BookmarksCountByProject = Record<string, number>
+
 /** 전체 프로젝트 리스트 가져오기 */
 export async function getProjects({
   limit = 0,
@@ -77,13 +83,24 @@ export async function getProjects({
     )
     return {
       ...project,
-      bookmark_count: bookmarkCountInfo
-        ? bookmarkCountInfo.count
-        : project.bookmark_count,
+      bookmark_count: bookmarkCountInfo ? bookmarkCountInfo.count : 0,
     }
   })
 
   return projectsWithBookmarkCount
+}
+
+/** projectId 값과 일치하는 프로젝트 가져오기 */
+export async function getProject(projectId: string) {
+  const { data: projectData, error: projectError } = await supabaseForClient
+    .from("projects")
+    .select("*, user:users(*), region:project_regions(*)")
+    .eq("id", projectId)
+    .single()
+
+  if (projectError) console.log("error", projectError)
+
+  return projectData || null
 }
 
 /** projectId 값과 일치하는 해당 프로젝트 삭제 */
@@ -163,11 +180,11 @@ export async function getBookmarksCountByProject() {
   }
 
   // 그룹화된 결과를 담을 객체
-  const bookmarksCountByProject = {}
+  const bookmarksCountByProject: BookmarksCountByProject = {}
 
   // 각 북마크를 반복하면서 projectId를 기준으로 그룹화
   bookmarks.forEach((bookmark) => {
-    const projectId = bookmark.project_id
+    const projectId: string = bookmark.project_id
 
     if (bookmarksCountByProject[projectId] === undefined) {
       // 새로운 프로젝트인 경우 초기화
@@ -185,8 +202,6 @@ export async function getBookmarksCountByProject() {
       count,
     }),
   )
-
-  console.log("result", result)
 
   return result
 }

@@ -10,7 +10,7 @@ import { supabaseForClient } from "@/supabase/supabase.client"
 import useUserStore from "@/store/user"
 
 const Header = () => {
-  const { user } = useUserStore()
+  const { userId } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
   const { setViewMemberModal, setMemberPosition } = useMembersStore(
     (state) => state,
@@ -74,7 +74,7 @@ const Header = () => {
               </div>
             )}
           </span>
-          <Link href={`/profile/${user}`}>마이페이지</Link>
+          <Link href={`/profile/${userId}`}>마이페이지</Link>
         </nav>
       </div>
     </div>

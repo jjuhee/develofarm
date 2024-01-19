@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ReactNode, useEffect } from "react"
+import React, { ReactNode, useEffect, useState } from "react"
 import ReactDOM from "react-dom"
 import Spacer from "./ui/Spacer"
 import useCustomModalStore from "@/store/customModal"

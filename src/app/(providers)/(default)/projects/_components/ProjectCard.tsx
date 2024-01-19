@@ -2,18 +2,20 @@ import Image from "next/image"
 import Link from "next/link"
 import formatDate from "@/utils/formatDate"
 import BookmarkButton from "@/components/BookmarkButton"
-import type { Tables } from "@/types/supabase"
 import parse from "html-react-parser"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import { useRouter } from "next/navigation"
 
+import type { Tables } from "@/types/supabase"
+import { ExtendedProjectsType } from "@/types/extendedType"
+
 interface Props {
-  project: Tables<"projects">
+  project: ExtendedProjectsType
   bookmarks: Tables<"bookmarks">[]
   currentUser: string
 }
 
-const ProjectCard = ({ project, bookmarks, currentUser, techs }: Props) => {
+const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
   const { openCustomModalHandler } = useCustomModal()
 
   const router = useRouter()
@@ -88,7 +90,7 @@ const ProjectCard = ({ project, bookmarks, currentUser, techs }: Props) => {
                 key={i}
                 className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl"
               >
-                {tech && tech?.techs?.tech_name}
+                {tech?.techs?.tech_name}
               </li>
             ))}
           </ul>

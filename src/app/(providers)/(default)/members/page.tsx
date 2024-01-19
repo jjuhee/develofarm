@@ -14,6 +14,7 @@ import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import MemberProfile from "./_components/MemberProfile"
 import EmptyState from "@/components/EmptyState"
 import useUserStore from "@/store/user"
+import { ExtendedUsersType } from "@/types/extendedType"
 
 const MembersPage = () => {
   const userId = useUserStore((state) => state.userId)
@@ -59,7 +60,7 @@ const MembersPage = () => {
       return allPages.length * 3
     },
     select: (data) => {
-      return data.pages.reduce((a, b) => a.concat(b), [])
+      return data.pages.flatMap((page) => page as ExtendedUsersType[])
     },
     enabled: !!title,
   })
@@ -96,7 +97,7 @@ const MembersPage = () => {
             <ul className="grid grid-cols-1 gap-20 md:grid-cols-2 lg:grid-cols-3">
               {(infinityUsers?.length as number) > 0 ? (
                 <>
-                  {infinityUsers?.map((user: Tables<"users">) => (
+                  {infinityUsers?.map((user) => (
                     <MemberCard
                       key={user?.id}
                       user={user}
@@ -123,7 +124,7 @@ const MembersPage = () => {
             className="flex flex-col bg-white w-[732px] h-auto py-10 px-[50px] gap-8 rounded-3xl"
             ref={modalRef}
           >
-            <MemberProfile />
+            <MemberProfile currentUserId={userId} />
           </div>
         </div>
       )}

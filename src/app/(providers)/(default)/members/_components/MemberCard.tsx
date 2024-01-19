@@ -1,12 +1,12 @@
 import Image from "next/image"
 import React from "react"
-import { Tables } from "@/types/supabase"
 import useMembersStore from "@/store/members"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import { useRouter } from "next/navigation"
+import { ExtendedUsersType } from "@/types/extendedType"
 
 interface Props {
-  user: Tables<"users">
+  user: ExtendedUsersType
   title: string
   currentUserId: string
 }
@@ -35,7 +35,7 @@ const MemberCard = ({ user, title, currentUserId }: Props) => {
         handler,
       )
     } else {
-      setSelectedMember(user)
+      setSelectedMember(user as ExtendedUsersType)
       setViewMemberModal(true)
     }
   }
@@ -58,9 +58,9 @@ const MemberCard = ({ user, title, currentUserId }: Props) => {
         <ul className="flex gap-[5px] mt-3">
           {(user_tech?.length as number) > 0 ? (
             <>
-              {user_tech?.map((tech, i: string) => (
+              {user_tech?.map((tech) => (
                 <li
-                  key={i}
+                  key={tech.techs.id}
                   className="px-3 py-1 rounded-full border-2 text-[12px] font-[400]"
                 >
                   {tech?.techs.tech_name}
