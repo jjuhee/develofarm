@@ -17,12 +17,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <div id="portal"></div>
       <body className={inter.className}>
-        <Provider>
-          <div className="flex flex-col">{children}</div>
-        </Provider>
+        {children}
+        <div id="portal" className="z-100"></div>
       </body>
     </html>
   )
 }
+
+// {/* <Provider> */}
+// {/* <div className="flex flex-col"> */}
+// {children}
+// <div id="portal"></div>
+// {/* </div> */}
+// {/* </Provider> */}
