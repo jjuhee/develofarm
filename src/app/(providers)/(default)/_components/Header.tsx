@@ -16,6 +16,8 @@ const Header = () => {
     (state) => state,
   )
 
+  const [isLoggedOut, setIsLoggedOut] = useState(false)
+
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
     setViewMemberModal(false)
@@ -44,6 +46,15 @@ const Header = () => {
     )
     .subscribe()
 
+  const onLogoutHandler = () => {
+    //-- 이 부분은 주석이 있어야만 정상적으로 수행되는 코드 입니다.
+
+    // localStorage.removeItem('keywords');
+    supabaseForClient.auth.signOut()
+    setIsLoggedOut(true)
+    alert("로그아웃이 되었습니다")
+  }
+
   return (
     <div className="flex w-full bg-gray-200">
       <div className="flex justify-between items-center w-[1250px] h-[108px] my-0 mx-auto px-2">
@@ -58,7 +69,14 @@ const Header = () => {
           <Link href={"/search"} className="text-lg">
             <IoMdSearch />
           </Link>
-          <Link href={"/signin"}>통합로그인</Link>
+          {!isLoggedOut ? (
+            <span>
+              <button onClick={onLogoutHandler}>로그아웃</button>
+            </span>
+          ) : (
+            <Link href={"/signin"}>통합로그인</Link>
+          )}
+
           <span
             className={`text-md hover:cursor-pointer ${
               showTooltip ? "show" : ""
