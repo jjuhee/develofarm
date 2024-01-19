@@ -44,7 +44,7 @@ const DetailPage = () => {
           <WriterEditRemoveButtons project={project} isWriter={isWriter} />
         </ul>
       </header>
-      <main className="h-full">
+      <main>
         {project.region && (
           <ProjectMetaInfo project={project} region={project.region} />
         )}
