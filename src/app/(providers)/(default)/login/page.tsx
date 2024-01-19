@@ -28,7 +28,7 @@ const page = () => {
 
   return (
     <>
-      <div className="flex flex-col justfiy-center items-center my-40 w-screen ">
+      <div className="flex flex-col justfiy-center items-center my-40  ">
         <section className="text-xl">
           <div className="text-center font-bold">간편하게 로그인하고 </div>
           <div className="font-bold">당신의 꿈을 펼쳐보세요! </div>
@@ -36,7 +36,7 @@ const page = () => {
         <section className="flex flex-col justify-center items-center  box-sizing:inline">
           <div
             onClick={getGoogleSoicalLogin}
-            className="flex items-center justify-center mx-4 my-1.5 border w-[16rem] text-center font-semibold cursor-pointer hover:border-#ccc hover:shadow-lg p-2.5 mt-10 rounded-xl"
+            className="flex items-center justify-center mx-4 my-1.5 border w-[16rem] text-center font-semibold cursor-pointer hover:border-#ccc  p-2.5 mt-10 rounded-xl"
           >
             {" "}
             <Image
@@ -50,7 +50,7 @@ const page = () => {
           </div>
           <div
             onClick={getKakaoSocialLogin}
-            className="flex items-center justify-center mx-4 my-1.5 border w-[16rem] text-center font-semibold cursor-pointer text-black bg-[#FEE500] hover:border-#ccc hover:shadow-lg p-2.5 rounded-xl"
+            className="flex items-center justify-center mx-4 my-1.5 border w-[16rem] text-center font-semibold cursor-pointer text-black bg-[#FEE500] hover:border-#ccc  p-2.5 rounded-xl"
           >
             <Image
               src={"/images/kakao_logo.png"}
@@ -63,7 +63,7 @@ const page = () => {
           </div>
           <div
             onClick={getGithubSocialLogin}
-            className=" flex items-center justify-center mx-4 my-1.5 border w-[16rem] text-center font-semibold cursor-pointer text-white bg-[#171515] hover:border-#ccc hover:shadow-lg p-2.5 rounded-xl"
+            className=" flex items-center justify-center mx-4 my-1.5 border w-[16rem] text-center font-semibold cursor-pointer text-white bg-[#171515] hover:border-#ccc  p-2.5 rounded-xl"
           >
             <Image
               src={"/images/github_logo.png"}

@@ -259,6 +259,21 @@ export async function getRegions() {
   return data
 }
 
+// 검색어와 일치하는 프로젝트 가져오기
+export async function getSearchedProject(title: string) {
+  console.log("api에서 들어오는", title)
+  const { data: projectData, error: projectError } = await supabaseForClient
+    .from("projects")
+    .select(
+      "*, user:users(id, user_nickname, avatar_url), region:project_regions(*)",
+    )
+    .ilike("title", `%${title}%`)
+
+  if (projectError) console.log("error", projectError)
+  console.log("data는 무라고나오ㅗ지?", projectData)
+  return projectData || null
+}
+
 /** projectId와 일치하는 댓글 목록 가져오기 */
 export async function getComments(projectId: string) {
   const { data, error } = await supabaseForClient
