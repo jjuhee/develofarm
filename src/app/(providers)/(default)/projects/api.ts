@@ -86,6 +86,19 @@ export async function getProjects({
   return projectsWithBookmarkCount
 }
 
+/** projectId 값과 일치하는 프로젝트 가져오기 */
+export async function getProject(projectId: string) {
+  const { data: projectData, error: projectError } = await supabaseForClient
+    .from("projects")
+    .select("*, user:users(*), region:project_regions(*)")
+    .eq("id", projectId)
+    .single()
+
+  if (projectError) console.log("error", projectError)
+
+  return projectData || null
+}
+
 /** projectId 값과 일치하는 해당 프로젝트 삭제 */
 export async function removeProject(projectId: string) {
   const { error: projectError } = await supabaseForClient

@@ -15,7 +15,7 @@ import scrollToTop from "@/utils/scrollTop"
 const PAGE_SIZE = 5
 
 const ProjectsPage = () => {
-  const user = useUserStore((state) => state.user)
+  const user = useUserStore((state) => state.userId)
 
   const [page, setPage] = useState<number>(1)
   const [recruitStatus, setRecruitStatus] = useState(false)
