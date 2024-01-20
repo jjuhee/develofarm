@@ -72,7 +72,7 @@ const MemberCard = ({ user, title, currentUserId }: Props) => {
           )}
         </ul>
       </section>
-      <div className="absolute z-10 top-[-70px] w-[230px] h-[230px] bg-gray-200 rounded-full shadow-2xl shadow-gray-300">
+      <div className="absolute top-[-70px] w-[230px] h-[230px] bg-gray-200 rounded-full shadow-2xl shadow-gray-300">
         <Image
           src={user?.avatar_url || "/images/React.jpeg"}
           alt="user"

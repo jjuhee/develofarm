@@ -71,8 +71,10 @@ const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
           <div className="flex gap-3 items-center">
             <span
               className={`${
-                recruit_status ? "bg-[#666666]" : "bg-[#297A5F]"
-              } px-3 py-1 text-center rounded-md text-[20px] font-[700] text-white`}
+                recruit_status
+                  ? "bg-[#666666] border-[#666666] text-white"
+                  : "bg-white  border-black text-black"
+              } px-3 py-1 border-2 text-center rounded-2xl text-[16px] font-[700] `}
             >
               {recruit_status ? "모집 완료" : "모집 중"}{" "}
             </span>
@@ -96,8 +98,7 @@ const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
           </ul>
           <div className="absolute bottom-0 right-2">
             <Button
-              type="border"
-              color={"#297A5F"}
+              color={"main-lime"}
               handler={onClickToDetailPage}
               text="상세보기"
             />
