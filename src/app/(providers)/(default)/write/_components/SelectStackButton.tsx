@@ -94,9 +94,6 @@ const SelectStackButton = ({
               >
                 <input
                   type="checkbox"
-                  checked={categoryData.techs.some(
-                    (selectedTech) => selectedTech.tech_id === tech.id,
-                  )}
                   id={tech?.id}
                   // 포지션이 프론트이고, 테크가 있으면 체크
                   checked={categoryData.techs?.some(
@@ -142,9 +139,6 @@ const SelectStackButton = ({
               >
                 <input
                   type="checkbox"
-                  checked={categoryData.techs.some(
-                    (selectedTech) => selectedTech.tech_id === tech.id,
-                  )}
                   id={tech?.id}
                   // 포지션이 프론트이고, 테크가 있으면 체크
                   checked={categoryData.techs?.some(
@@ -191,9 +185,6 @@ const SelectStackButton = ({
                 <input
                   type="checkbox"
                   name="디자인"
-                  checked={categoryData.techs.some(
-                    (selectedTech) => selectedTech.tech_id === tech.id,
-                  )}
                   id={tech?.id}
                   checked={categoryData.techs?.some(
                     (item) =>
