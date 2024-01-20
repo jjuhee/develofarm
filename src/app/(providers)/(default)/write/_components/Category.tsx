@@ -80,7 +80,7 @@ const Category = ({
   }
 
   return (
-    <section className="flex flex-col gap-3 pb-[10px]">
+    <section className="flex flex-col gap-3">
       {!isWritePage && <h3 className="text-[26px] font-[700]">필터링 검색</h3>}
       <div className="flex relative justify-between gap-[60px] py-7 border-y-[1.5px] py-5 pl-7 border-slate-800">
         <div>
