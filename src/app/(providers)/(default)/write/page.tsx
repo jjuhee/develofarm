@@ -94,6 +94,7 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
     }
 
     const newData: TablesInsert<"projects"> = {
+      id: projectId,
       user_id: userId,
       title,
       content,

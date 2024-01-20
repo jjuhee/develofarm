@@ -12,7 +12,7 @@ interface TParam {
 export async function setProject({ isEditMode, project, techs }: TParam) {
   const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
-    .upsert([project])
+    .upsert(project)
     .select()
 
   if (projectError) {
