@@ -24,10 +24,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-// {/* <Provider> */}
-// {/* <div className="flex flex-col"> */}
-// {children}
-// <div id="portal"></div>
-// {/* </div> */}
-// {/* </Provider> */}

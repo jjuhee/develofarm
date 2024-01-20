@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ReactNode, useEffect } from "react"
+import React, { ReactNode, useEffect, useState } from "react"
 import ReactDOM from "react-dom"
 import Spacer from "./ui/Spacer"
 import useCustomModalStore from "@/store/customModal"
@@ -68,9 +68,14 @@ const CustomModal = () => {
           </h3>
           <section className="w-full flex justify-around px-8">
             {modalType === "confirm" && (
-              <Button handler={cancelHandler} text="취소" type="border" />
+              <Button
+                handler={cancelHandler}
+                text="취소"
+                type="border"
+                color="#297A5F"
+              />
             )}
-            <Button handler={confirmHandler} text="확인" />
+            <Button handler={confirmHandler} text="확인" color="#297A5F" />
           </section>
         </div>
       </div>

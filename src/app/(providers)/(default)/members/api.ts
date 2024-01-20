@@ -12,6 +12,7 @@ export const getUsers = async ({
     .select("*, position: positions(*), user_tech(*, techs(*))")
     .eq("user_status", "지원 중")
     .range(pageParam!, pageParam! + 2)
+    .order("created_at", { ascending: false })
 
   !!positionId && query.eq("positionId", positionId)
 
@@ -49,6 +50,7 @@ export const getProjectByUserId = async (userId: string) => {
     .from("projects")
     .select("*")
     .eq("user_id", userId)
+    .order("created_at", { ascending: false })
 
   if (error) return console.log(error.message)
 

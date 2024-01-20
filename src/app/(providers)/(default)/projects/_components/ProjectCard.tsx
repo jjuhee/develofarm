@@ -1,19 +1,20 @@
 import Image from "next/image"
-import Link from "next/link"
 import formatDate from "@/utils/formatDate"
 import BookmarkButton from "@/components/BookmarkButton"
-import type { Tables } from "@/types/supabase"
-import parse from "html-react-parser"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import { useRouter } from "next/navigation"
 
+import type { Tables } from "@/types/supabase"
+import { ExtendedProjectsType } from "@/types/extendedType"
+import Button from "@/components/ui/Button"
+
 interface Props {
-  project: Tables<"projects">
+  project: ExtendedProjectsType
   bookmarks: Tables<"bookmarks">[]
   currentUser: string
 }
 
-const ProjectCard = ({ project, bookmarks, currentUser, techs }: Props) => {
+const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
   const { openCustomModalHandler } = useCustomModal()
 
   const router = useRouter()
@@ -31,10 +32,11 @@ const ProjectCard = ({ project, bookmarks, currentUser, techs }: Props) => {
     project_tech,
   } = project
 
-  const parsedContent = parse(content) as string
+  // TODO: 작성 페이지에서 적용
+  // const parsedContent = parse(content) as string
 
   const cardContent =
-    content?.length > 100 ? parsedContent.slice(0, 100) + "..." : parsedContent
+    content?.length > 100 ? content.slice(0, 100) + "..." : content
 
   const onClickToDetailPage = () => {
     const handler = () => {
@@ -86,18 +88,20 @@ const ProjectCard = ({ project, bookmarks, currentUser, techs }: Props) => {
             {project_tech?.map((tech, i) => (
               <li
                 key={i}
-                className="flex justify-center items-center border-2 px-3 py-1 rounded-3xl"
+                className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl"
               >
-                {tech && tech?.techs?.tech_name}
+                {tech?.techs?.tech_name}
               </li>
             ))}
           </ul>
-          <button
-            className="absolute bottom-0 right-2 border-2 border-[#297A5F] text-[#297A5F] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#297A5F] hover:text-white transition-all duration-300"
-            onClick={onClickToDetailPage}
-          >
-            상세보기
-          </button>
+          <div className="absolute bottom-0 right-2">
+            <Button
+              type="border"
+              color={"#297A5F"}
+              handler={onClickToDetailPage}
+              text="상세보기"
+            />
+          </div>
         </div>
 
         <div className="absolute top-4 right-2">
