@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import { Tables, TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import formatDate from "@/utils/formatDate"
+import dayjs from "dayjs"
 
 interface TProjectWithRegion extends Tables<"projects"> {
   region: Tables<"project_regions"> | null
@@ -38,10 +39,11 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: setProject,
-    onSuccess: () => {
+    onSuccess: (insertedData) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
-      alert("게시물 작성 완료~!")
-      router.push("/")
+      alert(isEditMode ? "수정 완료~!" : "게시물 작성 완료~!")
+      resetState()
+      router.push(`/projects/${insertedData[0].id}`)
     },
     onError: () => {
       alert(
@@ -62,8 +64,8 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
     setContent(project.content)
     setCategoryData((prev) => ({
       ...prev,
-      startDate: formatDate(project.project_start_date),
-      endDate: formatDate(project.project_end_date),
+      startDate: dayjs(project.project_start_date).format("YYYY-MM-DD"),
+      endDate: dayjs(project.project_end_date).format("YYYY-MM-DD"),
       isOffline: project.is_offline,
       numberOfMembers: project.number_of_people,
       region: project.is_offline ? project.region?.id! : null,
@@ -93,6 +95,7 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       return
     }
 
+    /* 쓰기/수정 둘다 사용 주의 */
     const newData: TablesInsert<"projects"> = {
       id: projectId,
       user_id: userId,
@@ -103,6 +106,7 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       is_offline: categoryData.isOffline!,
       number_of_people: categoryData.numberOfMembers,
       region_id: categoryData.region,
+      updated_at: isEditMode ? dayjs(new Date()).toString() : null,
     }
 
     mutate({
@@ -110,8 +114,6 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       project: newData,
       techs: categoryData.techs,
     })
-
-    resetState()
   }
 
   const resetState = () => {
