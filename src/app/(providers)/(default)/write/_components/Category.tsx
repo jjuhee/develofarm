@@ -58,6 +58,27 @@ const Category = ({
     openCustomModalHandler("검색되었습니다.", "alert")
   }
 
+  const onClickResetFilteringHandler = () => {
+    //TODO: 카테고리 데이터 리셋
+    setCategoryData({
+      startDate: "",
+      endDate: "",
+      isOffline: null,
+      region: "",
+      numberOfMembers: 0,
+      positions: [],
+      techs: [],
+    })
+    setOption &&
+      setOption({
+        isOffline: null,
+        startDate: "",
+        endDate: "",
+        regionId: "",
+        techs: [],
+      })
+  }
+
   return (
     <section className="flex flex-col gap-3 pb-[10px]">
       {!isWritePage && <h3 className="text-[26px] font-[700]">필터링 검색</h3>}
@@ -200,7 +221,11 @@ const Category = ({
           </div>
         ) : (
           <div className="absolute bottom-6 right-2 flex gap-3">
-            <Button type="border" text="초기화" />
+            <Button
+              type="border"
+              text="초기화"
+              handler={onClickResetFilteringHandler}
+            />
 
             <Button text="검색" handler={onClickSearchHandler} />
           </div>
