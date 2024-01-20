@@ -32,9 +32,6 @@ const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
     project_tech,
   } = project
 
-  // TODO: 작성 페이지에서 적용
-  // const parsedContent = parse(content) as string
-
   const cardContent =
     content?.length > 100 ? content.slice(0, 100) + "..." : content
 
@@ -83,7 +80,7 @@ const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
           <span className="hidden md:block">
             {formatDate(project_start_date)} - {formatDate(project_end_date)}
           </span>
-          <p>{cardContent}</p>
+          <p dangerouslySetInnerHTML={{ __html: cardContent }}></p>
         </div>
         <div className="flex justify-between items-center">
           <ul className="flex gap-3 ">

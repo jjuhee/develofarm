@@ -31,7 +31,7 @@ export async function setProject({ isEditMode, project, techs }: TParam) {
         .from("project_tech")
         .delete()
         .eq("project_id", projectId)
-      console.log("프로젝트-테크 테이블 삭제 error", EditError)
+      if (EditError) console.log("프로젝트-테크 테이블 삭제 error", EditError)
     }
     /* 테크 데이터 넣기 */
     const { error: techError } = await supabaseForClient
