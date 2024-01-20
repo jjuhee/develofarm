@@ -40,7 +40,6 @@ const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
     }
   }
 
-  console.log("writeEditRemove", project.id)
   return (
     // 작성자가 맞다면 수정/삭제 버튼 보여주기
     isWriter && (
