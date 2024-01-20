@@ -56,7 +56,12 @@ const SelectStackButton = ({
     }
   }
 
+  /** 테크가 하나라도 포함 되어있으면 포지션이 체크 되었다고 판단하는 함수
+   * TODO: (issue) 프론트의 javascript 백엔드의 javascript 구분 못함
+   */
   const isPositionChecked = (position_id: string) => {
+    if (!categoryData.techs) return false
+
     return categoryData.techs.some((tech) => tech.position_id === position_id)
   }
 
@@ -93,6 +98,12 @@ const SelectStackButton = ({
                     (selectedTech) => selectedTech.tech_id === tech.id,
                   )}
                   id={tech?.id}
+                  // 포지션이 프론트이고, 테크가 있으면 체크
+                  checked={categoryData.techs?.some(
+                    (item) =>
+                      item.position_id === POSITION_ID.front &&
+                      item.tech_id === tech.id,
+                  )}
                   className="mr-2"
                   onChange={(e) =>
                     onChangeHandler(e, "be33a56c-a4da-43a3-984f-c6acd667b2ae")
@@ -135,6 +146,12 @@ const SelectStackButton = ({
                     (selectedTech) => selectedTech.tech_id === tech.id,
                   )}
                   id={tech?.id}
+                  // 포지션이 프론트이고, 테크가 있으면 체크
+                  checked={categoryData.techs?.some(
+                    (item) =>
+                      item.position_id === POSITION_ID.back &&
+                      item.tech_id === tech.id,
+                  )}
                   className="mr-2"
                   onChange={(e) =>
                     onChangeHandler(e, "0e68d5ef-ebc4-40d5-afe8-9bf557a52746")
@@ -178,6 +195,11 @@ const SelectStackButton = ({
                     (selectedTech) => selectedTech.tech_id === tech.id,
                   )}
                   id={tech?.id}
+                  checked={categoryData.techs?.some(
+                    (item) =>
+                      item.position_id === POSITION_ID.design &&
+                      item.tech_id === tech.id,
+                  )}
                   className="mr-2"
                   onChange={(e) =>
                     onChangeHandler(e, "e2be10af-aa25-4aa8-b18a-9e004d4f9bed")
