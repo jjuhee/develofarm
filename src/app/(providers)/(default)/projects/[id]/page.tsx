@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import Spacer from "@/components/ui/Spacer"
 import { useParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
@@ -12,6 +12,8 @@ import ProjectMetaInfo from "./_components/ProjectMetaInfo"
 import TechStackTag from "./_components/TechStackTag"
 import ProjectWriterInfo from "./_components/ProjectWriterInfo"
 import FooterList from "./_components/FooterList"
+import { EditorContent, useEditor } from "@tiptap/react"
+import StarterKit from "@tiptap/starter-kit"
 
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -20,6 +22,24 @@ const DetailPage = () => {
     queryKey: ["project", id],
     queryFn: () => getProject(id),
   })
+
+  const editor = useEditor({
+    extensions: [StarterKit],
+    editable: false,
+    content: project?.content,
+    editorProps: {
+      attributes: {
+        class: "prose prose-m max-w-none mx-auto *:my-2 focus:outline-none",
+      },
+    },
+  })
+
+  useEffect(() => {
+    if (!editor) {
+      return
+    }
+    editor.commands.setContent(project?.content!)
+  }, [project?.content])
 
   /**
    *@ param1 현재 로그인한 유저 정보를 담은 변수
@@ -49,8 +69,8 @@ const DetailPage = () => {
           <ProjectMetaInfo project={project} region={project.region} />
         )}
         <Spacer y={50} />
-        <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pt-10 pb-10 min-h-96">
-          <div className="leading-7">{project.content}</div>
+        <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pb-10 min-h-96">
+          <EditorContent editor={editor} />
         </section>
         <FooterMenus project={project} />
         <Spacer y={50} />

@@ -367,7 +367,7 @@ export interface Database {
         Update: {
           id?: string
           project_id?: string
-          tech_id?: string | null
+          tech_id?: string
         }
         Relationships: [
           {
@@ -388,7 +388,6 @@ export interface Database {
       }
       projects: {
         Row: {
-          bookmark_count: number
           content: string
           created_at: string | null
           id: string
@@ -405,7 +404,6 @@ export interface Database {
           views: number
         }
         Insert: {
-          bookmark_count?: number
           content: string
           created_at?: string | null
           id?: string
@@ -422,7 +420,6 @@ export interface Database {
           views?: number
         }
         Update: {
-          bookmark_count?: number
           content?: string
           created_at?: string | null
           id?: string

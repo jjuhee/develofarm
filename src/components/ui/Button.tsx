@@ -12,9 +12,9 @@ const Button = ({ type, text, color, handler }: Props) => {
     <button
       className={`${
         type === "border"
-          ? "bg-white text-[#297A5F] border-2 border-[#297A5F"
-          : "bg-[#297A5F] text-white"
-      } font-[600] text-[16px] py-2 px-10 rounded-full hover:opacity-70 transition-all duration-300`}
+          ? `bg-white text-[#2D2D2D] border-2 border-[#A6A6A6] hover:bg-[#EEEEEE] hover:text-[#2D2D2D] hover:border-[#2D2D2D] active:bg-[#CCCCCC] active:border-[#CCCCCC]`
+          : `bg-main-lime text-black hover:bg-[#636366] hover:text-main-lime active:bg-[#363639]`
+      } font-[700] text-[17px] py-2 px-8 rounded-lg transition-all duration-300 `}
       onClick={handler}
     >
       {text}

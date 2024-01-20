@@ -33,11 +33,13 @@ const Category = ({
     positions,
   } = categoryData
 
+  /** 모든 position에 연결된 tech를 position_tech table에서 불러온다 */
   const { data: allTechs } = useQuery({
     queryKey: ["techsByPositions"],
     queryFn: getTechsByPositions,
   })
 
+  /** project_region table */
   const { data: regions } = useQuery({
     queryKey: ["regions"],
     queryFn: getRegions,
@@ -56,10 +58,31 @@ const Category = ({
     openCustomModalHandler("검색되었습니다.", "alert")
   }
 
+  const onClickResetFilteringHandler = () => {
+    //TODO: 카테고리 데이터 리셋
+    setCategoryData({
+      startDate: "",
+      endDate: "",
+      isOffline: null,
+      region: "",
+      numberOfMembers: 0,
+      positions: [],
+      techs: [],
+    })
+    setOption &&
+      setOption({
+        isOffline: null,
+        startDate: "",
+        endDate: "",
+        regionId: "",
+        techs: [],
+      })
+  }
+
   return (
     <section className="flex flex-col gap-3 pb-[10px]">
       {!isWritePage && <h3 className="text-[26px] font-[700]">필터링 검색</h3>}
-      <div className="flex relative gap-[60px] relativepy-8 border-y-[1.5px] py-5 pl-7 border-slate-800">
+      <div className="flex relative justify-between gap-[60px] py-7 border-y-[1.5px] py-5 pl-7 border-slate-800">
         <div>
           <div className="flex flex-col gap-[16px] py-[15px]">
             <h5 className="text-[20px] font-[600]">프로젝트 방식</h5>
@@ -96,7 +119,7 @@ const Category = ({
               <select
                 defaultValue="1"
                 className={`border-[1.5px]  ${
-                  region === "1" || region === ""
+                  region === "1" || region === null
                     ? "border-slate-400"
                     : "border-[#297A5F] text-[#297A5F]"
                 }  px-[20px] py-[5px] rounded-full`}
@@ -107,7 +130,11 @@ const Category = ({
                 {/* TODO 2 : 옵션 스타일링... 왜안돼!!! -> li로 바꿔야하나, value가 1,2,3,4로 처리해도 될까 */}
                 <option value="0">지역을 선택하세요</option>
                 {regions?.map((region) => (
-                  <option key={region.id} value={region.id}>
+                  <option
+                    key={region.id}
+                    value={region.id}
+                    selected={region.id === categoryData.region}
+                  >
                     {region.region}
                   </option>
                 ))}
@@ -122,7 +149,13 @@ const Category = ({
               <label>시작일</label>
               {/* TODO 3 : 유효성검사 - 날짜 오늘날짜 이후,종료일은 시작날짜 이후로만 선택되게하기  */}
               <input
-                className="border-[1.5px] border-slate-800 px-[20px] py-[5px] rounded-full "
+                className={`border-[1.5px] px-[20px] py-[5px] rounded-full
+                ${
+                  startDate
+                    ? "border-[#297A5F] text-[#297A5F]"
+                    : "border-slate-800"
+                }
+                `}
                 type="date"
                 name="project_start_date"
                 value={startDate}
@@ -137,7 +170,12 @@ const Category = ({
             <li className="flex items-center gap-4">
               <label>종료일</label>
               <input
-                className="border-[1.5px] border-slate-800 px-[20px] py-[5px] rounded-full "
+                className={`border-[1.5px] px-[20px] py-[5px] rounded-full
+                ${
+                  startDate
+                    ? "border-[#297A5F] text-[#297A5F]"
+                    : "border-slate-800"
+                }`}
                 type="date"
                 name="project_end_date"
                 value={endDate}
@@ -182,12 +220,14 @@ const Category = ({
             </div>
           </div>
         ) : (
-          <div className="absolute bottom-6 right-2">
+          <div className="absolute bottom-6 right-2 flex gap-3">
             <Button
-              text="검색"
-              color="#297A5F"
-              handler={onClickSearchHandler}
+              type="border"
+              text="초기화"
+              handler={onClickResetFilteringHandler}
             />
+
+            <Button text="검색" handler={onClickSearchHandler} />
           </div>
         )}
       </div>

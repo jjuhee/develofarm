@@ -3,11 +3,10 @@ import useMembersStore from "@/store/members"
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import { getProjectByUserId } from "../api"
 import { Tables } from "@/types/supabase"
-import useUserStore from "@/store/user"
 
 interface Props {
   currentUserId: string
@@ -16,7 +15,7 @@ interface Props {
 const MemberProfile = ({ currentUserId }: Props) => {
   const dropdownRef = useRef<HTMLInputElement>(null)
 
-  const { selectedMember } = useMembersStore((state) => state)
+  const selectedMember = useMembersStore((state) => state.selectedMember)
 
   const [isActive, setIsActive] = useState(false)
 
@@ -116,9 +115,9 @@ const MemberProfile = ({ currentUserId }: Props) => {
         <ul className="flex gap-5 items-center">
           {(selectedMember?.user_tech?.length as number) > 0 ? (
             <>
-              {selectedMember?.user_tech?.map((tech, i: string) => (
+              {selectedMember?.user_tech?.map((tech) => (
                 <li
-                  key={i}
+                  key={tech.techs.id}
                   className="text-[16px] font-[500] py-1 px-3 border-gray-70 border-2 rounded-3xl"
                 >
                   {tech?.techs?.tech_name}

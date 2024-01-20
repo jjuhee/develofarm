@@ -9,6 +9,7 @@ const BubbleMenuButtons = ({ editor }: Props) => {
   return (
     <div className="flex justify-center gap-1">
       <button
+        type="button"
         onClick={() => editor.chain().focus().toggleBold().run()}
         className={
           editor.isActive("bold")
@@ -19,6 +20,7 @@ const BubbleMenuButtons = ({ editor }: Props) => {
         bold
       </button>
       <button
+        type="button"
         onClick={() => editor.chain().focus().toggleItalic().run()}
         className={
           editor.isActive("italic")
@@ -29,6 +31,7 @@ const BubbleMenuButtons = ({ editor }: Props) => {
         italic
       </button>
       <button
+        type="button"
         onClick={() => editor.chain().focus().toggleStrike().run()}
         className={
           editor.isActive("strike")

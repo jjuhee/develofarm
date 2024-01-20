@@ -1,18 +1,18 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
 import { TablesInsert } from "@/types/supabase"
 
-/** 프로젝트 테이블을 추가하면서, 선택된 포지션과 기술 스택 조인 테이블도 추가해준다
+/** 프로젝트 테이블을 추가하면서, 선택된 기술 스택 조인 테이블도 추가해준다
  * 프로젝트 테이블이 생기면서 생성된 project_id 값을 조인테이블에 넣어준다.
  */
 interface TParam {
+  isEditMode: boolean
   project: TablesInsert<"projects">
   techs: TTechs[]
-  positions: string[]
 }
-export async function setProject({ project, techs, positions }: TParam) {
+export async function setProject({ isEditMode, project, techs }: TParam) {
   const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
-    .insert([project])
+    .upsert([project])
     .select()
 
   if (projectError) {
@@ -20,10 +20,19 @@ export async function setProject({ project, techs, positions }: TParam) {
     throw projectError
   }
 
+  /* insert 시 방금 생성된 project id 필요 */
   if (projectData && projectData.length > 0) {
     console.log("insertedProjectData", projectData)
     const projectId = projectData[0].id
 
+    // edit 모드에서 프로젝트-테크 테이블 삭제
+    if (isEditMode) {
+      const { error: EditError } = await supabaseForClient
+        .from("project_tech")
+        .delete()
+        .eq("project_id", projectId)
+      console.log("프로젝트-테크 테이블 삭제 error", EditError)
+    }
     /* 테크 데이터 넣기 */
     const { error: techError } = await supabaseForClient
       .from("project_tech")
@@ -33,23 +42,7 @@ export async function setProject({ project, techs, positions }: TParam) {
       console.log("error", techError)
       throw techError
     }
-
-    /* 포지션 데이터 넣기 */
-    const { error: positionError } = await supabaseForClient
-      .from("project_position")
-      .upsert(
-        positions.map((positionId) => ({
-          position_id: positionId,
-          project_id: projectId,
-        })),
-      )
-
-    if (positionError) {
-      console.log("error", positionError)
-      throw positionError
-    }
   }
-
   return projectData
 }
 

@@ -7,10 +7,10 @@ import Spacer from "@/components/ui/Spacer"
 import { useQuery } from "@tanstack/react-query"
 import { getBookmarksByUserId, getProjectTech, getProjects } from "./api"
 import Pagination from "@mui/material/Pagination"
-import { Tables } from "@/types/supabase"
+import { Database, Tables } from "@/types/supabase"
 import Category from "../write/_components/Category"
 import useUserStore from "@/store/user"
-import scrollToTop from "@/utils/scrollTop"
+import { ExtendedProjectsType } from "@/types/extendedType"
 
 const PAGE_SIZE = 5
 
@@ -34,7 +34,7 @@ const ProjectsPage = () => {
     startDate: "",
     endDate: "",
     isOffline: null,
-    region: "",
+    region: null,
     numberOfMembers: 0,
     positions: [],
     techs: [],
@@ -144,18 +144,16 @@ const ProjectsPage = () => {
 
         {(projects?.length as number) > 0 ? (
           <ul className="flex flex-col gap-8">
-            {paginatedSortedProjects[page - 1]?.map(
-              (item: Tables<"projects">) => {
-                return (
-                  <ProjectCard
-                    key={item?.id}
-                    project={item}
-                    bookmarks={bookmarks as Tables<"bookmarks">[]}
-                    currentUser={user as string}
-                  />
-                )
-              },
-            )}
+            {paginatedSortedProjects[page - 1]?.map((item) => {
+              return (
+                <ProjectCard
+                  key={item?.id}
+                  project={item as ExtendedProjectsType}
+                  bookmarks={bookmarks as Tables<"bookmarks">[]}
+                  currentUser={user as string}
+                />
+              )
+            })}
           </ul>
         ) : (
           <EmptyState />
