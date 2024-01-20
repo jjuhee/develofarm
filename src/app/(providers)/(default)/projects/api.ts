@@ -100,6 +100,7 @@ export async function getProject(projectId: string) {
 }
 
 /** projectId 값과 일치하는 해당 프로젝트 삭제 */
+/** TODO : project-tech 먼저 지워줘야 함 */
 export async function removeProject(projectId: string) {
   const { error: projectError } = await supabaseForClient
     .from("projects")

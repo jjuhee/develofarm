@@ -31,7 +31,7 @@ const TipTap = ({ content, setContent }: Props) => {
     },
     onUpdate({ editor }) {
       console.log("수정중이냐")
-      setContent(editor.getHTML()) // onchange 같은 거라 계속저장하면 안되는 느낌 !
+      setContent(editor.getHTML()) // TODO : onchange 같은 거라 계속저장하면 안되는 느낌!
     },
   })
 

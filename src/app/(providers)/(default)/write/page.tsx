@@ -54,14 +54,7 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
   /** 현재 인증된 유저 데이터 가져오기 */
   const { userId } = useUserStore()
 
-  // /** 기본 POSITION_ID 대신 이걸로할까 : 프로젝트의 포지션 가져오기 */
-  // const { data: positions } = useQuery({
-  //   queryKey: ["postions", projectId],
-  //   queryFn: () => getProjectPosition(projectId),
-  //   enabled: !!projectId,
-  // })
-
-  /** 수정시4 : 내용 가져오기 */
+  /** 수정시 : 내용 가져오기 */
   useEffect(() => {
     if (!isEditMode) return
     if (!project) return
@@ -98,15 +91,14 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       return
     }
     //  TEMP START: (jhee) 포지션 id를 못넘겨 받아서 임시 변수와 처리 입니다.
-    // 이미 읽어온 tech_position + tech 조인테이블로 작업하려고했는데 type 이슈가 있었는데 해결을 못해서
-    // 너무 오래걸릴것 같아서 세개밖에 없는데...
-    // id가 너무 가려있어서 관리가힘든데 어차피 유일한 값이면 이름으로 아이디 쓸까..
     const POSITION_ID = [
       "be33a56c-a4da-43a3-984f-c6acd667b2ae", // 프론트엔드
       "0e68d5ef-ebc4-40d5-afe8-9bf557a52746", // 백엔드
       "e2be10af-aa25-4aa8-b18a-9e004d4f9bed", // 디자인
     ]
 
+    /** 포지션 데이터를 tech 로 부터 빼서 넣어주는 부분
+     * TODO:  삭제예정 포지션데이터를 따로 관리할 필요가 없음 */
     let positionData: string[] = []
     POSITION_ID.forEach((position_id) => {
       if (categoryData.techs.some((tech) => tech.position_id === position_id)) {
@@ -130,6 +122,7 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
     }
 
     mutate({
+      isEditMode,
       project: newData,
       techs: categoryData.techs,
       positions: positionData,
@@ -174,7 +167,11 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
         <Spacer y={20} />
 
         {isEditMode ? (
-          content && <Tiptap content={content} setContent={setContent} />
+          content && (
+            <div>
+              <Tiptap content={content} setContent={setContent} />
+            </div>
+          )
         ) : (
           <Tiptap content={content} setContent={setContent} />
         )}
