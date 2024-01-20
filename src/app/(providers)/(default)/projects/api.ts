@@ -96,7 +96,7 @@ export async function getProject(projectId: string) {
 
   if (projectError) console.log("error", projectError)
 
-  return projectData || null
+  return projectData
 }
 
 /** projectId 값과 일치하는 해당 프로젝트 삭제 */
@@ -233,7 +233,7 @@ export async function getProjectTechWithPosition(projectId: string) {
   const techPosition = techs.map((techs) => {
     return {
       tech_id: techs.tech_id,
-      position_id: techs.techs?.position_tech[0].position_id,
+      position_id: techs.techs?.position_tech[0].position_id!,
     }
   })
   return techPosition

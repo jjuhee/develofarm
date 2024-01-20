@@ -34,7 +34,7 @@ const ProjectsPage = () => {
     startDate: "",
     endDate: "",
     isOffline: null,
-    region: "",
+    region: null,
     numberOfMembers: 0,
     positions: [],
     techs: [],

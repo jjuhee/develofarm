@@ -98,7 +98,7 @@ const Category = ({
               <select
                 defaultValue="1"
                 className={`border-[1.5px]  ${
-                  region === "1" || region === ""
+                  region === "1" || region === null
                     ? "border-slate-400"
                     : "border-[#297A5F] text-[#297A5F]"
                 }  px-[20px] py-[5px] rounded-full`}

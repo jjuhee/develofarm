@@ -6,22 +6,28 @@ import React, { FormEvent, useEffect, useRef, useState } from "react"
 import { setProject } from "./api"
 import Category from "./_components/Category"
 import { useRouter } from "next/navigation"
-import { TablesInsert, TablesUpdate } from "@/types/supabase"
+import { Tables, TablesInsert, TablesUpdate } from "@/types/supabase"
 import { supabaseForClient } from "@/supabase/supabase.client"
 import { getProject, getProjectTechWithPosition } from "../projects/api"
 import useUserStore from "@/store/user"
 import formatDate from "@/utils/formatDate"
 
+interface TProjectWithRegion extends Tables<"projects"> {
+  region: Tables<"project_regions"> | null
+}
+
 interface Props {
   projectId: string
+  project: TProjectWithRegion
+  techsWithPositions: TTechs[]
 }
-const WritePage = ({ projectId }: Props) => {
+const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
   const isEditMode = !!projectId
   const initialCategoryData: TCategoryData = {
     startDate: "",
     endDate: "",
     isOffline: null,
-    region: "",
+    region: null,
     numberOfMembers: 0,
     positions: [],
     techs: [],
@@ -48,20 +54,6 @@ const WritePage = ({ projectId }: Props) => {
   /** 현재 인증된 유저 데이터 가져오기 */
   const { userId } = useUserStore()
 
-  /** 수정시1 : 프로젝트 가져오기 */
-  const { data: project, isLoading } = useQuery({
-    queryKey: ["project", projectId],
-    queryFn: () => getProject(projectId),
-    enabled: !!projectId,
-  })
-
-  /** 수정시2 : 프로젝트의 기술 스택 + 연계된 포지션 가져오기 */
-  const { data: techsWithPosition } = useQuery<TTechs[]>({
-    queryKey: ["techs", projectId],
-    queryFn: () => getProjectTechWithPosition(projectId),
-    enabled: !!projectId,
-  })
-
   // /** 기본 POSITION_ID 대신 이걸로할까 : 프로젝트의 포지션 가져오기 */
   // const { data: positions } = useQuery({
   //   queryKey: ["postions", projectId],
@@ -73,6 +65,8 @@ const WritePage = ({ projectId }: Props) => {
   useEffect(() => {
     if (!isEditMode) return
     if (!project) return
+
+    console.log("useEffect", project)
     setTitle(project.title)
     setContent(project.content)
     setCategoryData((prev) => ({
@@ -81,8 +75,8 @@ const WritePage = ({ projectId }: Props) => {
       endDate: formatDate(project.project_end_date),
       isOffline: project.is_offline,
       numberOfMembers: project.number_of_people,
-      region: project.is_offline ? project.region?.id! : "",
-      techs: techsWithPosition as TTechs[],
+      region: project.is_offline ? project.region?.id! : null,
+      techs: techsWithPositions as TTechs[],
     }))
   }, [project])
 
@@ -178,7 +172,12 @@ const WritePage = ({ projectId }: Props) => {
       {/* Tiptap editor box */}
       <div className="border-solid border-b border-black">
         <Spacer y={20} />
-        <Tiptap content={content} setContent={setContent} />
+
+        {isEditMode ? (
+          content && <Tiptap content={content} setContent={setContent} />
+        ) : (
+          <Tiptap content={content} setContent={setContent} />
+        )}
       </div>
       {/* TODO P1: (jhee) 첨부파일 넣는 곳? */}
     </form>
