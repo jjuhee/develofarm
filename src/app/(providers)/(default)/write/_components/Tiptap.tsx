@@ -22,11 +22,11 @@ interface Props {
 const TipTap = ({ content, setContent }: Props) => {
   console.log("tiptap", content)
   const editor = useEditor({
-    extensions: extensions,
+    extensions: [StarterKit],
     content: content,
     editorProps: {
       attributes: {
-        class: "prose prose-sm max-w-none mx-auto focus:outline-none",
+        class: "prose prose-m max-w-none mx-auto *:my-2 focus:outline-none",
       },
     },
     onUpdate({ editor }) {
@@ -57,19 +57,3 @@ const TipTap = ({ content, setContent }: Props) => {
 }
 
 export default TipTap
-
-const extensions = [
-  // TODO: (jhee) 모르겠는 extensions 설정 다시 확인
-  Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  // TextStyle.configure({ types: [ListItem.name] }),
-  StarterKit.configure({
-    bulletList: {
-      keepMarks: true,
-      keepAttributes: false,
-    },
-    orderedList: {
-      keepMarks: true,
-      keepAttributes: false,
-    },
-  }),
-]
