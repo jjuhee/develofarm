@@ -59,7 +59,7 @@ const Category = ({
   return (
     <section className="flex flex-col gap-3 pb-[10px]">
       {!isWritePage && <h3 className="text-[26px] font-[700]">필터링 검색</h3>}
-      <div className="flex relative gap-[60px] relativepy-8 border-y-[1.5px] py-5 pl-7 border-slate-800">
+      <div className="flex relative justify-between gap-[60px] py-7 border-y-[1.5px] py-5 pl-7 border-slate-800">
         <div>
           <div className="flex flex-col gap-[16px] py-[15px]">
             <h5 className="text-[20px] font-[600]">프로젝트 방식</h5>
@@ -182,12 +182,10 @@ const Category = ({
             </div>
           </div>
         ) : (
-          <div className="absolute bottom-6 right-2">
-            <Button
-              text="검색"
-              color="#297A5F"
-              handler={onClickSearchHandler}
-            />
+          <div className="absolute bottom-6 right-2 flex gap-3">
+            <Button type="border" text="초기화" />
+
+            <Button text="검색" handler={onClickSearchHandler} />
           </div>
         )}
       </div>

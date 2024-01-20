@@ -74,7 +74,7 @@ const SelectStackButton = ({
         </div>
 
         <ul
-          className={`absolute flex flex-col bg-white border-[1.5px] border-[#297A5F] rounded-2xl py-[15px] px-[20px] transition-all z-5 ${
+          className={`absolute flex flex-col bg-white border-[1.5px] border-[#297A5F] rounded-2xl py-[15px] px-[20px] transition-all z-10 ${
             isActive === "프론트엔드" ? "visible" : "invisible"
           }`}
         >
@@ -113,7 +113,7 @@ const SelectStackButton = ({
           {isActive === "백엔드" ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col w-[150px] bg-white border-[1.5px] border-[#297A5F] rounded-2xl py-[15px] px-[20px] transition-all z-5 ${
+          className={`absolute flex flex-col w-[150px] bg-white border-[1.5px] border-[#297A5F] rounded-2xl py-[15px] px-[20px] transition-all duration-300 z-10 ${
             isActive === "백엔드" ? "visible" : "invisible"
           }`}
         >
@@ -152,7 +152,7 @@ const SelectStackButton = ({
           {isActive === "디자인" ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col w-[150px] bg-white border-[1.5px] border-[#297A5F] rounded-2xl py-[15px] px-[20px] transition-all z-5 ${
+          className={`absolute flex flex-col w-[150px] bg-white border-[1.5px] border-[#297A5F] rounded-2xl py-[15px] px-[20px] transition-all z-10 ${
             isActive === "디자인" ? "visible" : "invisible"
           }`}
         >
