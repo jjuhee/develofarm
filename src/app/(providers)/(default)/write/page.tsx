@@ -1,14 +1,12 @@
 "use client"
 import Tiptap from "@/app/(providers)/(default)/write/_components/Tiptap"
 import Spacer from "@/components/ui/Spacer"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import React, { FormEvent, useEffect, useRef, useState } from "react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import React, { FormEvent, useEffect, useState } from "react"
 import { setProject } from "./api"
 import Category from "./_components/Category"
 import { useRouter } from "next/navigation"
-import { Tables, TablesInsert, TablesUpdate } from "@/types/supabase"
-import { supabaseForClient } from "@/supabase/supabase.client"
-import { getProject, getProjectTechWithPosition } from "../projects/api"
+import { Tables, TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import formatDate from "@/utils/formatDate"
 
@@ -90,26 +88,11 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       alert("오프라인 프로젝트이면 지역을 입력하세요~")
       return
     }
-    //  TEMP START: (jhee) 포지션 id를 못넘겨 받아서 임시 변수와 처리 입니다.
-    const POSITION_ID = [
-      "be33a56c-a4da-43a3-984f-c6acd667b2ae", // 프론트엔드
-      "0e68d5ef-ebc4-40d5-afe8-9bf557a52746", // 백엔드
-      "e2be10af-aa25-4aa8-b18a-9e004d4f9bed", // 디자인
-    ]
-
-    /** 포지션 데이터를 tech 로 부터 빼서 넣어주는 부분
-     * TODO:  삭제예정 포지션데이터를 따로 관리할 필요가 없음 */
-    let positionData: string[] = []
-    POSITION_ID.forEach((position_id) => {
-      if (categoryData.techs.some((tech) => tech.position_id === position_id)) {
-        positionData.push(position_id)
-      }
-    })
-    if (positionData.length <= 0) {
-      alert("구하는 포지션과 테크를 입력 하세요")
+    if (categoryData.techs.length <= 0) {
+      alert("원하는 포지션과 테크를 입력 하세요")
       return
     }
-    // TEMP END
+
     const newData: TablesInsert<"projects"> = {
       user_id: userId,
       title,
@@ -125,7 +108,6 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       isEditMode,
       project: newData,
       techs: categoryData.techs,
-      positions: positionData,
     })
 
     resetState()
