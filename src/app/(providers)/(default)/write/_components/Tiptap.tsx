@@ -9,7 +9,7 @@ import {
 } from "@tiptap/react"
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import React, { RefObject, useState } from "react"
+import React, { RefObject, useEffect, useState } from "react"
 import EditorMenu from "./EditorMenu"
 import Spacer from "@/components/ui/Spacer"
 import BubbleMenuButtons from "./BubbleMenuButtons"
@@ -20,6 +20,7 @@ interface Props {
 }
 
 const TipTap = ({ content, setContent }: Props) => {
+  console.log("tiptap", content)
   const editor = useEditor({
     extensions: extensions,
     content: content,
@@ -29,7 +30,8 @@ const TipTap = ({ content, setContent }: Props) => {
       },
     },
     onUpdate({ editor }) {
-      setContent(editor.getHTML())
+      console.log("수정중이냐")
+      setContent(editor.getHTML()) // TODO : onchange 같은 거라 계속저장하면 안되는 느낌!
     },
   })
 
