@@ -2,9 +2,21 @@ import React from "react"
 
 const Footer = () => {
   return (
-    <div className="flex w-full h-[380px]">
-      <div className="flex justify-center items-center w-[1250px] my-0 mx-auto px-2">
-        <h3>footer</h3>
+    <div className="flex w-full bg-black text-white mt-20">
+      <div className="flex justify-between w-[1250px] my-0 mx-auto py-20">
+        <div>
+          <p>개발하는 사람들의 공간</p>
+        </div>
+        <div className="flex gap-10">
+          <div>
+            <h4>Service</h4>
+            <p>서비스 소개</p>
+          </div>
+          <div>
+            <h4>Contact Us</h4>
+            <p>develofarm@gmail.com</p>
+          </div>
+        </div>
       </div>
     </div>
   )
