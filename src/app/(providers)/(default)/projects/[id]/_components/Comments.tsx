@@ -17,7 +17,7 @@ const Comments = ({ project }: Props) => {
   /**
    *@ query 해당 게시물 id를 구분해 댓글 목록 조회 */
   const { data: comments, isLoading: commentsIsLoading } = useQuery({
-    queryKey: ["comments", { projectId: project.id }],
+    queryKey: ["comments", { comment: project.id }],
     queryFn: () => getComments(project.id),
   })
 
@@ -46,7 +46,7 @@ const Comments = ({ project }: Props) => {
               <div className="flex flex-col pl-14 min-h-28 border-b-2">
                 <div className="h-auto font-semibold">{comment.content}</div>
                 <Spacer y={10} />
-                {comment.user && <ReCommentForm />}
+                {comment.user && <ReCommentForm comment={comment} />}
               </div>
             </div>
           )
