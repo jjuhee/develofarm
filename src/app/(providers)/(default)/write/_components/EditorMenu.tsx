@@ -34,29 +34,25 @@ const EditorMenu = ({ editor }: Props) => {
   }
 
   return (
-    <div className="flex flex-wrap justify-items-start gap-1">
-      {/* //TODO : (jhee) 
-      1. h1~h6 select 버튼으로 구현 제목1,제목2,제목3...본문?
-      2. write pages에 form으로 구조 만들고
-      3.2.TODO: 가운데정렬, 글자 색상, 사진 입력 등등 추가.
-      */}
-
+    <div className="flex flex-wrap items-center gap-1">
       <div
-        className="selectBox"
+        className="selectBox relative"
         onMouseLeave={() => {
           setIsActive(false)
         }}
       >
-        <div>
-          <div
-            className="flex items-center justify-center border-[1px] rounded-[3px] w-[81px] h-[33px] px-[7px] py-[8px] cursor-pointer transition-all"
-            onClick={(e) => onClickFontSizeHandler(e)}
-          >
-            <div className="slected-value">{selectedValue}</div>
-            {isActive ? <IoIosArrowUp /> : <IoIosArrowDown />}
-          </div>
+        <div
+          className="flex items-center justify-center border-[1px] rounded-[3px] w-[81px] px-[7px] py-[8px] cursor-pointer transition-all"
+          onClick={(e) => onClickFontSizeHandler(e)}
+        >
+          <div>{selectedValue}</div>
+          {isActive ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
-        <ul className={`flex flex-col ${isActive ? "visible" : "invisible"}`}>
+        <ul
+          className={`absolute flex flex-col *:w-[81px] *:px-[7px] *:py-[8px] *:bg-white ${
+            isActive ? "visible" : "invisible"
+          }`}
+        >
           <button
             type="button"
             className="hover:bg-[#E6E6E6]"
@@ -99,7 +95,6 @@ const EditorMenu = ({ editor }: Props) => {
           </button>
         </ul>
       </div>
-
       <MdFormatBold
         size={30}
         cursor={"pointer"}
@@ -139,7 +134,6 @@ const EditorMenu = ({ editor }: Props) => {
         onClick={() => editor.chain().focus().unsetAllMarks().run()}
         className="rounded border-solid border-2 border-black"
       />
-
       {/* TODO: (jhee) 글자 색상 추가 예정, 참고 용!! */}
       {/* <MdFormatColorText
         size={30}
@@ -151,7 +145,6 @@ const EditorMenu = ({ editor }: Props) => {
             : "rounded border-solid border-2 border-indigo-600"
         }
       /> */}
-
       <MdFormatListBulleted
         size={30}
         cursor={"pointer"}

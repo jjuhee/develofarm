@@ -39,10 +39,8 @@ const TipTap = ({ content, setContent }: Props) => {
 
   return (
     <>
-      <div className="border-b border-black">
-        <Spacer y={10} />
+      <div className="relative border-b border-black z-10">
         <EditorMenu editor={editor} />
-        <Spacer y={10} />
       </div>
       <div className="py-10 px-5 min-h-[50vh]">
         <EditorContent editor={editor} />
