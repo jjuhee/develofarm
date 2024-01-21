@@ -334,20 +334,52 @@ export async function getSearchedProject(title: string) {
 export async function getComments(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("comments")
-    .select("*, user:users(*)")
+    .select(
+      "*, user:users( user_nickname, avatar_url ), comments( * , user:users( user_nickname, avatar_url ))",
+    )
     .eq("project_id", projectId)
+    .is("comment_id", null)
 
   if (error) console.log("error", error)
 
   return data
 }
 
-/** 프로젝트 게시물에 댓글 작성 데이터에 추가 */
-export async function setComment(comment: TablesInsert<"comments">) {
+/** projectId와 일치하며 삭제여부가 없는 댓글 목록 가져오기 */
+export async function getCommentsCount(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("comments")
-    .insert(comment)
+    .select("*")
+    .match({ project_id: projectId, del_yn: false })
+    .is("comment_id", null)
+  if (error) console.log("error", error)
 
-  console.log(data)
+  return data
+}
+
+/** commentId와 일치하는 대댓글 목록 가져오기 */
+export async function getReComments(commentId: string) {
+  const { data, error } = await supabaseForClient
+    .from("comments")
+    .select("*, user:users(*)")
+    .eq("comment_id", commentId)
+  if (error) console.log("error", error)
+  return data
+}
+
+/** 프로젝트 게시물에 댓글 추가 */
+export async function setComment(comment: TablesInsert<"comments">) {
+  const { error } = await supabaseForClient.from("comments").insert(comment)
+
+  if (error) console.log("error", error)
+}
+
+/** 프로젝트 게시물에 댓글 삭제 */
+export async function removeComment(commentId: string) {
+  const { error } = await supabaseForClient
+    .from("comments")
+    .update({ del_yn: true })
+    .eq("id", commentId)
+
   if (error) console.log("error", error)
 }

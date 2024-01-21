@@ -9,6 +9,8 @@ import FooterPublicIcon from "./FooterPublicIcon"
 import { IoIosPeople } from "react-icons/io"
 import { FaRegMessage } from "react-icons/fa6"
 import { CiUser } from "react-icons/ci"
+import { getCommentsCount } from "../../api"
+import { useQuery } from "@tanstack/react-query"
 
 type Props = {
   project: Tables<"projects">
@@ -34,6 +36,16 @@ const FooterMenus = ({ project }: Props) => {
     setIsSelected(tabName)
   }
 
+  /**
+   *@ query 해당 게시물 id를 구분하고 삭제된 댓글 제외한 목록 조회
+   TODO: 글 삭제시 새로고침시에 전체갯수 업데이트 */
+  const { data: comments, isLoading: commentsIsLoading } = useQuery({
+    queryKey: ["commentsCnt", { projectId: project.id }],
+    queryFn: () => getCommentsCount(project.id),
+  })
+
+  if (commentsIsLoading) return <div>is Loading...</div>
+
   return (
     <>
       <section className="flex items-center">
@@ -46,7 +58,8 @@ const FooterMenus = ({ project }: Props) => {
               }`}
               onClick={() => toggleTapHandler("comments")}
             >
-              <FaRegMessage size={30} className="inline-block ml-10 mr-2" /> 24
+              <FaRegMessage size={30} className="inline-block ml-10 mr-2" />
+              {comments?.length}
             </button>
             <button
               className={`pr-8 pb-1 border-b-2 ${
@@ -60,7 +73,8 @@ const FooterMenus = ({ project }: Props) => {
         ) : (
           <>
             <span className="pr-10">
-              <FaRegMessage size={30} className="inline-block ml-2 mr-2" /> 24
+              <FaRegMessage size={30} className="inline-block ml-2 mr-2" />{" "}
+              {comments?.length}
             </span>
             <span className="pr-8">
               <IoIosPeople size={40} className="inline-block ml-8 mr-1" />
