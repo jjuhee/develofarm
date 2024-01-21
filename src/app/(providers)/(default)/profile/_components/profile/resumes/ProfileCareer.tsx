@@ -25,7 +25,7 @@ const ProfileCareer = ({ profileId }: { profileId: string }) => {
     <div className="flex justify-between items-center">
       <div>
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">경력</h2>
+          <h2 className="text-[26px] font-bold">경력</h2>
         </div>
 
         {careers && careers.length > 0 ? (

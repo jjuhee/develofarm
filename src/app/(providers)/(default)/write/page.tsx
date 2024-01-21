@@ -8,7 +8,6 @@ import Category from "./_components/Category"
 import { useRouter } from "next/navigation"
 import { Tables, TablesInsert, TablesUpdate } from "@/types/supabase"
 import useUserStore from "@/store/user"
-import formatDate from "@/utils/formatDate"
 import dayjs from "dayjs"
 import Button from "@/components/ui/Button"
 import Attatchment from "./_components/Attatchment"
@@ -35,8 +34,10 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
   }
   const [title, setTitle] = useState<string>("")
   const [content, setContent] = useState<string>("")
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [categoryData, setCategoryData] =
     useState<TCategoryData>(initialCategoryData)
+
   const router = useRouter()
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
@@ -45,7 +46,9 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
       alert(isEditMode ? "수정 완료~!" : "게시물 작성 완료~!")
       resetState()
-      router.push(`/projects/${insertedData[0].id}`)
+      /* 게시물의 상세페이지로 이동, DB 문제로 게시물이 작성되지 않았으면 프로젝트 페이지로 이동 */
+      if (insertedData) router.push(`/projects/${insertedData[0].id}`)
+      else router.push(`/projects`)
     },
     onError: () => {
       alert(
@@ -57,6 +60,7 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
   const { userId } = useUserStore()
 
   /** 수정시 : 내용 가져오기 */
+  /** 이미지도 불러와야하나.. */
   useEffect(() => {
     if (!isEditMode) return
     if (!project) return
@@ -115,6 +119,7 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       isEditMode,
       project: newData,
       techs: categoryData.techs,
+      file: selectedFile,
     })
   }
 
@@ -154,7 +159,7 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       </div>
       <div>
         {/* TODO P1: (jhee) 첨부파일 넣는 곳? */}
-        <Attatchment />
+        <Attatchment setSelectedFile={setSelectedFile} />
       </div>
       <div className="buttonbox flex justify-between">
         <Button buttonType="button" type="border" text="취소하기" />
