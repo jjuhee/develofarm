@@ -1,4 +1,5 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
+import { supabaseForServer } from "@/supabase/supabase.server"
 import { Tables, TablesInsert } from "@/types/supabase"
 
 type ExtendProjectType = Tables<"projects"> & {
@@ -382,4 +383,13 @@ export async function removeComment(commentId: string) {
     .eq("id", commentId)
 
   if (error) console.log("error", error)
+}
+
+export async function getProjectsWithServer() {
+  const { data, error } = await supabaseForClient.from("projects").select("*")
+
+  console.log("서버에서 받아온 데이터", data)
+  if (error) console.log("error", error)
+
+  return data
 }
