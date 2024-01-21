@@ -12,7 +12,7 @@ interface TParam {
 export async function setProject({ isEditMode, project, techs }: TParam) {
   const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
-    .upsert([project])
+    .upsert(project)
     .select()
 
   if (projectError) {
@@ -25,7 +25,7 @@ export async function setProject({ isEditMode, project, techs }: TParam) {
     console.log("insertedProjectData", projectData)
     const projectId = projectData[0].id
 
-    // edit 모드에서 프로젝트-테크 테이블 삭제
+    /* edit 모드에서 프로젝트-테크 테이블 삭제 */
     if (isEditMode) {
       const { error: EditError } = await supabaseForClient
         .from("project_tech")

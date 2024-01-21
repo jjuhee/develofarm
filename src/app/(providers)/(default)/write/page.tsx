@@ -9,6 +9,9 @@ import { useRouter } from "next/navigation"
 import { Tables, TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import formatDate from "@/utils/formatDate"
+import dayjs from "dayjs"
+import Button from "@/components/ui/Button"
+import Attatchment from "./_components/Attatchment"
 
 interface TProjectWithRegion extends Tables<"projects"> {
   region: Tables<"project_regions"> | null
@@ -38,10 +41,11 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: setProject,
-    onSuccess: () => {
+    onSuccess: (insertedData) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
-      alert("게시물 작성 완료~!")
-      router.push("/")
+      alert(isEditMode ? "수정 완료~!" : "게시물 작성 완료~!")
+      resetState()
+      router.push(`/projects/${insertedData[0].id}`)
     },
     onError: () => {
       alert(
@@ -62,8 +66,8 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
     setContent(project.content)
     setCategoryData((prev) => ({
       ...prev,
-      startDate: formatDate(project.project_start_date),
-      endDate: formatDate(project.project_end_date),
+      startDate: dayjs(project.project_start_date).format("YYYY-MM-DD"),
+      endDate: dayjs(project.project_end_date).format("YYYY-MM-DD"),
       isOffline: project.is_offline,
       numberOfMembers: project.number_of_people,
       region: project.is_offline ? project.region?.id! : null,
@@ -93,7 +97,9 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       return
     }
 
+    /* 쓰기/수정 둘다 사용 주의 */
     const newData: TablesInsert<"projects"> = {
+      id: projectId,
       user_id: userId,
       title,
       content,
@@ -102,6 +108,7 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       is_offline: categoryData.isOffline!,
       number_of_people: categoryData.numberOfMembers,
       region_id: categoryData.region,
+      updated_at: isEditMode ? dayjs(new Date()).toString() : null,
     }
 
     mutate({
@@ -109,8 +116,6 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
       project: newData,
       techs: categoryData.techs,
     })
-
-    resetState()
   }
 
   const resetState = () => {
@@ -120,22 +125,14 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
   }
 
   return (
-    <form onSubmit={submitProjectHandler}>
-      <div className="flex flex-col mt-10 mb-10">
-        <div className="flex">
-          <input
-            placeholder="제목을 작성하세요"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="grow border-black border-solid border-2 rounded-md " //TODO : 얇게 어떻게
-          />
-          <button
-            type="submit"
-            className="w-40 rounded-full border-solid border-2 bg-black text-white"
-          >
-            작성하기
-          </button>
-        </div>
+    <form className="flex flex-col gap-[30px]" onSubmit={submitProjectHandler}>
+      <div className="flex">
+        <input
+          placeholder="제목을 작성하세요"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="grow border-[1px] border-black rounded-md h-[60px] text-[23px] px-[26px] py-[9px]" //TODO : 얇게 어떻게
+        />
       </div>
       {/*  카테고리 선택 box  */}
       <Category
@@ -143,11 +140,8 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
         setCategoryData={setCategoryData}
         isWritePage={true}
       />
-      <Spacer y={30} />
       {/* Tiptap editor box */}
-      <div className="border-solid border-b border-black">
-        <Spacer y={20} />
-
+      <div className=" border-y border-black">
         {isEditMode ? (
           content && (
             <div>
@@ -158,7 +152,18 @@ const WritePage = ({ projectId, project, techsWithPositions }: Props) => {
           <Tiptap content={content} setContent={setContent} />
         )}
       </div>
-      {/* TODO P1: (jhee) 첨부파일 넣는 곳? */}
+      <div>
+        {/* TODO P1: (jhee) 첨부파일 넣는 곳? */}
+        <Attatchment />
+      </div>
+      <div className="buttonbox flex justify-between">
+        <Button buttonType="button" type="border" text="취소하기" />
+        <Button
+          buttonType="submit"
+          text="게시하기"
+          handler={submitProjectHandler}
+        />
+      </div>
     </form>
   )
 }

@@ -20,7 +20,6 @@ interface Props {
 }
 
 const TipTap = ({ content, setContent }: Props) => {
-  console.log("tiptap", content)
   const editor = useEditor({
     extensions: [StarterKit],
     content: content,
@@ -30,7 +29,6 @@ const TipTap = ({ content, setContent }: Props) => {
       },
     },
     onUpdate({ editor }) {
-      console.log("수정중이냐")
       setContent(editor.getHTML()) // TODO : onchange 같은 거라 계속저장하면 안되는 느낌!
     },
   })
@@ -41,7 +39,7 @@ const TipTap = ({ content, setContent }: Props) => {
 
   return (
     <>
-      <div className="border-y border-black">
+      <div className="border-b border-black">
         <Spacer y={10} />
         <EditorMenu editor={editor} />
         <Spacer y={10} />
