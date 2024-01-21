@@ -17,16 +17,16 @@ const Comments = ({ project }: Props) => {
   /**
    *@ query 해당 게시물 id를 구분해 댓글 목록 조회 */
   const { data: comments, isLoading: commentsIsLoading } = useQuery({
-    queryKey: ["comments", { comment: project.id }],
+    queryKey: ["comments", { projectId: project.id }],
     queryFn: () => getComments(project.id),
   })
 
-  if (commentsIsLoading || !comments) return <div>is Loading...</div>
+  if (commentsIsLoading) return <div>is Loading...</div>
 
   return (
     <>
       <section>
-        {comments.map((comment) => {
+        {comments?.map((comment) => {
           return (
             <div key={comment.id} className="mb-3">
               <Image

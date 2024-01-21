@@ -2,14 +2,15 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
-import { getReCommentsCount, setComment } from "../../api"
-import { Tables, TablesInsert } from "@/types/supabase"
+import { setComment } from "../../api"
+import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import ReComments from "./ReComments"
 import Spacer from "@/components/ui/Spacer"
+import { getComments } from "../../api"
 
 type Props = {
-  comment: Tables<"comments">
+  comment: Exclude<Awaited<ReturnType<typeof getComments>>, null>[number]
 }
 
 const ReCommentForm = ({ comment }: Props) => {
@@ -30,7 +31,7 @@ const ReCommentForm = ({ comment }: Props) => {
     mutationFn: setComment,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["reComments", { commentId: comment.id }],
+        queryKey: ["comments", { projectId: comment.project_id }],
       })
 
       setContent("")
@@ -38,13 +39,6 @@ const ReCommentForm = ({ comment }: Props) => {
     onError: (error) => {
       console.log(error)
     },
-  })
-
-  /**
-   *@ query 해당 게시물 id를 구분해 댓글 목록 조회 */
-  const { data: ReCommentsCount } = useQuery({
-    queryKey: ["project", { commentId: comment.id }],
-    queryFn: () => getReCommentsCount(comment.id),
   })
 
   /**
@@ -59,7 +53,7 @@ const ReCommentForm = ({ comment }: Props) => {
 
     const newComment: TablesInsert<"comments"> = {
       project_id: comment.project_id,
-      re_comment_id: comment.id,
+      comment_id: comment.id,
       user_id: userId,
       content,
     }
@@ -70,14 +64,15 @@ const ReCommentForm = ({ comment }: Props) => {
   return (
     <>
       <button className="text-left pl-2" onClick={toggleFormHandler}>
-        {ReCommentsCount && ReCommentsCount > 0
-          ? `${ReCommentsCount}개의 답글`
+        {comment.comments && (comment.comments as unknown as any[]).length > 0
+          ? `${(comment.comments as unknown as any[]).length}개의 답글`
           : "댓글"}
       </button>
+
       {showForm && (
         <div>
           <Spacer y={10} />
-          <ReComments comment={comment} />
+          <ReComments recomments={comment.comments} />
           <form
             className="flex flex-col border border-slate-600 p-5 mb-5"
             onSubmit={onSubmitHandler}

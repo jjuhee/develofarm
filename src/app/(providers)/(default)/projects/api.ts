@@ -334,9 +334,11 @@ export async function getSearchedProject(title: string) {
 export async function getComments(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("comments")
-    .select("*, user:users(*)")
+    .select(
+      "*, user:users( user_nickname, avatar_url ), comments( * , user:users( user_nickname, avatar_url ))",
+    )
     .eq("project_id", projectId)
-    .is("re_comment_id", null)
+    .is("comment_id", null)
 
   if (error) console.log("error", error)
 
@@ -348,20 +350,9 @@ export async function getReComments(commentId: string) {
   const { data, error } = await supabaseForClient
     .from("comments")
     .select("*, user:users(*)")
-    .eq("re_comment_id", commentId)
+    .eq("comment_id", commentId)
   if (error) console.log("error", error)
   return data
-}
-
-/** commentId와 일치하는 대댓글 목록 전체 갯수 */
-export async function getReCommentsCount(commentId: string) {
-  const { count, error } = await supabaseForClient
-    .from("comments")
-    .select("*, user:users(*)", { count: "exact", head: true })
-    .eq("re_comment_id", commentId)
-
-  if (error) console.log("error", error)
-  return count
 }
 
 /** 프로젝트 게시물에 댓글 추가 */
