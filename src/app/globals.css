@@ -38,3 +38,7 @@ button {
 .category {
   @apply border-[1.8px] px-[20px] py-[5px] rounded-full cursor-pointer;
 }
+
+.root {
+  --main-color: #b8ff65;
+}
