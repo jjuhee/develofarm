@@ -37,13 +37,12 @@ const FooterMenus = ({ project }: Props) => {
   }
 
   /**
-   *@ query 해당 게시물 id를 구분해 댓글 목록 조회 */
+   *@ query 해당 게시물 id를 구분하고 삭제된 댓글 제외한 목록 조회
+   TODO: 글 삭제시 새로고침시에 전체갯수 업데이트 */
   const { data: comments, isLoading: commentsIsLoading } = useQuery({
-    queryKey: ["comments", { projectId: project.id }],
+    queryKey: ["commentsCnt", { projectId: project.id }],
     queryFn: () => getCommentsCount(project.id),
   })
-
-  console.log("삭제여부데이터", comments)
 
   if (commentsIsLoading) return <div>is Loading...</div>
 
