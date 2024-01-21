@@ -8,6 +8,7 @@ import { IoMdSearch } from "react-icons/io"
 import { VscBell } from "react-icons/vsc"
 import { supabaseForClient } from "@/supabase/supabase.client"
 import useUserStore from "@/store/user"
+import Image from "next/image"
 
 const Header = () => {
   const { userId } = useUserStore((state) => state)
@@ -56,12 +57,23 @@ const Header = () => {
   }
 
   return (
-    <div className="flex w-full bg-gray-200">
-      <div className="flex justify-between items-center w-[1250px] h-[108px] my-0 mx-auto px-2">
-        <Link href={"/"}>home</Link>
-        <nav className="flex items-center gap-5 ml-40">
-          <Link href={"/projects"}>프로젝트</Link>
-          <Link href={"/members"} onClick={onClickMemberCategoryHandler}>
+    <div className="flex w-full bg-white shadow-lg shadow-gray-200">
+      <div className="flex justify-between items-center w-[1250px] h-[96px] my-0 mx-auto px-2 ">
+        <Link href={"/"}>
+          <Image src={"/images/logo.png"} alt="logo" width={200} height={30} />
+        </Link>
+        <nav className="flex items-center gap-5">
+          <Link
+            href={"/projects"}
+            className="text-black text-[18px] font-[500]"
+          >
+            프로젝트 구인
+          </Link>
+          <Link
+            href={"/members"}
+            className="text-black text-[18px] font-[500]"
+            onClick={onClickMemberCategoryHandler}
+          >
             인재풀
           </Link>
         </nav>

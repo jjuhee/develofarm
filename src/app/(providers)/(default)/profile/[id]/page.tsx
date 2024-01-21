@@ -3,10 +3,10 @@
 import React, { useEffect } from "react"
 import ProfileActions from "../_components/profile/ProfileActions"
 import ProfileUserData from "../_components/profile/ProfileUserData"
+import ProfileResume from "../_components/profile/resumes/ProfileResume"
 import ProfileProjectList from "../_components/profile/projectLists/ProfileProjectList"
 import ProfileSocialLinks from "../_components/profile/ProfileSocialLinks"
 import { useParams } from "next/navigation"
-import ProfileResume from "../_components/profile/resumes/ProfileResume"
 import { useProfileStore } from "@/store/profile"
 
 const ProfilePage = () => {

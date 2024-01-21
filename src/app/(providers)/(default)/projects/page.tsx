@@ -1,16 +1,16 @@
 "use client"
 
 import EmptyState from "@/components/EmptyState"
-import React, { useEffect, useState, useMemo } from "react"
+import React, { useState, useMemo } from "react"
 import ProjectCard from "./_components/ProjectCard"
 import Spacer from "@/components/ui/Spacer"
 import { useQuery } from "@tanstack/react-query"
-import { getBookmarksByUserId, getProjectTech, getProjects } from "./api"
+import { getBookmarksByUserId, getProjects } from "./api"
 import Pagination from "@mui/material/Pagination"
-import { Database, Tables } from "@/types/supabase"
+import { Tables } from "@/types/supabase"
 import Category from "../write/_components/Category"
 import useUserStore from "@/store/user"
-import { ExtendedProjectsType } from "@/types/extendedType"
+import { TProjectsType } from "@/types/extendedType"
 
 const PAGE_SIZE = 5
 
@@ -34,7 +34,7 @@ const ProjectsPage = () => {
     startDate: "",
     endDate: "",
     isOffline: null,
-    region: "",
+    region: null,
     numberOfMembers: 0,
     positions: [],
     techs: [],
@@ -148,7 +148,7 @@ const ProjectsPage = () => {
               return (
                 <ProjectCard
                   key={item?.id}
-                  project={item as ExtendedProjectsType}
+                  project={item as TProjectsType}
                   bookmarks={bookmarks as Tables<"bookmarks">[]}
                   currentUser={user as string}
                 />

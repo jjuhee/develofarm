@@ -20,7 +20,7 @@ declare interface TCategoryData {
   startDate: string
   endDate: string
   isOffline: boolean | null
-  region: string
+  region: string | null
   numberOfMembers: number
   positions: TPositions[]
   techs: TTechs[]
@@ -36,7 +36,7 @@ declare interface TProjectsOptions {
   startDate?: string
   endDate?: string
   numberOfPeople?: number
-  regionId?: string
+  regionId?: string | null
   techs?: TTechs[]
 }
 

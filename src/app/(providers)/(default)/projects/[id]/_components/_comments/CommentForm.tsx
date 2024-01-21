@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
-import { setComment } from "../../api"
+import { setComment } from "../../../api"
 import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 
@@ -21,6 +21,8 @@ const CommentForm = ({ projectId }: Props) => {
       await queryClient.invalidateQueries({
         queryKey: ["comments", { projectId }],
       })
+
+      setContent("")
     },
     onError: (error) => {
       console.log(error)
@@ -31,6 +33,11 @@ const CommentForm = ({ projectId }: Props) => {
    *@ function 버튼 누르면 입력한 폼 인자로 넣어서 댓글 추가하는 함수 실행 */
   const onSubmitHandler: React.FormEventHandler = (e) => {
     e.preventDefault()
+
+    if (content.trim() === "") {
+      alert("댓글을 입력해주세요!")
+      return false
+    }
 
     const newComment: TablesInsert<"comments"> = {
       project_id: projectId,

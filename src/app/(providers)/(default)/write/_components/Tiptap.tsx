@@ -9,7 +9,7 @@ import {
 } from "@tiptap/react"
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import React, { RefObject, useState } from "react"
+import React, { RefObject, useEffect, useState } from "react"
 import EditorMenu from "./EditorMenu"
 import Spacer from "@/components/ui/Spacer"
 import BubbleMenuButtons from "./BubbleMenuButtons"
@@ -21,15 +21,15 @@ interface Props {
 
 const TipTap = ({ content, setContent }: Props) => {
   const editor = useEditor({
-    extensions: extensions,
+    extensions: [StarterKit],
     content: content,
     editorProps: {
       attributes: {
-        class: "prose prose-sm max-w-none mx-auto focus:outline-none",
+        class: "prose prose-m max-w-none mx-auto *:my-2 focus:outline-none",
       },
     },
     onUpdate({ editor }) {
-      setContent(editor.getHTML())
+      setContent(editor.getHTML()) // TODO : onchange 같은 거라 계속저장하면 안되는 느낌!
     },
   })
 
@@ -39,10 +39,8 @@ const TipTap = ({ content, setContent }: Props) => {
 
   return (
     <>
-      <div className="border-y border-black">
-        <Spacer y={10} />
+      <div className="relative border-b border-black z-10">
         <EditorMenu editor={editor} />
-        <Spacer y={10} />
       </div>
       <div className="py-10 px-5 min-h-[50vh]">
         <EditorContent editor={editor} />
@@ -55,19 +53,3 @@ const TipTap = ({ content, setContent }: Props) => {
 }
 
 export default TipTap
-
-const extensions = [
-  // TODO: (jhee) 모르겠는 extensions 설정 다시 확인
-  Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  // TextStyle.configure({ types: [ListItem.name] }),
-  StarterKit.configure({
-    bulletList: {
-      keepMarks: true,
-      keepAttributes: false,
-    },
-    orderedList: {
-      keepMarks: true,
-      keepAttributes: false,
-    },
-  }),
-]

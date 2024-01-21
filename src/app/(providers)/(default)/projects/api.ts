@@ -1,4 +1,5 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
+import { supabaseForServer } from "@/supabase/supabase.server"
 import { Tables, TablesInsert } from "@/types/supabase"
 
 type ExtendProjectType = Tables<"projects"> & {
@@ -100,11 +101,31 @@ export async function getProject(projectId: string) {
 
   if (projectError) console.log("error", projectError)
 
-  return projectData || null
+  return projectData
 }
 
-/** projectId 값과 일치하는 해당 프로젝트 삭제 */
+/** projectId 값과 일치하는 해당 프로젝트 및 연관 data 삭제 */
 export async function removeProject(projectId: string) {
+  const { error: projectTechError } = await supabaseForClient
+    .from("project_tech")
+    .delete()
+    .eq("project_id", projectId)
+  if (projectTechError) console.log("project_tech 삭제 error", projectTechError)
+
+  const { error: projectMembersError } = await supabaseForClient
+    .from("project_members")
+    .delete()
+    .eq("project_id", projectId)
+  if (projectMembersError)
+    console.log("project_members 삭제 error", projectMembersError)
+
+  const { error: projectBookmarkError } = await supabaseForClient
+    .from("bookmarks")
+    .delete()
+    .eq("project_id", projectId)
+  if (projectBookmarkError)
+    console.log("project의 bookmarks 삭제 error", projectBookmarkError)
+
   const { error: projectError } = await supabaseForClient
     .from("projects")
     .delete()
@@ -220,7 +241,28 @@ export async function getProjectTech(projectId: string) {
   return techs
 }
 
-/** 포지션에 대한 기술 스택 가져오기 */
+/** projectId와 일치하는 기술 스택 + 연결된 포지션 가져오기 (position name까지 가져오려면 한번더 join)*/
+export async function getProjectTechWithPosition(projectId: string) {
+  const { data: techs, error: techError } = await supabaseForClient
+    .from("project_tech")
+    .select("*,techs(position_tech(*))")
+    .eq("project_id", projectId)
+
+  if (!techs) {
+    console.log(techError)
+    return
+  }
+  //  return techs
+  const techPosition = techs.map((techs) => {
+    return {
+      tech_id: techs.tech_id,
+      position_id: techs.techs?.position_tech[0].position_id!,
+    }
+  })
+  return techPosition
+}
+
+/** 모든 포지션에 대한 기술 스택 가져오기 */
 export async function getTechsByPositions() {
   try {
     // 1. 모든 포지션을 가져온다
@@ -289,24 +331,75 @@ export async function getSearchedProject(title: string) {
   return projectData || null
 }
 
+/** 프로젝트 게시물에 댓글 삭제 */
+export async function closeProject(projectId: string) {
+  const { error } = await supabaseForClient
+    .from("projects")
+    .update({ recruit_status: true })
+    .eq("id", projectId)
+
+  if (error) console.log("error", error)
+}
+
 /** projectId와 일치하는 댓글 목록 가져오기 */
 export async function getComments(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("comments")
-    .select("*, user:users(*)")
+    .select(
+      "*, user:users( user_nickname, avatar_url ), comments( * , user:users( user_nickname, avatar_url ))",
+    )
     .eq("project_id", projectId)
+    .is("comment_id", null)
 
   if (error) console.log("error", error)
 
   return data
 }
 
-/** 프로젝트 게시물에 댓글 작성 데이터에 추가 */
-export async function setComment(comment: TablesInsert<"comments">) {
+/** projectId와 일치하며 삭제여부가 없는 댓글 목록 가져오기 */
+export async function getCommentsCount(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("comments")
-    .insert(comment)
-
-  console.log(data)
+    .select("*")
+    .match({ project_id: projectId, del_yn: false })
+    .is("comment_id", null)
   if (error) console.log("error", error)
+
+  return data
+}
+
+/** commentId와 일치하는 대댓글 목록 가져오기 */
+export async function getReComments(commentId: string) {
+  const { data, error } = await supabaseForClient
+    .from("comments")
+    .select("*, user:users(*)")
+    .eq("comment_id", commentId)
+  if (error) console.log("error", error)
+  return data
+}
+
+/** 프로젝트 게시물에 댓글 추가 */
+export async function setComment(comment: TablesInsert<"comments">) {
+  const { error } = await supabaseForClient.from("comments").insert(comment)
+
+  if (error) console.log("error", error)
+}
+
+/** 프로젝트 게시물에 댓글 삭제 */
+export async function removeComment(commentId: string) {
+  const { error } = await supabaseForClient
+    .from("comments")
+    .update({ del_yn: true })
+    .eq("id", commentId)
+
+  if (error) console.log("error", error)
+}
+
+export async function getProjectsWithServer() {
+  const { data, error } = await supabaseForClient.from("projects").select("*")
+
+  console.log("서버에서 받아온 데이터", data)
+  if (error) console.log("error", error)
+
+  return data
 }
