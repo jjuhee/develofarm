@@ -8,8 +8,9 @@ interface TParam {
   isEditMode: boolean
   project: TablesInsert<"projects">
   techs: TTechs[]
+  file: File | null
 }
-export async function setProject({ isEditMode, project, techs }: TParam) {
+export async function setProject({ isEditMode, project, techs, file }: TParam) {
   const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
     .upsert(project)
@@ -42,8 +43,35 @@ export async function setProject({ isEditMode, project, techs }: TParam) {
       console.log("error", techError)
       throw techError
     }
+
+    /** 이미지를 storage에 저장 */
+    const BASE_URL = `https://aksbymviolrkiainilpq.supabase.co/storage/v1/object/public/project_image/`
+    let imagePath = ""
+
+    if (file) {
+      const fileExt = file.name.split(".").pop()
+      const fileName = `${Math.random()}.${fileExt}`
+      const subUrl = `${projectId}/${fileName}`
+      const { data: image, error: imageError } = await supabaseForClient.storage
+        .from("project_image")
+        .upload(`${subUrl}`, file)
+
+      imagePath = BASE_URL + image?.path
+
+      if (imageError) {
+        console.log("이미지 저장 error", imageError)
+        throw imageError
+      }
+
+      /** 프로젝트 DB에 이미지 url 저장 */
+      const { error } = await supabaseForClient
+        .from("projects")
+        .update({ picture_url: imagePath })
+        .eq("id", projectId)
+    }
+
+    return projectData
   }
-  return projectData
 }
 
 export async function setProjectPositionsAndTechs(
