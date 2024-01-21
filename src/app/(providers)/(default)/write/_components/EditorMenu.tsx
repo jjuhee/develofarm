@@ -1,4 +1,6 @@
 import { Editor } from "@tiptap/react"
+import { useState } from "react"
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import { MdFormatBold } from "react-icons/md"
 import { MdFormatItalic } from "react-icons/md"
 import { MdFormatStrikethrough } from "react-icons/md"
@@ -20,6 +22,16 @@ const EditorMenu = ({ editor }: Props) => {
   if (!editor) {
     return null
   }
+  const [isActive, setIsActive] = useState(false)
+  const [selectedValue, setSelectedValue] = useState("제목1")
+
+  const onClickFontSizeHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    //const target = e.target as HTMLElement
+    const target = e.target as HTMLElement
+    if (target) {
+      setIsActive(!isActive)
+    }
+  }
 
   return (
     <div className="flex flex-wrap justify-items-start gap-1">
@@ -28,83 +40,65 @@ const EditorMenu = ({ editor }: Props) => {
       2. write pages에 form으로 구조 만들고
       3.2.TODO: 가운데정렬, 글자 색상, 사진 입력 등등 추가.
       */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={
-          editor.isActive("heading", { level: 1 })
-            ? "w-[30px] h-[30px] rounded border-solid border-2  bg-black border-black text-white"
-            : "w-[30px] h-[30px] rounded border-solid border-2 border-black"
-        }
+
+      <div
+        className="selectBox"
+        onMouseLeave={() => {
+          setIsActive(false)
+        }}
       >
-        h1
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={
-          editor.isActive("heading", { level: 2 })
-            ? "w-[30px] h-[30px] rounded border-solid border-2  bg-black border-black text-white"
-            : "w-[30px] h-[30px] rounded border-solid border-2 border-black"
-        }
-      >
-        h2
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={
-          editor.isActive("heading", { level: 3 })
-            ? "w-[30px] h-[30px] rounded border-solid border-2  bg-black border-black text-white"
-            : "w-[30px] h-[30px] rounded border-solid border-2 border-black"
-        }
-      >
-        h3
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        className={
-          editor.isActive("heading", { level: 4 })
-            ? "w-[30px] h-[30px] rounded border-solid border-2  bg-black border-black text-white"
-            : "w-[30px] h-[30px] rounded border-solid border-2 border-black"
-        }
-      >
-        h4
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-        className={
-          editor.isActive("heading", { level: 5 })
-            ? "w-[30px] h-[30px] rounded border-solid border-2  bg-black border-black text-white"
-            : "w-[30px] h-[30px] rounded border-solid border-2 border-black"
-        }
-      >
-        h5
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-        className={
-          editor.isActive("heading", { level: 6 })
-            ? "w-[30px] h-[30px] rounded border-solid border-2  bg-black border-black text-white"
-            : "w-[30px] h-[30px] rounded border-solid border-2 border-black"
-        }
-      >
-        h6
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().setParagraph().run()}
-        className={
-          editor.isActive("paragraph")
-            ? "w-[30px] h-[30px] rounded border-solid border-2  bg-black border-black text-white"
-            : "w-[30px] h-[30px] rounded border-solid border-2 border-black"
-        }
-      >
-        P
-      </button>
+        <div>
+          <div
+            className="flex items-center justify-center border-[1px] rounded-[3px] w-[81px] h-[33px] px-[7px] py-[8px] cursor-pointer transition-all"
+            onClick={(e) => onClickFontSizeHandler(e)}
+          >
+            <div className="slected-value">{selectedValue}</div>
+            {isActive ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </div>
+        </div>
+        <ul className={`flex flex-col ${isActive ? "visible" : "invisible"}`}>
+          <button
+            type="button"
+            className="hover:bg-[#E6E6E6]"
+            onClick={(e) => {
+              setSelectedValue(e.target.textContent)
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }}
+          >
+            제목1
+          </button>
+          <button
+            type="button"
+            className="hover:bg-[#E6E6E6]"
+            onClick={(e) => {
+              setSelectedValue(e.target.textContent)
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }}
+          >
+            제목2
+          </button>
+          <button
+            type="button"
+            className="hover:bg-[#E6E6E6]"
+            onClick={(e) => {
+              setSelectedValue(e.target.textContent)
+              editor.chain().focus().toggleHeading({ level: 3 }).run()
+            }}
+          >
+            제목3
+          </button>
+          <button
+            type="button"
+            className="hover:bg-[#E6E6E6]"
+            onClick={(e) => {
+              setSelectedValue(e.target.textContent)
+              editor.chain().focus().setParagraph().run()
+            }}
+          >
+            본문
+          </button>
+        </ul>
+      </div>
 
       <MdFormatBold
         size={30}

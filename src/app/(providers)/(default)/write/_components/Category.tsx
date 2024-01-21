@@ -117,7 +117,6 @@ const Category = ({
             <div className="flex flex-col gap-[16px] py-[15px]">
               <h5 className="text-[20px] font-[600]">활동 지역</h5>
               <select
-                defaultValue="1"
                 className={`border-[1.5px]  ${
                   region === "1" || region === null
                     ? "border-slate-400"
