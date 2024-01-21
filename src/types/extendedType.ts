@@ -1,3 +1,4 @@
+import { getUsers } from "@/app/(providers)/(default)/members/api"
 import { Tables } from "./supabase"
 
 export type ExtendedProjectsType = Tables<"projects"> & {
@@ -17,3 +18,8 @@ export type ExtendedUsersType = Tables<"users"> & {
 export type ExtendedUserTechType = Tables<"user_tech"> & {
   techs: Tables<"techs">
 }
+
+export type UsersType = Exclude<
+  Awaited<ReturnType<typeof getUsers>>,
+  void
+>[number]
