@@ -330,6 +330,16 @@ export async function getSearchedProject(title: string) {
   return projectData || null
 }
 
+/** 프로젝트 게시물에 댓글 삭제 */
+export async function closeProject(projectId: string) {
+  const { error } = await supabaseForClient
+    .from("projects")
+    .update({ recruit_status: true })
+    .eq("id", projectId)
+
+  if (error) console.log("error", error)
+}
+
 /** projectId와 일치하는 댓글 목록 가져오기 */
 export async function getComments(projectId: string) {
   const { data, error } = await supabaseForClient
