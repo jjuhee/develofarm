@@ -27,7 +27,28 @@ const Comments = ({ project }: Props) => {
     <>
       <section>
         {comments?.map((comment) => {
-          return (
+          return comment.del_yn != false ? (
+            <div key={comment.id} className="mb-3">
+              <Image
+                width={48}
+                height={48}
+                src={`${comment.user?.avatar_url}`}
+                alt="댓글 작성자 이미지"
+                className="w-12 h-12 rounded-full object-cover inline-block"
+              />
+              <span className="mr-2 pl-2 font-semibold">
+                {comment.user?.user_nickname}
+              </span>
+              <span className="text-xs">
+                {dayjs(comment.created_at).format("YYYY-MM-DD HH:mm:ss")}
+              </span>
+              <div className="flex flex-col pl-14 min-h-28 border-b-2">
+                <div className="h-auto font-semibold">삭제된 댓글입니다!</div>
+                <Spacer y={10} />
+                {comment.user && <ReCommentForm comment={comment} />}
+              </div>
+            </div>
+          ) : (
             <div key={comment.id} className="mb-3">
               <Image
                 width={48}

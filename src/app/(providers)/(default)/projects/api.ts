@@ -345,6 +345,18 @@ export async function getComments(projectId: string) {
   return data
 }
 
+/** projectId와 일치하며 삭제여부가 없는 댓글 목록 가져오기 */
+export async function getCommentsCount(projectId: string) {
+  const { data, error } = await supabaseForClient
+    .from("comments")
+    .select("*")
+    .match({ project_id: projectId, del_yn: false })
+    .is("comment_id", null)
+  if (error) console.log("error", error)
+
+  return data
+}
+
 /** commentId와 일치하는 대댓글 목록 가져오기 */
 export async function getReComments(commentId: string) {
   const { data, error } = await supabaseForClient
@@ -366,8 +378,8 @@ export async function setComment(comment: TablesInsert<"comments">) {
 export async function removeComment(commentId: string) {
   const { error } = await supabaseForClient
     .from("comments")
-    .delete()
-    .match({ id: commentId })
+    .update({ del_yn: true })
+    .eq("id", commentId)
 
   if (error) console.log("error", error)
 }
