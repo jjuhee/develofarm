@@ -14,7 +14,7 @@ import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import MemberProfile from "./_components/MemberProfile"
 import EmptyState from "@/components/EmptyState"
 import useUserStore from "@/store/user"
-import { ExtendedUsersType } from "@/types/extendedType"
+import { ExtendedUsersType, UsersType } from "@/types/extendedType"
 
 const MembersPage = () => {
   const userId = useUserStore((state) => state.userId)
@@ -60,7 +60,7 @@ const MembersPage = () => {
       return allPages.length * 3
     },
     select: (data) => {
-      return data.pages.flatMap((page) => page as ExtendedUsersType[])
+      return data.pages.flatMap((page) => page as UsersType[])
     },
     enabled: !!title,
   })
@@ -97,7 +97,7 @@ const MembersPage = () => {
             <ul className="grid grid-cols-1 gap-20 md:grid-cols-2 lg:grid-cols-3">
               {(infinityUsers?.length as number) > 0 ? (
                 <>
-                  {infinityUsers?.map((user) => (
+                  {infinityUsers?.map((user: UsersType) => (
                     <MemberCard
                       key={user?.id}
                       user={user}
