@@ -27,33 +27,41 @@ const ProfileSocialLinks = ({ profileId }: { profileId: string }) => {
     <div className="flex justify-between items-center w-[800px]">
       <div>
         <h2 className="flex text-[20px] font-bold h-[40px]">Blog</h2>
-        {socialLink?.blog_url ? (
-          <p className="text-[14px] font-bold">
-            <a
-              href={`${socialLink.blog_url}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {socialLink.blog_url}
-            </a>
-          </p>
+        {socialLink?.blog_url !== undefined ? (
+          socialLink.blog_url ? (
+            <p className="text-[14px] font-bold">
+              <a
+                href={`${socialLink.blog_url}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {socialLink.blog_url}
+              </a>
+            </p>
+          ) : (
+            <p className="text-[14px] font-bold">블로그 주소가 없습니다</p>
+          )
         ) : (
           <p className="text-[14px] font-bold">블로그 주소가 없습니다</p>
         )}
       </div>
 
       <div>
-        <h2 className="flex text-[20px] font-bold h-[40px]">Github</h2>
-        {socialLink?.github_url ? (
-          <p className="text-[14px] font-bold">
-            <a
-              href={`${socialLink.github_url}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {socialLink.github_url}
-            </a>
-          </p>
+        <h2 className="flex text-[20px] font-bold h-[40px]">GitHub</h2>
+        {socialLink?.github_url !== undefined ? (
+          socialLink.github_url ? (
+            <p className="text-[14px] font-bold">
+              <a
+                href={`${socialLink.github_url}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {socialLink.github_url}
+              </a>
+            </p>
+          ) : (
+            <p className="text-[14px] font-bold">GitHub 주소가 없습니다</p>
+          )
         ) : (
           <p className="text-[14px] font-bold">GitHub 주소가 없습니다</p>
         )}
