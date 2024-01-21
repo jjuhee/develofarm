@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    domains: ["content.surfit.io", "api.surfit.io"],
     remotePatterns: [
       {
         protocol: "https",
