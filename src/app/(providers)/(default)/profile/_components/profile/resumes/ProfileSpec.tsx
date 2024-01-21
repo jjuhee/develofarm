@@ -25,7 +25,7 @@ const ProfileSpec = ({ profileId }: { profileId: string }) => {
     <div className="flex justify-between items-center ">
       <div>
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold ">자격/어학/수상</h2>
+          <h2 className="text-[26px] font-bold">자격/어학/수상</h2>
         </div>
 
         {specs && specs.length > 0 ? (

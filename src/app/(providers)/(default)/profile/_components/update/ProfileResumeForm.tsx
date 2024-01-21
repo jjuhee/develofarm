@@ -4,16 +4,16 @@ import ProfileEducationForm from "./ProfileEducationForm"
 import ProfileAcademyForm from "./ProfileAcademyForm"
 import ProfileSpecForm from "./ProfileSpecForm"
 
-const ProfileResumeForm = () => {
+const ProfileResumeForm = ({ profileId }: { profileId: any }) => {
   return (
     <div>
       <div className="flex justify-between items-center">
-        <ProfileCareerForm />
-        <ProfileEducationForm />
+        <ProfileCareerForm profileId={profileId} />
+        <ProfileEducationForm profileId={profileId} />
       </div>
       <div className="flex justify-between items-center">
-        <ProfileAcademyForm />
-        <ProfileSpecForm />
+        <ProfileAcademyForm profileId={profileId} />
+        <ProfileSpecForm profileId={profileId} />
       </div>
     </div>
   )
