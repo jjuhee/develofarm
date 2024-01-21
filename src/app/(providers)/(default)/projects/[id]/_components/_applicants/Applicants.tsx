@@ -13,11 +13,14 @@ const Applicants = ({ applicants, status }: Props) => {
     <div>
       {status ? (
         <h2 className="text-2xl font-bold mb-5">
-          참여 중인 멤버 <span className="text-slate-300">0</span>/
+          참여 중인 멤버 <span className="text-slate-300 ml-2">0</span>/
           {applicants.length}
         </h2>
       ) : (
-        <h2 className="text-2xl font-bold">신청자 현황</h2>
+        <h2 className="text-2xl font-bold">
+          신청자 현황
+          <span className="ml-3">{applicants.length}</span>
+        </h2>
       )}
       {applicants
         .filter((applicant) => applicant.application_status === status)
