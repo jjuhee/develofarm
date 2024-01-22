@@ -1,22 +1,31 @@
+import { useQuery } from "@tanstack/react-query"
 import React from "react"
+import { getProjectTech } from "../../api"
+import { Tables } from "@/types/supabase"
 
-const TechStackTag = () => {
-  const techStack = [
-    { id: "1", tech: "React" },
-    { id: "2", tech: "TypeScript" },
-    { id: "3", tech: "JAVA" },
-    { id: "4", tech: "Figma" },
-  ]
+type Props = {
+  project: Tables<"projects">
+}
+
+const TechStackTag = ({ project }: Props) => {
+  const { data: projectTeck, isLoading } = useQuery({
+    queryKey: ["project", { projectId: project.id }],
+    queryFn: () => getProjectTech(project.id),
+  })
+  console.log(projectTeck)
+
+  console.log(projectTeck)
+  if (isLoading) return <div>is Loading</div>
 
   return (
     <ul className="flex text-sm">
-      {techStack.map((tech) => {
+      {projectTeck?.map((teck, i) => {
         return (
           <li
-            className="border-solid border-2 p-2 pl-3 pr-3 mr-2 rounded-3xl border-rose-400 text-rose-400"
-            key={tech.id}
+            className="p-2 pl-3 pr-3 mr-2 rounded-3xl text-[#666666] bg-[#E6E6E6]"
+            key={i}
           >
-            {tech.tech}
+            {teck}
           </li>
         )
       })}
