@@ -55,7 +55,7 @@ const DetailPage = () => {
       <header>
         <h1 className="text-3xl font-semibold">{project.title}</h1>
         <Spacer y={30} />
-        <TechStackTag />
+        <TechStackTag project={project} />
         <Spacer y={25} />
         <ul className="flex gap-x-5 pl-2 text-zinc-400 mb-5 items-center">
           {project.user && (
