@@ -31,6 +31,16 @@ export async function getMembers(projectId: string) {
   return data
 }
 
+/** 프로젝트에 참여중인 멤버 조회 */
+export async function getMembersInProject(projectId: string) {
+  const { data, error } = await supabaseForClient
+    .from("project_members")
+    .select("*, users(user_nickname, avatar_url)")
+    .match({ project_id: projectId, application_status: true })
+  if (error) console.log("error", error)
+  return data
+}
+
 /** 참여중인 멤버 등록 */
 export async function setProjectInMember(projectId: string, userId: string) {
   const { error } = await supabaseForClient
