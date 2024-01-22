@@ -13,7 +13,7 @@ import Image from "next/image"
 import Spacer from "@/components/ui/Spacer"
 import Column from "./GetSurfitArticles"
 
-export default function Client({ children }: { children: React.ReactNode }) {
+export default function Main({ children }: { children: React.ReactNode }) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
 
   const images = ["Image 1", "Image 2", "Image 3", "Image 4", "Image 5"]
@@ -333,6 +333,7 @@ export default function Client({ children }: { children: React.ReactNode }) {
       {/* </div> */}
       {/* </div> */}
       {/* <Column /> */}
+
       {children}
     </>
   )

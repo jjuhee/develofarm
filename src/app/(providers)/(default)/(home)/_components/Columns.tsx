@@ -7,7 +7,7 @@ interface DeliverProps {
   surfitArticles: any[]
 }
 
-const Deliver: React.FC<DeliverProps> = ({ surfitArticles }: DeliverProps) => {
+const Column: React.FC<DeliverProps> = ({ surfitArticles }: DeliverProps) => {
   // Deliver 컴포넌트 내용
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
   const [crawlData, setCrawlData] = useState<any[]>()
@@ -83,4 +83,4 @@ const Deliver: React.FC<DeliverProps> = ({ surfitArticles }: DeliverProps) => {
   )
 }
 
-export default Deliver
+export default Column
