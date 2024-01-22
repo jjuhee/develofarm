@@ -13,10 +13,6 @@ const Column: React.FC<DeliverProps> = ({ surfitArticles }: DeliverProps) => {
   const [crawlData, setCrawlData] = useState<any[]>()
   const [data, setData] = useState([1, 2, 3, 4])
 
-  // useEffect(() => {
-  //   setCrawlData(surfitArticles)
-  // }, [])
-
   const images = ["Image 1", "Image 2", "Image 3", "Image 4", "Image 5"]
   return (
     <div>
