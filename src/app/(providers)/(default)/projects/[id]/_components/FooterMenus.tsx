@@ -103,7 +103,11 @@ const FooterMenus = ({ project }: Props) => {
         {isSelected === "comments" && <Comments project={project} />}
         {isSelected === "applicants" && applicants && (
           <>
-            <Applicants applicants={applicants} status={true} />
+            <Applicants
+              applicants={applicants}
+              status={true}
+              project={project}
+            />
             <Applicants applicants={applicants} status={false} />
           </>
         )}
