@@ -14,6 +14,8 @@ const ProjectWriterInfo = ({ project, user }: Props) => {
     "YYYY.MM.DD HH:mm:ss",
   )
 
+  const updateDate = dayjs(project?.updated_at).format("YYYY.MM.DD HH:mm:ss")
+
   return (
     <>
       <li>
@@ -29,7 +31,11 @@ const ProjectWriterInfo = ({ project, user }: Props) => {
         <span className="pr-2">작성자</span>
         {user.user_nickname}
       </li>
-      <li>{FORMATTED_DATE}</li>
+      <li>
+        {FORMATTED_DATE === updateDate
+          ? FORMATTED_DATE
+          : `${updateDate} (수정됨)`}
+      </li>
       <li>조회수 190</li>
     </>
   )

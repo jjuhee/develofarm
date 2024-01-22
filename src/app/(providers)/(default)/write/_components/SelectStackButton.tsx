@@ -176,7 +176,7 @@ const SelectStackButton = ({
             isActive === "디자인" ? "visible" : "invisible"
           }`}
         >
-          {allTechs?.[3]?.map((tech, i) => (
+          {allTechs?.[2]?.map((tech, i) => (
             <li key={i}>
               <label
                 htmlFor={tech?.id}

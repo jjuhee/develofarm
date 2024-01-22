@@ -1,4 +1,5 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
+import { supabaseForServer } from "@/supabase/supabase.server"
 import { Tables, TablesInsert } from "@/types/supabase"
 
 type ExtendProjectType = Tables<"projects"> & {
@@ -330,6 +331,16 @@ export async function getSearchedProject(title: string) {
   return projectData || null
 }
 
+/** 프로젝트 게시물에 댓글 삭제 */
+export async function closeProject(projectId: string) {
+  const { error } = await supabaseForClient
+    .from("projects")
+    .update({ recruit_status: true })
+    .eq("id", projectId)
+
+  if (error) console.log("error", error)
+}
+
 /** projectId와 일치하는 댓글 목록 가져오기 */
 export async function getComments(projectId: string) {
   const { data, error } = await supabaseForClient
@@ -382,4 +393,13 @@ export async function removeComment(commentId: string) {
     .eq("id", commentId)
 
   if (error) console.log("error", error)
+}
+
+export async function getProjectsWithServer() {
+  const { data, error } = await supabaseForClient.from("projects").select("*")
+
+  console.log("서버에서 받아온 데이터", data)
+  if (error) console.log("error", error)
+
+  return data
 }

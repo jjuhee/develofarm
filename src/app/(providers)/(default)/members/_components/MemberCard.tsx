@@ -3,10 +3,10 @@ import React from "react"
 import useMembersStore from "@/store/members"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import { useRouter } from "next/navigation"
-import { ExtendedUsersType } from "@/types/extendedType"
+import { UsersType } from "@/types/extendedType"
 
 interface Props {
-  user: ExtendedUsersType
+  user: UsersType
   title: string
   currentUserId: string
 }
@@ -35,7 +35,7 @@ const MemberCard = ({ user, title, currentUserId }: Props) => {
         handler,
       )
     } else {
-      setSelectedMember(user as ExtendedUsersType)
+      setSelectedMember(user as UsersType)
       setViewMemberModal(true)
     }
   }
@@ -60,10 +60,10 @@ const MemberCard = ({ user, title, currentUserId }: Props) => {
             <>
               {user_tech?.map((tech) => (
                 <li
-                  key={tech.techs.id}
+                  key={tech.techs?.id}
                   className="px-3 py-1 rounded-full border-2 text-[12px] font-[400]"
                 >
-                  {tech?.techs.tech_name}
+                  {tech.techs?.tech_name}
                 </li>
               ))}
             </>

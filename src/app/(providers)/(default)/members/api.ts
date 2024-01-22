@@ -9,7 +9,9 @@ export const getUsers = async ({
 }) => {
   const query = supabaseForClient
     .from("users")
-    .select("*, position: positions(*), user_tech(*, techs(*))")
+    .select(
+      "*, position: positions(*), user_tech(*, techs(*)), social_links(*)",
+    )
     .eq("user_status", "지원 중")
     .range(pageParam!, pageParam! + 2)
     .order("created_at", { ascending: false })
@@ -18,6 +20,8 @@ export const getUsers = async ({
 
   const { data, error } = await query
   if (error) return console.log(error.message)
+
+  console.log("data", data)
 
   return data || null
 }

@@ -1,16 +1,17 @@
 import { Tables } from "@/types/supabase"
 import React, { SetStateAction, useState } from "react"
-import Comments from "./Comments"
-import Applicants from "./Applicants"
+import Comments from "./_comments/Comments"
+import Applicants from "./_applicants/Applicants"
 import Spacer from "@/components/ui/Spacer"
 import FooterAuthButton from "./FooterAuthButton"
 import useUserStore from "@/store/user"
 import FooterPublicIcon from "./FooterPublicIcon"
 import { IoIosPeople } from "react-icons/io"
 import { FaRegMessage } from "react-icons/fa6"
-import { CiUser } from "react-icons/ci"
 import { getCommentsCount } from "../../api"
 import { useQuery } from "@tanstack/react-query"
+import { getMembers } from "../api"
+import Image from "next/image"
 
 type Props = {
   project: Tables<"projects">
@@ -22,6 +23,9 @@ const FooterMenus = ({ project }: Props) => {
   const [isSelected, setIsSelected] = useState<"comments" | "applicants">(
     "comments",
   )
+  /**
+   *@ param 신청자 목록 hover시 나타나는 태그를 담은 변수*/
+  const [isShow, setIsShow] = useState<boolean>(false)
   /**
    *@ param1 현재 로그인한 유저 정보를 담은 변수
    *@ param2 글 작성자가 현재 로그인한 유저랑 같은지 판별하는 변수*/
@@ -44,7 +48,17 @@ const FooterMenus = ({ project }: Props) => {
     queryFn: () => getCommentsCount(project.id),
   })
 
+  /**
+   *@ query 해당 게시물 id를 구분하고 신청자 목록 조회 */
+  const { data: applicants, isLoading: applicantsIsLoading } = useQuery({
+    queryKey: ["applicants", { projectId: project.id }],
+    queryFn: () => getMembers(project.id),
+  })
+
+  console.log(applicants)
+
   if (commentsIsLoading) return <div>is Loading...</div>
+  if (applicantsIsLoading) return <div>is Loading...</div>
 
   return (
     <>
@@ -62,24 +76,59 @@ const FooterMenus = ({ project }: Props) => {
               {comments?.length}
             </button>
             <button
-              className={`pr-8 pb-1 border-b-2 ${
+              className={`pr-8 border-b-2 ${
                 isSelected === "applicants" && " border-slate-600"
               }`}
               onClick={() => toggleTapHandler("applicants")}
             >
-              <CiUser size={35} className="inline-block ml-8 mr-1" /> 24
+              <IoIosPeople size={40} className="inline-block ml-8 mr-1" />{" "}
+              {applicants?.length}
             </button>
           </>
         ) : (
           <>
-            <span className="pr-10">
+            <button disabled className="pr-10">
               <FaRegMessage size={30} className="inline-block ml-2 mr-2" />{" "}
               {comments?.length}
-            </span>
-            <span className="pr-8">
+            </button>
+            <button
+              disabled
+              className="pr-8"
+              onMouseOver={() => {
+                setIsShow(true)
+              }}
+              onMouseLeave={() => {
+                setIsShow(false)
+              }}
+            >
+              {isShow && (applicants as unknown as any[])?.length > 0 && (
+                <div className="absolute bg-[#B8FF65] text-[#000000] font-bold rounded-xl min-w-36 p-2 z-10 mt-[-60px] ml-8">
+                  {applicants?.map((applicant) => {
+                    return (
+                      <ul key={applicant.id} className="flex items-center">
+                        <li>
+                          <Image
+                            width={24}
+                            height={24}
+                            src={`${applicant.users?.avatar_url}`}
+                            alt="댓글 작성자 이미지"
+                            className="w-8 h-8 rounded-full object-cover mr-2"
+                          />
+                        </li>
+                        <li>
+                          {applicant.users?.user_nickname}
+                          <span className="ml-10">
+                            {applicant.user_id === userId && "(나)"}
+                          </span>
+                        </li>
+                      </ul>
+                    )
+                  })}
+                </div>
+              )}
               <IoIosPeople size={40} className="inline-block ml-8 mr-1" />
-              모집정원 3/{project.number_of_people}
-            </span>
+              모집정원 {applicants?.length}/{project.number_of_people}
+            </button>
           </>
         )}
         {/* 모두가 볼 수 있는 아이콘 */}
@@ -91,7 +140,12 @@ const FooterMenus = ({ project }: Props) => {
       {/* 탭 메뉴에 따라 나오는 컴포넌트 */}
       <section>
         {isSelected === "comments" && <Comments project={project} />}
-        {isSelected === "applicants" && <Applicants />}
+        {isSelected === "applicants" && applicants && (
+          <>
+            <Applicants applicants={applicants} status={true} />
+            <Applicants applicants={applicants} status={false} />
+          </>
+        )}
       </section>
     </>
   )
