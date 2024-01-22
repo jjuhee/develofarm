@@ -65,9 +65,7 @@ const DetailPage = () => {
         </ul>
       </header>
       <main>
-        {project.region && (
-          <ProjectMetaInfo project={project} region={project.region} />
-        )}
+        <ProjectMetaInfo project={project} />
         <Spacer y={50} />
         <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pb-10 min-h-96">
           <EditorContent editor={editor} />

@@ -1,13 +1,12 @@
-import { Tables } from "@/types/supabase"
 import dayjs from "dayjs"
 import React from "react"
+import { getProject } from "../../api"
 
 type Props = {
-  project: Tables<"projects">
-  region: Tables<"project_regions">
+  project: Exclude<Awaited<ReturnType<typeof getProject>>, null>
 }
 
-const ProjectMetaInfo = ({ project, region }: Props) => {
+const ProjectMetaInfo = ({ project }: Props) => {
   const STARED_DATE = dayjs(project?.project_start_date).format("YYYY.MM.DD")
   const END_DATE = dayjs(project?.project_end_date).format("YYYY.MM.DD")
 
@@ -22,8 +21,8 @@ const ProjectMetaInfo = ({ project, region }: Props) => {
           <h3 className="font-semibold">활동 지역</h3>
           <p>
             {project.is_offline
-              ? region
-                ? region.region
+              ? project.region
+                ? project.region.region
                 : "미설정"
               : "온라인"}
           </p>
