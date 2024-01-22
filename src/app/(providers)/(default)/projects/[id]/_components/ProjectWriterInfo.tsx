@@ -31,7 +31,11 @@ const ProjectWriterInfo = ({ project, user }: Props) => {
         <span className="pr-2">작성자</span>
         {user.user_nickname}
       </li>
-      <li>{updateDate ? `${updateDate} (수정됨)` : FORMATTED_DATE}</li>
+      <li>
+        {updateDate === FORMATTED_DATE
+          ? FORMATTED_DATE
+          : `${updateDate} (수정됨)`}
+      </li>
       <li>조회수 190</li>
     </>
   )
