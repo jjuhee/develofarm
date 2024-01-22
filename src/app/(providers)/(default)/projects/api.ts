@@ -348,6 +348,7 @@ export async function getComments(projectId: string) {
     .select(
       "*, user:users( user_nickname, avatar_url ), comments( * , user:users( user_nickname, avatar_url ))",
     )
+    .order("created_at", { ascending: true })
     .eq("project_id", projectId)
     .is("comment_id", null)
 
