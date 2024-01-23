@@ -10,6 +10,8 @@ type Props = {
 
 const CommentForm = ({ projectId }: Props) => {
   const [content, setContent] = useState<string>("")
+  console.log("내용", content)
+
   const queryClient = useQueryClient()
   const { userId } = useUserStore()
 
@@ -56,7 +58,7 @@ const CommentForm = ({ projectId }: Props) => {
       <textarea
         placeholder="댓글 내용을 입력하세요"
         maxLength={500}
-        className="outline-none resize-none"
+        className="outline-none resize-none whitespace-pre-line"
         value={content}
         onChange={(e) => {
           setContent(e.target.value)

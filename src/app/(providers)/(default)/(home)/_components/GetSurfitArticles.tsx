@@ -59,7 +59,6 @@ const Column = async () => {
 
   return (
     <>
-      <div>칼럼컴포넌트 입니다.</div>
       {/* {surfitArticles.map((surfitArticle) => (
         <div key={surfitArticle.href}>
           <div className="relative w-[300px] aspect-square">
