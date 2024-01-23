@@ -3,7 +3,7 @@
 import useCategoryStore from "@/store/category"
 import useMembersStore from "@/store/members"
 import Link from "next/link"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { IoMdSearch } from "react-icons/io"
 import { VscBell } from "react-icons/vsc"
 import { supabaseForClient } from "@/supabase/supabase.client"
@@ -17,8 +17,6 @@ const Header = () => {
     (state) => state,
   )
 
-  const [isLoggedOut, setIsLoggedOut] = useState(false)
-
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
     setViewMemberModal(false)
@@ -28,34 +26,50 @@ const Header = () => {
   const [showTooltip, setShowTooltip] = useState(false)
 
   const onHandleClick = (event: React.MouseEvent) => {
-    // 툴팁 표시 상태를 변경
     setShowTooltip(!showTooltip)
   }
-  const [isAlarmData, setIsAlarmData] = useState<any>()
+
+  const [isAlarmData, setIsAlarmData] = useState<{ [key: string]: any }>()
   const client = supabaseForClient
 
-  const channelA = client
-    .channel("schema-db-changes")
-    .on(
-      "postgres_changes",
-      {
-        event: "INSERT",
-        schema: "public",
-        table: "projects",
-      },
-      (payload) => setIsAlarmData(payload),
-    )
-    .subscribe()
+  //public schema의 projects 테이블을 구독, unmount시 구독취소
+  useEffect(() => {
+    const channelA = client
+      .channel("schema-db-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "projects",
+        },
+        (payload) => setIsAlarmData(payload),
+      )
+      .subscribe()
+  })
 
+  //로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
+  const [isLoggedOut, setIsLoggedOut] = useState<boolean | undefined>()
+  const authToken = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
+  const getAuthToken = localStorage.getItem(authToken)
+  useEffect(() => {
+    if (getAuthToken) {
+      setIsLoggedOut(false)
+    }
+  }, [isLoggedOut])
+
+  console.log("리렌더링 ?", isLoggedOut)
+
+  //로그아웃 함수
   const onLogoutHandler = () => {
     //-- 이 부분은 주석이 있어야만 정상적으로 수행되는 코드 입니다.
-
     // localStorage.removeItem('keywords');
+
     supabaseForClient.auth.signOut()
     setIsLoggedOut(true)
     alert("로그아웃이 되었습니다")
   }
-
+  //END
   return (
     <div className="flex w-full bg-white shadow-lg shadow-gray-200">
       <div className="flex justify-between items-center w-[1250px] h-[96px] my-0 mx-auto px-2 ">
@@ -81,30 +95,37 @@ const Header = () => {
           <Link href={"/search"} className="text-lg">
             <IoMdSearch />
           </Link>
+
+          {/* isLoggedOut이 false 일때 로그인 상태 */}
           {!isLoggedOut ? (
-            <span>
-              <button onClick={onLogoutHandler}>로그아웃</button>
-            </span>
+            <>
+              <span
+                className={`text-md hover:cursor-pointer ${
+                  showTooltip ? "show" : ""
+                }`}
+                onClick={onHandleClick}
+              >
+                <VscBell />
+                {showTooltip && (
+                  <div className="tooltip">
+                    {isAlarmData
+                      ? "새로운 프로젝트가 생겼어요!"
+                      : "알림이 없습니다"}
+                  </div>
+                )}
+              </span>
+              <span>
+                <Link href={`/profile/${userId}`}>마이페이지</Link>
+              </span>
+              <span>
+                <button onClick={onLogoutHandler}>로그아웃</button>
+              </span>
+            </>
           ) : (
+            // isLoggedOut이 true 일때 로그인 상태
+
             <Link href={"/signin"}>통합로그인</Link>
           )}
-
-          <span
-            className={`text-md hover:cursor-pointer ${
-              showTooltip ? "show" : ""
-            }`}
-            onClick={onHandleClick}
-          >
-            <VscBell />
-            {showTooltip && (
-              <div className="tooltip">
-                {isAlarmData
-                  ? "새로운 프로젝트가 생겼어요!"
-                  : "알림이 없습니다"}
-              </div>
-            )}
-          </span>
-          <Link href={`/profile/${userId}`}>마이페이지</Link>
         </nav>
       </div>
     </div>
