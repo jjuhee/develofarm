@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 interface SurfitArticles {
   description: string
   href: string
@@ -38,11 +39,14 @@ const Column: React.FC<props> = ({ surfitArticles }: props) => {
   //surfitArticles에 데이터가 들어가 있음
   return (
     <div>
+      <div className="my-0 mx-auto p-10 text-2xl font-bold text-center">
+        인기 칼럼
+      </div>
       <div className="w-[900px] my-0 mx-auto">
         <div className="h-[300px]">
           <div className="grid grid-cols-2 grid-rows-1 gap-x-2 h-full">
             {/* 왼쪽의 큰 이미지 */}
-            <div className="relative overflow-hidden border border-black col-span-1 row-span-2 rounded-xl">
+            <div className="relative overflow-hidden border border-#ccc col-span-1 row-span-2 rounded-xl shadow-lg">
               {selectedImageNumber !== undefined ? (
                 <div className="w-full h-full flex flex-col opacity-100 transition-opacity duration-500">
                   <div className="flex-grow relative w-full h-full">
@@ -58,7 +62,7 @@ const Column: React.FC<props> = ({ surfitArticles }: props) => {
                       objectFit="cover" // 이미지를 부모 요소에 맞춤
                     />
                   </div>
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 font-bold text-[12px] p-[5px]">
                     제목
                     {
                       surfitArticlesBundle
@@ -66,7 +70,7 @@ const Column: React.FC<props> = ({ surfitArticles }: props) => {
                             ?.title || ""
                         : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
                     }
-                    <div>
+                    <div className="text-[10px] p-[5px]">
                       내용
                       {
                         surfitArticlesBundle
@@ -91,14 +95,14 @@ const Column: React.FC<props> = ({ surfitArticles }: props) => {
                       objectFit="cover" // 이미지를 부모 요소에 맞춤
                     />
                   </div>
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 font-bold text-[12px] p-[5px]">
                     제목
                     {
                       surfitArticlesBundle
                         ? surfitArticlesBundle[0]?.title || ""
                         : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
                     }
-                    <div>
+                    <div className="text-[10px] p-[5px]">
                       내용
                       {
                         surfitArticlesBundle
@@ -114,21 +118,26 @@ const Column: React.FC<props> = ({ surfitArticles }: props) => {
             <div className="grid grid-cols-2 gap-3">
               {/* 오른쪽의 4개 이미지 */}
 
-              {/* {onGetsurfitArticlesRandom({surfitArticles)} */}
               {surfitArticles.slice(1, 5).map((surfitArticle, index) => (
                 <div
                   key={index}
-                  className="relative overflow-hidden border border-black col-span-1 row-span-1 rounded-xl"
+                  className="hover hover:cursor-pointer relative overflow-hidden border border-#ccc col-span-1 row-span-2 rounded-xl shadow-lg"
                   onClick={() => setSelectedImageNumber(index)}
                   style={{}}
                 >
                   <div className="w-full h-full flex flex-col">
-                    <div className="flex-grow">
-                      <img src={surfitArticle.imgSrc} width={100} />
+                    <div className="flex-grow relative w-full h-3/4">
+                      {" "}
+                      {/* 이미지가 부모 div의 70%만 차지하도록 수정 */}
+                      <img
+                        src={surfitArticle.imgSrc}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    <div className="flex-shrink-0 text-xs">
-                      <div>제목{surfitArticle.title}</div>
-                      <div>내용{surfitArticle.description}</div>
+                    <div className="flex-shrink-0 ">
+                      <div className="font-bold text-[10px] p-[5px]">
+                        {surfitArticle.title}
+                      </div>
                     </div>
                   </div>
                 </div>
