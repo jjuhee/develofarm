@@ -28,7 +28,7 @@ const MembersInProjectModal = ({ project }: Props) => {
     <>
       <button
         disabled
-        className="pr-8"
+        className="pr-8 relative"
         onMouseOver={() => {
           setIsShow(true)
         }}
@@ -37,10 +37,10 @@ const MembersInProjectModal = ({ project }: Props) => {
         }}
       >
         {isShow && (applicants as unknown as any[])?.length > 0 && (
-          <div className="absolute bg-[#B8FF65] text-[#000000] font-bold rounded-xl min-w-36 p-2 z-10 mt-[-60px] ml-8">
+          <div className="absolute max-h-60 overflow-y-auto bg-[#B8FF65] text-[#000000] font-bold rounded-xl min-w-36 p-2 z-10 bottom-[50px] left-[12px] ml-2 shadow-[0px_-5px_15px_-5px_rgba(0,0,0,0.3)]  after:content-[''] after:absolute after:top-[70px] after:right-[105px] after:border-l-transparent after:border-l-[10px] after:border-r-[10px] after:border-r-transparent after:border-b-transparent after:border-t-[#B8FF65] after:border-t-[10px] --var(--tw-shadow-color)">
             {applicants?.map((applicant) => {
               return (
-                <ul key={applicant.id} className="flex items-center">
+                <ul key={applicant.id} className="flex items-center p-2">
                   <li>
                     <Image
                       width={24}
@@ -50,12 +50,15 @@ const MembersInProjectModal = ({ project }: Props) => {
                       className="w-8 h-8 rounded-full object-cover mr-2"
                     />
                   </li>
-                  <li>
+                  <li
+                    className="truncate w-28 text-ellipsis ml-2 mt-1 text-left"
+                    title={`${applicant.users?.user_nickname}`}
+                  >
                     {applicant.users?.user_nickname}
-                    <span className="ml-10">
-                      {applicant.user_id === userId && "(나)"}
-                    </span>
                   </li>
+                  <span className="ml-5">
+                    {applicant.user_id === userId && "(나)"}
+                  </span>
                 </ul>
               )
             })}

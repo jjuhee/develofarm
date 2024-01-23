@@ -51,7 +51,7 @@ export async function setProjectInMember(projectId: string, userId: string) {
   if (error) console.log("error", error)
 }
 
-/** 프로젝트 게시물에 댓글 삭제 */
+/** 프로젝트 게시물 작성자 인경우 마감하기 상태 바꾸기 */
 export async function closeProject(projectId: string) {
   const { error } = await supabaseForClient
     .from("projects")
@@ -103,3 +103,5 @@ export async function removeComment(commentId: string) {
 
   if (error) console.log("error", error)
 }
+
+/** 프로젝트 게시물에 프론트 엔드 기술 조회 */
