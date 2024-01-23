@@ -12,7 +12,7 @@ type Props = {
 
 const MembersInProjectModal = ({ project }: Props) => {
   /**
-   *@ param 신청자 목록 hover시 나타나는 태그를 담은 변수*/
+   *@ param 신청자 목록 hover시 나타나는 사용자 목록 div를 담은 변수*/
   const [isShow, setIsShow] = useState<boolean>(false)
   const { userId } = useUserStore()
 

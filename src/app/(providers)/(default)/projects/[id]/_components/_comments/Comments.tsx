@@ -3,11 +3,11 @@ import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import Image from "next/image"
 import React from "react"
-import { getComments } from "../../../api"
 import Spacer from "@/components/ui/Spacer"
 import CommentForm from "./CommentForm"
 import ReCommentForm from "./ReCommentForm"
 import CommentRemoveEditButtons from "./CommentRemoveEditButtons"
+import { getComments } from "../../api"
 
 type Props = {
   project: Tables<"projects">
@@ -27,7 +27,7 @@ const Comments = ({ project }: Props) => {
     <>
       <section>
         {comments?.map((comment) => {
-          return comment.del_yn != false ? (
+          return comment.del_yn === true ? (
             <div key={comment.id} className="mb-3">
               <Image
                 width={48}
