@@ -64,7 +64,7 @@ const Header = () => {
         </Link>
         <nav className="flex items-center gap-5">
           <Link
-            href={"/projects"}
+            href={"/projects/1"}
             className="text-black text-[18px] font-[500]"
           >
             프로젝트 구인

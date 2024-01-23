@@ -1,6 +1,6 @@
 import useUserStore from "@/store/user"
 import { createContext, useContext, useEffect, useState } from "react"
-import { getProject } from "../../api"
+import { getProject } from "../../../api"
 import { useParams } from "next/navigation"
 
 type TProjectDetail = {

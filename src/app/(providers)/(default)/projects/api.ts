@@ -398,7 +398,6 @@ export async function removeComment(commentId: string) {
 export async function getProjectsWithServer() {
   const { data, error } = await supabaseForClient.from("projects").select("*")
 
-  console.log("서버에서 받아온 데이터", data)
   if (error) console.log("error", error)
 
   return data

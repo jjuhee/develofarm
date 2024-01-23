@@ -2,7 +2,7 @@ import useUserStore from "@/store/user"
 import { Tables } from "@/types/supabase"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React from "react"
-import { removeComment } from "../../../api"
+import { removeComment } from "../../../../api"
 
 type Props = {
   comment: Tables<"comments">

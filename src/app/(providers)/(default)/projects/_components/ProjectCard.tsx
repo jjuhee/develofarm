@@ -11,9 +11,10 @@ interface Props {
   project: TProjectsType
   bookmarks: Tables<"bookmarks">[]
   currentUser: string
+  page: number
 }
 
-const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
+const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
   const {
     id,
     content,
@@ -74,7 +75,7 @@ const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
             ))}
           </ul>
           <Link
-            href={`/projects/${project.id}`}
+            href={`/projects/${page}/${project.id}`}
             className="absolute bottom-0 right-2"
           >
             <Button color={"main-lime"} text="상세보기" />

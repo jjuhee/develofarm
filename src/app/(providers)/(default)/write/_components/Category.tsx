@@ -59,7 +59,6 @@ const Category = ({
   }
 
   const onClickResetFilteringHandler = () => {
-    //TODO: 카테고리 데이터 리셋
     setCategoryData({
       startDate: "",
       endDate: "",

@@ -1,41 +1,76 @@
-"use client"
-
-import React, { useState } from "react"
-import Pagination from "@mui/material/Pagination"
-import { useQuery } from "@tanstack/react-query"
-import { getProjects } from "../api"
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi" // Import icons from your preferred icon library
 
 interface Props {
-  totalLength: number
+  pageCount: number
+  currentPage: number
+  onPageChange: (e: React.ChangeEvent<unknown>, value: number) => void
 }
 
-const ProjectPagination = ({ totalLength }: Props) => {
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(5)
+const Pagination = ({ pageCount, currentPage, onPageChange }: Props) => {
+  const MAX_VISIBLE_PAGES = 5
 
-  const queryOption = {
-    limit: pageSize + (page - 1) * pageSize,
-    offset: (page - 1) * pageSize,
-  }
+  const startPage = Math.max(1, currentPage - Math.floor(MAX_VISIBLE_PAGES / 2))
+  const endPage = Math.min(pageCount, startPage + MAX_VISIBLE_PAGES - 1)
 
-  const { data } = useQuery({
-    queryKey: ["projects", page],
-    queryFn: () => getProjects(queryOption),
-  })
-
-  const onClickPage = (e: React.ChangeEvent<unknown>, page: number) => {
-    setPage(page)
-  }
+  const pages = Array.from(
+    { length: endPage - startPage + 1 },
+    (_, index) => startPage + index,
+  )
 
   return (
-    <>
-      <Pagination
-        page={page}
-        count={Math.ceil(totalLength / 10)}
-        shape="rounded"
-        onChange={onClickPage}
-      />
-    </>
+    <nav className="flex justify-center mt-8">
+      <ul className="flex gap-2">
+        {/* 이전 버튼 */}
+        <li
+          key="prev"
+          className={`${
+            currentPage === 1 ? "cursor-not-allowed" : "hover:bg-blue-200"
+          } px-4 py-2 rounded`}
+          onClick={(e) => currentPage > 1 && onPageChange(e, currentPage - 1)}
+        >
+          <FiChevronLeft className="text-xl" />
+        </li>
+
+        {/* 페이지 버튼 */}
+        {startPage > 1 && (
+          <li className="px-4 py-2 rounded cursor-not-allowed">...</li>
+        )}
+        {pages.map((page) => (
+          <li
+            key={page}
+            className={`${
+              currentPage === page
+                ? "bg-main-lime text-black"
+                : "hover:bg-blue-200"
+            } cursor-pointer px-4 py-2 rounded`}
+            onClick={(e) => onPageChange(e, page)}
+          >
+            {page}
+          </li>
+        ))}
+        {endPage < pageCount && (
+          <li className="px-4 py-2 rounded cursor-not-allowed">...</li>
+        )}
+
+        {/* 다음 버튼 */}
+        <li
+          key="next"
+          className={`${
+            currentPage === pageCount
+              ? "cursor-not-allowed"
+              : "hover:bg-blue-200"
+          } px-4 py-2 rounded`}
+          onClick={(e) =>
+            currentPage < pageCount && onPageChange(e, currentPage + 1)
+          }
+        >
+          <FiChevronRight className="text-xl" />
+        </li>
+
+        {/* TODO: 맨앞, 맨뒤 이동 버튼 추가 */}
+      </ul>
+    </nav>
   )
 }
-export default ProjectPagination
+
+export default Pagination

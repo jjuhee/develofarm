@@ -1,7 +1,7 @@
 import { Tables, TablesInsert } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import React from "react"
-import { closeProject } from "../../api"
+import { closeProject } from "../../../api"
 import useUserStore from "@/store/user"
 import { getApplicatinUser, setMember } from "../api"
 
