@@ -46,10 +46,13 @@ const Header = () => {
         (payload) => setIsAlarmData(payload),
       )
       .subscribe()
+    return () => {
+      channelA.unsubscribe()
+    }
   })
 
   //로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
-  const [isLoggedOut, setIsLoggedOut] = useState<boolean | undefined>()
+  const [isLoggedOut, setIsLoggedOut] = useState<boolean>()
   const authToken = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
   const getAuthToken = localStorage.getItem(authToken)
   useEffect(() => {
