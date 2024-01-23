@@ -1,20 +1,19 @@
 "use client"
 import { useParams } from "next/navigation"
 import React from "react"
-import WritePage from "../page"
-import useUserStore from "@/store/user"
 import { useQuery } from "@tanstack/react-query"
 import {
   getProject,
   getProjectTech,
   getProjectTechWithPosition,
 } from "../../projects/api"
+import Editor from "../_components/Editor"
 
 const EditPost = () => {
   const { id: projectId } = useParams<{ id: string }>()
 
   /** 수정시1 : 프로젝트 가져오기 */
-  const { data: project, isLoading } = useQuery({
+  const { data: project } = useQuery({
     queryKey: ["project", projectId],
     queryFn: () => getProject(projectId),
     enabled: !!projectId,
@@ -29,7 +28,7 @@ const EditPost = () => {
   return (
     <>
       {project && techsWithPosition && (
-        <WritePage
+        <Editor
           projectId={projectId}
           project={project}
           techsWithPositions={techsWithPosition}
