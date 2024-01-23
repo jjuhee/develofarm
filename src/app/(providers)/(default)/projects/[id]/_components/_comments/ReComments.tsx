@@ -1,9 +1,9 @@
 "use client"
 
-import { getComments } from "../../api"
 import React from "react"
 import Image from "next/image"
 import dayjs from "dayjs"
+import { getComments } from "../../api"
 
 type Props = {
   recomments: Exclude<

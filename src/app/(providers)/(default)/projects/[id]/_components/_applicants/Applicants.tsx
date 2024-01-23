@@ -1,8 +1,7 @@
 import React from "react"
-import { getMembers, getMembersInProject } from "../../api"
+import { getMembers } from "../../api"
 import ApplicantList from "./ApplicantList"
 import MembersInProject from "./MembersInProject"
-import { getProject } from "../../../api"
 import { Tables } from "@/types/supabase"
 
 type Props = {

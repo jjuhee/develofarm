@@ -6,7 +6,7 @@ import React from "react"
 import { getComments } from "../../../api"
 import Spacer from "@/components/ui/Spacer"
 import CommentForm from "./CommentForm"
-import ReCommentForm from "../ReCommentForm"
+import ReCommentForm from "./ReCommentForm"
 import CommentRemoveEditButtons from "./CommentRemoveEditButtons"
 
 type Props = {

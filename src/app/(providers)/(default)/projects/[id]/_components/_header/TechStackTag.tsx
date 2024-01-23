@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import React from "react"
-import { getProjectTech } from "../../api"
+import { getProjectTech } from "../../../api"
 import { Tables } from "@/types/supabase"
 
 type Props = {
