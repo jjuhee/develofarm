@@ -19,11 +19,8 @@ interface Props {
 }
 
 const EditorMenu = ({ editor }: Props) => {
-  if (!editor) {
-    return null
-  }
   const [isActive, setIsActive] = useState(false)
-  const [selectedValue, setSelectedValue] = useState("제목1")
+  const [selectedValue, setSelectedValue] = useState<string | null>("제목1")
 
   const onClickFontSizeHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     //const target = e.target as HTMLElement
@@ -57,7 +54,9 @@ const EditorMenu = ({ editor }: Props) => {
             type="button"
             className="hover:bg-[#E6E6E6]"
             onClick={(e) => {
-              setSelectedValue(e.target.textContent)
+              /**TODO :handler 빼기 */
+              const target = e.target as HTMLElement
+              setSelectedValue(target.textContent)
               editor.chain().focus().toggleHeading({ level: 1 }).run()
             }}
           >
@@ -67,7 +66,8 @@ const EditorMenu = ({ editor }: Props) => {
             type="button"
             className="hover:bg-[#E6E6E6]"
             onClick={(e) => {
-              setSelectedValue(e.target.textContent)
+              const target = e.target as HTMLElement
+              setSelectedValue(target.textContent)
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }}
           >
@@ -77,7 +77,8 @@ const EditorMenu = ({ editor }: Props) => {
             type="button"
             className="hover:bg-[#E6E6E6]"
             onClick={(e) => {
-              setSelectedValue(e.target.textContent)
+              const target = e.target as HTMLElement
+              setSelectedValue(target.textContent)
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }}
           >
@@ -87,7 +88,8 @@ const EditorMenu = ({ editor }: Props) => {
             type="button"
             className="hover:bg-[#E6E6E6]"
             onClick={(e) => {
-              setSelectedValue(e.target.textContent)
+              const target = e.target as HTMLElement
+              setSelectedValue(target.textContent)
               editor.chain().focus().setParagraph().run()
             }}
           >
