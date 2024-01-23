@@ -52,9 +52,10 @@ const Header = () => {
   })
 
   //로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
-  const [isLoggedOut, setIsLoggedOut] = useState<boolean>()
-  const authToken = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
-  const getAuthToken = localStorage.getItem(authToken)
+  //TODO : 로그아웃시 바로 isLoggedOut이 true 값으로 변하지 않는것을 해결해야함
+  const [isLoggedOut, setIsLoggedOut] = useState<boolean>(true)
+  const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
+  const getAuthToken = localStorage.getItem(AUTH_TOKEN)
   useEffect(() => {
     if (getAuthToken) {
       setIsLoggedOut(false)

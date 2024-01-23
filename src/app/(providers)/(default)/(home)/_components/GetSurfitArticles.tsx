@@ -1,7 +1,6 @@
 import React from "react"
 import puppeteer, { ElementHandle, Browser, Page } from "puppeteer"
 import Columns from "./Columns"
-import Image from "next/image"
 
 let browser: Browser
 let page: Page
@@ -59,14 +58,6 @@ const Column = async () => {
 
   return (
     <>
-      {/* {surfitArticles.map((surfitArticle) => (
-        <div key={surfitArticle.href}>
-          <div className="relative w-[300px] aspect-square">
-            <Image alt={surfitArticle.title} src={surfitArticle.imgSrc} fill />
-          </div>
-          <h4>{surfitArticle.title}</h4>
-        </div>
-      ))} */}
       <Columns surfitArticles={surfitArticles} />
     </>
   )
