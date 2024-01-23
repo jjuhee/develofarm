@@ -32,7 +32,7 @@ const ProjectWriterInfo = ({ project, user }: Props) => {
         {user.user_nickname}
       </li>
       <li>
-        {FORMATTED_DATE === updateDate
+        {updateDate === FORMATTED_DATE
           ? FORMATTED_DATE
           : `${updateDate} (수정됨)`}
       </li>
