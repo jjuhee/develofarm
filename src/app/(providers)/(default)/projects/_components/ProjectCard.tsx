@@ -11,9 +11,10 @@ interface Props {
   project: TProjectsType
   bookmarks: Tables<"bookmarks">[]
   currentUser: string
+  page: number
 }
 
-const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
+const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
   const {
     id,
     content,

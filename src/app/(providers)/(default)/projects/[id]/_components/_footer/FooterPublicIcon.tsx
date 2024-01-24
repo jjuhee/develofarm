@@ -1,15 +1,29 @@
+import BookmarkButton from "@/components/BookmarkButton"
+import useUserStore from "@/store/user"
+import { Tables } from "@/types/supabase"
 import React from "react"
-import { CiBookmark } from "react-icons/ci"
 import { IoShareSocialOutline } from "react-icons/io5"
 
-const FooterPublicIcon = () => {
+interface Props {
+  bookmarks: Tables<"bookmarks">[]
+  projectId: string
+  bookmarksCount: number
+}
+
+const FooterPublicIcon = ({ bookmarks, projectId, bookmarksCount }: Props) => {
+  const userId = useUserStore((state) => state.userId)
+
   return (
     <>
       <span className="ml-auto pr-5">
         <span>
-          <CiBookmark size={30} className="inline-block" />
+          <BookmarkButton
+            currentUser={userId}
+            bookmarks={bookmarks}
+            projectId={projectId}
+          />
         </span>
-        5
+        {bookmarksCount}
       </span>
       <span className="pr-5">
         <IoShareSocialOutline size={30} />
