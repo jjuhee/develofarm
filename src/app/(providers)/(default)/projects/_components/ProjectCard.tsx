@@ -75,7 +75,7 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
             ))}
           </ul>
           <Link
-            href={`/projects/${page}/${project.id}`}
+            href={`/projects/${project.id}`}
             className="absolute bottom-0 right-2"
           >
             <Button color={"main-lime"} text="상세보기" />
