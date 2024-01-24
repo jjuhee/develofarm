@@ -86,15 +86,15 @@ const Category = ({
         <div>
           <div className="flex flex-col gap-[16px] py-[15px]">
             <h5 className="text-[20px] font-[600]">프로젝트 방식</h5>
-            <ul className="flex gap-[8px] items-center">
+            <ul className="flex gap-[8px] items-center *:w-[90px] *:text-center">
               <li
                 onClick={() =>
                   setCategoryData({ ...categoryData, isOffline: true })
                 }
                 className={`category ${
                   !!isOffline
-                    ? "border-[#297A5F] text-[#297A5F]"
-                    : "border-slate-400"
+                    ? "bg-[#D2D2D2] border-[#D2D2D2] text-black font-semibold"
+                    : "border-[#A6A6A6] text-[#2D2D2D] font-medium"
                 }`}
               >
                 오프라인
@@ -105,8 +105,8 @@ const Category = ({
                 }
                 className={` category ${
                   isOffline === false
-                    ? "border-[#297A5F] text-[#297A5F]"
-                    : "border-slate-400"
+                    ? "bg-[#D2D2D2] border-[#D2D2D2] text-black font-semibold"
+                    : "border-[#A6A6A6] text-[#2D2D2D] font-medium"
                 }`}
               >
                 온라인
@@ -117,16 +117,15 @@ const Category = ({
             <div className="flex flex-col gap-[16px] py-[15px]">
               <h5 className="text-[20px] font-[600]">활동 지역</h5>
               <select
-                className={`border-[1.5px]  ${
+                className={` category ${
                   region === "1" || region === null
-                    ? "border-slate-400"
-                    : "border-[#297A5F] text-[#297A5F]"
-                }  px-[20px] py-[5px] rounded-full`}
+                    ? "border-[#A6A6A6] text-[#2D2D2D] font-medium"
+                    : "bg-[#D2D2D2] border-[#D2D2D2] text-black font-semibold"
+                }  px-[20px] py-[5px] rounded-[8px] h-[40px]`}
                 onChange={(e) =>
                   setCategoryData({ ...categoryData, region: e.target.value })
                 }
               >
-                {/* TODO 2 : 옵션 스타일링... 왜안돼!!! -> li로 바꿔야하나, value가 1,2,3,4로 처리해도 될까 */}
                 <option value="0">지역을 선택하세요</option>
                 {regions?.map((region) => (
                   <option
@@ -141,18 +140,45 @@ const Category = ({
             </div>
           )}
         </div>
+
+        {isWritePage && (
+          <div className="flex flex-col gap-[16px] py-[15px] w-[99px]">
+            <h5 className="text-[20px] font-[600]">구인 인원</h5>
+            <div className="flex gap-[8px] items-center">
+              <input
+                className={`category w-[70px] text-center
+                ${
+                  numberOfMembers
+                    ? "border-black text-black font-semibold"
+                    : "border-[#A6A6A6] text-[#2D2D2D] font-medium"
+                }`}
+                type="number"
+                value={numberOfMembers}
+                min={0}
+                onChange={(e) =>
+                  setCategoryData({
+                    ...categoryData,
+                    numberOfMembers: Number(e.target.value),
+                  })
+                }
+              />
+              <span>명</span>
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col gap-[16px] py-[15px]">
           <h5 className="text-[20px] font-[600]">프로젝트 기간</h5>
           <ul className="flex flex-col gap-4 items-center">
             <li className="flex items-center gap-4">
-              <label>시작일</label>
+              <label className="w-[50px] text-[16px]">시작일</label>
               {/* TODO 3 : 유효성검사 - 날짜 오늘날짜 이후,종료일은 시작날짜 이후로만 선택되게하기  */}
               <input
-                className={`border-[1.5px] px-[20px] py-[5px] rounded-full
+                className={`category w-[184px] px-[20px] py-[5px]
                 ${
                   startDate
-                    ? "border-[#297A5F] text-[#297A5F]"
-                    : "border-slate-800"
+                    ? "border-black text-black font-semibold"
+                    : "border-[#A6A6A6] text-[#2D2D2D] font-medium"
                 }
                 `}
                 type="date"
@@ -167,13 +193,13 @@ const Category = ({
               />
             </li>
             <li className="flex items-center gap-4">
-              <label>종료일</label>
+              <label className="w-[50px] text-[16px]">종료일</label>
               <input
-                className={`border-[1.5px] px-[20px] py-[5px] rounded-full
+                className={`category w-[184px] px-[20px] py-[5px]
                 ${
-                  startDate
-                    ? "border-[#297A5F] text-[#297A5F]"
-                    : "border-slate-800"
+                  endDate
+                    ? "border-black text-black font-semibold"
+                    : "border-[#A6A6A6] text-[#2D2D2D] font-medium"
                 }`}
                 type="date"
                 name="project_end_date"
@@ -198,28 +224,9 @@ const Category = ({
             />
           </ul>
         </div>
-        {/* 글쓰기page vs 메인page */}
-        {isWritePage ? (
-          <div className="flex flex-col gap-[16px] py-[15px]">
-            <h5 className="text-[20px] font-[600]">인원 수</h5>
-            <div className="gap-[8px]">
-              <input
-                className="w-[70px] rounded-md"
-                type="number"
-                value={numberOfMembers}
-                min={0}
-                onChange={(e) =>
-                  setCategoryData({
-                    ...categoryData,
-                    numberOfMembers: Number(e.target.value),
-                  })
-                }
-              />
-              <span>명</span>
-            </div>
-          </div>
-        ) : (
-          <div className="absolute bottom-6 right-2 flex gap-3">
+        {/* 메인page */}
+        {!isWritePage && (
+          <div className="absolute bottom-6 right-[1px] flex gap-3 align-items *:px-[16px] *:py-[0px] *:w-[100px] *:h-[40px]">
             <Button
               type="border"
               text="초기화"

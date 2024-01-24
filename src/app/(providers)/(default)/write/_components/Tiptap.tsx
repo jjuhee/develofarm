@@ -1,18 +1,10 @@
 "use client"
-import { Color } from "@tiptap/extension-color"
-import ListItem from "@tiptap/extension-list-item"
-import TextStyle from "@tiptap/extension-text-style"
 import Underline from "@tiptap/extension-underline"
-import {
-  BubbleMenu,
-  EditorContentProps,
-  EditorContentState,
-} from "@tiptap/react"
+import { BubbleMenu } from "@tiptap/react"
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import React, { RefObject, useEffect, useState } from "react"
+import React from "react"
 import EditorMenu from "./EditorMenu"
-import Spacer from "@/components/ui/Spacer"
 import BubbleMenuButtons from "./BubbleMenuButtons"
 
 interface Props {
@@ -40,7 +32,7 @@ const TipTap = ({ content, setContent }: Props) => {
 
   return (
     <>
-      <div className="flex items-center relative border-b border-black z-10 h-[60px]">
+      <div className="flex items-center relative border-b border-black h-[60px]">
         <EditorMenu editor={editor} />
       </div>
       <div className="py-10 px-5 min-h-[50vh]">
