@@ -62,8 +62,6 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   // 신청자가 맞는지 확인하는 변수
   const isApplicantAuthenticated = userId === applyUser?.user_id
 
-  console.log("신청자 현황", applyUser)
-
   if (applyUserIsLoading) return <div>is Loading...</div>
 
   const applyForProjectButtonHandler: React.FormEventHandler = (e) => {

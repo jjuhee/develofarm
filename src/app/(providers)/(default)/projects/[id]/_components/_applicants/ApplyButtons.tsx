@@ -46,7 +46,7 @@ const ApplyButtons = ({ applicant }: Props) => {
         <Image
           width={16}
           height={16}
-          src="/images/checkIcon.png"
+          src="/icons/checkIcon.png"
           alt="수락 아이콘"
           className="w-11 h-11 p-2 rounded-full bg-[#B8FF65] object-none"
         />
@@ -55,7 +55,7 @@ const ApplyButtons = ({ applicant }: Props) => {
         <Image
           width={12}
           height={12}
-          src="/images/rejectIcon.png"
+          src="/icons/rejectIcon.png"
           alt="거절 아이콘"
           className="w-11 h-11 p-2 rounded-full bg-slate-300 object-none"
         />

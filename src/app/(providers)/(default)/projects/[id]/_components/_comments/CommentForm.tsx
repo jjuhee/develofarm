@@ -10,7 +10,6 @@ type Props = {
 
 const CommentForm = ({ projectId }: Props) => {
   const [content, setContent] = useState<string>("")
-  console.log("내용", content)
 
   const queryClient = useQueryClient()
   const { userId } = useUserStore()

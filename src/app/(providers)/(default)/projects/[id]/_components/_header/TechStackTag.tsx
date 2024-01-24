@@ -12,9 +12,7 @@ const TechStackTag = ({ project }: Props) => {
     queryKey: ["project", { projectId: project.id }],
     queryFn: () => getProjectTech(project.id),
   })
-  console.log(projectTeck)
 
-  console.log(projectTeck)
   if (isLoading) return <div>is Loading</div>
 
   return (

@@ -104,4 +104,24 @@ export async function removeComment(commentId: string) {
   if (error) console.log("error", error)
 }
 
-/** 프로젝트 게시물에 프론트 엔드 기술 조회 */
+/** 프로젝트 게시물 기술 조회 */
+export async function getProjectTechWithPosition(projectId: string) {
+  const { data: techs, error: techError } = await supabaseForClient
+    .from("project_tech")
+    .select("id, techs(tech_name, position_tech(positions(name)))")
+    .eq("project_id", projectId)
+  if (!techs) {
+    console.log(techError)
+    return
+  }
+
+  const techPosition = techs?.map((techs) => {
+    return {
+      tech_id: techs.id,
+      tech_name: techs.techs?.tech_name,
+      position_name: techs.techs?.position_tech[0].positions?.name,
+    }
+  })
+
+  return techPosition
+}
