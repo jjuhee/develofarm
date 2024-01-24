@@ -2,7 +2,6 @@ import BookmarkButton from "@/components/BookmarkButton"
 import useUserStore from "@/store/user"
 import { Tables } from "@/types/supabase"
 import React from "react"
-import { CiBookmark } from "react-icons/ci"
 import { IoShareSocialOutline } from "react-icons/io5"
 
 interface Props {
