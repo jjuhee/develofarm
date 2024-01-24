@@ -8,7 +8,11 @@ import useUserStore from "@/store/user"
 import FooterPublicIcon from "./FooterPublicIcon"
 import { IoIosPeople } from "react-icons/io"
 import { FaRegMessage } from "react-icons/fa6"
-import { getCommentsCount } from "../../api"
+import {
+  getBookmarks,
+  getBookmarksByProjectId,
+  getCommentsCount,
+} from "../../api"
 import { useQuery } from "@tanstack/react-query"
 import { getMembers } from "../api"
 import Image from "next/image"
@@ -55,6 +59,19 @@ const FooterMenus = ({ project }: Props) => {
     queryFn: () => getMembers(project.id),
   })
 
+  /** 전체 북마크 데이터 조회 */
+  const { data: bookmarks } = useQuery({
+    queryKey: ["bookmarks"],
+    queryFn: getBookmarks,
+  })
+
+  /** projectID에 해당하는 북마크 데이터 조회 */
+  const { data: bookmarksCount } = useQuery({
+    queryKey: ["bookmarksCount", { bookmarks: bookmarks }],
+    queryFn: () => getBookmarksByProjectId(project.id),
+    enabled: !!project.id,
+  })
+
   if (commentsIsLoading) return <div>is Loading...</div>
   if (applicantsIsLoading) return <div>is Loading...</div>
 
@@ -93,7 +110,11 @@ const FooterMenus = ({ project }: Props) => {
           </>
         )}
         {/* 모두가 볼 수 있는 아이콘 */}
-        <FooterPublicIcon />
+        <FooterPublicIcon
+          bookmarks={bookmarks as Tables<"bookmarks">[]}
+          bookmarksCount={bookmarksCount as number}
+          projectId={project.id}
+        />
         {/* 사용자에 따라서 다른 버튼 */}
         <FooterAuthButton project={project} isWriter={isWriter} />
       </section>
