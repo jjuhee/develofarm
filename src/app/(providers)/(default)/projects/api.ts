@@ -1,10 +1,5 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
-import { supabaseForServer } from "@/supabase/supabase.server"
 import { Tables, TablesInsert } from "@/types/supabase"
-
-type ExtendProjectType = Tables<"projects"> & {
-  bookmark_count: number
-}
 
 type BookmarksCountByProject = Record<string, number>
 
@@ -153,6 +148,19 @@ export async function getBookmarksByUserId(userId: string) {
   if (error) console.log("error", error)
 
   return data as Tables<"bookmarks">[]
+}
+
+/** projectId와 일치하는 북마크 데이터 가져오기 */
+export async function getBookmarksByProjectId(projectId: string) {
+  console.log("projectId", projectId)
+  const { count, error } = await supabaseForClient
+    .from("bookmarks")
+    .select("*", { count: "exact" })
+    .eq("project_id", projectId)
+
+  console.log("count", count)
+
+  return count
 }
 
 /** 북마크 추가하기 */
