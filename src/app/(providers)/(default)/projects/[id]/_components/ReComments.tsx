@@ -1,6 +1,6 @@
 "use client"
 
-import { getComments } from "../../../api"
+import { getComments } from "../../api"
 import React from "react"
 import Image from "next/image"
 import dayjs from "dayjs"

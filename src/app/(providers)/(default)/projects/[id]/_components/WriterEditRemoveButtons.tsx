@@ -2,7 +2,7 @@ import { Tables } from "@/types/supabase"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import React from "react"
-import { removeProject } from "../../../api"
+import { removeProject } from "../../api"
 import { useRouter } from "next/navigation"
 
 type Props = {

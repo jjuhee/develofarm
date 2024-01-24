@@ -1,4 +1,9 @@
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi" // Import icons from your preferred icon library
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiChevronsLeft,
+  FiChevronsRight,
+} from "react-icons/fi"
 
 interface Props {
   pageCount: number
@@ -18,17 +23,31 @@ const Pagination = ({ pageCount, currentPage, onPageChange }: Props) => {
   )
 
   return (
-    <nav className="flex justify-center mt-8">
-      <ul className="flex gap-2">
+    <nav className="flex justify-center mt-10">
+      <ul className="flex gap-2 items-center">
+        {/* 맨앞 버튼 */}
+        <li
+          key="front"
+          className={`${
+            currentPage === 1
+              ? "cursor-not-allowed"
+              : "hover:bg-blue-200 cursor-pointer"
+          } px-2 py-2 rounded`}
+          onClick={(e) => currentPage > 1 && onPageChange(e, 1)}
+        >
+          <FiChevronsLeft className="text-xl text-[#777777]" />
+        </li>
         {/* 이전 버튼 */}
         <li
           key="prev"
           className={`${
-            currentPage === 1 ? "cursor-not-allowed" : "hover:bg-blue-200"
-          } px-4 py-2 rounded`}
+            currentPage === 1
+              ? "cursor-not-allowed"
+              : "hover:bg-blue-200 cursor-pointer"
+          } px-2 py-2 rounded`}
           onClick={(e) => currentPage > 1 && onPageChange(e, currentPage - 1)}
         >
-          <FiChevronLeft className="text-xl" />
+          <FiChevronLeft className="text-xl text-[#777777]" />
         </li>
 
         {/* 페이지 버튼 */}
@@ -39,10 +58,8 @@ const Pagination = ({ pageCount, currentPage, onPageChange }: Props) => {
           <li
             key={page}
             className={`${
-              currentPage === page
-                ? "bg-main-lime text-black"
-                : "hover:bg-blue-200"
-            } cursor-pointer px-4 py-2 rounded`}
+              currentPage === page ? " text-black" : " text-[#777777]"
+            } cursor-pointer px-3 py-2 rounded hover:text-main-lime`}
             onClick={(e) => onPageChange(e, page)}
           >
             {page}
@@ -58,16 +75,26 @@ const Pagination = ({ pageCount, currentPage, onPageChange }: Props) => {
           className={`${
             currentPage === pageCount
               ? "cursor-not-allowed"
-              : "hover:bg-blue-200"
-          } px-4 py-2 rounded`}
+              : "hover:bg-blue-200 cursor-pointer"
+          } px-2 py-2 rounded`}
           onClick={(e) =>
             currentPage < pageCount && onPageChange(e, currentPage + 1)
           }
         >
-          <FiChevronRight className="text-xl" />
+          <FiChevronRight className="text-xl text-[#777777]" />
         </li>
-
-        {/* TODO: 맨앞, 맨뒤 이동 버튼 추가 */}
+        {/* 맨뒤 버튼 */}
+        <li
+          key="end"
+          className={`${
+            currentPage === pageCount
+              ? "cursor-not-allowed"
+              : "hover:bg-blue-200 cursor-pointer"
+          } px-2 py-2 rounded`}
+          onClick={(e) => currentPage < pageCount && onPageChange(e, pageCount)}
+        >
+          <FiChevronsRight className="text-xl text-[#777777]" />
+        </li>
       </ul>
     </nav>
   )

@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
 import React from "react"
-import { getProject } from "../../../api"
+import { getProject } from "../../api"
 
 type Props = {
   project: Exclude<Awaited<ReturnType<typeof getProject>>, null>

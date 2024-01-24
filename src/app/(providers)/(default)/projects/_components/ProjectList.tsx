@@ -9,8 +9,8 @@ import Spacer from "@/components/ui/Spacer"
 import { getBookmarksByUserId, getProjects } from "../api"
 import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query"
 import useUserStore from "@/store/user"
-import { useParams, useRouter } from "next/navigation"
 import Pagination from "./Pagination"
+import useProjectsStore from "@/store/projects"
 
 interface Props {
   option?: TProjectsOptions
@@ -35,12 +35,10 @@ export async function getServerSideProps() {
 const ProjectList = ({ option }: Props) => {
   const PAGE_SIZE = 5
   const userId = useUserStore((state) => state.userId)
-  const param = useParams()
-  const router = useRouter()
-  const [page, setPage] = useState<number>(param.page ? Number(param.page) : 1)
-
   const [recruitStatus, setRecruitStatus] = useState(false)
   const [order, setOrder] = useState(1)
+
+  const { page, setPage } = useProjectsStore((state) => state)
 
   /** 전체 프로젝트 가져오기 */
   const { data: projects, refetch: projectRefetch } = useQuery({
@@ -92,17 +90,16 @@ const ProjectList = ({ option }: Props) => {
   /** 모집 중 체크박스 핸들러 */
   const onChangeRecruitHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecruitStatus(e.target.checked)
-    router.replace(`/projects/1`)
+    setPage(1)
   }
 
   const onChageOrder = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setOrder(Number(e.target.value))
-    router.replace(`/projects/1`)
+    setPage(1)
   }
 
-  const onClickPage = (e: React.ChangeEvent<unknown>, value: number) => {
+  const onPageChange = (e: React.ChangeEvent<unknown>, value: number) => {
     setPage(value)
-    router.replace(`/projects/${value}`)
     window.scroll({
       top: 0,
     })
@@ -151,8 +148,8 @@ const ProjectList = ({ option }: Props) => {
 
       <Pagination
         pageCount={Math.ceil(((projects?.length as number) || 0) / PAGE_SIZE)}
-        currentPage={Number(param.page)}
-        onPageChange={onClickPage}
+        currentPage={page}
+        onPageChange={onPageChange}
       />
     </>
   )

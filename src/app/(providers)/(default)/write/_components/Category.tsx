@@ -7,6 +7,7 @@ import SelectStackButton from "./SelectStackButton"
 import { Tables } from "@/types/supabase"
 import Button from "@/components/ui/Button"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import useProjectsStore from "@/store/projects"
 
 interface Props {
   categoryData: TCategoryData
@@ -22,6 +23,7 @@ const Category = ({
   setOption,
 }: Props) => {
   const { openCustomModalHandler } = useCustomModal()
+  const { page, setPage } = useProjectsStore((state) => state)
 
   const {
     startDate,
@@ -56,8 +58,10 @@ const Category = ({
         techs: techs,
       })
     openCustomModalHandler("검색되었습니다.", "alert")
+    setPage(1)
   }
 
+  /** 검색 초기화 */
   const onClickResetFilteringHandler = () => {
     setCategoryData({
       startDate: "",
@@ -76,6 +80,7 @@ const Category = ({
         regionId: "",
         techs: [],
       })
+    setPage(1)
   }
 
   return (

@@ -2,8 +2,8 @@
 
 import React, { useState } from "react"
 import Spacer from "@/components/ui/Spacer"
-import Category from "../../write/_components/Category"
-import ProjectList from "../_components/ProjectList"
+import Category from "../write/_components/Category"
+import ProjectList from "./_components/ProjectList"
 
 const ProjectsPage = () => {
   /** 필터링 검색 옵션 */
