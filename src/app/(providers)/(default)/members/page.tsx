@@ -54,7 +54,7 @@ const MembersPage = () => {
       getUsers({ pageParam, positionId: memberPosition?.id }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      if ((lastPage?.length as number) < 3) {
+      if ((lastPage?.length as number) < 4) {
         return null
       }
       return allPages.length * 4
