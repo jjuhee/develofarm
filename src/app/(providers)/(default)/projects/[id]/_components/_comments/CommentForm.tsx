@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
-import { setComment } from "../../api"
 import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
+import { setComment } from "../../api"
 
 type Props = {
   projectId: string
@@ -10,6 +10,7 @@ type Props = {
 
 const CommentForm = ({ projectId }: Props) => {
   const [content, setContent] = useState<string>("")
+
   const queryClient = useQueryClient()
   const { userId } = useUserStore()
 
@@ -56,7 +57,7 @@ const CommentForm = ({ projectId }: Props) => {
       <textarea
         placeholder="댓글 내용을 입력하세요"
         maxLength={500}
-        className="outline-none resize-none"
+        className="outline-none resize-none whitespace-pre-line"
         value={content}
         onChange={(e) => {
           setContent(e.target.value)

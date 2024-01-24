@@ -1,12 +1,12 @@
-import Client from "./client"
-import Column from "./column"
+import Main from "./_components/Main"
+import GetSurfitArticles from "./_components/GetSurfitArticles"
 
 export default function Home() {
   return (
     <>
-      <Client>
-        <Column />
-      </Client>
+      <Main>
+        <GetSurfitArticles />
+      </Main>
     </>
   )
 }

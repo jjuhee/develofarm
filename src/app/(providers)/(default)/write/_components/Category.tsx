@@ -7,6 +7,7 @@ import SelectStackButton from "./SelectStackButton"
 import { Tables } from "@/types/supabase"
 import Button from "@/components/ui/Button"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import useProjectsStore from "@/store/projects"
 
 interface Props {
   categoryData: TCategoryData
@@ -22,6 +23,7 @@ const Category = ({
   setOption,
 }: Props) => {
   const { openCustomModalHandler } = useCustomModal()
+  const { page, setPage } = useProjectsStore((state) => state)
 
   const {
     startDate,
@@ -56,10 +58,11 @@ const Category = ({
         techs: techs,
       })
     openCustomModalHandler("검색되었습니다.", "alert")
+    setPage(1)
   }
 
+  /** 검색 초기화 */
   const onClickResetFilteringHandler = () => {
-    //TODO: 카테고리 데이터 리셋
     setCategoryData({
       startDate: "",
       endDate: "",
@@ -77,12 +80,13 @@ const Category = ({
         regionId: "",
         techs: [],
       })
+    setPage(1)
   }
 
   return (
     <section className="flex flex-col gap-3">
       {!isWritePage && <h3 className="text-[26px] font-[700]">필터링 검색</h3>}
-      <div className="flex relative justify-between gap-[60px] py-7 border-y-[1.5px] py-5 pl-7 border-slate-800">
+      <div className="flex relative justify-between gap-[60px] border-y-[1.5px] py-5 pl-7 border-slate-800">
         <div>
           <div className="flex flex-col gap-[16px] py-[15px]">
             <h5 className="text-[20px] font-[600]">프로젝트 방식</h5>
@@ -117,7 +121,6 @@ const Category = ({
             <div className="flex flex-col gap-[16px] py-[15px]">
               <h5 className="text-[20px] font-[600]">활동 지역</h5>
               <select
-                defaultValue="1"
                 className={`border-[1.5px]  ${
                   region === "1" || region === null
                     ? "border-slate-400"

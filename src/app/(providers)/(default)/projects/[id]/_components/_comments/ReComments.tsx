@@ -1,12 +1,9 @@
 "use client"
 
-import { getComments } from "../../api"
-import { Tables } from "@/types/supabase"
 import React from "react"
-import { getReComments } from "../../api"
-import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import dayjs from "dayjs"
+import { getComments } from "../../api"
 
 type Props = {
   recomments: Exclude<

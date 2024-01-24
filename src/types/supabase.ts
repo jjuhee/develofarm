@@ -284,16 +284,19 @@ export interface Database {
       }
       project_members: {
         Row: {
+          application_status: boolean | null
           id: string
           project_id: string
           user_id: string
         }
         Insert: {
+          application_status?: boolean | null
           id?: string
           project_id: string
           user_id: string
         }
         Update: {
+          application_status?: boolean | null
           id?: string
           project_id?: string
           user_id?: string
