@@ -1,16 +1,14 @@
 import { Editor } from "@tiptap/react"
 import { useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
-import { MdFormatBold } from "react-icons/md"
-import { MdFormatItalic } from "react-icons/md"
-import { MdFormatStrikethrough } from "react-icons/md"
-import { MdFormatColorText } from "react-icons/md"
-import { MdFormatClear } from "react-icons/md"
-import { MdFormatListBulleted } from "react-icons/md"
-import { MdFormatListNumbered } from "react-icons/md"
-import { MdFormatQuote } from "react-icons/md"
-import { MdHorizontalRule } from "react-icons/md"
-import { MdCode } from "react-icons/md"
+import { BsTypeBold, BsTypeUnderline } from "react-icons/bs"
+import { BsTypeItalic } from "react-icons/bs"
+import { BsTypeStrikethrough } from "react-icons/bs"
+import { BsListUl } from "react-icons/bs"
+import { BsListOl } from "react-icons/bs"
+import { BsDash } from "react-icons/bs"
+import { RiDoubleQuotesL } from "react-icons/ri"
+import { BsCode } from "react-icons/bs"
 import { MdUndo } from "react-icons/md"
 import { MdRedo } from "react-icons/md"
 
@@ -20,124 +18,115 @@ interface Props {
 
 const EditorMenu = ({ editor }: Props) => {
   const [isActive, setIsActive] = useState(false)
-  const [selectedValue, setSelectedValue] = useState<string | null>("제목1")
+  const [selectedValue, setSelectedValue] = useState<string | null>("제목 1")
 
   const onClickFontSizeHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-    //const target = e.target as HTMLElement
-    const target = e.target as HTMLElement
-    if (target) {
+    if (e.currentTarget.textContent) {
       setIsActive(!isActive)
     }
   }
+  const setH1FontHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setSelectedValue(e.currentTarget.textContent)
+    editor.chain().focus().toggleHeading({ level: 1 }).run()
+    setIsActive(false)
+  }
+  const setH2FontHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setSelectedValue(e.currentTarget.textContent)
+    editor.chain().focus().toggleHeading({ level: 2 }).run()
+    setIsActive(false)
+  }
+  const setH3FontHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setSelectedValue(e.currentTarget.textContent)
+    editor.chain().focus().toggleHeading({ level: 3 }).run()
+    setIsActive(false)
+  }
+  const setParagraphFontHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setSelectedValue(e.currentTarget.textContent)
+    editor.chain().focus().setParagraph().run()
+    setIsActive(false)
+  }
 
   return (
-    <div className="flex flex-wrap items-center gap-1">
-      <div
-        className="selectBox relative"
-        onMouseLeave={() => {
-          setIsActive(false)
-        }}
-      >
+    <div className="flex items-center gap-2">
+      <div className="selectBox relative">
         <div
-          className="flex items-center justify-center border-[1px] rounded-[3px] w-[81px] px-[7px] py-[8px] cursor-pointer transition-all"
+          className={`flex items-center justify-center my-auto border-[1px] rounded-[3px] w-[81px] h-[33px] leading-[33px] px-[7px] py-[8px] text-[14px] cursor-pointer transition-all
+          ${isActive ? "bg-[#E6E6E6]" : "bg-white"}`}
           onClick={(e) => onClickFontSizeHandler(e)}
         >
-          <div>{selectedValue}</div>
+          <div className="h-[33px]">{selectedValue}</div>
           {isActive ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col *:w-[81px] *:px-[7px] *:py-[8px] *:bg-white ${
+          className={`absolute flex flex-col mt-[3px] rounded-lg border-[0.5px] *:w-[81px] *:h-[29px] *:leading-[29px] *:px-[7px] *:bg-white text-[14px] ${
             isActive ? "visible" : "invisible"
           }`}
         >
           <button
             type="button"
-            className="hover:bg-[#E6E6E6]"
-            onClick={(e) => {
-              /**TODO :handler 빼기 */
-              const target = e.target as HTMLElement
-              setSelectedValue(target.textContent)
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }}
+            className="rounded-t-lg hover:bg-[#E6E6E6]"
+            onClick={setH1FontHandler}
           >
-            제목1
+            제목 1
           </button>
           <button
             type="button"
             className="hover:bg-[#E6E6E6]"
-            onClick={(e) => {
-              const target = e.target as HTMLElement
-              setSelectedValue(target.textContent)
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }}
+            onClick={setH2FontHandler}
           >
-            제목2
+            제목 2
           </button>
           <button
             type="button"
             className="hover:bg-[#E6E6E6]"
-            onClick={(e) => {
-              const target = e.target as HTMLElement
-              setSelectedValue(target.textContent)
-              editor.chain().focus().toggleHeading({ level: 3 }).run()
-            }}
+            onClick={setH3FontHandler}
           >
-            제목3
+            제목 3
           </button>
           <button
             type="button"
-            className="hover:bg-[#E6E6E6]"
-            onClick={(e) => {
-              const target = e.target as HTMLElement
-              setSelectedValue(target.textContent)
-              editor.chain().focus().setParagraph().run()
-            }}
+            className="rounded-b-lg hover:bg-[#E6E6E6]"
+            onClick={setParagraphFontHandler}
           >
             본문
           </button>
         </ul>
       </div>
-      <MdFormatBold
-        size={30}
-        cursor={"pointer"}
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        // disabled={!editor.can().chain().focus().toggleBold().run()}
-        className={
-          editor.isActive("bold")
-            ? "rounded border-solid border-2  bg-black border-black text-white"
-            : "rounded border-solid border-2 border-black"
-        }
-      />
-      <MdFormatItalic
-        size={30}
-        cursor={"pointer"}
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        disabled={!editor.can().chain().focus().toggleItalic().run()}
-        className={
-          editor.isActive("italic")
-            ? "rounded border-solid border-2  bg-black border-black text-white"
-            : "rounded border-solid border-2 border-black"
-        }
-      />
-      <MdFormatStrikethrough
-        size={30}
-        cursor={"pointer"}
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-        disabled={!editor.can().chain().focus().toggleStrike().run()}
-        className={
-          editor.isActive("strike")
-            ? "rounded border-solid border-2  bg-black border-black text-white"
-            : "rounded border-solid border-2 border-black"
-        }
-      />
-      <MdFormatClear
-        size={30}
-        cursor={"pointer"}
-        onClick={() => editor.chain().focus().unsetAllMarks().run()}
-        className="rounded border-solid border-2 border-black"
-      />
-      {/* TODO: (jhee) 글자 색상 추가 예정, 참고 용!! */}
-      {/* <MdFormatColorText
+      <div className="flex gap-2">
+        <BsTypeBold
+          size={30}
+          cursor={"pointer"}
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          className={`category ${
+            editor.isActive("bold") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
+          }`}
+        />
+        <BsTypeItalic
+          size={30}
+          cursor={"pointer"}
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          className={`category ${
+            editor.isActive("italic") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
+          }`}
+        />
+        <BsTypeStrikethrough
+          size={30}
+          cursor={"pointer"}
+          onClick={() => editor.chain().focus().toggleStrike().run()}
+          className={`category ${
+            editor.isActive("strike") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
+          }`}
+        />
+        <BsTypeUnderline
+          size={30}
+          cursor={"pointer"}
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          className={`category ${
+            editor.isActive("underline") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
+          }`}
+        />
+        {/* TODO: (jhee) 글자 색상 추가 예정, 참고 용!! */}
+        {/* <MdFormatColorText
         size={30}
         cursor={"pointer"}
         onClick={() => editor.chain().focus().setColor("#958DF1").run()}
@@ -147,66 +136,51 @@ const EditorMenu = ({ editor }: Props) => {
             : "rounded border-solid border-2 border-indigo-600"
         }
       /> */}
-      <MdFormatListBulleted
-        size={30}
-        cursor={"pointer"}
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={
-          editor.isActive("bulletList")
-            ? "rounded border-solid border-2  bg-black border-black text-white"
-            : "rounded border-solid border-2 border-black"
-        }
-      />
-      <MdFormatListNumbered
-        size={30}
-        cursor={"pointer"}
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={
-          editor.isActive("orderedList")
-            ? "rounded border-solid border-2 bg-black border-black text-white"
-            : "rounded border-solid border-2 border-black"
-        }
-      />
-      <MdFormatQuote
-        size={30}
-        cursor={"pointer"}
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={
-          editor.isActive("blockquote")
-            ? "rounded border-solid border-2 bg-black border-black text-white"
-            : "rounded border-solid border-2 border-black"
-        }
-      />
-      <MdHorizontalRule
-        size={30}
-        cursor={"pointer"}
-        onClick={() => editor.chain().focus().setHorizontalRule().run()}
-        className="rounded border-solid border-2 border-black"
-      />
-      <MdCode
-        size={30}
-        cursor={"pointer"}
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={
-          editor.isActive("codeBlock")
-            ? "rounded border-solid border-2 bg-black border-black text-white"
-            : "rounded border-solid border-2 border-black"
-        }
-      />
-      <MdUndo
-        size={30}
-        cursor={"pointer"}
-        onClick={() => editor.chain().focus().undo().run()}
-        disabled={!editor.can().chain().focus().undo().run()}
-        className="rounded border-solid border-2 border-black"
-      />
-      <MdRedo
-        size={30}
-        cursor={"pointer"}
-        onClick={() => editor.chain().focus().redo().run()}
-        disabled={!editor.can().chain().focus().redo().run()}
-        className="rounded border-solid border-2 border-black"
-      />
+        <BsListUl
+          size={30}
+          cursor={"pointer"}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={`category ${
+            editor.isActive("bulletList")
+              ? "bg-[#e6e6e6] border-[#e6e6e6]"
+              : " "
+          }`}
+        />
+        <BsListOl
+          size={30}
+          cursor={"pointer"}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          className={`category ${
+            editor.isActive("orderedList")
+              ? "bg-[#e6e6e6] border-[#e6e6e6]"
+              : " "
+          }`}
+        />
+        <RiDoubleQuotesL
+          size={30}
+          cursor={"pointer"}
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          className={`category ${
+            editor.isActive("blockquote")
+              ? "bg-[#e6e6e6] border-[#e6e6e6]"
+              : " "
+          }`}
+        />
+        <BsDash
+          size={30}
+          cursor={"pointer"}
+          onClick={() => editor.chain().focus().setHorizontalRule().run()}
+          className="category"
+        />
+        <BsCode
+          size={30}
+          cursor={"pointer"}
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+          className={`category ${
+            editor.isActive("codeBlock") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
+          }`}
+        />
+      </div>
     </div>
   )
 }

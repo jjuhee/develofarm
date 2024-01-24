@@ -39,6 +39,10 @@ button {
   @apply border-[1.8px] px-[20px] py-[5px] rounded-full cursor-pointer;
 }
 
+.edit-menu {
+  @apply p-[3px] rounded-[3px] cursor-pointer border-[1px] border-white hover:rounded-[3px] hover:border-[#E6E6E6] hover:border-[1px];
+}
+
 .root {
   --main-color: #b8ff65;
 }
