@@ -69,7 +69,11 @@ const SelectStackButton = ({
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
           className={`category flex items-center justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] px-[20px] transition-all
-          ${isActive === "프론트엔드" ? "border-main-lime bg-main-lime" : ""}
+          ${
+            isActive === "프론트엔드"
+              ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime"
+              : ""
+          }
           ${
             isPositionChecked(POSITION_ID.front)
               ? "border-black text-black font-semibold"
@@ -115,7 +119,11 @@ const SelectStackButton = ({
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
           className={`category flex items-center justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] px-[20px] transition-all
-          ${isActive === "백엔드" ? "border-main-lime bg-main-lime" : ""}
+          ${
+            isActive === "백엔드"
+              ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime"
+              : ""
+          }
           ${
             isPositionChecked(POSITION_ID.back)
               ? "border-black text-black font-semibold"
@@ -161,7 +169,11 @@ const SelectStackButton = ({
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
           className={`category flex items-center justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] px-[20px] transition-all
-          ${isActive === "디자인" ? "border-main-lime bg-main-lime" : ""}
+          ${
+            isActive === "디자인"
+              ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime"
+              : ""
+          }
           ${
             isPositionChecked(POSITION_ID.design)
               ? "border-black text-black font-semibold"
