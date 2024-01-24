@@ -31,11 +31,13 @@ const MemberCategory = ({ positions }: Props) => {
   }
 
   return (
-    <ul className="flex flex-col fixed top-40 left-30 px-[32px] py-[48px] w-[220px] h-[328px] gap-[20px] rounded-2xl text-[17px] text-[#777E90] font-[700] shadow-2xl">
+    <ul className="flex py-[20px] gap-[20px] text-[17px] text-[#777E90] font-[700]">
       <li
         onClick={() => onClickAllViewHandler("전체보기")}
-        className={`cursor-pointer ${
-          isActive === "전체보기" ? "font-bold text-black" : "font-[400]"
+        className={`cursor-pointer py-2 px-4 ${
+          isActive === "전체보기"
+            ? "font-bold text-black bg-main-lime"
+            : "font-[400] border-[1.5px] border-[#EAEAEA] text-[#666666]"
         }`}
       >
         전체보기
@@ -44,8 +46,10 @@ const MemberCategory = ({ positions }: Props) => {
         <li
           key={position.id}
           onClick={() => onClickCategoryHandler(position)}
-          className={`cursor-pointer ${
-            isActive === position.name ? "font-bold text-black" : "font-[400]"
+          className={`cursor-pointer py-2 px-4 ${
+            isActive === position.name
+              ? "font-bold text-black bg-main-lime"
+              : "font-[400] border-[1.5px] border-[#EAEAEA] text-[#666666]"
           }`}
         >
           {position.name}
