@@ -1,13 +1,20 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { getUser, updateUser } from "../../api"
+import {
+  getUser,
+  updateUser,
+  getPositions,
+  getPositionTechs,
+  addUserTech,
+} from "../../api"
 import { TbPointFilled } from "react-icons/tb"
 import { HiOutlineXMark } from "react-icons/hi2"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 
 const ProfileForm = ({ profileId }: { profileId: string }) => {
+  // 유저 정보 및 데이터 상태 관리
   const {
     data: users,
     isLoading,
@@ -18,14 +25,33 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
     enabled: !!profileId,
   })
 
+  // 직무 및 기술 데이터 상태 관리
+  const {
+    data: positions,
+    isLoading: positionsLoading,
+    isError: positionsError,
+  } = useQuery({
+    queryKey: ["positions"],
+    queryFn: getPositions,
+  })
+
+  // 직무 기술 데이터 상태 관리
+  const { data: positionTechs } = useQuery({
+    queryKey: ["position_tech"],
+    queryFn: getPositionTechs,
+  })
+
+  // 유저 정보 상태 관리
   const [user, setUser] = useState({
     user_nickname: users?.user_nickname || "",
     user_phone_number: users?.user_phone_number || "",
     user_email: users?.user_email || "",
     user_comment: users?.user_comment || "",
     user_status: users?.user_status || "",
+    positionId: users?.positionId || "",
   })
 
+  // 유저 상태 옵션
   const userStatusOptions = [
     {
       label: "휴식 중",
@@ -41,12 +67,72 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
     },
   ]
 
-  const [isDropdownOpen, setDropdownOpen] = useState(false)
+  // 선택된 직무 및 관련 상태 관리
+  const [selectedPositionId, setSelectedPositionId] = useState(user.positionId)
+  const [isPositionDropdownOpen, setPositionDropdownOpen] = useState(false)
+  const [isStatusDropdownOpen, setStatusDropdownOpen] = useState(false)
 
-  const toggleDropdown = () => {
-    setDropdownOpen((prev) => !prev)
+  // 선택된 기술 관리
+  const [selectedTechs, setSelectedTechs] = useState<string[]>([])
+
+  // 유저 기술 초기화
+  useEffect(() => {
+    const techs = users?.user_tech.map((tech) => tech.tech_id)
+    setSelectedTechs([...(techs as string[])])
+  }, [])
+
+  // 기술 체크박스 변경 처리
+  const handleTechCheckboxChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    techId: string,
+  ) => {
+    if (e.target.checked) {
+      // 이미 선택된 경우 제외하고 업데이트
+      const updatedTechs = selectedTechs.filter(
+        (techId) => techId !== e.target.id,
+      )
+      setSelectedTechs([...updatedTechs, e.target.id])
+    } else {
+      // 체크 해제 됐을 경우 삭제
+      const updatedTechs = selectedTechs.filter(
+        (techId) => techId !== e.target.id,
+      )
+      setSelectedTechs([...updatedTechs])
+    }
+    setPositionDropdownOpen(true)
   }
 
+  // 유저 기술 추가 처리
+  const handleAddUserTech = async () => {
+    try {
+      const techData = selectedTechs.map((techId) => ({
+        user_id: profileId,
+        tech_id: techId,
+      }))
+      await addUserTech(techData, profileId)
+      console.log("사용자 기술 데이터가 성공적으로 추가되었습니다!")
+    } catch (error) {
+      console.error("사용자 기술 데이터 추가 중 오류 발생:", error)
+    }
+  }
+
+  // 유저 프로필 업데이트 및 기술 추가 통합 처리
+  const handleCombinedAction = async () => {
+    await handleUpdateProfile()
+    await handleAddUserTech()
+  }
+
+  // 직무 드롭다운 토글
+  const togglePositionDropdown = () => {
+    setPositionDropdownOpen((prev) => !prev)
+  }
+
+  // 유저 상태 드롭다운 토글
+  const toggleStatusDropdown = () => {
+    setStatusDropdownOpen((prev) => !prev)
+  }
+
+  // 입력값 변경 처리
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -56,25 +142,33 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
     setUser((prevUser) => ({ ...prevUser, [fieldName]: e.target.value }))
   }
 
+  // 입력값 초기화 처리
   const handleClear = (fieldName: string) => {
     setUser((prevUser) => ({ ...prevUser, [fieldName]: "" }))
   }
 
+  // 직무 선택 처리
+  const handlePositionSelection = (positionId: string) => {
+    setSelectedPositionId(positionId)
+    setUser((prevUser) => ({ ...prevUser, positionId }))
+  }
+
+  // 유저 프로필 업데이트 처리
   const handleUpdateProfile = async () => {
     try {
       await updateUser(profileId, user)
-      console.log("User profile updated successfully!")
+      console.log("사용자 프로필 수정이 성공적으로 업데이트되었습니다!")
     } catch (error) {
-      console.error("Error updating user profile:", error)
+      console.error("사용자 프로필 수정 중 오류가 발생했습니다:", error)
     }
   }
 
-  if (isLoading) {
+  if (isLoading || positionsLoading) {
     return <div>Loading...</div>
   }
 
-  if (isError) {
-    return <div>유저데이터를 불러오는 중 오류가 발생했습니다</div>
+  if (isError || positionsError) {
+    return <div>유저 데이터 정보를 불러오는 중 오류가 발생했습니다.</div>
   }
 
   return (
@@ -99,6 +193,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                 onChange={(e) => handleChange(e, "user_nickname")}
                 className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[872px] h-[48px]"
                 placeholder="닉네임을 입력하세요..."
+                maxLength={10}
               />
               <button
                 className="absolute right-[15px] top-[10px] text-[#AAAAAA] text-[30px] hover:text-red-500"
@@ -120,7 +215,8 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                     value={user.user_phone_number}
                     onChange={(e) => handleChange(e, "user_phone_number")}
                     className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[431px] h-[48px]"
-                    placeholder="연락처를 입력하세요..."
+                    placeholder="- 를 넣어서 입력하세요."
+                    maxLength={13}
                   />
                   <button
                     className="absolute right-[15px] top-[10px] text-[#AAAAAA] text-[30px] hover:text-red-500"
@@ -131,17 +227,71 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                 </div>
               </div>
 
-              <div>
-                <p className="text-[18px] pb-[10px] font-semibold">직무</p>
-                {users?.positions?.name ? (
-                  <p className="text-[20px] font-bold">
-                    {users.positions.name}
-                  </p>
-                ) : (
-                  <p className="text-[20px] font-semibold">
-                    직무 정보가 없습니다.
-                  </p>
-                )}
+              <div className="h-[100px] relative">
+                <p className="text-[18px] pb-[10px] font-semibold">
+                  직무 및 기술
+                </p>
+                <ul className="flex gap-[13px] pb-[13px]">
+                  {positions?.map((position) => (
+                    <li
+                      key={position.id}
+                      className={`border border-[#CCCCCC] rounded-full font-bold text-[16px] w-[135px] h-[48px] flex items-center justify-center cursor-pointer ${
+                        selectedPositionId === position.id
+                          ? "bg-[#000000] text-[#B8FF65]"
+                          : ""
+                      }`}
+                      onClick={() => {
+                        handlePositionSelection(position.id)
+                        togglePositionDropdown()
+                      }}
+                    >
+                      {position.name}
+                      {isPositionDropdownOpen ? (
+                        <IoIosArrowUp />
+                      ) : (
+                        <IoIosArrowDown />
+                      )}
+                      {selectedPositionId === position.id &&
+                        isPositionDropdownOpen && (
+                          <div className="absolute p-[3px] top-[92px] left-0 w-[431px] font-bold text-[18px] bg-white border border-[#CCCCCC] rounded-[20px] overflow-hidden">
+                            <ul>
+                              {positionTechs
+                                ?.filter(
+                                  (tech) => tech.position_id === position.id,
+                                )
+                                .map((tech) => (
+                                  <li
+                                    key={tech.id}
+                                    className="py-1 px-4 cursor-pointer hover:bg-gray-200 flex items-center text-black"
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      id={tech.techs?.id}
+                                      checked={selectedTechs.some(
+                                        (id) => id === tech.techs?.id,
+                                      )}
+                                      onChange={(e) =>
+                                        handleTechCheckboxChange(
+                                          e,
+                                          tech.techs?.id as string,
+                                        )
+                                      }
+                                      className="form-checkbox accent-[#AAAAAA] h-[16px] w-[16px] rounded-[4px]"
+                                    />
+                                    <label
+                                      htmlFor={tech.techs?.id}
+                                      className="ml-2 text-[16px]"
+                                    >
+                                      {tech.techs?.tech_name}
+                                    </label>
+                                  </li>
+                                ))}
+                            </ul>
+                          </div>
+                        )}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
@@ -173,7 +323,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                   <div className="relative">
                     <div
                       className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[431px] h-[48px] flex items-center justify-beteewn cursor-pointer"
-                      onClick={toggleDropdown}
+                      onClick={toggleStatusDropdown}
                     >
                       {
                         userStatusOptions.find(
@@ -181,14 +331,14 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                         )?.icon
                       }
                       <span className="ml-2">{user.user_status}</span>
-                      {isDropdownOpen ? (
+                      {isStatusDropdownOpen ? (
                         <IoIosArrowUp className="ml-[260px]" />
                       ) : (
                         <IoIosArrowDown className="ml-[260px]" />
                       )}
                     </div>
 
-                    {isDropdownOpen && (
+                    {isStatusDropdownOpen && (
                       <div className="absolute top-full left-0 mt-1 w-[431px] font-bold text-[18px] bg-white border border-[#CCCCCC] rounded-[20px] overflow-hidden">
                         <ul>
                           {userStatusOptions.map((option) => (
@@ -199,11 +349,11 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                                   ...prevUser,
                                   user_status: option.label,
                                 }))
-                                toggleDropdown()
+                                toggleStatusDropdown()
                               }}
                               className="py-2 px-4 cursor-pointer hover:bg-gray-200 flex items-center"
                             >
-                              {option.icon}{" "}
+                              {option.icon}
                               <span className="ml-2">{option.label}</span>
                             </li>
                           ))}
@@ -221,21 +371,23 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
 
       <div>
         <h2 className="text-[26px] font-bold">보유기술</h2>
-        {users?.user_tech && users.user_tech.length > 0 ? (
-          <span className="flex gap-3 pt-3">
-            {users.user_tech.map((tech) => (
-              <p
-                key={tech.techs?.tech_name}
-                className="border border-[#297A5F] rounded-full p-2 font-bold text-[#297A5F] text-lg pr-3 pl-3"
-              >
-                {tech.techs?.tech_name}
-              </p>
-            ))}
-          </span>
-        ) : (
-          <p className="pt-[30px]">보유 기술이 없습니다.</p>
-        )}
-        <hr className="my-8 border-t-2 border-gray-300" />
+        {positions?.map((position) => (
+          <div className="flex gap-3 pt-3" key={position.id}>
+            {positionTechs
+              ?.filter((tech) => tech.position_id === position.id)
+              .map(
+                (tech) =>
+                  selectedTechs.includes(tech.techs?.id as string) && (
+                    <span key={tech.id}>
+                      <p className="bottom-0 right-2 border-2 border-[#000000] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-full hover:bg-[#000000] hover:text-[#B8FF65] transition-all duration-300">
+                        {tech.techs?.tech_name}
+                      </p>
+                    </span>
+                  ),
+              )}
+          </div>
+        ))}
+        <hr className="my-5 border-t-2 border-gray-300" />
       </div>
 
       <div className="relative">
@@ -247,6 +399,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
             onChange={(e) => handleChange(e, "user_comment")}
             className="border border-[#CCCCCC] rounded-[5px] p-2 text-[16px] w-[1230px] h-[120px]"
             placeholder="간단한 소개글을 입력하세요..."
+            maxLength={200}
           />
           <button
             className="text-[#AAAAAA] text-[30px] hover:text-red-500 absolute right-[12px] bottom-[20px]"
@@ -258,9 +411,9 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
       </div>
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-full"
-        onClick={handleUpdateProfile}
+        onClick={handleCombinedAction}
       >
-        Update Profile
+        프로필 업데이트 하기
       </button>
       <hr className="my-8 border-t-2 border-gray-300" />
     </div>

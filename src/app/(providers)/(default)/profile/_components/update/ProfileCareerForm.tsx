@@ -120,11 +120,11 @@ const ProfileCareerForm = ({ profileId }: { profileId: string }) => {
 
   return (
     <div>
-      <div className="flex justify-between items-center w-[600px]">
+      <div className="flex justify-between items-start w-[600px]">
         <h2 className="text-[26px] font-bold">경력</h2>
         <button
           onClick={handleAddCareerSet}
-          className="flex ml-auto border-2 border-[#297A5F] text-[#297A5F] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#297A5F] hover:text-white transition-all duration-300"
+          className="flex ml-auto border-2 border-[#000000] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#000000] hover:text-[#B8FF65] transition-all duration-300"
         >
           <GoPlus className="text-[25px] mx-[3px]" />
           추가하기
@@ -163,7 +163,7 @@ const ProfileCareerForm = ({ profileId }: { profileId: string }) => {
                       e.target.checked,
                     )
                   }
-                  className="mr-[5px]"
+                  className="mr-[5px] accent-[#AAAAAA]"
                 />
                 <label>재직중</label>
               </div>

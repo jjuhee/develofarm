@@ -136,7 +136,7 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
         <h2 className="text-[26px] font-bold">교육/활동</h2>
         <button
           onClick={handleAddAcademySet}
-          className="flex ml-auto border-2 border-[#297A5F] text-[#297A5F] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#297A5F] hover:text-white transition-all duration-300"
+          className="flex ml-auto border-2 border-[#000000] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#000000] hover:text-[#B8FF65] transition-all duration-300"
         >
           <GoPlus className="text-[25px] mx-[3px]" />
           추가하기
@@ -145,7 +145,7 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
 
       {updatedAcademies.map((academy: Tables<"academies">, index: number) => (
         <div key={academy.id} className="relative">
-          <div className="flex justify-between items-center pt-[30px]">
+          <div className="flex justify-between items-start pt-[30px]">
             <div>
               <div className="flex">
                 <input
@@ -213,7 +213,7 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
         {newAcademiesData.map((newAcademy, setIndex) => (
           <div
             key={setIndex}
-            className="flex justify-between items-center pt-[30px] relative"
+            className="flex justify-between items-start pt-[24px] relative"
           >
             <div>
               <div className="flex">
@@ -243,7 +243,7 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
               </div>
             </div>
 
-            <div className="relative flex items-center">
+            <div className="relative items-start">
               <input
                 type="text"
                 value={newAcademy.academy_name}
@@ -257,7 +257,6 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
                 className="w-[250px] text-xl font-bold"
                 placeholder="활동명"
               />
-
               <button
                 type="button"
                 onClick={() => {
@@ -271,6 +270,21 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
               >
                 <HiOutlineXMark />
               </button>
+
+              <div className="pt-[10px]">
+                <input
+                  type="text"
+                  value={newAcademy.academy_major as string}
+                  onChange={(e) =>
+                    handleNewAcademyInputChange(
+                      setIndex,
+                      "academy_major",
+                      e.target.value,
+                    )
+                  }
+                  placeholder="활동내용"
+                />
+              </div>
             </div>
           </div>
         ))}

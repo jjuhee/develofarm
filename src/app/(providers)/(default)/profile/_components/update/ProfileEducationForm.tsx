@@ -104,7 +104,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
           <h2 className="text-[26px] font-bold">최종학력</h2>
         </div>
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-start pt-[36px]">
           <div>
             <div className="flex">
               <input
@@ -137,7 +137,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
                     value={value}
                     checked={formData.graduated === value}
                     onChange={handleInputChange}
-                    className="mr-[5px]"
+                    className="mr-[5px] accent-[#AAAAAA]"
                   />
                   <label htmlFor={id}>{label}</label>
                 </div>
