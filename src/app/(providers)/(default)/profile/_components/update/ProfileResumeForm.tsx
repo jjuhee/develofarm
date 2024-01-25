@@ -7,11 +7,11 @@ import ProfileSpecForm from "./ProfileSpecForm"
 const ProfileResumeForm = ({ profileId }: { profileId: any }) => {
   return (
     <div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-start">
         <ProfileCareerForm profileId={profileId} />
         <ProfileEducationForm profileId={profileId} />
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-start">
         <ProfileAcademyForm profileId={profileId} />
         <ProfileSpecForm profileId={profileId} />
       </div>

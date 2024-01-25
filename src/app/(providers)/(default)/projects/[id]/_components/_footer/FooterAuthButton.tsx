@@ -1,9 +1,8 @@
 import { Tables, TablesInsert } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import React from "react"
-import { closeProject } from "../../api"
 import useUserStore from "@/store/user"
-import { getApplicatinUser, setMember } from "../api"
+import { closeProject, getApplicatinUser, setMember } from "../../api"
 
 type Props = {
   project: Tables<"projects">
@@ -62,8 +61,6 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
 
   // 신청자가 맞는지 확인하는 변수
   const isApplicantAuthenticated = userId === applyUser?.user_id
-
-  console.log("신청자 현황", applyUser)
 
   if (applyUserIsLoading) return <div>is Loading...</div>
 
