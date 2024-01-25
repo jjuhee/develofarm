@@ -130,12 +130,12 @@ const Header = () => {
                     <div className="flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-2 z-50 ">
                       {isAlarmData ? (
                         <>
-                          <div className=" border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
+                          <div className=" text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
                             "새로운 프로젝트가 생겼어요!"
                           </div>
                         </>
                       ) : (
-                        <div className="border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
+                        <div className="text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
                           알림이 없습니다
                         </div>
                       )}
