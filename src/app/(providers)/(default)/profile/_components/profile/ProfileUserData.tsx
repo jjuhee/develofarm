@@ -77,13 +77,13 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
                 <p className="text-[18px] pb-[10px] font-semibold">유저 상태</p>
                 <p className="flex text-[20px] font-bold">
                   {users?.user_status === "휴식 중" && (
-                    <TbPointFilled className="text-[30px] text-black" />
+                    <TbPointFilled className="text-[30px] text-[#AAAAAA]" />
                   )}
                   {users?.user_status === "지원 중" && (
-                    <TbPointFilled className="text-[30px] text-pink-500" />
+                    <TbPointFilled className="text-[30px] text-[#80E500]" />
                   )}
                   {users?.user_status === "참여 중" && (
-                    <TbPointFilled className="text-[30px] text-gray-500" />
+                    <TbPointFilled className="text-[30px] text-[#000000]" />
                   )}
                   {users?.user_status}
                 </p>
@@ -102,7 +102,7 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
             {users.user_tech.map((tech) => (
               <p
                 key={tech.techs?.tech_name}
-                className="border border-[#297A5F] rounded-full p-2 font-bold text-[#297A5F] text-lg pr-3 pl-3"
+                className="bottom-0 right-2 border-2 border-[#000000] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-full hover:bg-[#000000] hover:text-[#B8FF65] transition-all duration-300"
               >
                 {tech.techs?.tech_name}
               </p>

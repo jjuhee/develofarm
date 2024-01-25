@@ -13,7 +13,7 @@ export const getUsers = async ({
       "*, position: positions(*), user_tech(*, techs(*)), social_links(*)",
     )
     .eq("user_status", "지원 중")
-    .range(pageParam!, pageParam! + 2)
+    .range(pageParam!, pageParam! + 3)
     .order("created_at", { ascending: false })
 
   !!positionId && query.eq("positionId", positionId)

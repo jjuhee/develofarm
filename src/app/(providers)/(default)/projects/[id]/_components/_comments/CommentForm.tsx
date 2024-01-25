@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
-import { setComment } from "../../../api"
 import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
+import { setComment } from "../../api"
 
 type Props = {
   projectId: string
@@ -10,7 +10,6 @@ type Props = {
 
 const CommentForm = ({ projectId }: Props) => {
   const [content, setContent] = useState<string>("")
-  console.log("내용", content)
 
   const queryClient = useQueryClient()
   const { userId } = useUserStore()

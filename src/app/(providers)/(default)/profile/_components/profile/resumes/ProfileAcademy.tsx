@@ -32,7 +32,7 @@ const ProfileAcademy = ({ profileId }: { profileId: string }) => {
           academies.map((academy) => (
             <div
               key={academy.id}
-              className="flex justify-between items-center pt-[30px]"
+              className="flex justify-between items-start pt-[30px]"
             >
               <div className="flex">
                 <p>

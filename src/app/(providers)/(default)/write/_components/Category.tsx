@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
+import useProjectsStore from "@/store/projects"
 
 interface Props {
   categoryData: TCategoryData
@@ -25,6 +26,7 @@ const Category = ({
 }: Props) => {
   const { openCustomModalHandler } = useCustomModal()
   const dropdownRef = useRef<HTMLInputElement>(null)
+  const { page, setPage } = useProjectsStore((state) => state)
   const {
     startDate,
     endDate,
@@ -60,6 +62,7 @@ const Category = ({
         techs: techs,
       })
     openCustomModalHandler("검색되었습니다.", "alert")
+    setPage(1)
   }
 
   useOnClickOutSide({
@@ -67,8 +70,8 @@ const Category = ({
     handler: () => setIsRegionActive(false),
   })
 
+  /** 검색 초기화 */
   const onClickResetFilteringHandler = () => {
-    //TODO: 카테고리 데이터 리셋
     setCategoryData({
       startDate: "",
       endDate: "",
@@ -86,6 +89,7 @@ const Category = ({
         regionId: "",
         techs: [],
       })
+    setPage(1)
   }
 
   return (

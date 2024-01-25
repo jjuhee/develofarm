@@ -2,12 +2,11 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
-import { setComment } from "../../api"
 import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
-import ReComments from "./ReComments"
 import Spacer from "@/components/ui/Spacer"
-import { getComments } from "../../api"
+import { getComments, setComment } from "../../api"
+import ReComments from "./ReComments"
 
 type Props = {
   comment: Exclude<Awaited<ReturnType<typeof getComments>>, null>[number]
