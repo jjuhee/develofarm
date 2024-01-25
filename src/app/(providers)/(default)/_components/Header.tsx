@@ -36,6 +36,7 @@ const Header = () => {
   }
 
   const onAvavatarHandlerClick = (event: React.MouseEvent) => {
+    event.stopPropagation()
     setIsImageActive((prev) => !prev)
     setShowTooltip(false)
   }
@@ -127,7 +128,7 @@ const Header = () => {
                 <VscBell />
                 {showTooltip && (
                   <div className="relative flex">
-                    <div className="flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-2 z-50 ">
+                    <div className="flex-row w-[200px] left-[-100px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-2 z-50 ">
                       {isAlarmData ? (
                         <>
                           <div className=" text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
@@ -144,7 +145,6 @@ const Header = () => {
                 )}
               </span>
 
-              {/* 로그인시 , 프로필,프로젝트 등 */}
               <span
                 className="rounded-full shadow-lg hover hover:cursor-pointer"
                 onClick={onAvavatarHandlerClick}
@@ -156,34 +156,37 @@ const Header = () => {
                   width={20}
                   height={20}
                 />
-              </span>
-              {isImageActive && (
-                <div className="relative flex">
-                  <div className="right-2 flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-4 z-50 ">
-                    <div>유저 이메일</div>
-                    <div className="text-xs text-gray-400">{email}</div>
-                    <Link href={`/profile/${userId}`}>
-                      <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
-                        <GoPerson />
-                        <span className="ml-2">내 프로필</span>
-                      </span>
-                    </Link>
-                    <Link href={`/profile/${userId}/profileProject`}>
-                      <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
-                        <LuFolder />
-                        <span className="ml-2">내 프로젝트</span>
-                      </span>
-                    </Link>
-                    <button
-                      onClick={onLogoutHandler}
-                      className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold"
-                    >
-                      <IoLogOutOutline />
-                      <span className="ml-2">로그아웃</span>
-                    </button>
+
+                {isImageActive && (
+                  <div className="relative flex">
+                    <div className="left-[-100px] flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg  p-4 absolute top-2 z-50 ">
+                      <>
+                        <div>유저 이메일</div>
+                        <div className="text-xs text-gray-400">{email}</div>
+                        <Link href={`/profile/${userId}`}>
+                          <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
+                            <GoPerson />
+                            <span className="ml-2">내 프로필</span>
+                          </span>
+                        </Link>
+                        <Link href={`/profile/${userId}/profileProject`}>
+                          <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
+                            <LuFolder />
+                            <span className="ml-2">내 프로젝트</span>
+                          </span>
+                        </Link>
+                        <button
+                          onClick={onLogoutHandler}
+                          className="flex items-center w-full over hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold"
+                        >
+                          <IoLogOutOutline />
+                          <span className="ml-2">로그아웃</span>
+                        </button>
+                      </>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </span>
             </>
           ) : (
             // isLoggedOut이 true 일때 로그인 상태
