@@ -104,7 +104,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
           <h2 className="text-[26px] font-bold">최종학력</h2>
         </div>
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-start pt-[36px]">
           <div>
             <div className="flex">
               <input
@@ -137,7 +137,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
                     value={value}
                     checked={formData.graduated === value}
                     onChange={handleInputChange}
-                    className="mr-[5px]"
+                    className="mr-[5px] accent-[#AAAAAA]"
                   />
                   <label htmlFor={id}>{label}</label>
                 </div>
@@ -152,7 +152,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
                 name="school_name"
                 value={formData.school_name}
                 onChange={handleInputChange}
-                className="w-[250px] text-xl font-bold"
+                className="w-[250px] text-xl font-bold p-1"
                 placeholder="학교명"
               />
               <button
@@ -169,6 +169,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
                 name="school_major"
                 value={formData.school_major}
                 onChange={handleInputChange}
+                className="p-1"
                 placeholder="전공 및 학위"
               />
             </div>
