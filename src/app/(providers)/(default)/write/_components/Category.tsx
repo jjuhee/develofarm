@@ -1,13 +1,14 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
-import React, { Dispatch, useState } from "react"
+import React, { Dispatch, useRef, useState } from "react"
 import { getRegions, getTechsByPositions } from "../../projects/api"
 import SelectStackButton from "./SelectStackButton"
 import { Tables } from "@/types/supabase"
 import Button from "@/components/ui/Button"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
+import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 
 interface Props {
   categoryData: TCategoryData
@@ -23,7 +24,7 @@ const Category = ({
   setOption,
 }: Props) => {
   const { openCustomModalHandler } = useCustomModal()
-
+  const dropdownRef = useRef<HTMLInputElement>(null)
   const {
     startDate,
     endDate,
@@ -60,6 +61,11 @@ const Category = ({
       })
     openCustomModalHandler("검색되었습니다.", "alert")
   }
+
+  useOnClickOutSide({
+    ref: dropdownRef,
+    handler: () => setIsRegionActive(false),
+  })
 
   const onClickResetFilteringHandler = () => {
     //TODO: 카테고리 데이터 리셋
@@ -119,7 +125,7 @@ const Category = ({
           {isOffline && (
             <div className="flex flex-col gap-[16px] py-[15px]">
               <h5 className="text-[20px] font-[600]">활동 지역</h5>
-              <div className="relative">
+              <div ref={dropdownRef} className="relative">
                 <div
                   className={`category flex items-center justify-between px-[20px] py-[5px] rounded-lg w-[180px] h-[40px] ${
                     isRegionActive

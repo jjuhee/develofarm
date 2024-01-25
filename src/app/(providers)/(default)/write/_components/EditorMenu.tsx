@@ -1,5 +1,5 @@
 import { Editor } from "@tiptap/react"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import { BsTypeBold, BsTypeUnderline } from "react-icons/bs"
 import { BsTypeItalic } from "react-icons/bs"
@@ -9,12 +9,14 @@ import { BsListOl } from "react-icons/bs"
 import { BsDash } from "react-icons/bs"
 import { RiDoubleQuotesL } from "react-icons/ri"
 import { BsCode } from "react-icons/bs"
+import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 
 interface Props {
   editor: Editor
 }
 
 const EditorMenu = ({ editor }: Props) => {
+  const dropdownRef = useRef<HTMLInputElement>(null)
   const [isActive, setIsActive] = useState(false)
   const [selectedValue, setSelectedValue] = useState<string | null>("제목 1")
 
@@ -39,9 +41,11 @@ const EditorMenu = ({ editor }: Props) => {
     setIsActive(false)
   }
 
+  useOnClickOutSide({ ref: dropdownRef, handler: () => setIsActive(false) })
+
   return (
     <div className="flex items-center gap-2">
-      <div className="selectBox relative">
+      <div className="selectBox relative" ref={dropdownRef}>
         <div
           className={`flex items-center justify-between my-auto border-[1px] border-white hover:border-[1px] hover:border-[#E6E6E6] rounded-[3px] w-[81px] h-[33px] leading-[33px] px-[7px] py-[8px] text-[14px] cursor-pointer transition-all
           ${isActive ? "bg-[#E6E6E6]" : "bg-white"}`}
