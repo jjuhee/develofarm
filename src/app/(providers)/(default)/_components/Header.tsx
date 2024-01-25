@@ -131,7 +131,7 @@ const Header = () => {
                       {isAlarmData ? (
                         <>
                           <div className=" text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
-                            "새로운 프로젝트가 생겼어요!"
+                            새로운 프로젝트가 생겼어요!
                           </div>
                         </>
                       ) : (

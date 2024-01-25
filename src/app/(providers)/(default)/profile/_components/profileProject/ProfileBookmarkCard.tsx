@@ -58,12 +58,21 @@ const ProfileBookmarkCard = ({ profileId }: { profileId: string }) => {
                     </p>
                   </div>
                   <div>
-                    <h2 className="text-[20px]">{bookmark.projects?.title}</h2>
+                    <h2 className="text-[20px]">
+                      {bookmark.projects?.title &&
+                      bookmark.projects?.title.length > 15
+                        ? bookmark.projects?.title.slice(0, 15) + "..."
+                        : bookmark.projects?.title}
+                    </h2>
                   </div>
                 </div>
               </Link>
-              <div className="pt-[20px] text-[14px]">
-                <p>{bookmark.projects?.content}</p>
+              <div className="pt-[20px] text-[14px] line-clamp-2">
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: bookmark.projects?.content as string,
+                  }}
+                />
                 {/* 북마크 버튼 */}
               </div>
             </div>

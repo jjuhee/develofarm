@@ -50,9 +50,9 @@ const Applicants = ({ applicants, status, project, isWriter }: Props) => {
           ) : (
             isWriter && (
               <ApplicantList
+                key={applicant.id}
                 applicants={applicants}
                 applicant={applicant}
-                key={applicant.id}
               />
             )
           )

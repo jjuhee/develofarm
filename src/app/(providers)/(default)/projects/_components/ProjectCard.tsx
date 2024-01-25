@@ -13,7 +13,7 @@ interface Props {
   project: TProjectsType
   bookmarks: Tables<"bookmarks">[]
   currentUser: string
-  page: number
+  page?: number
 }
 
 const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
