@@ -49,7 +49,15 @@ export async function setProjectInMember(projectId: string, userId: string) {
     .from("project_members")
     .update({ application_status: true })
     .match({ project_id: projectId, user_id: userId })
-  console.log("update result:", data)
+  if (error) console.log("error", error)
+}
+
+/** 신청자 멤버 삭제 */
+export async function removeProjectInMember(id: string) {
+  const { error } = await supabaseForClient
+    .from("project_members")
+    .delete()
+    .match({ id: id })
   if (error) console.log("error", error)
 }
 

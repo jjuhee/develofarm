@@ -8,7 +8,7 @@ type Props = {
 
 const MembersInProject = ({ applicant }: Props) => {
   return (
-    <div className="float-left w-72 mr-6 overflow-x-auto scrollbar-thin scrollbar-track-black">
+    <div className="float-left w-72 mr-6">
       <div
         key={applicant.id}
         className="flex flex-col items-center mb-6 py-8 px-5 bg-[#F4F4F4] w-72 h-80 rounded-xl"
@@ -40,7 +40,7 @@ const MembersInProject = ({ applicant }: Props) => {
           예정입니다
         </p>
         <ul className="flex text-sm">
-          {applicant.users?.user_tech?.map((tech) => {
+          {applicant.users?.user_tech?.slice(0, 3).map((tech) => {
             return (
               <li
                 className="p-2 pl-3 pr-3 mt-2 mr-2 rounded-3xl text-[#2D2D2D] bg-[#E6E6E6]"

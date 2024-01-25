@@ -1,21 +1,30 @@
 import React from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { getMembers, setProjectInMember } from "../../api"
+import {
+  getMembers,
+  removeProjectInMember,
+  setProjectInMember,
+} from "../../api"
 import Image from "next/image"
 import { useCustomModal } from "@/hooks/useCustomModal"
 
 type Props = {
   applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
   applicant: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
+  applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
 }
 
 const ApplyButtons = ({ applicant, applicants }: Props) => {
   const queryClient = useQueryClient()
   const { openCustomModalHandler } = useCustomModal()
 
+   *@ param 참여 중인 멤버 인원 수 */
+  const applyApplications = applicants?.filter(
+    (applicant) => applicant.application_status === true,
+  )
+
   /**
-   *@ mutaion 참여중인 멤버에 신청자 등록 후 확인창 띄워주기
-   TODO: 업데이트 기능 수정 중 */
+   *@ mutaion 참여중인 멤버에 신청자 등록 후 확인창 띄워주기*/
   const updateMemberMutate = useMutation({
     mutationFn: async ({
       projectId,
@@ -28,8 +37,23 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["applyUser", { projectId: applicant.project_id }],
+        queryKey: ["applicants", { projectId: applicant.project_id }],
       })
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  /**
+   *@ mutaion 신청자 목록에서 멤버 삭제하고 확인창 띄워주기*/
+  const removeMemberMutate = useMutation({
+    mutationFn: removeProjectInMember,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["applicants", { projectId: applicant.project_id }],
+      })
+      openCustomModalHandler("거절되었습니다", "alert")
     },
     onError: (error) => {
       console.log(error)
@@ -50,7 +74,7 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
         applicant.projects?.number_of_people &&
         applyApplications.length >= applicant.projects.number_of_people
       ) {
-        return null
+        return openCustomModalHandler("모집인원이 가득찼습니다!", "alert")
       } else {
         updateMemberMutate.mutate({
           projectId: applicant.project_id,
@@ -59,21 +83,25 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
       }
     }
 
-    openCustomModalHandler("신청하시겠습니까?", "confirm", handler)
-  }
+    openCustomModalHandler(
+      "프로젝트 멤버로 등록하시겠습니까?",
+      "confirm",
+      handler,
+    )
 
   console.log("000", applicants.length)
   console.log("1", applicant.projects?.number_of_people)
   /**
    *@ function 신청자 목록에서 거절하기
    TODO: 신청자 삭제 기능 수정 중 */
-  const onRejectButtonHandler = () => {}
+  const onRejectButtonHandler = () => {
+    removeMemberMutate.mutate(applicant.id)
+  }
 
   return (
     <div className="flex flex-row-reverse w-36 ml-auto mt-[-80px]">
       <button
-        className="mr-5 hover:animate-[pulse_1s_ease-in-out_infinite]"
-        //
+        className="mr-5 hover:scale-110 transition-all duration-200"
         onClick={() => {
           onApplyButtonHandler()
         }}
@@ -87,7 +115,7 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
         />
       </button>
       <button
-        className="mr-3 hover:animate-[pulse_1s_ease-in-out_infinite]"
+        className="mr-3 hover:scale-110 transition-all duration-200"
         onClick={onRejectButtonHandler}
       >
         <Image
