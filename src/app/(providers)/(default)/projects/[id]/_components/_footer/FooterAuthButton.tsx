@@ -2,7 +2,7 @@ import { Tables, TablesInsert } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import React from "react"
 import useUserStore from "@/store/user"
-import { closeProject, getApplicatinUser, setMember } from "../../api"
+import { closeProject, getApplicationUser, setMember } from "../../api"
 
 type Props = {
   project: Tables<"projects">
@@ -56,7 +56,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
    *@ query 해당 게시물 id를 구분해 댓글 목록 조회 */
   const { data: applyUser, isLoading: applyUserIsLoading } = useQuery({
     queryKey: ["applyUser", { projectId: project.id }],
-    queryFn: () => getApplicatinUser(project.id, userId),
+    queryFn: () => getApplicationUser(project.id, userId),
   })
 
   // 신청자가 맞는지 확인하는 변수
