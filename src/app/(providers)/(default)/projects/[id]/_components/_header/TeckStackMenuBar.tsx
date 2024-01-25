@@ -6,7 +6,7 @@ import { getProject } from "../../../api"
 type Props = {
   children: string
   project: Exclude<Awaited<ReturnType<typeof getProject>>, null>
-  job?: "프론트엔드" | "백엔드" | "디자이너" | undefined
+  job?: "프론트엔드" | "백엔드" | "디자인" | undefined
 }
 
 const TeckStackMenuBar = ({ children, project, job }: Props) => {
@@ -30,7 +30,7 @@ const TeckStackMenuBar = ({ children, project, job }: Props) => {
   const designTeck = data?.filter((data) => data.position_name === "디자인")
 
   const toggleMenuHandler = (
-    job: "프론트엔드" | "백엔드" | "디자이너" | undefined,
+    job: "프론트엔드" | "백엔드" | "디자인" | undefined,
   ) => {
     setIsShow((prevJob: typeof job | undefined) =>
       prevJob === job ? undefined : job,
@@ -59,17 +59,17 @@ const TeckStackMenuBar = ({ children, project, job }: Props) => {
 
   if (isLoading) return <div>isLoading...</div>
   return (
-    <>
+    <div className="flex relative">
       <button
         onClick={() => toggleMenuHandler(job)}
         ref={menuRef}
-        className={`border border-[#000000] rounded-lg px-4 py-1 ml-2 font-semibold min-w-[130px] min-h-[42px] disabled:bg-[#e6e6e6] disabled:border-none ${
-          isShow === job && "border-2"
+        className={`border-[#000000] rounded-lg px-4 py-1 ml-2 min-w-[130px] min-h-[45px] disabled:bg-[#e6e6e6] disabled:border-none ${
+          isShow === job ? "border-[2.5px] font-semibold" : "border"
         }`}
         disabled={
           (job === "프론트엔드" && !prontEndTeck?.length) ||
           (job === "백엔드" && !backEndTeck?.length) ||
-          (job === "디자이너" && !designTeck?.length)
+          (job === "디자인" && !designTeck?.length)
         }
       >
         {children}
@@ -77,10 +77,10 @@ const TeckStackMenuBar = ({ children, project, job }: Props) => {
       {isShow === job && (
         // TODO: css 간격 맞춰야함
         <div
-          className={`absolute bg-[#B8FF65] text-[#000000] font-bold rounded-xl min-w-36 p-2 z-10 bottom-[250px] ml-2 shadow-lg after:content-[''] after:absolute after:top-[-8px] after:right-[75px] after:border-l-transparent after:border-l-[10px] after:border-r-[10px] after:border-r-transparent after:border-b-[10px] after:border-b-[#B8FF65] text-center ${
-            isShow === "프론트엔드" && " left-[885px]"
-          } ${isShow === "백엔드" && " left-[1020px]"} ${
-            isShow === "디자이너" && " left-[1165px]"
+          className={`absolute bg-[#B8FF65] text-[#000000] font-bold rounded-xl min-w-36 p-2 z-10  ml-2 shadow-lg after:content-[''] after:absolute after:top-[-8px] after:right-[75px] after:border-l-transparent after:border-l-[10px] after:border-r-[10px] after:border-r-transparent after:border-b-[10px] after:border-b-[#B8FF65] text-center ${
+            isShow === "프론트엔드" && "left-[-15px] bottom-[-125px]"
+          } ${isShow === "백엔드" && "left-[-10px] bottom-[-65px]"} ${
+            isShow === "디자인" && "left-[-5px] bottom-[-65px]"
           }`}
         >
           {isShow === "프론트엔드" && (
@@ -97,7 +97,7 @@ const TeckStackMenuBar = ({ children, project, job }: Props) => {
               ))}
             </>
           )}
-          {isShow === "디자이너" && (
+          {isShow === "디자인" && (
             <>
               {designTeck?.map((data) => (
                 <div key={data.tech_id}>{data.tech_name}</div>
@@ -106,7 +106,7 @@ const TeckStackMenuBar = ({ children, project, job }: Props) => {
           )}
         </div>
       )}
-    </>
+    </div>
   )
 }
 

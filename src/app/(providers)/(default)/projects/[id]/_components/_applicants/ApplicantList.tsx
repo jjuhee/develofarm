@@ -11,7 +11,7 @@ const ApplicantList = ({ applicant }: Props) => {
   return (
     <section
       key={applicant.id}
-      className="border-2 border-slate-200 rounded-xl pl-5 pt-3 mt-5 mb-5 min-h-32"
+      className="border-2 border-slate-200 rounded-xl pl-5 pt-3 mt-5 mb-5 min-h-32 clear-left"
     >
       <div className="flex">
         <p>

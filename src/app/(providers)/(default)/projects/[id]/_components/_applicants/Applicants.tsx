@@ -8,9 +8,10 @@ type Props = {
   applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
   status: boolean
   project?: Tables<"projects">
+  isWriter: boolean
 }
 
-const Applicants = ({ applicants, status, project }: Props) => {
+const Applicants = ({ applicants, status, project, isWriter }: Props) => {
   /**
    *@ param 참여 중인 멤버 인원 수 */
   const applyApplications = applicants.filter(
@@ -34,10 +35,12 @@ const Applicants = ({ applicants, status, project }: Props) => {
           /{project?.number_of_people}
         </h2>
       ) : (
-        <h2 className="text-2xl font-bold">
-          신청자 현황
-          <span className="ml-3">{pendingApplications.length}</span>
-        </h2>
+        isWriter && (
+          <h2 className="text-2xl font-bold clear-left">
+            신청자 현황
+            <span className="ml-3">{pendingApplications.length}</span>
+          </h2>
+        )
       )}
       {applicants
         .filter((applicant) => applicant.application_status === status)
@@ -45,7 +48,7 @@ const Applicants = ({ applicants, status, project }: Props) => {
           return status ? (
             <MembersInProject applicant={applicant} />
           ) : (
-            <ApplicantList applicant={applicant} />
+            isWriter && <ApplicantList applicant={applicant} />
           )
         })}
     </>

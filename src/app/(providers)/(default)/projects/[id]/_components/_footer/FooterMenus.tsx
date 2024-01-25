@@ -6,12 +6,10 @@ import Spacer from "@/components/ui/Spacer"
 import FooterAuthButton from "./FooterAuthButton"
 import useUserStore from "@/store/user"
 import FooterPublicIcon from "./FooterPublicIcon"
-import { IoIosPeople } from "react-icons/io"
-import { FaRegMessage } from "react-icons/fa6"
 import { useQuery } from "@tanstack/react-query"
 import { getComments, getMembers } from "../../api"
-import MembersInProjectModal from "../_applicants/MembersInProjectModal"
 import { getBookmarks, getBookmarksByProjectId } from "../../../api"
+import Image from "next/image"
 
 type Props = {
   project: Tables<"projects">
@@ -75,37 +73,46 @@ const FooterMenus = ({ project }: Props) => {
   return (
     <>
       <section className="flex items-center">
-        {/* 글 작성자 여부에 따른 하단 메뉴 */}
-        {isWriter ? (
-          <>
-            <button
-              className={`pr-12 pb-2 border-b-2 ${
-                isSelected === "comments" && " border-slate-600"
+        <>
+          <button
+            className={`pr-12 pb-2 border-b-2 ${
+              isSelected === "comments" && " border-slate-600"
+            }`}
+            onClick={() => toggleTapHandler("comments")}
+          >
+            <Image
+              height={35}
+              width={35}
+              src={`${
+                isSelected === "comments"
+                  ? "/icons/activeCommentIcon.png"
+                  : "/icons/commentIcon.png"
               }`}
-              onClick={() => toggleTapHandler("comments")}
-            >
-              <FaRegMessage size={30} className="inline-block ml-10 mr-2" />
-              {comments?.length}
-            </button>
-            <button
-              className={`pr-8 border-b-2 ${
-                isSelected === "applicants" && " border-slate-600"
+              alt="댓글 아이콘"
+              className="inline-block ml-10 mr-3"
+            />
+            {comments?.length}
+          </button>
+          <button
+            className={`pr-8 border-b-2 ${
+              isSelected === "applicants" && " border-slate-600"
+            }`}
+            onClick={() => toggleTapHandler("applicants")}
+          >
+            <Image
+              height={40}
+              width={40}
+              src={`${
+                isSelected === "applicants"
+                  ? "/icons/activeApplicantsIcon.png"
+                  : "/icons/applicantsIcon.png"
               }`}
-              onClick={() => toggleTapHandler("applicants")}
-            >
-              <IoIosPeople size={40} className="inline-block ml-8 mr-1" />{" "}
-              {applicants?.length}
-            </button>
-          </>
-        ) : (
-          <>
-            <button disabled className="pr-10">
-              <FaRegMessage size={30} className="inline-block ml-2 mr-2" />{" "}
-              {comments?.length}
-            </button>
-            <MembersInProjectModal project={project} />
-          </>
-        )}
+              alt="신청자 아이콘"
+              className="inline-block ml-10 mr-3 pb-3"
+            />
+            {applicants?.length}
+          </button>
+        </>
         {/* 모두가 볼 수 있는 아이콘 */}
         <FooterPublicIcon
           bookmarks={bookmarks as Tables<"bookmarks">[]}
@@ -115,7 +122,7 @@ const FooterMenus = ({ project }: Props) => {
         {/* 사용자에 따라서 다른 버튼 */}
         <FooterAuthButton project={project} isWriter={isWriter} />
       </section>
-      <Spacer y={25} />
+      <Spacer y={30} />
       {/* 탭 메뉴에 따라 나오는 컴포넌트 */}
       <section>
         {isSelected === "comments" && <Comments project={project} />}
@@ -126,8 +133,13 @@ const FooterMenus = ({ project }: Props) => {
               applicants={applicants}
               status={true}
               project={project}
+              isWriter={isWriter}
             />
-            <Applicants applicants={applicants} status={false} />
+            <Applicants
+              applicants={applicants}
+              status={false}
+              isWriter={isWriter}
+            />
           </>
         )}
       </section>

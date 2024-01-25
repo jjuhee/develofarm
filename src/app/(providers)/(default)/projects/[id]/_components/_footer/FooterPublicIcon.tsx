@@ -15,8 +15,8 @@ const FooterPublicIcon = ({ bookmarks, projectId, bookmarksCount }: Props) => {
 
   return (
     <>
-      <span className="ml-auto pr-5">
-        <span>
+      <span className="flex ml-auto pr-5 items-center">
+        <span className="pr-1">
           <BookmarkButton
             currentUser={userId}
             bookmarks={bookmarks}
