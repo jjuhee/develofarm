@@ -25,6 +25,8 @@ const Header = () => {
     setViewMemberModal(false)
     setMemberPosition(null)
   }
+  const [email, setEmail] = useState<string>()
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>()
 
   const [showTooltip, setShowTooltip] = useState(false)
 
@@ -62,15 +64,20 @@ const Header = () => {
   //로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
   //TODO : 로그아웃시 바로 isLoggedOut이 true 값으로 변하지 않는것을 해결해야함
   const [isLoggedOut, setIsLoggedOut] = useState<boolean>(true)
-  const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
-  const getAuthToken = localStorage.getItem(AUTH_TOKEN)
+
   useEffect(() => {
+    const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
+    const getAuthToken: any = localStorage.getItem(AUTH_TOKEN)
+    const json1 = JSON.parse(getAuthToken)
+    setEmail(json1?.user.user_metadata.email)
+    setAvatarUrl(json1?.user.user_metadata.avatar_url)
+    console.log("헤더에서 로컬스토리지 받기", email, avatarUrl)
     if (getAuthToken) {
       setIsLoggedOut(false)
     }
   }, [isLoggedOut])
 
-  console.log("리렌더링 ?", isLoggedOut)
+  console.log("리렌더링 ?", email, avatarUrl)
 
   //로그아웃 함수
   const onLogoutHandler = () => {
@@ -123,7 +130,9 @@ const Header = () => {
                     <div className="flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-2 z-50 ">
                       {isAlarmData ? (
                         <>
-                          <div className=" ">"새로운 프로젝트가 생겼어요!"</div>
+                          <div className=" border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
+                            "새로운 프로젝트가 생겼어요!"
+                          </div>
                         </>
                       ) : (
                         <div className="border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
@@ -140,12 +149,19 @@ const Header = () => {
                 className="rounded-full shadow-lg hover hover:cursor-pointer"
                 onClick={onAvavatarHandlerClick}
               >
-                아바타
+                <Image
+                  className="rounded-xl"
+                  alt="이미지"
+                  src={avatarUrl ? avatarUrl : ""}
+                  width={20}
+                  height={20}
+                />
               </span>
               {isImageActive && (
                 <div className="relative flex">
                   <div className="right-2 flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-4 z-50 ">
-                    <div>유저 닉네임</div>
+                    <div>유저 이메일</div>
+                    <div className="text-xs text-gray-400">{email}</div>
                     <Link href={`/profile/${userId}`}>
                       <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
                         <GoPerson />
