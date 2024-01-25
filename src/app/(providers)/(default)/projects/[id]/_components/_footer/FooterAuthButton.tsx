@@ -29,7 +29,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   })
 
   /**
-   *@ mutation 댓글 등록 후 해당 게시물Id로 댓글 최신 목록 불러오기 */
+   *@ mutation 프로젝트 신청 후 해당 게시물Id로 최신 신청자 목록 불러오기 */
   const addMemberMutate = useMutation({
     mutationFn: setMember,
     onSuccess: async () => {

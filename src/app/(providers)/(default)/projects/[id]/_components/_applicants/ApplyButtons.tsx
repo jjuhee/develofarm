@@ -1,6 +1,10 @@
 import React from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { getMembers, setProjectInMember } from "../../api"
+import {
+  getMembers,
+  removeProjectInMember,
+  setProjectInMember,
+} from "../../api"
 import Image from "next/image"
 import { useCustomModal } from "@/hooks/useCustomModal"
 
@@ -19,8 +23,7 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
   )
 
   /**
-   *@ mutaion 참여중인 멤버에 신청자 등록 후 확인창 띄워주기
-   TODO: 업데이트 기능 수정 중 */
+   *@ mutaion 참여중인 멤버에 신청자 등록 후 확인창 띄워주기*/
   const updateMemberMutate = useMutation({
     mutationFn: async ({
       projectId,
@@ -35,6 +38,21 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
       await queryClient.invalidateQueries({
         queryKey: ["applicants", { projectId: applicant.project_id }],
       })
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  /**
+   *@ mutaion 신청자 목록에서 멤버 삭제하고 확인창 띄워주기*/
+  const removeMemberMutate = useMutation({
+    mutationFn: removeProjectInMember,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["applicants", { projectId: applicant.project_id }],
+      })
+      openCustomModalHandler("거절되었습니다", "alert")
     },
     onError: (error) => {
       console.log(error)
@@ -69,12 +87,14 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
   /**
    *@ function 신청자 목록에서 거절하기
    TODO: 신청자 삭제 기능 수정 중 */
-  const onRejectButtonHandler = () => {}
+  const onRejectButtonHandler = () => {
+    removeMemberMutate.mutate(applicant.id)
+  }
 
   return (
     <div className="flex flex-row-reverse w-36 ml-auto mt-[-80px]">
       <button
-        className="mr-5 hover:animate-[pulse_1s_ease-in-out_infinite]"
+        className="mr-5 hover:scale-110 transition-all duration-200"
         onClick={() => {
           onApplyButtonHandler()
         }}
@@ -88,7 +108,7 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
         />
       </button>
       <button
-        className="mr-3 hover:animate-[pulse_1s_ease-in-out_infinite]"
+        className="mr-3 hover:scale-110 transition-all duration-200"
         onClick={onRejectButtonHandler}
       >
         <Image
