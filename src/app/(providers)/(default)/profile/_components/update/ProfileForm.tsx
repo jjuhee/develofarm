@@ -122,7 +122,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
     await handleAddUserTech()
   }
 
-  // 직무 드롭다운 토글
+  // 직무 및 기술 드롭다운 토글
   const togglePositionDropdown = () => {
     setPositionDropdownOpen((prev) => !prev)
   }
@@ -237,7 +237,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                       key={position.id}
                       className={`border border-[#CCCCCC] rounded-full font-bold text-[16px] w-[135px] h-[48px] flex items-center justify-center cursor-pointer ${
                         selectedPositionId === position.id
-                          ? "bg-[#000000] text-[#B8FF65]"
+                          ? "bg-[#B8FF65] text-[#000000] hover:bg-[#666666] hover:text-[#B8FF65] transition-all duration-300"
                           : ""
                       }`}
                       onClick={() => {

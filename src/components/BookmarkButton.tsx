@@ -47,8 +47,8 @@ const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
     }
 
     /** 로그인 됐을 때 */
+    /** 이미 추가 됐을 경우 */
     if (isBookmarked) {
-      /** 이미 추가 됐을 경우 */
       await removeBookmarks({ projectId, currentUser })
       queryClient.invalidateQueries({ queryKey: ["bookmarks"] })
     } else {

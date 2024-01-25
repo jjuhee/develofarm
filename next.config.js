@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    domains: ["content.surfit.io", "api.surfit.io"],
     remotePatterns: [
       {
         protocol: "https",
@@ -14,6 +15,10 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "k.kakaocdn.net",
+      },
+      {
+        protocol: "https",
+        hostname: "aksbymviolrkiainilpq.supabase.co",
       },
     ],
   },

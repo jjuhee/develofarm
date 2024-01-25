@@ -136,7 +136,7 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
         <h2 className="text-[26px] font-bold">교육/활동</h2>
         <button
           onClick={handleAddAcademySet}
-          className="flex ml-auto border-2 border-[#000000] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#000000] hover:text-[#B8FF65] transition-all duration-300"
+          className="flex ml-auto border-2 bg-[#B8FF65] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#666666] hover:text-[#B8FF65] transition-all duration-300"
         >
           <GoPlus className="text-[25px] mx-[3px]" />
           추가하기
@@ -175,7 +175,7 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
                     onChange={(e) =>
                       handleInputChange(index, "academy_name", e.target.value)
                     }
-                    className="w-[250px] text-xl font-bold"
+                    className="w-[250px] text-xl font-bold p-1"
                     placeholder="활동명"
                   />
 
@@ -201,6 +201,7 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
                   onChange={(e) =>
                     handleInputChange(index, "academy_major", e.target.value)
                   }
+                  className="p-1"
                   placeholder="활동내용"
                 />
               </div>
@@ -254,7 +255,7 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
                     e.target.value,
                   )
                 }
-                className="w-[250px] text-xl font-bold"
+                className="w-[250px] text-xl font-bold p-1"
                 placeholder="활동명"
               />
               <button
@@ -282,6 +283,7 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
                       e.target.value,
                     )
                   }
+                  className="p-1"
                   placeholder="활동내용"
                 />
               </div>

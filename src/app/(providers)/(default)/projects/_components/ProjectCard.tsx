@@ -1,24 +1,20 @@
 import Image from "next/image"
 import formatDate from "@/utils/formatDate"
 import BookmarkButton from "@/components/BookmarkButton"
-import { useCustomModal } from "@/hooks/useCustomModal"
-import { useRouter } from "next/navigation"
-
-import type { Tables } from "@/types/supabase"
-import { ExtendedProjectsType } from "@/types/extendedType"
 import Button from "@/components/ui/Button"
 
+import type { Tables } from "@/types/supabase"
+import type { TProjectsType } from "@/types/extendedType"
+import Link from "next/link"
+
 interface Props {
-  project: ExtendedProjectsType
+  project: TProjectsType
   bookmarks: Tables<"bookmarks">[]
   currentUser: string
+  page: number
 }
 
-const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
-  const { openCustomModalHandler } = useCustomModal()
-
-  const router = useRouter()
-
+const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
   const {
     id,
     content,
@@ -32,29 +28,9 @@ const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
     project_tech,
   } = project
 
-  const cardContent =
-    content?.length > 100 ? content.slice(0, 100) + "..." : content
-
-  const onClickToDetailPage = () => {
-    const handler = () => {
-      router.push("/signin")
-    }
-
-    if (!currentUser) {
-      openCustomModalHandler(
-        `로그인이 필요합니다.
-        로그인 페이지로 이동하시겠습니까?`,
-        "confirm",
-        handler,
-      )
-    } else {
-      router.push(`projects/${id}`)
-    }
-  }
-
   return (
     <div className="flex">
-      <section className="relative overflow-hidden rounded-xl w-full md:max-w-[498px] md:h-[270px] max-w-[300px] h-[230px] transition-all bg-slate-200 mr-20">
+      <section className="relative overflow-hidden rounded-xl w-full h-[270px] transition-all bg-slate-200 mr-10 hidden lg:block">
         <Image
           src={picture_url || "/images/project_default.png"}
           alt="project"
@@ -63,7 +39,7 @@ const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
           className="object-cover w-full h-full transition group-hover:scale-110 "
         />
       </section>
-      <section className="relative flex flex-col pt-5  w-full justify-between">
+      <section className="relative flex flex-col w-full py-2 justify-between">
         <div className="flex flex-col gap-4">
           <div className="flex gap-3 items-center">
             <span
@@ -71,16 +47,21 @@ const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
                 recruit_status
                   ? "bg-[#666666] border-[#666666] text-white"
                   : "bg-white  border-black text-black"
-              } px-3 py-1 border-2 text-center rounded-2xl text-[16px] font-[700] `}
+              } min-w-[90px] px-3 py-1 border-2 text-center rounded-2xl text-[16px] font-[700] `}
             >
               {recruit_status ? "모집 완료" : "모집 중"}{" "}
             </span>
-            <h3 className="text-[26px] font-[700]">{title}</h3>
+            <h3 className="text-[26px] font-[700] mr-10 w-full lg:w-[600px] truncate">
+              {title}
+            </h3>
           </div>
           <span className="hidden md:block">
             {formatDate(project_start_date)} - {formatDate(project_end_date)}
           </span>
-          <p dangerouslySetInnerHTML={{ __html: cardContent }}></p>
+          <p
+            className="line-clamp-3"
+            dangerouslySetInnerHTML={{ __html: content }}
+          ></p>
         </div>
         <div className="flex justify-between items-center">
           <ul className="flex gap-3 ">
@@ -93,16 +74,15 @@ const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
               </li>
             ))}
           </ul>
-          <div className="absolute bottom-0 right-2">
-            <Button
-              color={"main-lime"}
-              handler={onClickToDetailPage}
-              text="상세보기"
-            />
-          </div>
+          <Link
+            href={`/projects/${project.id}`}
+            className="absolute bottom-0 right-2"
+          >
+            <Button color={"main-lime"} text="상세보기" />
+          </Link>
         </div>
 
-        <div className="absolute top-4 right-2">
+        <div className="absolute top-[12px] right-2">
           <BookmarkButton
             projectId={id}
             currentUser={currentUser}

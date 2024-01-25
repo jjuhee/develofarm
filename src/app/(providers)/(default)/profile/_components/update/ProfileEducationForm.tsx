@@ -152,7 +152,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
                 name="school_name"
                 value={formData.school_name}
                 onChange={handleInputChange}
-                className="w-[250px] text-xl font-bold"
+                className="w-[250px] text-xl font-bold p-1"
                 placeholder="학교명"
               />
               <button
@@ -169,6 +169,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
                 name="school_major"
                 value={formData.school_major}
                 onChange={handleInputChange}
+                className="p-1"
                 placeholder="전공 및 학위"
               />
             </div>
