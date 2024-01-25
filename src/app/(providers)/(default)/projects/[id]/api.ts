@@ -127,3 +127,19 @@ export async function getProjectTechWithPosition(projectId: string) {
 
   return techPosition
 }
+
+export async function updateProjectViews({
+  projectId,
+  countViews,
+}: {
+  projectId: string
+  countViews: number
+}) {
+  const { data, error } = await supabaseForClient
+    .from("projects")
+    .update({ views: countViews })
+    .eq("id", projectId)
+    .select("*")
+
+  return data
+}

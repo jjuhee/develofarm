@@ -124,7 +124,7 @@ const MembersPage = () => {
       {viewMemberModal && (
         <div className="flex justify-center items-center fixed w-full top-0 left-0 h-full backdrop-blur-sm bg-black bg-opacity-50 z-20">
           <div
-            className="flex flex-col bg-white w-[732px] h-auto py-10 px-[50px] gap-8 rounded-3xl"
+            className="flex flex-col bg-white w-[732px] h-auto py-10 px-[50px] gap-[30px] rounded-3xl"
             ref={modalRef}
           >
             <MemberProfile currentUserId={userId} />

@@ -1335,6 +1335,11 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-text/-/extension-text-2.1.15.tgz#54d03bb66aed113f170987abd35d861b547c818d"
   integrity sha512-TpYbSmJOItU0OkydnRgKFT0BpZpS4E1GC/rlpc7R3f+lL8VMuS7AnZKFQj8A7F8mEEWAWZtDIjLPvY3SztVtVg==
 
+"@tiptap/extension-underline@^2.1.16":
+  version "2.1.16"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-underline/-/extension-underline-2.1.16.tgz#66de31597c4db5085f493568934357a8a40e1fc7"
+  integrity sha512-OXGzIlKz5fA9BRdqC+HOkLFfJULfq2kOXc0ipKLoUq5sNoMGvmxnJbgv+mczKCDoJR/F3NsDCHQXLmaW7AYvcw==
+
 "@tiptap/pm@^2.1.15":
   version "2.1.15"
   resolved "https://registry.yarnpkg.com/@tiptap/pm/-/pm-2.1.15.tgz#704a53dccdcc8b298397e5482975a7323711772b"

@@ -9,6 +9,7 @@ import {
   deleteEducation,
 } from "../../api"
 import { HiOutlineXMark } from "react-icons/hi2"
+import useCustomModalStore from "@/store/customModal"
 
 const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
   const {
@@ -66,25 +67,33 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
     refetch()
   }
 
+  const customModalStore = useCustomModalStore()
+
   // 최종학력 데이터 삭제 후 폼 데이터 초기화
   const handleDeleteAndClear = async () => {
-    const isConfirmed = window.confirm(
-      "정말 최종학력 데이터를 삭제하시겠습니까?",
-    )
+    customModalStore.setModalMessage("최종학력 내용을 삭제하시겠습니까?")
+    customModalStore.setModalType("confirm")
+    customModalStore.setViewCustomModal(true)
 
-    if (isConfirmed && education && education.length > 0) {
-      const educationIdToDelete = education[0].id
-      const result = await deleteEducation(profileId, [educationIdToDelete])
+    customModalStore.setHandler(async () => {
+      // 사용자가 확인하면 삭제 작업 진행
+      if (education && education.length > 0) {
+        const educationIdToDelete = education[0].id
+        const result = await deleteEducation(profileId, [educationIdToDelete])
 
-      if (result) {
-        console.log("Education data deleted successfully.")
-        refetch()
-      } else {
-        console.error("Error deleting education data.")
+        if (result) {
+          console.log("최종학력 데이터가 성공적으로 삭제되었습니다.")
+          refetch()
+        } else {
+          console.error("최종학력 데이터를 삭제하는 중 오류가 발생했습니다.")
+        }
       }
-    }
 
-    setFormData(defaultFormData)
+      setFormData(defaultFormData)
+
+      // 사용자 정의 모달 닫기
+      customModalStore.setViewCustomModal(false)
+    })
   }
 
   // 로딩 중인 경우 로딩 메시지 표시
@@ -104,7 +113,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
           <h2 className="text-[26px] font-bold">최종학력</h2>
         </div>
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-start pt-[36px]">
           <div>
             <div className="flex">
               <input
@@ -137,7 +146,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
                     value={value}
                     checked={formData.graduated === value}
                     onChange={handleInputChange}
-                    className="mr-[5px]"
+                    className="mr-[5px] accent-[#AAAAAA]"
                   />
                   <label htmlFor={id}>{label}</label>
                 </div>
@@ -152,7 +161,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
                 name="school_name"
                 value={formData.school_name}
                 onChange={handleInputChange}
-                className="w-[250px] text-xl font-bold"
+                className="w-[250px] text-xl font-bold p-1"
                 placeholder="학교명"
               />
               <button
@@ -169,6 +178,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
                 name="school_major"
                 value={formData.school_major}
                 onChange={handleInputChange}
+                className="p-1"
                 placeholder="전공 및 학위"
               />
             </div>

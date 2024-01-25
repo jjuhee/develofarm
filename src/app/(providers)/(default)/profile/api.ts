@@ -374,3 +374,40 @@ export async function getPositions() {
 
   return data
 }
+
+export async function getPositionTechs() {
+  const { data, error } = await supabaseForClient
+    .from("position_tech")
+    .select("*,techs(*)")
+
+  if (error) console.log("error", error)
+
+  return data
+}
+
+/* User Tech */
+export async function addUserTech(
+  newUserTechData: any,
+  userId: string,
+): Promise<any | null> {
+  const deleteResult = await supabaseForClient
+    .from("user_tech")
+    .delete()
+    .eq("user_id", userId)
+
+  if (deleteResult.error) {
+    console.error("Error deleting existing user tech data:", deleteResult.error)
+    return null
+  }
+
+  const { data, error } = await supabaseForClient
+    .from("user_tech")
+    .upsert(newUserTechData)
+
+  if (error) {
+    console.error("Error adding user tech data:", error)
+    return null
+  }
+
+  return data
+}
