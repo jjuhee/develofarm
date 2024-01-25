@@ -6,6 +6,7 @@ import { getCareers, updateCareers, addCareer, deleteCareers } from "../../api"
 import { Tables } from "@/types/supabase"
 import { HiOutlineXMark } from "react-icons/hi2"
 import { GoPlus } from "react-icons/go"
+import useCustomModalStore from "@/store/customModal"
 
 const ProfileCareerForm = ({ profileId }: { profileId: string }) => {
   const {
@@ -100,6 +101,15 @@ const ProfileCareerForm = ({ profileId }: { profileId: string }) => {
     }
   }
 
+  const modalStore = useCustomModalStore()
+  // 삭제 확인용 모달을 보여주는 함수
+  const showDeleteConfirmationModal = (handler: () => void) => {
+    modalStore.setViewCustomModal(true)
+    modalStore.setModalType("confirm")
+    modalStore.setModalMessage("이 내용을 삭제하시겠습니까?")
+    modalStore.setHandler(handler)
+  }
+
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -184,13 +194,11 @@ const ProfileCareerForm = ({ profileId }: { profileId: string }) => {
 
                   <button
                     type="button"
-                    onClick={() => {
-                      const confirmDelete =
-                        window.confirm("이 내용을 삭제하시겠습니까?")
-                      if (confirmDelete) {
-                        handleDeleteCareer(job.id)
-                      }
-                    }}
+                    onClick={() =>
+                      showDeleteConfirmationModal(() =>
+                        handleDeleteCareer(job.id),
+                      )
+                    }
                     className="text-[#AAAAAA] text-[30px] hover:text-red-500"
                   >
                     <HiOutlineXMark />
@@ -281,14 +289,12 @@ const ProfileCareerForm = ({ profileId }: { profileId: string }) => {
 
                 <button
                   type="button"
-                  onClick={() => {
-                    const confirmDelete =
-                      window.confirm("이 내용을 삭제하시겠습니까?")
-                    if (confirmDelete) {
-                      handleRemoveCareerSet(setIndex)
-                    }
-                  }}
-                  className=" text-[#AAAAAA] text-[30px] hover:text-red-500"
+                  onClick={() =>
+                    showDeleteConfirmationModal(() =>
+                      handleRemoveCareerSet(setIndex),
+                    )
+                  }
+                  className="text-[#AAAAAA] text-[30px] hover:text-red-500"
                 >
                   <HiOutlineXMark />
                 </button>
