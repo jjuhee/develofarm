@@ -5,9 +5,16 @@ import ApplyButtons from "./ApplyButtons"
 
 type Props = {
   applicant: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
+  applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
 }
 
-const ApplicantList = ({ applicant }: Props) => {
+const ApplicantList = ({ applicant, applicants }: Props) => {
+  /**
+   *@ param 참여 중인 멤버 인원 수 */
+  const applyApplications = applicants?.filter(
+    (applicant) => applicant.application_status === true,
+  )
+
   return (
     <section
       key={applicant.id}
@@ -31,7 +38,7 @@ const ApplicantList = ({ applicant }: Props) => {
         </span>
       </div>
       <p className="my-1 mx-16">한줄 소개가 업데이트 될 예정입니다</p>
-      <ApplyButtons applicant={applicant} />
+      <ApplyButtons applicant={applicant} applicants={applicants} />
     </section>
   )
 }

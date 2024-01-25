@@ -25,7 +25,7 @@ const Applicants = ({ applicants, status, project, isWriter }: Props) => {
   )
 
   return (
-    <>
+    <div className="overflow-x-auto scrollbar-track-black scrollbar-thin">
       {status ? (
         <h2 className="text-2xl font-bold mb-5">
           참여 중인 멤버
@@ -49,11 +49,15 @@ const Applicants = ({ applicants, status, project, isWriter }: Props) => {
             <MembersInProject applicant={applicant} key={applicant.id} />
           ) : (
             isWriter && (
-              <ApplicantList applicant={applicant} key={applicant.id} />
+              <ApplicantList
+                applicants={applicants}
+                applicant={applicant}
+                key={applicant.id}
+              />
             )
           )
         })}
-    </>
+    </div>
   )
 }
 

@@ -6,15 +6,17 @@ import { useCustomModal } from "@/hooks/useCustomModal"
 
 type Props = {
   applicant: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
+  applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
 }
 
-const ApplyButtons = ({ applicant }: Props) => {
+const ApplyButtons = ({ applicant, applicants }: Props) => {
   const queryClient = useQueryClient()
   const { openCustomModalHandler } = useCustomModal()
-
-  const handler = () => {
-    openCustomModalHandler("수락되었습니다!", "alert")
-  }
+  /**
+   *@ param 참여 중인 멤버 인원 수 */
+  const applyApplications = applicants?.filter(
+    (applicant) => applicant.application_status === true,
+  )
 
   /**
    *@ mutaion 참여중인 멤버에 신청자 등록 후 확인창 띄워주기
@@ -31,13 +33,8 @@ const ApplyButtons = ({ applicant }: Props) => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["applyUser", { projectId: applicant.project_id }],
+        queryKey: ["applicants", { projectId: applicant.project_id }],
       })
-      openCustomModalHandler(
-        "프로젝트 멤버를 수락하시겠습니까?",
-        "confirm",
-        handler,
-      )
     },
     onError: (error) => {
       console.log(error)
@@ -48,10 +45,25 @@ const ApplyButtons = ({ applicant }: Props) => {
    *@ function 참여중인 멤버 등록
    TODO: 참여 멤버 등록 버튼 구현중 */
   const onApplyButtonHandler = () => {
-    updateMemberMutate.mutate({
-      projectId: applicant.project_id,
-      userId: applicant.user_id,
-    })
+    const handler = () => {
+      if (
+        applicant.projects?.number_of_people &&
+        applyApplications.length >= applicant.projects.number_of_people
+      ) {
+        return openCustomModalHandler("모집인원이 가득찼습니다!", "alert")
+      } else {
+        updateMemberMutate.mutate({
+          projectId: applicant.project_id,
+          userId: applicant.user_id,
+        })
+      }
+    }
+
+    openCustomModalHandler(
+      "프로젝트 멤버로 등록하시겠습니까?",
+      "confirm",
+      handler,
+    )
   }
 
   /**
@@ -64,12 +76,7 @@ const ApplyButtons = ({ applicant }: Props) => {
       <button
         className="mr-5 hover:animate-[pulse_1s_ease-in-out_infinite]"
         onClick={() => {
-          if (
-            applicant.projects?.number_of_people &&
-            Object.keys(applicant).length < applicant.projects.number_of_people
-          ) {
-            onApplyButtonHandler()
-          }
+          onApplyButtonHandler()
         }}
       >
         <Image
