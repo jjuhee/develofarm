@@ -292,7 +292,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
         {" "}
         <div className="w-full h-full relative">
           <div
-            className="w-full h-[600px] bg-cover bg-center relative"
+            className="w-full h-[450px] bg-cover bg-center relative"
             style={{ backgroundImage: `url('/images/banner_wrap2.png')` }}
           ></div>
         </div>
