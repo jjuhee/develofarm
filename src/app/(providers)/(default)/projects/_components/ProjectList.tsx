@@ -120,7 +120,7 @@ const ProjectList = ({ option }: Props) => {
             <input type="checkbox" onChange={onChangeRecruitHandler} />
             <p>모집 중인 공고만 보기</p>
           </div>
-          <div className="relative z-10 w-[100px] text-[14px] font-[400]">
+          <div className="relative w-[100px] text-[14px] font-[400]">
             <button
               onClick={() => setIsOpenOrder(true)}
               className="flex justify-between items-center pl-5 pr-2 h-[30px] rounded-2xl bg-[#D2D2D2] w-full"
@@ -129,7 +129,7 @@ const ProjectList = ({ option }: Props) => {
               {isOpenOrder ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </button>
             {isOpenOrder && (
-              <ul className="absolute bg-white shadow-md w-full cursor-pointer rounded-lg">
+              <ul className="absolute z-10 bg-white shadow-md w-full cursor-pointer rounded-lg">
                 <li
                   className="pl-5 py-1 hover:bg-[#D2D2D2]"
                   onClick={() => onChageOrder(1)}

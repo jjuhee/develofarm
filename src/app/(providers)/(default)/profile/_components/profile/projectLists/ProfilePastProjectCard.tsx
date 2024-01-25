@@ -81,12 +81,21 @@ const ProfilePastProjectCard = ({ profileId }: { profileId: string }) => {
                     </p>
                   </div>
                   <div>
-                    <h2 className="text-[20px]">{project.projects?.title}</h2>
+                    <h2 className="text-[20px]">
+                      {project.projects?.title &&
+                      project.projects?.title.length > 15
+                        ? project.projects?.title.slice(0, 15) + "..."
+                        : project.projects?.title}
+                    </h2>
                   </div>
                 </div>
               </Link>
-              <div className="pt-[20px] text-[14px]">
-                <p>{project.projects?.content}</p>
+              <div className="pt-[20px] text-[14px] line-clamp-2">
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: project.projects?.content as string,
+                  }}
+                />
                 {/* 북마크 버튼 */}
               </div>
             </div>

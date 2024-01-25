@@ -54,12 +54,21 @@ const ProfileSharedProjectCard = ({ profileId }: { profileId: string }) => {
                     </p>
                   </div>
                   <div>
-                    <h2 className="text-[20px]">{project.title}</h2>
+                    <h2 className="text-[20px]">
+                      {project.title && project.title.length > 15
+                        ? project.title.slice(0, 15) + "..."
+                        : project.title}
+                    </h2>
                   </div>
                 </div>
               </Link>
-              <div className="pt-[20px] text-[14px]">
-                <p>{project.content}</p>
+
+              <div className="pt-[20px] text-[14px] line-clamp-2">
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: project.content as string,
+                  }}
+                />
                 {/* 북마크 버튼 */}
               </div>
             </div>
