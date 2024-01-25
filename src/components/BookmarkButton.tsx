@@ -61,7 +61,7 @@ const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
     bookmarks && bookmarks.some((bookmark) => bookmark.project_id === projectId)
 
   return (
-    <div className="cursor-pointer z-10 text-gray-400" onClick={onClickHandler}>
+    <div className="cursor-pointer text-gray-400" onClick={onClickHandler}>
       {isBookmarked ? (
         <MdOutlineBookmark size={35} />
       ) : (
