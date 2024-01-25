@@ -1,25 +1,14 @@
 "use client"
-import BookmarkButton from "@/components/BookmarkButton"
-import Image from "next/image"
-import Link from "next/link"
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { FaSearch } from "react-icons/fa"
 import { MdOutlineCancel } from "react-icons/md"
 import { getSearchedProject } from "../../(default)/projects/api"
 import { useQuery } from "@tanstack/react-query"
 import ProjectCard from "../../(default)/projects/_components/ProjectCard"
-import EmptyState from "@/components/EmptyState"
-import Spacer from "@/components/ui/Spacer"
-import {
-  getBookmarks,
-  getBookmarksByUserId,
-  getProjectTech,
-  getProjects,
-} from "../../(default)/projects/api"
-import Pagination from "@mui/material/Pagination"
-import { Database, Tables } from "@/types/supabase"
-import Category from "../../(default)/projects/_components/Category"
+import { getBookmarksByUserId } from "../../(default)/projects/api"
+import { Tables } from "@/types/supabase"
 import { supabaseForClient } from "@/supabase/supabase.client"
+import { TProjectsType } from "@/types/extendedType"
 
 //해당 이용자의 localstorage 가져오기
 interface keywordsInterface {
@@ -274,7 +263,7 @@ const SearchPage = () => {
             return (
               <ProjectCard
                 key={item?.id}
-                project={item}
+                project={item as TProjectsType}
                 bookmarks={bookmarks as Tables<"bookmarks">[]}
                 currentUser={currentUser}
               />

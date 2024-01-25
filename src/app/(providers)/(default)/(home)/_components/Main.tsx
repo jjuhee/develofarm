@@ -1,7 +1,5 @@
 "use client"
-import cheerio, { Cheerio } from "cheerio"
-import axios from "axios"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay, Pagination, Navigation } from "swiper/modules"
 import "swiper/css"
@@ -11,7 +9,6 @@ import "swiper/css/effect-coverflow"
 import "swiper/css/effect-fade"
 import Image from "next/image"
 import Spacer from "@/components/ui/Spacer"
-import Column from "./GetSurfitArticles"
 
 export default function Main({ children }: { children: React.ReactNode }) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
