@@ -197,7 +197,7 @@ export async function removeBookmarks({
   if (error) console.log("error", error)
 }
 
-/** 프로젝트 북마크 수  가져오기 */
+/** 프로젝트 북마크 수 가져오기 */
 export async function getBookmarksCountByProject() {
   const { data: bookmarks, error } = await supabaseForClient
     .from("bookmarks")
@@ -345,4 +345,17 @@ export async function getProjectsWithServer() {
   if (error) console.log("error", error)
 
   return data
+}
+
+export async function getBookmarksCountEachProject() {
+  //   const sqlQuery = `
+  //   SELECT project_id, COUNT(*) as bookmarks_count
+  //   FROM bookmarks
+  //   GROUP BY project_id;
+  // `
+  //rpc 인자로 부르기
+  // const { data, error } = await supabaseForClient.rpc("hello_world")g
+  // if (error) console.log("error", error)
+  // console.log("북마크 갯수  프로젝트별로 새기!!!", data)
+  // return data
 }

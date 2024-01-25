@@ -1,17 +1,10 @@
 "use client"
-import { Color } from "@tiptap/extension-color"
-import ListItem from "@tiptap/extension-list-item"
-import TextStyle from "@tiptap/extension-text-style"
-import {
-  BubbleMenu,
-  EditorContentProps,
-  EditorContentState,
-} from "@tiptap/react"
+import Underline from "@tiptap/extension-underline"
+import { BubbleMenu } from "@tiptap/react"
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import React, { RefObject, useEffect, useState } from "react"
+import React from "react"
 import EditorMenu from "./EditorMenu"
-import Spacer from "@/components/ui/Spacer"
 import BubbleMenuButtons from "./BubbleMenuButtons"
 
 interface Props {
@@ -21,7 +14,7 @@ interface Props {
 
 const TipTap = ({ content, setContent }: Props) => {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, Underline],
     content: content,
     editorProps: {
       attributes: {
@@ -37,12 +30,16 @@ const TipTap = ({ content, setContent }: Props) => {
     return null
   }
 
+  const onClickFocusHandler = () => {
+    editor.commands.focus()
+  }
+
   return (
     <>
-      <div className="relative border-b border-black z-10">
+      <div className="flex items-center relative border-b border-black h-[60px]">
         <EditorMenu editor={editor} />
       </div>
-      <div className="py-10 px-5 min-h-[50vh]">
+      <div className="py-10 px-5 min-h-[50vh]" onClick={onClickFocusHandler}>
         <EditorContent editor={editor} />
       </div>
       <BubbleMenu editor={editor}>

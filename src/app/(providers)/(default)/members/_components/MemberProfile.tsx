@@ -74,7 +74,7 @@ const MemberProfile = ({ currentUserId }: Props) => {
             </p>
 
             <ul
-              className={`flex flex-col gap-2 absolute bg-black text-white py-[15px] px-[20px] border-2 w-full mt-2 rounded-2xl transition-all ${
+              className={`flex flex-col gap-3 absolute h-[200px] overflow-scroll scroll-smooth bg-white text-black py-[15px] px-[20px] border-[1px] w-full mt-2 rounded-lg border-black transition-all ${
                 isActive ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -85,8 +85,12 @@ const MemberProfile = ({ currentUserId }: Props) => {
                       className="flex items-center justify-between "
                       key={project.id}
                     >
-                      <p className="text-[15px] font-[500]">{project.title}</p>
-                      <span className="text-[10px] font-[700] px-3 py-1 rounded-md text-center text-white bg-black border-[1.5px] border-white cursor-pointer hover:bg-[#CCCCCC] hover:text-black hover:border-black transition-all duration-300">
+                      <p className="text-[15px] font-[500] w-full">
+                        {project.title.length > 11
+                          ? project.title.slice(0, 11) + "..."
+                          : project.title}
+                      </p>
+                      <span className="flex items-center justify-center text-[10px] font-[700] w-[50px] h-[23px] rounded-md text-center text-black bg-white border-[1px] border-black cursor-pointer hover:bg-[#CCCCCC] hover:text-black hover:border-black transition-all duration-300">
                         초대
                       </span>
                     </li>
@@ -109,14 +113,14 @@ const MemberProfile = ({ currentUserId }: Props) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex flex-col w-full gap-3">
         <h3 className="text-[18px] font-[700]">보유 기술</h3>
-        <ul className="flex gap-5 items-center">
+        <ul className="flex gap-5 items-center border-b-[0.7px] border-black pb-[30px]">
           {(selectedMember?.user_tech?.length as number) > 0 ? (
             <>
-              {selectedMember?.user_tech?.map((tech) => (
+              {selectedMember?.user_tech?.slice(0, 6).map((tech) => (
                 <li
-                  key={tech.techs.id}
+                  key={tech.techs?.id}
                   className="text-[14px] text-[#636366] font-[500] bg-[#E6E6E6] py-1 px-3 border-gray-70 border-2 rounded-3xl"
                 >
                   {tech?.techs?.tech_name}
@@ -130,35 +134,36 @@ const MemberProfile = ({ currentUserId }: Props) => {
           )}
         </ul>
       </div>
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex flex-col w-full gap-3">
         <h3 className="text-[18px] font-[700]">소개글</h3>
-        <p className="text-[14px] font-[300] ">
+        <p className="text-[14px] font-[300] border-b-[0.7px] border-black pb-[30px]">
           {selectedMember.user_comment
             ? selectedMember.user_comment
             : "현재 소개글이 없습니다."}
         </p>
       </div>
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex flex-col w-full gap-3">
         <h3 className="text-[18px] font-[700]">포트폴리오</h3>
         <p className="text-[14px] font-[300]">업데이트 예정입니다.</p>
       </div>
       <div className="flex w-full">
-        <div className="flex flex-col w-full gap-2">
+        <div className="flex flex-col w-full gap-3">
           <h3 className="text-[18px] font-[700]">Blog</h3>
           <a
-            href={selectedMember.social_link?.blog_url as string}
-            className="text-[14px] font-[600]"
+            href={selectedMember?.social_links?.[0]?.blog_url as string}
+            className="text-[14px] font-[400]"
           >
-            {selectedMember.social_link?.blog_url || "Blog link가 없습니다."}
+            {selectedMember.social_links?.[0]?.blog_url ||
+              "Blog link가 없습니다."}
           </a>
         </div>
-        <div className="flex flex-col w-full gap-2">
+        <div className="flex flex-col w-full gap-3">
           <h3 className="text-[18px] font-[700]">GitHub</h3>
           <a
-            href={selectedMember.social_link?.github_url as string}
-            className="text-[14px] font-[600]"
+            href={selectedMember.social_links?.[0]?.github_url as string}
+            className="text-[14px] font-[400]"
           >
-            {selectedMember.social_link?.github_url ||
+            {selectedMember.social_links?.[0]?.github_url ||
               "GitHub link가 없습니다."}
           </a>
         </div>
@@ -166,7 +171,7 @@ const MemberProfile = ({ currentUserId }: Props) => {
       <div className="flex w-full justify-center">
         <Link
           href={`/profile/${selectedMember?.id}`}
-          className="border-2 border-[#A6A6A6] text-[15px] py-2 px-4 mt-2 rounded-lg cursor-pointer hover:bg-black hover:text-white transition-all duration-300"
+          className="border-2 border-[#A6A6A6] text-[15px] font-[500] py-2 px-4 mt-4 rounded-lg cursor-pointer hover:bg-[#EEEEEE] hover:text-[#2D2D2D] hover:border-[#2D2D2D] transition-all duration-300 active:bg-[#D2D2D2] active:border-[#D2D2D2]"
           onClick={onClickToProfilePageHandler}
         >
           자세히 보기
