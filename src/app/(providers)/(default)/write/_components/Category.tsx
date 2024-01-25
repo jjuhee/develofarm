@@ -7,6 +7,7 @@ import SelectStackButton from "./SelectStackButton"
 import { Tables } from "@/types/supabase"
 import Button from "@/components/ui/Button"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 
 interface Props {
   categoryData: TCategoryData
@@ -32,6 +33,8 @@ const Category = ({
     techs,
     positions,
   } = categoryData
+
+  const [isRegionActive, setIsRegionActive] = useState(false)
 
   /** 모든 position에 연결된 tech를 position_tech table에서 불러온다 */
   const { data: allTechs } = useQuery({
@@ -116,27 +119,41 @@ const Category = ({
           {isOffline && (
             <div className="flex flex-col gap-[16px] py-[15px]">
               <h5 className="text-[20px] font-[600]">활동 지역</h5>
-              <select
-                className={` category ${
-                  region === "1" || region === null
-                    ? "border-[#A6A6A6] text-[#2D2D2D] font-medium"
-                    : "bg-[#D2D2D2] border-[#D2D2D2] text-black font-semibold"
-                }  px-[20px] py-[5px] rounded-[8px] h-[40px]`}
-                onChange={(e) =>
-                  setCategoryData({ ...categoryData, region: e.target.value })
-                }
-              >
-                <option value="0">지역을 선택하세요</option>
-                {regions?.map((region) => (
-                  <option
-                    key={region.id}
-                    value={region.id}
-                    selected={region.id === categoryData.region}
-                  >
-                    {region.region}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <div
+                  className={`category flex items-center justify-between px-[20px] py-[5px] rounded-lg w-[180px] h-[40px] ${
+                    isRegionActive
+                      ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold"
+                      : "bg-[#D2D2D2] border-[#D2D2D2] text-black font-semibold"
+                  }`}
+                  onClick={() => setIsRegionActive(!isRegionActive)}
+                >
+                  {regions?.find((region) => region.id == categoryData.region)
+                    ?.region || "지역을 입력하세요"}
+                  {isRegionActive ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                </div>
+                <ul
+                  className={`absolute flex flex-col mt-[3px] rounded-lg border-[1px] border-black  ${
+                    isRegionActive ? "visible" : "invisible"
+                  }`}
+                >
+                  {regions?.map((region) => (
+                    <li
+                      key={region.id}
+                      className="cursor-pointer px-[18px] bg-white text-[14px] leading-[38px] w-[180px] h-[38px] first:rounded-t-lg last:rounded-b-lg z-10 hover:bg-[#DBFFB2]"
+                      onClick={(e) => {
+                        setCategoryData({
+                          ...categoryData,
+                          region: region.id,
+                        })
+                        setIsRegionActive(false)
+                      }}
+                    >
+                      {region.region}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           )}
         </div>

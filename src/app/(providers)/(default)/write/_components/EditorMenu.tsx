@@ -18,11 +18,6 @@ const EditorMenu = ({ editor }: Props) => {
   const [isActive, setIsActive] = useState(false)
   const [selectedValue, setSelectedValue] = useState<string | null>("제목 1")
 
-  const onClickFontSizeHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.currentTarget.textContent) {
-      setIsActive(!isActive)
-    }
-  }
   const setH1FontHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     setSelectedValue(e.currentTarget.textContent)
     editor.chain().focus().toggleHeading({ level: 1 }).run()
@@ -50,7 +45,7 @@ const EditorMenu = ({ editor }: Props) => {
         <div
           className={`flex items-center justify-between my-auto border-[1px] border-white hover:border-[1px] hover:border-[#E6E6E6] rounded-[3px] w-[81px] h-[33px] leading-[33px] px-[7px] py-[8px] text-[14px] cursor-pointer transition-all
           ${isActive ? "bg-[#E6E6E6]" : "bg-white"}`}
-          onClick={(e) => onClickFontSizeHandler(e)}
+          onClick={() => setIsActive(!isActive)}
         >
           {
             <div className="h-[33px]">
