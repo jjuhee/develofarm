@@ -6,6 +6,8 @@ import Button from "@/components/ui/Button"
 import type { Tables } from "@/types/supabase"
 import type { TProjectsType } from "@/types/extendedType"
 import Link from "next/link"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { updateProjectViews } from "../[id]/api"
 
 interface Props {
   project: TProjectsType
@@ -15,6 +17,8 @@ interface Props {
 }
 
 const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
+  const queryClient = useQueryClient()
+
   const {
     id,
     content,
@@ -26,7 +30,21 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
     user_id,
     recruit_status,
     project_tech,
+    views,
   } = project
+
+  const { mutate: viewsMutate } = useMutation({
+    mutationFn: updateProjectViews,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["views"] })
+    },
+  })
+
+  /** 조회수 업데이트 */
+  const onClickToDetailPage = () => {
+    const countViews = views + 1
+    viewsMutate({ projectId: project.id, countViews })
+  }
 
   return (
     <div className="flex">
@@ -78,7 +96,11 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
             href={`/projects/${project.id}`}
             className="absolute bottom-0 right-2"
           >
-            <Button color={"main-lime"} text="상세보기" />
+            <Button
+              color={"main-lime"}
+              text="상세보기"
+              handler={onClickToDetailPage}
+            />
           </Link>
         </div>
 

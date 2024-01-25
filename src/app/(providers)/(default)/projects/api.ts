@@ -197,7 +197,7 @@ export async function removeBookmarks({
   if (error) console.log("error", error)
 }
 
-/** 프로젝트 북마크 수  가져오기 */
+/** 프로젝트 북마크 수 가져오기 */
 export async function getBookmarksCountByProject() {
   const { data: bookmarks, error } = await supabaseForClient
     .from("bookmarks")
