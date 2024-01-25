@@ -3,19 +3,22 @@
 import useCategoryStore from "@/store/category"
 import useMembersStore from "@/store/members"
 import Link from "next/link"
-import React, { useEffect, useState } from "react"
-import { IoMdSearch } from "react-icons/io"
+import React, { useEffect, useRef, useState } from "react"
+import { IoIosArrowDown, IoIosArrowUp, IoMdSearch } from "react-icons/io"
 import { VscBell } from "react-icons/vsc"
 import { supabaseForClient } from "@/supabase/supabase.client"
 import useUserStore from "@/store/user"
 import Image from "next/image"
-
+import { GoPerson } from "react-icons/go"
+import { LuFolder } from "react-icons/lu"
+import { IoLogOutOutline } from "react-icons/io5"
 const Header = () => {
   const { userId } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
   const { setViewMemberModal, setMemberPosition } = useMembersStore(
     (state) => state,
   )
+  const [isImageActive, setIsImageActive] = useState<boolean>(false)
 
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
@@ -25,10 +28,15 @@ const Header = () => {
 
   const [showTooltip, setShowTooltip] = useState(false)
 
-  const onHandleClick = (event: React.MouseEvent) => {
+  const onAlarmHandleClick = (event: React.MouseEvent) => {
     setShowTooltip(!showTooltip)
+    setIsImageActive(false)
   }
 
+  const onAvavatarHandlerClick = (event: React.MouseEvent) => {
+    setIsImageActive((prev) => !prev)
+    setShowTooltip(false)
+  }
   const [isAlarmData, setIsAlarmData] = useState<{ [key: string]: any }>()
   const client = supabaseForClient
 
@@ -107,23 +115,59 @@ const Header = () => {
                 className={`text-md hover:cursor-pointer ${
                   showTooltip ? "show" : ""
                 }`}
-                onClick={onHandleClick}
+                onClick={onAlarmHandleClick}
               >
                 <VscBell />
                 {showTooltip && (
-                  <div className="tooltip">
-                    {isAlarmData
-                      ? "새로운 프로젝트가 생겼어요!"
-                      : "알림이 없습니다"}
+                  <div className="relative flex">
+                    <div className="flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-2 z-50 ">
+                      {isAlarmData ? (
+                        <>
+                          <div className=" ">"새로운 프로젝트가 생겼어요!"</div>
+                        </>
+                      ) : (
+                        <div className="border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
+                          알림이 없습니다
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </span>
-              <span>
-                <Link href={`/profile/${userId}`}>마이페이지</Link>
+
+              {/* 로그인시 , 프로필,프로젝트 등 */}
+              <span
+                className="rounded-full shadow-lg hover hover:cursor-pointer"
+                onClick={onAvavatarHandlerClick}
+              >
+                아바타
               </span>
-              <span>
-                <button onClick={onLogoutHandler}>로그아웃</button>
-              </span>
+              {isImageActive && (
+                <div className="relative flex">
+                  <div className="right-2 flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-4 z-50 ">
+                    <div>유저 닉네임</div>
+                    <Link href={`/profile/${userId}`}>
+                      <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
+                        <GoPerson />
+                        <span className="ml-2">내 프로필</span>
+                      </span>
+                    </Link>
+                    <Link href={`/profile/${userId}/profileProject`}>
+                      <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
+                        <LuFolder />
+                        <span className="ml-2">내 프로젝트</span>
+                      </span>
+                    </Link>
+                    <button
+                      onClick={onLogoutHandler}
+                      className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold"
+                    >
+                      <IoLogOutOutline />
+                      <span className="ml-2">로그아웃</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             // isLoggedOut이 true 일때 로그인 상태

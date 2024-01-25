@@ -404,3 +404,17 @@ export async function getProjectsWithServer() {
 
   return data
 }
+
+export async function getBookmarksCountEachProject() {
+  const sqlQuery = `
+  SELECT project_id, COUNT(*) as bookmarks_count
+  FROM bookmarks
+  GROUP BY project_id;
+`
+  const { data, error } = await supabaseForClient.from("bookmarks").select("*")
+
+  if (error) console.log("error", error)
+
+  console.log("북마크 갯수  프로젝트별로 새기!!!", data)
+  return data
+}

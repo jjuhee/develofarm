@@ -1,6 +1,4 @@
 "use client"
-import cheerio, { Cheerio } from "cheerio"
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay, Pagination, Navigation } from "swiper/modules"
@@ -11,10 +9,11 @@ import "swiper/css/effect-coverflow"
 import "swiper/css/effect-fade"
 import Image from "next/image"
 import Spacer from "@/components/ui/Spacer"
-import Column from "./GetSurfitArticles"
+import { getBookmarksCountEachProject } from "../../projects/api"
 
 export default function Main({ children }: { children: React.ReactNode }) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
+  const [projectData, setProjectData] = useState<number>()
 
   const images = ["Image 1", "Image 2", "Image 3", "Image 4", "Image 5"]
 
@@ -24,6 +23,14 @@ export default function Main({ children }: { children: React.ReactNode }) {
   const onCrwalingDataHandler = () => {
     setCrawledData(true)
   }
+
+  const getFetchProject = async () => {
+    const bookmarksCountEachProject = await getBookmarksCountEachProject()
+    console.log("북마크가 많은 순으로 프로젝트 갯수", bookmarksCountEachProject)
+  }
+
+  getFetchProject()
+  useEffect(() => {}, [])
 
   const arr = [
     {
@@ -65,14 +72,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
                 <div
                   className="w-full h-[600px] bg-cover bg-center"
                   style={{ backgroundImage: `url('/images/screenshot.png')` }}
-                >
-                  {/* <div className="text-white text-3xl font-semibold absolute z-10 top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2">
-                    당신의
-                  </div>
-                  <div className="text-white text-3xl font-semibold absolute z-10 top-1/2 right-1/4 transform -translate-x-1/2 -translate-y-1/2">
-                    꿈을...
-                  </div> */}
-                </div>
+                ></div>
               </div>
             </SwiperSlide>
             <SwiperSlide>
