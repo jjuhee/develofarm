@@ -11,14 +11,13 @@ import { useCustomModal } from "@/hooks/useCustomModal"
 type Props = {
   applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
   applicant: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
-  applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
 }
 
 const ApplyButtons = ({ applicant, applicants }: Props) => {
   const queryClient = useQueryClient()
   const { openCustomModalHandler } = useCustomModal()
 
-   *@ param 참여 중인 멤버 인원 수 */
+  /*@ param 참여 중인 멤버 인원 수 */
   const applyApplications = applicants?.filter(
     (applicant) => applicant.application_status === true,
   )
@@ -60,11 +59,6 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
     },
   })
 
-  /** *@ param 참여 중인 멤버 인원 수 */
-  const applyApplications = applicants?.filter(
-    (applicant) => applicant.application_status === true,
-  )
-
   /**
    *@ function 참여중인 멤버 등록
    TODO: 참여 멤버 등록 버튼 구현중 */
@@ -89,45 +83,44 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
       handler,
     )
 
-  console.log("000", applicants.length)
-  console.log("1", applicant.projects?.number_of_people)
-  /**
+    /**
    *@ function 신청자 목록에서 거절하기
    TODO: 신청자 삭제 기능 수정 중 */
-  const onRejectButtonHandler = () => {
-    removeMemberMutate.mutate(applicant.id)
-  }
+    const onRejectButtonHandler = () => {
+      removeMemberMutate.mutate(applicant.id)
+    }
 
-  return (
-    <div className="flex flex-row-reverse w-36 ml-auto mt-[-80px]">
-      <button
-        className="mr-5 hover:scale-110 transition-all duration-200"
-        onClick={() => {
-          onApplyButtonHandler()
-        }}
-      >
-        <Image
-          width={20}
-          height={20}
-          src="/icons/checkIcon.png"
-          alt="수락 아이콘"
-          className="w-11 h-11 p-2 bg-[#000000] object-none rounded-full"
-        />
-      </button>
-      <button
-        className="mr-3 hover:scale-110 transition-all duration-200"
-        onClick={onRejectButtonHandler}
-      >
-        <Image
-          width={12}
-          height={12}
-          src="/icons/rejectIcon.png"
-          alt="거절 아이콘"
-          className="w-11 h-11 p-2 rounded-full bg-slate-300 object-none"
-        />
-      </button>
-    </div>
-  )
+    return (
+      <div className="flex flex-row-reverse w-36 ml-auto mt-[-80px]">
+        <button
+          className="mr-5 hover:scale-110 transition-all duration-200"
+          onClick={() => {
+            onApplyButtonHandler()
+          }}
+        >
+          <Image
+            width={20}
+            height={20}
+            src="/icons/checkIcon.png"
+            alt="수락 아이콘"
+            className="w-11 h-11 p-2 bg-[#000000] object-none rounded-full"
+          />
+        </button>
+        <button
+          className="mr-3 hover:scale-110 transition-all duration-200"
+          onClick={onRejectButtonHandler}
+        >
+          <Image
+            width={12}
+            height={12}
+            src="/icons/rejectIcon.png"
+            alt="거절 아이콘"
+            className="w-11 h-11 p-2 rounded-full bg-slate-300 object-none"
+          />
+        </button>
+      </div>
+    )
+  }
 }
 
 export default ApplyButtons
