@@ -30,12 +30,16 @@ const TipTap = ({ content, setContent }: Props) => {
     return null
   }
 
+  const onClickFocusHandler = () => {
+    editor.commands.focus()
+  }
+
   return (
     <>
       <div className="flex items-center relative border-b border-black h-[60px]">
         <EditorMenu editor={editor} />
       </div>
-      <div className="py-10 px-5 min-h-[50vh]">
+      <div className="py-10 px-5 min-h-[50vh]" onClick={onClickFocusHandler}>
         <EditorContent editor={editor} />
       </div>
       <BubbleMenu editor={editor}>
