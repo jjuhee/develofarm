@@ -60,13 +60,13 @@ const MemberCard = ({ user, title, currentUserId }: Props) => {
         <span className="text-[16px] font-[700] text-[#80E500]  leading-[28px]">
           {position?.name}
         </span>
-        <p className="w-full text-[16px] text-[#2D2D2D] font-[400] leading-[28px] mt-2 line-clamp-2">
+        <p className="w-full h-[50px] text-[16px] text-[#2D2D2D] font-[400] leading-[28px] mt-2 line-clamp-2">
           {user_comment ? user_comment : "한줄소개가 없습니다."}
         </p>
         <ul className="flex flex-wrap gap-[5px] mt-3">
           {(user_tech?.length as number) > 0 ? (
             <>
-              {user_tech?.map((tech) => (
+              {user_tech?.slice(0, 3).map((tech) => (
                 <li
                   key={tech.techs?.id}
                   className="px-3 py-1 rounded-full bg-[#E6E6E6] text-[#2D2D2D] text-[12px] font-[400]"
@@ -76,7 +76,7 @@ const MemberCard = ({ user, title, currentUserId }: Props) => {
               ))}
             </>
           ) : (
-            <p className="text-gray-300">현재 보유기술이 없습니다.</p>
+            <p className="text-gray-300"></p>
           )}
         </ul>
       </section>
