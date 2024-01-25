@@ -1,16 +1,16 @@
 "use client"
 import Tiptap from "@/app/(providers)/(default)/write/_components/Tiptap"
-import Spacer from "@/components/ui/Spacer"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { FormEvent, useEffect, useState } from "react"
 import { setProject } from "../api"
 import Category from "./Category"
 import { useRouter } from "next/navigation"
-import { Tables, TablesInsert, TablesUpdate } from "@/types/supabase"
+import { Tables, TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import dayjs from "dayjs"
 import Button from "@/components/ui/Button"
 import Attatchment from "./Attatchment"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 interface TProjectWithRegion extends Tables<"projects"> {
   region: Tables<"project_regions"> | null
@@ -39,21 +39,23 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
   const [categoryData, setCategoryData] =
     useState<TCategoryData>(initialCategoryData)
 
+  const { openCustomModalHandler: customModal } = useCustomModal()
   const router = useRouter()
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: setProject,
     onSuccess: (insertedData) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
-      alert(isEditMode ? "수정 완료~!" : "게시물 작성 완료~!")
+      customModal(isEditMode ? "수정 완료~!" : "게시물 작성 완료~!", "alert")
       resetState()
       /* 게시물의 상세페이지로 이동, DB 문제로 게시물이 작성되지 않았으면 프로젝트 페이지로 이동 */
       if (insertedData) router.push(`/projects/${insertedData[0].id}`)
       else router.push(`/projects`)
     },
     onError: () => {
-      alert(
+      customModal(
         "DB에 알수 없는 에러로 게시물이 정상적으로 추가되지 않았을 수 있습니다(-.-)(_ _)",
+        "alert",
       )
     },
   })

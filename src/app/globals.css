@@ -36,7 +36,11 @@ button {
 }
 
 .category {
-  @apply border-[1.8px] px-[20px] py-[5px] rounded-full cursor-pointer;
+  @apply border-[1.5px] rounded-[8px] h-[40px] leading-[40px] text-[15px] cursor-pointer outline-none hover:border-[#2d2d2d] hover:bg-[#eeeeee];
+}
+
+.edit-menu {
+  @apply p-[3px] rounded-[3px] cursor-pointer border-[1px] border-white hover:rounded-[3px] hover:border-[#E6E6E6] hover:border-[1px];
 }
 
 .root {

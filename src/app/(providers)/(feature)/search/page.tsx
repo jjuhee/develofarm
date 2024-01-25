@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import { FaSearch } from "react-icons/fa"
-import { MdOutlineCancel } from "react-icons/md"
 import { getSearchedProject } from "../../(default)/projects/api"
 import { useQuery } from "@tanstack/react-query"
 import ProjectCard from "../../(default)/projects/_components/ProjectCard"
@@ -9,6 +8,8 @@ import { getBookmarksByUserId } from "../../(default)/projects/api"
 import { Tables } from "@/types/supabase"
 import { supabaseForClient } from "@/supabase/supabase.client"
 import { TProjectsType } from "@/types/extendedType"
+import Spacer from "@/components/ui/Spacer"
+import { HiOutlineXMark } from "react-icons/hi2"
 
 //해당 이용자의 localstorage 가져오기
 interface keywordsInterface {
@@ -180,18 +181,18 @@ const SearchPage = () => {
 
   console.log("data", searchedData)
   return (
-    <>
-      <section className="flex justify-center align-center mt-40 ">
+    <div className="h-[70vh]">
+      <section className="flex justify-center align-center mt-40">
         <form onSubmit={onSubmitHandler} className="relative">
           <div className="relative flex items-center">
-            <button type="submit" className="absoulute top-3">
+            <button type="submit" className="top-3">
               <FaSearch
                 size={20}
-                className="absolute left-3 top-4 text-gray-500 "
+                className="absolute left-3 top-4 text-gray-500 ml-3"
               />
             </button>
             <input
-              className="p-3 pl-10 rounded-3xl border border-gray w-[30rem] focus:border-transparent focus:ring-2 focus:ring-green-300 transition-all duration-300"
+              className="p-3 pl-[60px] rounded-3xl border border-gray w-[800px] focus:border-transparent focus:ring-2 focus:ring-green-300 transition-all duration-300"
               type="text"
               name="search"
               value={text}
@@ -203,7 +204,7 @@ const SearchPage = () => {
                 onClick={onRemoveTextHandler}
                 className="absolute right-4 hover:cursor-pointer"
               >
-                <MdOutlineCancel />
+                <HiOutlineXMark />
               </span>
             ) : (
               <></>
@@ -224,8 +225,8 @@ const SearchPage = () => {
           </div>
         </div>
         {/* 로컬스토리지에서도 제한을 둘것? */}
-        <div className="flex justify-center">
-          <ul className=" flex flex-row w-[50rem] justify-center items-center mt-2 ">
+        <div className="flex justify-center mt-5 ">
+          <ul className=" flex flex-row w-[50rem] justify-center items-center mt-2 gap-3">
             {keywords?.length ? (
               keywords.slice(0, 7).map((keyword) => (
                 <div
@@ -235,7 +236,7 @@ const SearchPage = () => {
                   }
                   key={keyword.id}
                 >
-                  <div className="bg-gray-200 rounded-3xl p-1 ml-2 relative flex items-center">
+                  <div className="bg-gray-200 rounded-3xl p-1 pr-2 ml-2 relative flex gap-1 items-center">
                     <span className="flex-grow whitespace-nowrap overflow-hidden">
                       {keyword.text}
                     </span>
@@ -243,7 +244,7 @@ const SearchPage = () => {
                       onClick={() => onRemoveEachKeywordHandler(keyword.num)}
                     >
                       <span>
-                        <MdOutlineCancel />
+                        <HiOutlineXMark />
                       </span>
                     </button>
                   </div>
@@ -256,6 +257,7 @@ const SearchPage = () => {
         </div>
       </section>
 
+      <Spacer y={70} />
       {/* -------프로젝트 리스트 들어오기 ---------- */}
       {(searchedData?.length as number) > 0 ? (
         <ul className="flex flex-col gap-8">
@@ -274,7 +276,7 @@ const SearchPage = () => {
         <></>
         // <EmptyState />
       )}
-    </>
+    </div>
   )
 }
 
