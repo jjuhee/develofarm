@@ -7,6 +7,7 @@ import useUserStore from "@/store/user"
 import Spacer from "@/components/ui/Spacer"
 import { getComments, setComment } from "../../api"
 import ReComments from "./ReComments"
+import CommentRemoveEditButtons from "./CommentRemoveEditButtons"
 
 type Props = {
   comment: Exclude<Awaited<ReturnType<typeof getComments>>, null>[number]
@@ -62,12 +63,19 @@ const ReCommentForm = ({ comment }: Props) => {
 
   return (
     <>
-      <button className="text-left pl-2" onClick={toggleFormHandler}>
-        {comment.comments && (comment.comments as unknown as any[]).length > 0
-          ? `${(comment.comments as unknown as any[]).length}개의 답글`
-          : "댓글"}
-      </button>
-
+      <div className="flex align-middle">
+        <button
+          className="text-left min-w-[100px] font-semibold"
+          onClick={toggleFormHandler}
+        >
+          {/* TODO: 댓글이 1000개 이상일경우 표시해주는 형식 바꿀 예정 */}
+          {comment.comments && (comment.comments as unknown as any[]).length > 0
+            ? `${(comment.comments as unknown as any[]).length}개의 답글`
+            : "댓글"}
+        </button>
+        <CommentRemoveEditButtons comment={comment} />
+      </div>
+      <Spacer y={20} />
       {showForm && (
         <div>
           <Spacer y={10} />
@@ -77,7 +85,7 @@ const ReCommentForm = ({ comment }: Props) => {
             onSubmit={onSubmitHandler}
           >
             <textarea
-              className="outline-none resize-none"
+              className="outline-none resize-none rounded-lg"
               placeholder="댓글 내용을 입력하세요"
               maxLength={500}
               value={content}

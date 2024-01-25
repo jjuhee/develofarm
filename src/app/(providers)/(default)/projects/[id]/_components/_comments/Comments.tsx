@@ -63,10 +63,9 @@ const Comments = ({ project }: Props) => {
               <span className="text-xs">
                 {dayjs(comment.created_at).format("YYYY-MM-DD HH:mm:ss")}
               </span>
-              <CommentRemoveEditButtons comment={comment} />
               <div className="flex flex-col pl-14 min-h-28 border-b-2">
                 <div className="h-auto font-semibold">{comment.content}</div>
-                <Spacer y={10} />
+                <Spacer y={20} />
                 {comment.user && <ReCommentForm comment={comment} />}
               </div>
             </div>

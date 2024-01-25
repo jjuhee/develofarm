@@ -40,17 +40,25 @@ const CommentRemoveEditButtons = ({ comment }: Props) => {
     }
   }
 
+  /**
+   *@ TODO: 수정되는 기능 넣을 예정 */
+  const updateClickHandler = () => {
+    openCustomModalHandler("아직 수정기능이 준비중입니다", "alert")
+  }
+
   return (
     isWriter && (
-      <>
-        <button className="ml-5 text-sm">수정</button>
+      <div className="">
+        <button className="ml-2 text-sm" onClick={updateClickHandler}>
+          수정
+        </button>
         <button
           className="ml-2 text-sm"
           onClick={() => isDeleteClickHandler(comment.id)}
         >
           삭제
         </button>
-      </>
+      </div>
     )
   )
 }
