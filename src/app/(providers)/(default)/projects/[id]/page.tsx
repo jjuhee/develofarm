@@ -59,7 +59,7 @@ const DetailPage = () => {
               project.recruit_status
                 ? "bg-[#666666] border-[#666666] text-white"
                 : "bg-white  border-black text-black"
-            } min-w-[90px] px-3 py-1 border-2 text-center rounded-2xl text-[16px] font-[700] `}
+            } min-w-[90px] px-3 py-1 border-2 text-center rounded-2xl text-[16px] font-[700]`}
           >
             {project.recruit_status ? "모집 완료" : "모집 중"}
           </span>

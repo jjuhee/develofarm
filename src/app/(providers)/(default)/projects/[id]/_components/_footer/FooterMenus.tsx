@@ -53,6 +53,12 @@ const FooterMenus = ({ project }: Props) => {
     queryFn: () => getMembers(project.id),
   })
 
+  /**
+   *@ param 신청 대기 중인 인원 수 */
+  const pendingApplications = applicants?.filter(
+    (applicant) => applicant.application_status === false,
+  )
+
   /** 전체 북마크 데이터 조회 */
   const { data: bookmarks } = useQuery({
     queryKey: ["bookmarks"],
@@ -110,7 +116,7 @@ const FooterMenus = ({ project }: Props) => {
               alt="신청자 아이콘"
               className="inline-block ml-10 mr-3 pb-3"
             />
-            {applicants?.length}
+            {isWriter ? pendingApplications?.length : project.number_of_people}
           </button>
         </>
         {/* 모두가 볼 수 있는 아이콘 */}

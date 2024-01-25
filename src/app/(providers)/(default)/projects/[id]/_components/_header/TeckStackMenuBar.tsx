@@ -75,12 +75,11 @@ const TeckStackMenuBar = ({ children, project, job }: Props) => {
         {children}
       </button>
       {isShow === job && (
-        // TODO: css 간격 맞춰야함
         <div
-          className={`absolute bg-[#B8FF65] text-[#000000] font-bold rounded-xl min-w-36 p-2 z-10  ml-2 shadow-lg after:content-[''] after:absolute after:top-[-8px] after:right-[75px] after:border-l-transparent after:border-l-[10px] after:border-r-[10px] after:border-r-transparent after:border-b-[10px] after:border-b-[#B8FF65] text-center ${
-            isShow === "프론트엔드" && "left-[-15px] bottom-[-125px]"
-          } ${isShow === "백엔드" && "left-[-10px] bottom-[-65px]"} ${
-            isShow === "디자인" && "left-[-5px] bottom-[-65px]"
+          className={`absolute bg-[#B8FF65] text-[#000000] font-bold rounded-xl min-w-36 p-2 z-10  ml-2 shadow-lg after:content-[''] after:absolute after:top-[-8px] after:right-[75px] after:border-l-transparent after:border-l-[10px] after:border-r-[10px] after:border-r-transparent after:border-b-[10px] after:border-b-[#B8FF65] text-center mt-[65px] ${
+            isShow === "프론트엔드" && "left-[-15px]"
+          } ${isShow === "백엔드" && "left-[-10px]"} ${
+            isShow === "디자인" && "left-[-5px]"
           }`}
         >
           {isShow === "프론트엔드" && (
