@@ -94,7 +94,7 @@ const ProjectMetaInfo = ({ project }: Props) => {
               백엔드
             </TeckStackMenuBar>
             <TeckStackMenuBar project={project} job={"디자인"}>
-              디자이너
+              디자인
             </TeckStackMenuBar>
           </div>
         </div>

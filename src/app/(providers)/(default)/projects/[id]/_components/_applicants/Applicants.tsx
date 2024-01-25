@@ -46,9 +46,11 @@ const Applicants = ({ applicants, status, project, isWriter }: Props) => {
         .filter((applicant) => applicant.application_status === status)
         .map((applicant) => {
           return status ? (
-            <MembersInProject applicant={applicant} />
+            <MembersInProject applicant={applicant} key={applicant.id} />
           ) : (
-            isWriter && <ApplicantList applicant={applicant} />
+            isWriter && (
+              <ApplicantList applicant={applicant} key={applicant.id} />
+            )
           )
         })}
     </>

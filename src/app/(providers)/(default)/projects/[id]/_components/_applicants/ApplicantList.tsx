@@ -23,11 +23,14 @@ const ApplicantList = ({ applicant }: Props) => {
             className="w-12 h-12 rounded-full object-cover inline-block"
           />
         </p>
-        <span className="ml-4 mt-2 font-bold">
+        <span className="ml-4 mt-2 font-bold text-lg tracking-tighter">
           {applicant.users?.user_nickname}
         </span>
+        <span className="ml-6 mt-4 text-[#80E500] font-semibold">
+          {applicant.users?.positions?.name}
+        </span>
       </div>
-      <p className="m-3">한줄 소개가 업데이트 될 예정입니다</p>
+      <p className="my-1 mx-16">한줄 소개가 업데이트 될 예정입니다</p>
       <ApplyButtons applicant={applicant} />
     </section>
   )
