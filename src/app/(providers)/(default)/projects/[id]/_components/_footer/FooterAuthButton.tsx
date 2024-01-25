@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import React from "react"
 import useUserStore from "@/store/user"
 import { closeProject, getApplicationUser, setMember } from "../../api"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 type Props = {
   project: Tables<"projects">
@@ -12,16 +13,18 @@ type Props = {
 const FooterAuthButton = ({ project, isWriter }: Props) => {
   const queryClient = useQueryClient()
   const { userId } = useUserStore()
+  const { openCustomModalHandler } = useCustomModal()
 
   /**
-   *@ mutaion 게시물 마감 후 확인창 띄어주기 */
+   *@ mutaion 게시물 마감 후 확인창 띄어주기
+   TODO: 새로고침 후 반영되는 거 수정예정 */
   const closeProjectMutate = useMutation({
     mutationFn: closeProject,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["project", { projectId: project.id }],
       })
-      alert("마감을 진행했습니다")
+      openCustomModalHandler("마감되었습니다!", "alert")
     },
     onError: (error) => {
       console.log(error)
@@ -36,7 +39,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
       await queryClient.invalidateQueries({
         queryKey: ["applyUser", { projectId: project.id }],
       })
-      alert("신청이 완료되었습니다!")
+      openCustomModalHandler("신청이 완료되었습니다!", "alert")
     },
     onError: (error) => {
       console.log(error)
@@ -46,10 +49,11 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   /**
    *@ function 작성자가 게시물 모집완료 처리 */
   const closeProjectButtonHandler = (id: string) => {
-    const isCloseCheck = window.confirm("정말로 마감 하시겠습니까?")
-    if (isCloseCheck) {
+    const handler = () => {
       closeProjectMutate.mutate(id)
     }
+
+    openCustomModalHandler("정말로 마감하시겠습니까?", "confirm", handler)
   }
 
   /**
