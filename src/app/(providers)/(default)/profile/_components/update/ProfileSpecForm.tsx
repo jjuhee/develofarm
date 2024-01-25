@@ -6,6 +6,7 @@ import { getSpecs, updateSpecs, addSpec, deleteSpecs } from "../../api"
 import { Tables } from "@/types/supabase"
 import { HiOutlineXMark } from "react-icons/hi2"
 import { GoPlus } from "react-icons/go"
+import useCustomModalStore from "@/store/customModal"
 
 const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
   const {
@@ -97,6 +98,15 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
     }
   }
 
+  const modalStore = useCustomModalStore()
+  // 삭제 확인용 모달을 보여주는 함수
+  const showDeleteConfirmationModal = (handler: () => void) => {
+    modalStore.setViewCustomModal(true)
+    modalStore.setModalType("confirm")
+    modalStore.setModalMessage("이 내용을 삭제하시겠습니까?")
+    modalStore.setHandler(handler)
+  }
+
   // specs 데이터 로딩 중인 경우
   if (specsLoading) {
     return <div>Loading...</div>
@@ -147,19 +157,15 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
                 onChange={(e) =>
                   handleInputChange(index, "spec_name", e.target.value)
                 }
-                className="w-[250px] text-xl font-bold"
+                className="w-[250px] text-xl font-bold p-1"
                 placeholder="활동명"
               />
 
               <button
                 type="button"
-                onClick={() => {
-                  const confirmDelete =
-                    window.confirm("이 내용을 삭제하시겠습니까?")
-                  if (confirmDelete) {
-                    handleDeleteSpec(spec.id)
-                  }
-                }}
+                onClick={() =>
+                  showDeleteConfirmationModal(() => handleDeleteSpec(spec.id))
+                }
                 className="text-[#AAAAAA] text-[30px] hover:text-red-500"
               >
                 <HiOutlineXMark />
@@ -194,18 +200,16 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
                     e.target.value,
                   )
                 }
-                className="w-[250px] text-xl font-bold"
+                className="w-[250px] text-xl font-bold p-1"
                 placeholder="활동명"
               />
               <button
                 type="button"
-                onClick={() => {
-                  const confirmDelete =
-                    window.confirm("이 내용을 삭제하시겠습니까?")
-                  if (confirmDelete) {
-                    handleRemoveSpecSet(setIndex)
-                  }
-                }}
+                onClick={() =>
+                  showDeleteConfirmationModal(() =>
+                    handleRemoveSpecSet(setIndex),
+                  )
+                }
                 className="text-[#AAAAAA] text-[30px] hover:text-red-500"
               >
                 <HiOutlineXMark />

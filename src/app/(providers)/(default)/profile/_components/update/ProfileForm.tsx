@@ -12,6 +12,7 @@ import {
 import { TbPointFilled } from "react-icons/tb"
 import { HiOutlineXMark } from "react-icons/hi2"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
+import useCustomModalStore from "@/store/customModal"
 
 const ProfileForm = ({ profileId }: { profileId: string }) => {
   // 유저 정보 및 데이터 상태 관리
@@ -118,11 +119,21 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
 
   // 유저 프로필 업데이트 및 기술 추가 통합 처리
   const handleCombinedAction = async () => {
+    // 유저 닉네임이 비어있지 않은지 확인
+    if (!user.user_nickname.trim()) {
+      const modalStore = useCustomModalStore.getState()
+
+      modalStore.setViewCustomModal(true)
+      modalStore.setModalType("alert")
+      modalStore.setModalMessage("닉네임을 입력하세요.")
+
+      return
+    }
     await handleUpdateProfile()
     await handleAddUserTech()
   }
 
-  // 직무 드롭다운 토글
+  // 직무 및 기술 드롭다운 토글
   const togglePositionDropdown = () => {
     setPositionDropdownOpen((prev) => !prev)
   }
@@ -191,7 +202,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                 name="userNickname"
                 value={user.user_nickname}
                 onChange={(e) => handleChange(e, "user_nickname")}
-                className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[872px] h-[48px]"
+                className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[872px] h-[48px] hover:border-[#000000]"
                 placeholder="닉네임을 입력하세요..."
                 maxLength={10}
               />
@@ -214,7 +225,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                     name="userPhoneNumber"
                     value={user.user_phone_number}
                     onChange={(e) => handleChange(e, "user_phone_number")}
-                    className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[431px] h-[48px]"
+                    className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[431px] h-[48px] hover:border-[#000000]"
                     placeholder="- 를 넣어서 입력하세요."
                     maxLength={13}
                   />
@@ -235,9 +246,9 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                   {positions?.map((position) => (
                     <li
                       key={position.id}
-                      className={`border border-[#CCCCCC] rounded-full font-bold text-[16px] w-[135px] h-[48px] flex items-center justify-center cursor-pointer ${
+                      className={`border border-[#CCCCCC] rounded-full font-bold text-[16px] w-[135px] h-[48px] flex items-center justify-center cursor-pointer hover:border-[#000000] ${
                         selectedPositionId === position.id
-                          ? "bg-[#000000] text-[#B8FF65]"
+                          ? "bg-[#B8FF65] text-[#000000] hover:bg-[#666666] hover:text-[#B8FF65]  transition-all duration-300"
                           : ""
                       }`}
                       onClick={() => {
@@ -253,7 +264,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                       )}
                       {selectedPositionId === position.id &&
                         isPositionDropdownOpen && (
-                          <div className="absolute p-[3px] top-[92px] left-0 w-[431px] font-bold text-[18px] bg-white border border-[#CCCCCC] rounded-[20px] overflow-hidden">
+                          <div className="absolute top-[92px] left-0 w-[431px] font-bold text-[18px] bg-white border border-[#CCCCCC] rounded-[20px] overflow-hidden">
                             <ul>
                               {positionTechs
                                 ?.filter(
@@ -262,7 +273,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                                 .map((tech) => (
                                   <li
                                     key={tech.id}
-                                    className="py-1 px-4 cursor-pointer hover:bg-gray-200 flex items-center text-black"
+                                    className="py-1 px-4 flex items-center text-black"
                                   >
                                     <input
                                       type="checkbox"
@@ -276,7 +287,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                                           tech.techs?.id as string,
                                         )
                                       }
-                                      className="form-checkbox accent-[#AAAAAA] h-[16px] w-[16px] rounded-[4px]"
+                                      className="cursor-pointer accent-[#AAAAAA] h-[16px] w-[16px] rounded-[4px]"
                                     />
                                     <label
                                       htmlFor={tech.techs?.id}
@@ -304,7 +315,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                     name="user_email"
                     value={user.user_email}
                     onChange={(e) => handleChange(e, "user_email")}
-                    className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[431px] h-[48px]"
+                    className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[431px] h-[48px] hover:border-[#000000]"
                     placeholder="이메일을 입력하세요..."
                   />
                   <button
@@ -322,7 +333,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                   </p>
                   <div className="relative">
                     <div
-                      className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[431px] h-[48px] flex items-center justify-beteewn cursor-pointer"
+                      className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[431px] h-[48px] flex items-center justify-beteewn cursor-pointer hover:border-[#000000]"
                       onClick={toggleStatusDropdown}
                     >
                       {
@@ -351,7 +362,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                                 }))
                                 toggleStatusDropdown()
                               }}
-                              className="py-2 px-4 cursor-pointer hover:bg-gray-200 flex items-center"
+                              className="py-2 px-4 cursor-pointer hover:bg-[#DBFFB2] flex items-center"
                             >
                               {option.icon}
                               <span className="ml-2">{option.label}</span>
