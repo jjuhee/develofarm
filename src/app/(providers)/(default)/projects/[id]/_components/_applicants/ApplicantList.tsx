@@ -4,10 +4,11 @@ import { getMembers } from "../../api"
 import ApplyButtons from "./ApplyButtons"
 
 type Props = {
+  applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
   applicant: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
 }
 
-const ApplicantList = ({ applicant }: Props) => {
+const ApplicantList = ({ applicant, applicants }: Props) => {
   return (
     <section
       key={applicant.id}
@@ -31,7 +32,7 @@ const ApplicantList = ({ applicant }: Props) => {
         </span>
       </div>
       <p className="my-1 mx-16">한줄 소개가 업데이트 될 예정입니다</p>
-      <ApplyButtons applicant={applicant} />
+      <ApplyButtons applicant={applicant} applicants={applicants} />
     </section>
   )
 }

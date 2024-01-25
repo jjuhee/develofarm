@@ -49,7 +49,11 @@ const Applicants = ({ applicants, status, project, isWriter }: Props) => {
             <MembersInProject applicant={applicant} key={applicant.id} />
           ) : (
             isWriter && (
-              <ApplicantList applicant={applicant} key={applicant.id} />
+              <ApplicantList
+                applicant={applicant}
+                applicants={applicants}
+                key={applicant.id}
+              />
             )
           )
         })}

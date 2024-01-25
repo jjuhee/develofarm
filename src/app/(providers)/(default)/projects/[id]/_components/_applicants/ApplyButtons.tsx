@@ -5,16 +5,13 @@ import Image from "next/image"
 import { useCustomModal } from "@/hooks/useCustomModal"
 
 type Props = {
+  applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
   applicant: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
 }
 
-const ApplyButtons = ({ applicant }: Props) => {
+const ApplyButtons = ({ applicant, applicants }: Props) => {
   const queryClient = useQueryClient()
   const { openCustomModalHandler } = useCustomModal()
-
-  const handler = () => {
-    openCustomModalHandler("수락되었습니다!", "alert")
-  }
 
   /**
    *@ mutaion 참여중인 멤버에 신청자 등록 후 확인창 띄워주기
@@ -33,27 +30,40 @@ const ApplyButtons = ({ applicant }: Props) => {
       await queryClient.invalidateQueries({
         queryKey: ["applyUser", { projectId: applicant.project_id }],
       })
-      openCustomModalHandler(
-        "프로젝트 멤버를 수락하시겠습니까?",
-        "confirm",
-        handler,
-      )
     },
     onError: (error) => {
       console.log(error)
     },
   })
 
+  /** *@ param 참여 중인 멤버 인원 수 */
+  const applyApplications = applicants?.filter(
+    (applicant) => applicant.application_status === true,
+  )
+
   /**
    *@ function 참여중인 멤버 등록
    TODO: 참여 멤버 등록 버튼 구현중 */
   const onApplyButtonHandler = () => {
-    updateMemberMutate.mutate({
-      projectId: applicant.project_id,
-      userId: applicant.user_id,
-    })
+    const handler = () => {
+      if (
+        applicant.projects?.number_of_people &&
+        applyApplications.length >= applicant.projects.number_of_people
+      ) {
+        return null
+      } else {
+        updateMemberMutate.mutate({
+          projectId: applicant.project_id,
+          userId: applicant.user_id,
+        })
+      }
+    }
+
+    openCustomModalHandler("신청하시겠습니까?", "confirm", handler)
   }
 
+  console.log("000", applicants.length)
+  console.log("1", applicant.projects?.number_of_people)
   /**
    *@ function 신청자 목록에서 거절하기
    TODO: 신청자 삭제 기능 수정 중 */
@@ -63,13 +73,9 @@ const ApplyButtons = ({ applicant }: Props) => {
     <div className="flex flex-row-reverse w-36 ml-auto mt-[-80px]">
       <button
         className="mr-5 hover:animate-[pulse_1s_ease-in-out_infinite]"
+        //
         onClick={() => {
-          if (
-            applicant.projects?.number_of_people &&
-            Object.keys(applicant).length < applicant.projects.number_of_people
-          ) {
-            onApplyButtonHandler()
-          }
+          onApplyButtonHandler()
         }}
       >
         <Image
