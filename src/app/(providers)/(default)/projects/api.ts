@@ -346,3 +346,16 @@ export async function getProjectsWithServer() {
 
   return data
 }
+
+export async function getBookmarksCountEachProject() {
+  //   const sqlQuery = `
+  //   SELECT project_id, COUNT(*) as bookmarks_count
+  //   FROM bookmarks
+  //   GROUP BY project_id;
+  // `
+  //rpc 인자로 부르기
+  // const { data, error } = await supabaseForClient.rpc("hello_world")g
+  // if (error) console.log("error", error)
+  // console.log("북마크 갯수  프로젝트별로 새기!!!", data)
+  // return data
+}
