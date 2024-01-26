@@ -77,7 +77,6 @@ const Header = () => {
 
   console.log("changeState", changeState)
   useEffect(() => {
-    console.log("USEEFFECT !")
     const subscription = supabaseForClient.auth.onAuthStateChange(
       (event, session) => {
         console.log(event, session)
@@ -99,7 +98,8 @@ const Header = () => {
         }
       },
     )
-    // subscription.data.subscription.unsubscribe()
+    subscription.data.subscription.unsubscribe()
+    console.log("onAuthTStateChange!!!!!")
   }, [])
 
   useOnClickOutSide({
