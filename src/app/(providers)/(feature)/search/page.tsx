@@ -224,7 +224,7 @@ const SearchPage = () => {
                   onClick={() =>
                     onSearchKeywordChangeHandler(keyword.text as string)
                   }
-                  key={keyword.id}
+                  key={keyword.text}
                 >
                   <div className="bg-gray-200 rounded-3xl p-1 pr-2 ml-2 relative flex gap-1 items-center">
                     <span className="flex-grow whitespace-nowrap overflow-hidden">
