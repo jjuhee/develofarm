@@ -304,9 +304,9 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
             await handleAddAcademy()
             handleUpdateAcademies()
           }}
-          className="text-[15px] ml-[510px] mb-[20px] px-4 py-2 rounded-[6px] bg-[#B8FF65]"
+          className="text-[15px] ml-[480px] mb-[20px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
         >
-          저장하기
+          내용 저장하기
         </button>
       </div>
     </div>

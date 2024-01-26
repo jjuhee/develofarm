@@ -14,6 +14,8 @@ import { LuFolder } from "react-icons/lu"
 import { IoLogOutOutline } from "react-icons/io5"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import { useRouter } from "next/navigation"
+
 const Header = () => {
   const { userId } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
@@ -28,7 +30,9 @@ const Header = () => {
     setViewMemberModal(false)
     setMemberPosition(null)
   }
-  const [email, setEmail] = useState<string>()
+
+  const router = useRouter()
+  const [email, setEmail] = useState<string>("")
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>()
 
   const [showTooltip, setShowTooltip] = useState(false)
@@ -68,19 +72,35 @@ const Header = () => {
   //로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
   //TODO : 로그아웃시 바로 isLoggedOut이 true 값으로 변하지 않는것을 해결해야함
   const [isLoggedOut, setIsLoggedOut] = useState<boolean>(true)
+  const [changeState, setChangeState] = useState(false)
   const { openCustomModalHandler: customModal } = useCustomModal()
 
+  console.log("changeState", changeState)
   useEffect(() => {
-    const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
-    const getAuthToken: any = localStorage.getItem(AUTH_TOKEN)
-    const json1 = JSON.parse(getAuthToken)
-    setEmail(json1?.user.user_metadata.email)
-    setAvatarUrl(json1?.user.user_metadata.avatar_url)
-    console.log("헤더에서 로컬스토리지 받기", email, avatarUrl)
-    if (getAuthToken) {
-      setIsLoggedOut(false)
-    }
-  }, [isLoggedOut])
+    const subscription = supabaseForClient.auth.onAuthStateChange(
+      (event, session) => {
+        console.log(event, session)
+
+        if (event === "INITIAL_SESSION") {
+        } else if (event === "SIGNED_IN") {
+          const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
+          const getAuthToken: any = localStorage.getItem(AUTH_TOKEN)
+          const json1 = JSON.parse(getAuthToken)
+          setEmail(json1?.user.user_metadata.email)
+          if (getAuthToken) {
+            setIsLoggedOut(false)
+          }
+          setAvatarUrl(json1?.user.user_metadata.avatar_url)
+        } else if (event === "SIGNED_OUT") {
+        } else if (event === "PASSWORD_RECOVERY") {
+        } else if (event === "TOKEN_REFRESHED") {
+        } else if (event === "USER_UPDATED") {
+        }
+      },
+    )
+    subscription.data.subscription.unsubscribe()
+    console.log("onAuthTStateChange!!!!!")
+  }, [])
 
   useOnClickOutSide({
     ref: dropdownRef,
@@ -94,7 +114,9 @@ const Header = () => {
 
     supabaseForClient.auth.signOut()
     setIsLoggedOut(true)
-    customModal("로그아웃이 되었습니다", "alert")
+    alert("로그아웃 되었습니다.")
+    router.push("/")
+    // customModal("로그아웃이 되었습니다", "alert")
   }
   //END
   return (
@@ -124,7 +146,7 @@ const Header = () => {
           </Link>
 
           {/* isLoggedOut이 false 일때 로그인 상태 */}
-          {!isLoggedOut ? (
+          {isLoggedOut === false ? (
             <>
               <span
                 className={`text-md hover:cursor-pointer ${

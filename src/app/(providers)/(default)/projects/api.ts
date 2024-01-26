@@ -323,7 +323,6 @@ export async function getRegions() {
 
 // 검색어와 일치하는 프로젝트 가져오기
 export async function getSearchedProject(title: string) {
-  console.log("api에서 들어오는", title)
   const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
     .select(
@@ -332,7 +331,7 @@ export async function getSearchedProject(title: string) {
     .ilike("title", `%${title}%`)
 
   if (projectError) console.log("error", projectError)
-  console.log("data는 무라고나오ㅗ지?", projectData)
+
   return projectData || null
 }
 
@@ -344,15 +343,14 @@ export async function getProjectsWithServer() {
   return data
 }
 
+type SupabaseResponse = {
+  data: any
+  error: Error | null
+}
+
 export async function getBookmarksCountEachProject() {
-  //   const sqlQuery = `
-  //   SELECT project_id, COUNT(*) as bookmarks_count
-  //   FROM bookmarks
-  //   GROUP BY project_id;
-  // `
-  //rpc 인자로 부르기
-  // const { data, error } = await supabaseForClient.rpc("hello_world")g
-  // if (error) console.log("error", error)
-  // console.log("북마크 갯수  프로젝트별로 새기!!!", data)
-  // return data
+  const { data, error } = await supabaseForClient.rpc("get_top_projects")
+  console.log("api에서 그룹화한 북마크 프로젝트 보내기", data)
+  if (error) console.log("error", error)
+  return data
 }
