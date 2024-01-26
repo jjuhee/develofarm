@@ -6,6 +6,7 @@ import { getSpecs, updateSpecs, addSpec, deleteSpecs } from "../../api"
 import { Tables } from "@/types/supabase"
 import { HiOutlineXMark } from "react-icons/hi2"
 import { GoPlus } from "react-icons/go"
+import useCustomModalStore from "@/store/customModal"
 
 const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
   const {
@@ -97,6 +98,15 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
     }
   }
 
+  const modalStore = useCustomModalStore()
+  // 삭제 확인용 모달을 보여주는 함수
+  const showDeleteConfirmationModal = (handler: () => void) => {
+    modalStore.setViewCustomModal(true)
+    modalStore.setModalType("confirm")
+    modalStore.setModalMessage("이 내용을 삭제하시겠습니까?")
+    modalStore.setHandler(handler)
+  }
+
   // specs 데이터 로딩 중인 경우
   if (specsLoading) {
     return <div>Loading...</div>
@@ -119,11 +129,11 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
 
   return (
     <div>
-      <div className="flex justify-between items-center w-[600px]">
+      <div className="flex justify-between items-start w-[600px]">
         <h2 className="text-[26px] font-bold">자격/어학/수상</h2>
         <button
           onClick={handleAddSpecSet}
-          className="flex ml-auto border-2 border-[#297A5F] text-[#297A5F] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#297A5F] hover:text-white transition-all duration-300"
+          className="flex ml-auto border-[1.5px] border-[#A6A6A6] bg-[#ffffff] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#EEEEEE] hover:border-[#000000] transition-all duration-300"
         >
           <GoPlus className="text-[25px] mx-[3px]" />
           추가하기
@@ -132,7 +142,7 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
 
       {updatedSpecs.map((spec: Tables<"specs">, index: number) => (
         <div key={spec.id} className="relative">
-          <div className="flex justify-between items-center pt-[30px]">
+          <div className="flex justify-between items-start pt-[30px]">
             <input
               type="date"
               value={spec.spec_date as string}
@@ -140,26 +150,22 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
                 handleInputChange(index, "spec_date", e.target.value)
               }
             />
-            <div className="relative flex items-center">
+            <div className="relative flex items-start">
               <input
                 type="text"
                 value={spec.spec_name as string}
                 onChange={(e) =>
                   handleInputChange(index, "spec_name", e.target.value)
                 }
-                className="w-[250px] text-xl font-bold"
+                className="w-[250px] text-xl font-bold p-1"
                 placeholder="활동명"
               />
 
               <button
                 type="button"
-                onClick={() => {
-                  const confirmDelete =
-                    window.confirm("이 내용을 삭제하시겠습니까?")
-                  if (confirmDelete) {
-                    handleDeleteSpec(spec.id)
-                  }
-                }}
+                onClick={() =>
+                  showDeleteConfirmationModal(() => handleDeleteSpec(spec.id))
+                }
                 className="text-[#AAAAAA] text-[30px] hover:text-red-500"
               >
                 <HiOutlineXMark />
@@ -174,7 +180,7 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
         {newSpecsData.map((newSpec, setIndex) => (
           <div
             key={setIndex}
-            className="flex justify-between items-center pt-[30px]"
+            className="flex justify-between items-start pt-[30px] pb-[43px]"
           >
             <input
               type="date"
@@ -194,18 +200,16 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
                     e.target.value,
                   )
                 }
-                className="w-[250px] text-xl font-bold"
+                className="w-[250px] text-xl font-bold p-1"
                 placeholder="활동명"
               />
               <button
                 type="button"
-                onClick={() => {
-                  const confirmDelete =
-                    window.confirm("이 내용을 삭제하시겠습니까?")
-                  if (confirmDelete) {
-                    handleRemoveSpecSet(setIndex)
-                  }
-                }}
+                onClick={() =>
+                  showDeleteConfirmationModal(() =>
+                    handleRemoveSpecSet(setIndex),
+                  )
+                }
                 className="text-[#AAAAAA] text-[30px] hover:text-red-500"
               >
                 <HiOutlineXMark />
@@ -221,9 +225,9 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
             await handleAddSpec()
             handleUpdateSpecs()
           }}
-          className="mt-[20px] bg-green-500 text-white px-[10px] py-[5px] rounded"
+          className="text-[15px] ml-[480px] mb-[20px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
         >
-          완료
+          내용 저장하기
         </button>
       </div>
     </div>

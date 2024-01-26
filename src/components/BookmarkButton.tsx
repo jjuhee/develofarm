@@ -47,8 +47,8 @@ const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
     }
 
     /** 로그인 됐을 때 */
+    /** 이미 추가 됐을 경우 */
     if (isBookmarked) {
-      /** 이미 추가 됐을 경우 */
       await removeBookmarks({ projectId, currentUser })
       queryClient.invalidateQueries({ queryKey: ["bookmarks"] })
     } else {
@@ -61,7 +61,7 @@ const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
     bookmarks && bookmarks.some((bookmark) => bookmark.project_id === projectId)
 
   return (
-    <div className="cursor-pointer z-10 text-gray-400" onClick={onClickHandler}>
+    <div className="cursor-pointer text-gray-400" onClick={onClickHandler}>
       {isBookmarked ? (
         <MdOutlineBookmark size={35} />
       ) : (

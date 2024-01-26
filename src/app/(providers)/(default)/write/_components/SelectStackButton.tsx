@@ -23,9 +23,8 @@ const SelectStackButton = ({
     useState("") /* 기술 stack 드롭다운 열렸는지 닫혔는지 */
 
   const onClickTechStackHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLElement
-    if (target && target.innerText) {
-      setIsActive(target.innerText)
+    if (e.currentTarget.innerText) {
+      setIsActive(e.currentTarget.innerText)
     }
   }
 
@@ -69,11 +68,16 @@ const SelectStackButton = ({
     <>
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
-          className={`flex items-center mb-2 justify-center gap-2 border-[1.5px]  px-[20px] py-[5px] rounded-full cursor-pointer transition-all
+          className={`category flex items-center justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] px-[20px] transition-all
+          ${
+            isActive === "프론트엔드"
+              ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold"
+              : ""
+          }
           ${
             isPositionChecked(POSITION_ID.front)
-              ? "border-black bg-main-lime"
-              : "border-slate-400"
+              ? "border-black text-black font-semibold"
+              : "border-[#A6A6A6] text-[#2D2D2D] font-medium"
           }  `}
           onClick={onClickTechStackHandler}
         >
@@ -82,7 +86,7 @@ const SelectStackButton = ({
         </div>
 
         <ul
-          className={`absolute flex flex-col bg-white border-[1.5px] border-black rounded-2xl py-[15px] px-[20px] transition-all z-10 ${
+          className={`absolute flex flex-col bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] text-[15px] transition-all duration-300 z-10 ${
             isActive === "프론트엔드" ? "visible" : "invisible"
           }`}
         >
@@ -101,7 +105,7 @@ const SelectStackButton = ({
                       item.position_id === POSITION_ID.front &&
                       item.tech_id === tech.id,
                   )}
-                  className="mr-2"
+                  className="mr-2 accent-black"
                   onChange={(e) =>
                     onChangeHandler(e, "be33a56c-a4da-43a3-984f-c6acd667b2ae")
                   }
@@ -114,11 +118,16 @@ const SelectStackButton = ({
       </li>
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
-          className={`flex items-center mb-2 justify-center gap-2 border-[1.5px] px-[20px] py-[5px] rounded-full cursor-pointer transition-all
+          className={`category flex items-center justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] px-[20px] transition-all
+          ${
+            isActive === "백엔드"
+              ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold"
+              : ""
+          }
           ${
             isPositionChecked(POSITION_ID.back)
-              ? "border-black bg-main-lime"
-              : "border-slate-400"
+              ? "border-black text-black font-semibold"
+              : "border-[#A6A6A6] text-[#2D2D2D] font-medium"
           }
           `}
           onClick={onClickTechStackHandler}
@@ -127,7 +136,7 @@ const SelectStackButton = ({
           {isActive === "백엔드" ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col w-[150px] bg-white border-[1.5px] border-black rounded-2xl py-[15px] px-[20px] transition-all duration-300 z-10 ${
+          className={`absolute flex flex-col bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] text-[15px] transition-all duration-300 z-10 ${
             isActive === "백엔드" ? "visible" : "invisible"
           }`}
         >
@@ -146,7 +155,7 @@ const SelectStackButton = ({
                       item.position_id === POSITION_ID.back &&
                       item.tech_id === tech.id,
                   )}
-                  className="mr-2"
+                  className="mr-2 accent-black"
                   onChange={(e) =>
                     onChangeHandler(e, "0e68d5ef-ebc4-40d5-afe8-9bf557a52746")
                   }
@@ -159,11 +168,16 @@ const SelectStackButton = ({
       </li>
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
-          className={`flex items-center mb-2 justify-center gap-2 border-[1.5px] px-[20px] py-[5px] rounded-full cursor-pointer tranition-all
+          className={`category flex items-center justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] px-[20px] transition-all
+          ${
+            isActive === "디자인"
+              ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold"
+              : ""
+          }
           ${
             isPositionChecked(POSITION_ID.design)
-              ? "border-black bg-main-lime"
-              : "border-slate-400"
+              ? "border-black text-black font-semibold"
+              : "border-[#A6A6A6] text-[#2D2D2D] font-medium"
           }
           `}
           onClick={onClickTechStackHandler}
@@ -172,7 +186,7 @@ const SelectStackButton = ({
           {isActive === "디자인" ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col w-[150px] bg-white border-[1.5px] border-black rounded-2xl py-[15px] px-[20px] transition-all z-10 ${
+          className={`absolute flex flex-col bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] text-[15px] transition-all duration-300 z-20 ${
             isActive === "디자인" ? "visible" : "invisible"
           }`}
         >
@@ -191,7 +205,7 @@ const SelectStackButton = ({
                       item.position_id === POSITION_ID.design &&
                       item.tech_id === tech.id,
                   )}
-                  className="mr-2"
+                  className="mr-2 accent-black"
                   onChange={(e) =>
                     onChangeHandler(e, "e2be10af-aa25-4aa8-b18a-9e004d4f9bed")
                   }

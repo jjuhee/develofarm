@@ -8,6 +8,20 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        pulse: {
+          "25%": {
+            transform: "scale(1.1)",
+          },
+          "50%": {
+            transform: "scale(1)",
+            opacity: "1",
+          },
+          "75%": {
+            transform: "scale(.9)",
+          },
+        },
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -18,6 +32,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require("@tailwindcss/typography"), require("tailwind-scrollbar")],
 }
 export default config

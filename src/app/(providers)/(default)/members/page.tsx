@@ -14,7 +14,7 @@ import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import MemberProfile from "./_components/MemberProfile"
 import EmptyState from "@/components/EmptyState"
 import useUserStore from "@/store/user"
-import { ExtendedUsersType, UsersType } from "@/types/extendedType"
+import { UsersType } from "@/types/extendedType"
 
 const MembersPage = () => {
   const userId = useUserStore((state) => state.userId)
@@ -54,10 +54,10 @@ const MembersPage = () => {
       getUsers({ pageParam, positionId: memberPosition?.id }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      if ((lastPage?.length as number) < 3) {
+      if ((lastPage?.length as number) < 4) {
         return null
       }
-      return allPages.length * 3
+      return allPages.length * 4
     },
     select: (data) => {
       return data.pages.flatMap((page) => page as UsersType[])
@@ -83,18 +83,21 @@ const MembersPage = () => {
   return (
     <div>
       <Spacer y={90} />
-      <div className="flex w-full">
-        <MemberCategory positions={positions as Tables<"positions">[]} />
-
-        <section className="flex flex-col ml-[17rem] py-5 gap-[24px] w-full ">
+      <div className="flex flex-col w-full">
+        <section className="flex flex-col py-5 gap-[20px] w-full ">
+          <span className="text-[16px] text-[#80E500] font-[600]">
+            Our members
+          </span>
           <h3 className="text-[40px] font-[700]">{title}</h3>
-          <p className="text-[16px] font-[400] text-[#606060]">
+          <p className="text-[16px] font-[400] text-[#606060] mt-3">
             {title === "전체보기"
               ? "멤버 전체보기 페이지입니다."
               : `${title} 멤버 페이지입니다.`}
           </p>
-          <div className="w-full mt-10">
-            <ul className="grid grid-cols-1 gap-20 md:grid-cols-2 lg:grid-cols-3">
+
+          <MemberCategory positions={positions as Tables<"positions">[]} />
+          <div className="w-full mt-7">
+            <ul className="grid grid-cols-2 gap-12 md:grid-cols-3 lg:grid-cols-4">
               {(infinityUsers?.length as number) > 0 ? (
                 <>
                   {infinityUsers?.map((user: UsersType) => (
@@ -112,16 +115,16 @@ const MembersPage = () => {
             </ul>
           </div>
         </section>
+        <div ref={ref} className="w-full h-[100px]" />
       </div>
 
       {/* 무한 스크롤 기준 박스 */}
-      <div ref={ref} className="w-full h-[100px]" />
 
       {/* 멤버 프로필 모달 */}
       {viewMemberModal && (
         <div className="flex justify-center items-center fixed w-full top-0 left-0 h-full backdrop-blur-sm bg-black bg-opacity-50 z-20">
           <div
-            className="flex flex-col bg-white w-[732px] h-auto py-10 px-[50px] gap-8 rounded-3xl"
+            className="flex flex-col bg-white w-[732px] h-auto py-10 px-[50px] gap-[30px] rounded-3xl"
             ref={modalRef}
           >
             <MemberProfile currentUserId={userId} />

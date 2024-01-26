@@ -1,7 +1,9 @@
 import { Tables } from "@/types/supabase"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import Image from "next/image"
 import React from "react"
+import { updateProjectViews } from "../../api"
 
 type Props = {
   project: Tables<"projects">
@@ -32,11 +34,11 @@ const ProjectWriterInfo = ({ project, user }: Props) => {
         {user.user_nickname}
       </li>
       <li>
-        {FORMATTED_DATE === updateDate
+        {project.updated_at === null
           ? FORMATTED_DATE
           : `${updateDate} (수정됨)`}
       </li>
-      <li>조회수 190</li>
+      <li>조회수 {project.views}</li>
     </>
   )
 }

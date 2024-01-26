@@ -2,8 +2,9 @@ import { Tables } from "@/types/supabase"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import React from "react"
-import { removeProject } from "../../api"
+import { removeProject } from "../../../api"
 import { useRouter } from "next/navigation"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 type Props = {
   project: Tables<"projects">
@@ -13,6 +14,7 @@ type Props = {
 const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
   const queryClient = useQueryClient()
   const router = useRouter()
+  const { openCustomModalHandler } = useCustomModal()
 
   /**
    *@ mutaion 게시물 삭제 후 확인창 띄워주고 목록으로 이동
@@ -23,7 +25,7 @@ const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
       await queryClient.invalidateQueries({
         queryKey: ["projects"],
       })
-      alert("게시물이 삭제되었습니다!")
+      openCustomModalHandler("삭제되었습니다!", "alert")
       router.replace("/projects")
     },
     onError: (error) => {
@@ -34,10 +36,11 @@ const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
   /**
    *@ function 받아온 id를 삭제 함수에 넣어서 확인창으로 검사 후 삭제 처리 */
   const isDeleteClickHandler = (id: string) => {
-    const isDelCheck = window.confirm("정말로 삭제하시겠습니까?")
-    if (isDelCheck) {
+    const handler = () => {
       removeProjectMutate.mutate(id)
     }
+
+    openCustomModalHandler("정말로 삭제하시겠습니까?", "confirm", handler)
   }
 
   return (

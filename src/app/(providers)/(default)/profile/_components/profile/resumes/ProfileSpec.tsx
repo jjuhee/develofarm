@@ -32,7 +32,7 @@ const ProfileSpec = ({ profileId }: { profileId: string }) => {
           specs.map((spec) => (
             <div
               key={spec.id}
-              className="flex justify-between items-center h-[60px] w-[580px]"
+              className="flex justify-between items-start h-[60px] w-[580px] pt-[30px] pb-[70px]"
             >
               <div className="flex">
                 <p>{spec.spec_date}</p>

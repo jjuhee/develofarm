@@ -1,9 +1,9 @@
 "use client"
 
-import { getComments } from "../../api"
 import React from "react"
 import Image from "next/image"
 import dayjs from "dayjs"
+import { getComments } from "../../api"
 
 type Props = {
   recomments: Exclude<
@@ -17,7 +17,10 @@ const ReComments = ({ recomments }: Props) => {
     <div>
       {(recomments as unknown as any[])?.map((recomment) => {
         return (
-          <div key={recomment.id} className="mb-3">
+          <div
+            key={recomment.id}
+            className="mb-3 bg-[#EEEEEE] rounded-xl py-5 px-10 h-[180px]"
+          >
             <Image
               width={48}
               height={48}
@@ -31,6 +34,7 @@ const ReComments = ({ recomments }: Props) => {
             <span className="text-xs">
               {dayjs(recomment.created_at).format("YYYY-MM-DD HH:mm:ss")}
             </span>
+            {/* TODO: 대댓글 수정 삭제 예정 */}
             {/* <CommentRemoveEditButtons comment={reComment} /> */}
             <div className="flex flex-col pl-14 min-h-28 border-b-2">
               <div className="h-auto font-semibold">{recomment.content}</div>

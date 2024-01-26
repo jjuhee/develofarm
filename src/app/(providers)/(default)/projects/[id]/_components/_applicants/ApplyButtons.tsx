@@ -1,61 +1,120 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import Image from "next/image"
 import React from "react"
-import { getMembers, setProjectInMember } from "../../api"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import {
+  getMembers,
+  removeProjectInMember,
+  setProjectInMember,
+} from "../../api"
+import Image from "next/image"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 type Props = {
+  applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
   applicant: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
 }
 
-const ApplyButtons = ({ applicant }: Props) => {
+const ApplyButtons = ({ applicant, applicants }: Props) => {
   const queryClient = useQueryClient()
+  const { openCustomModalHandler } = useCustomModal()
+
+  /*@ param 참여 중인 멤버 인원 수 */
+  const applyApplications = applicants?.filter(
+    (applicant) => applicant.application_status === true,
+  )
+
   /**
-   *@ mutaion 참여중인 멤버에 신청자 등록 후 확인창 띄워주기
-   TODO: 업데이트 기능 수정 중 */
-  // const updateMemberMutate = useMutation({
-  //   mutationFn: (applicant.project_id, applicant.user_id) =>
-  //     setProjectInMember({ project_id: applicant.project_id, userId }),
-  //   onSuccess: async () => {
-  //     await queryClient.invalidateQueries({
-  //       queryKey: ["project", { projectId: applicant.project_id }],
-  //     })
-  //   },
-  //   onError: (error) => {
-  //     console.log(error)
-  //   },
-  // })
+   *@ mutaion 참여중인 멤버에 신청자 등록 후 확인창 띄워주기*/
+  const updateMemberMutate = useMutation({
+    mutationFn: async ({
+      projectId,
+      userId,
+    }: {
+      projectId: string
+      userId: string
+    }) => {
+      return setProjectInMember(projectId, userId)
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["applicants", { projectId: applicant.project_id }],
+      })
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  /**
+   *@ mutaion 신청자 목록에서 멤버 삭제하고 확인창 띄워주기*/
+  const removeMemberMutate = useMutation({
+    mutationFn: removeProjectInMember,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["applicants", { projectId: applicant.project_id }],
+      })
+      openCustomModalHandler("거절되었습니다", "alert")
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
 
   /**
    *@ function 참여중인 멤버 등록
    TODO: 참여 멤버 등록 버튼 구현중 */
   const onApplyButtonHandler = () => {
-    // updateMemberMutate.mutate({
-    //   projectId: applicant.project_id,
-    //   userId: applicant.user_id,
-    // })
-  }
+    const handler = () => {
+      if (
+        applicant.projects?.number_of_people &&
+        applyApplications.length >= applicant.projects.number_of_people
+      ) {
+        return openCustomModalHandler("모집인원이 가득찼습니다!", "alert")
+      } else {
+        updateMemberMutate.mutate({
+          projectId: applicant.project_id,
+          userId: applicant.user_id,
+        })
+      }
+    }
 
+    openCustomModalHandler(
+      "프로젝트 멤버로 등록하시겠습니까?",
+      "confirm",
+      handler,
+    )
+  }
+  
   /**
    *@ function 신청자 목록에서 거절하기
    TODO: 신청자 삭제 기능 수정 중 */
-  const onRejectButtonHandler = () => {}
+  const onRejectButtonHandler = () => {
+    removeMemberMutate.mutate(applicant.id)
+  }
 
   return (
-    <div className="flex flex-row-reverse w-36 ml-auto mt-[-105px]">
-      <button className="mr-5" onClick={() => onApplyButtonHandler()}>
+    <div className="flex flex-row-reverse w-36 ml-auto mt-[-80px]">
+      <button
+        className="mr-5 hover:scale-110 transition-all duration-200"
+        onClick={() => {
+          onApplyButtonHandler()
+        }}
+      >
         <Image
-          width={16}
-          height={16}
-          src="/images/checkIcon.png"
+          width={20}
+          height={20}
+          src="/icons/checkIcon.png"
           alt="수락 아이콘"
-          className="w-11 h-11 p-2 rounded-full bg-[#B8FF65] object-none"
+          className="w-11 h-11 p-2 bg-[#000000] object-none rounded-full"
         />
       </button>
-      <button className="mr-3" onClick={onRejectButtonHandler}>
+      <button
+        className="mr-3 hover:scale-110 transition-all duration-200"
+        onClick={onRejectButtonHandler}
+      >
         <Image
           width={12}
           height={12}
-          src="/images/rejectIcon.png"
+          src="/icons/rejectIcon.png"
           alt="거절 아이콘"
           className="w-11 h-11 p-2 rounded-full bg-slate-300 object-none"
         />

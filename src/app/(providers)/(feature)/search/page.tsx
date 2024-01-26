@@ -1,29 +1,18 @@
 "use client"
-import BookmarkButton from "@/components/BookmarkButton"
-import Image from "next/image"
-import Link from "next/link"
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { FaSearch } from "react-icons/fa"
-import { MdOutlineCancel } from "react-icons/md"
 import { getSearchedProject } from "../../(default)/projects/api"
 import { useQuery } from "@tanstack/react-query"
 import ProjectCard from "../../(default)/projects/_components/ProjectCard"
-import EmptyState from "@/components/EmptyState"
-import Spacer from "@/components/ui/Spacer"
-import {
-  getBookmarks,
-  getBookmarksByUserId,
-  getProjectTech,
-  getProjects,
-} from "../../(default)/projects/api"
-import Pagination from "@mui/material/Pagination"
-import { Database, Tables } from "@/types/supabase"
-import Category from "../../(default)/projects/_components/Category"
+import { getBookmarksByUserId } from "../../(default)/projects/api"
+import { Tables } from "@/types/supabase"
 import { supabaseForClient } from "@/supabase/supabase.client"
+import { TProjectsType } from "@/types/extendedType"
+import Spacer from "@/components/ui/Spacer"
+import { HiOutlineXMark } from "react-icons/hi2"
 
 //해당 이용자의 localstorage 가져오기
 interface keywordsInterface {
-  id?: number
   num: number
   text?: string
 }
@@ -67,7 +56,7 @@ const SearchPage = () => {
   const [order, setOrder] = useState(1)
 
   const [keywords, setKeywords] = useState<keywordsInterface[]>([])
-  const [userId, setUserId] = useState<number>()
+
   const [text, setText] = useState<string>()
 
   //북마크
@@ -75,6 +64,16 @@ const SearchPage = () => {
     queryKey: ["bookmarks", currentUser],
     queryFn: () => getBookmarksByUserId(currentUser),
     enabled: !!currentUser,
+  })
+
+  const { data: searchedData, refetch } = useQuery({
+    queryKey: ["searchedProjects", text],
+    queryFn: () => {
+      if (text) {
+        return getSearchedProject(text)
+      }
+    },
+    enabled: false,
   })
 
   //프로젝트 기술 스택
@@ -96,14 +95,6 @@ const SearchPage = () => {
   useEffect(() => {
     //window 객체가 완전히 불려진 상태에서 localstorage를 확인하는 조건문(처음에만 들어옴)
     if (typeof window !== "undefined") {
-      //로그인한 이용자의 id 추출하여 keywods의 id 값으로 들어감-----
-      const result2: any = localStorage.getItem(
-        "sb-aksbymviolrkiainilpq-auth-token",
-      )
-      const user_id = JSON.parse(result2).user.id
-      setUserId(user_id)
-      //------------------------------
-
       //--만약 로컬스토리지에 keywords가 있다면 keywords state에 넣는다.
       if (localStorage.getItem("keywords")) {
         const result1: any = localStorage.getItem("keywords")
@@ -131,7 +122,6 @@ const SearchPage = () => {
     }
 
     const newKeyword: keywordsInterface = {
-      id: userId,
       num: keywords.length,
       text: searchInput,
     }
@@ -179,30 +169,20 @@ const SearchPage = () => {
     setText(text)
   }
 
-  const { data: searchedData, refetch } = useQuery({
-    queryKey: ["searchedProjecs", text],
-    queryFn: () => {
-      if (text) {
-        return getSearchedProject(text)
-      }
-    },
-    enabled: false,
-  })
-
   console.log("data", searchedData)
   return (
-    <>
-      <section className="flex justify-center align-center mt-40 ">
+    <div className="min-h-[700px]">
+      <section className="flex justify-center align-center mt-40">
         <form onSubmit={onSubmitHandler} className="relative">
           <div className="relative flex items-center">
-            <button type="submit" className="absoulute top-3">
+            <button type="submit" className="top-3">
               <FaSearch
                 size={20}
-                className="absolute left-3 top-4 text-gray-500 "
+                className="absolute left-3 top-4 text-gray-500 ml-3"
               />
             </button>
             <input
-              className="p-3 pl-10 rounded-3xl border border-gray w-[30rem] focus:border-transparent focus:ring-2 focus:ring-green-300 transition-all duration-300"
+              className="p-3 pl-[60px] rounded-3xl border border-gray w-[800px] focus:border-transparent focus:ring-2 focus:ring-green-300 transition-all duration-300"
               type="text"
               name="search"
               value={text}
@@ -214,7 +194,7 @@ const SearchPage = () => {
                 onClick={onRemoveTextHandler}
                 className="absolute right-4 hover:cursor-pointer"
               >
-                <MdOutlineCancel />
+                <HiOutlineXMark />
               </span>
             ) : (
               <></>
@@ -235,8 +215,8 @@ const SearchPage = () => {
           </div>
         </div>
         {/* 로컬스토리지에서도 제한을 둘것? */}
-        <div className="flex justify-center">
-          <ul className=" flex flex-row w-[50rem] justify-center items-center mt-2 ">
+        <div className="flex justify-center mt-5 ">
+          <ul className=" flex flex-row w-[50rem] justify-center items-center mt-2 gap-3">
             {keywords?.length ? (
               keywords.slice(0, 7).map((keyword) => (
                 <div
@@ -244,9 +224,9 @@ const SearchPage = () => {
                   onClick={() =>
                     onSearchKeywordChangeHandler(keyword.text as string)
                   }
-                  key={keyword.id}
+                  key={keyword.text}
                 >
-                  <div className="bg-gray-200 rounded-3xl p-1 ml-2 relative flex items-center">
+                  <div className="bg-gray-200 rounded-3xl p-1 pr-2 ml-2 relative flex gap-1 items-center">
                     <span className="flex-grow whitespace-nowrap overflow-hidden">
                       {keyword.text}
                     </span>
@@ -254,7 +234,7 @@ const SearchPage = () => {
                       onClick={() => onRemoveEachKeywordHandler(keyword.num)}
                     >
                       <span>
-                        <MdOutlineCancel />
+                        <HiOutlineXMark />
                       </span>
                     </button>
                   </div>
@@ -267,6 +247,7 @@ const SearchPage = () => {
         </div>
       </section>
 
+      <Spacer y={70} />
       {/* -------프로젝트 리스트 들어오기 ---------- */}
       {(searchedData?.length as number) > 0 ? (
         <ul className="flex flex-col gap-8">
@@ -274,7 +255,7 @@ const SearchPage = () => {
             return (
               <ProjectCard
                 key={item?.id}
-                project={item}
+                project={item as TProjectsType}
                 bookmarks={bookmarks as Tables<"bookmarks">[]}
                 currentUser={currentUser}
               />
@@ -282,10 +263,12 @@ const SearchPage = () => {
           })}
         </ul>
       ) : (
-        <></>
+        <div className="mt-5">
+          <p>검색 결과가 없습니다.</p>
+        </div>
         // <EmptyState />
       )}
-    </>
+    </div>
   )
 }
 

@@ -5,13 +5,13 @@ import Spacer from "@/components/ui/Spacer"
 import { useParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { getProject } from "../api"
-import WriterEditRemoveButtons from "./_components/WriterEditRemoveButtons"
-import FooterMenus from "./_components/FooterMenus"
+import WriterEditRemoveButtons from "./_components/_header/WriterEditRemoveButtons"
+import FooterMenus from "./_components/_footer/FooterMenus"
 import useUserStore from "@/store/user"
-import ProjectMetaInfo from "./_components/ProjectMetaInfo"
-import TechStackTag from "./_components/TechStackTag"
-import ProjectWriterInfo from "./_components/ProjectWriterInfo"
-import FooterList from "./_components/FooterList"
+import ProjectMetaInfo from "./_components/_header/ProjectMetaInfo"
+import TechStackTag from "./_components/_header/TechStackTag"
+import ProjectWriterInfo from "./_components/_header/ProjectWriterInfo"
+import FooterList from "./_components/_footer/FooterList"
 import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 
@@ -53,9 +53,20 @@ const DetailPage = () => {
     <div className="flex flex-col w-full my-0 mx-auto">
       <Spacer y={90} />
       <header>
-        <h1 className="text-3xl font-semibold">{project.title}</h1>
+        <div className="flex items-center">
+          <span
+            className={`${
+              project.recruit_status
+                ? "bg-[#666666] border-[#666666] text-white"
+                : "bg-white  border-black text-black"
+            } min-w-[90px] px-3 py-1 border-2 text-center rounded-2xl text-[16px] font-[700]`}
+          >
+            {project.recruit_status ? "모집 완료" : "모집 중"}
+          </span>
+          <h1 className="ml-3 text-3xl font-semibold">{project.title}</h1>
+        </div>
         <Spacer y={30} />
-        <TechStackTag />
+        <TechStackTag project={project} />
         <Spacer y={25} />
         <ul className="flex gap-x-5 pl-2 text-zinc-400 mb-5 items-center">
           {project.user && (
@@ -67,7 +78,7 @@ const DetailPage = () => {
       <main>
         <ProjectMetaInfo project={project} />
         <Spacer y={50} />
-        <section className="mb-5 border-t-2 border-b-2 border-zinc-600 pb-10 min-h-96">
+        <section className="mb-5 border-b-2 border-zinc-600 pb-10 min-h-96">
           <EditorContent editor={editor} />
         </section>
         <FooterMenus project={project} />

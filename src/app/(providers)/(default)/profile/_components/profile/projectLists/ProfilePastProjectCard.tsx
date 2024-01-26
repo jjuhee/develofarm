@@ -69,11 +69,11 @@ const ProfilePastProjectCard = ({ profileId }: { profileId: string }) => {
                 <div className="flex font-bold">
                   <div>
                     <p
-                      className={`p-[5px] px-[10px] mr-3 border border-solid rounded-[5px] ${
+                      className={`p-[5px] px-[10px] mr-3 border border-solid border-[#666666] rounded-full ${
                         project.projects?.recruit_status
-                          ? "bg-[#666666]"
-                          : "bg-[#297A5F]"
-                      } text-white text-[14px]`}
+                          ? "bg-[#666666] text-white"
+                          : "bg-[#ffffff] font-bold"
+                      } text-[15px]`}
                     >
                       {project.projects?.recruit_status
                         ? "모집 완료"
@@ -81,12 +81,21 @@ const ProfilePastProjectCard = ({ profileId }: { profileId: string }) => {
                     </p>
                   </div>
                   <div>
-                    <h2 className="text-[20px]">{project.projects?.title}</h2>
+                    <h2 className="text-[20px]">
+                      {project.projects?.title &&
+                      project.projects?.title.length > 10
+                        ? project.projects?.title.slice(0, 10) + "..."
+                        : project.projects?.title}
+                    </h2>
                   </div>
                 </div>
               </Link>
-              <div className="pt-[20px] text-[14px]">
-                <p>{project.projects?.content}</p>
+              <div className="pt-[20px] text-[14px] line-clamp-2">
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: project.projects?.content as string,
+                  }}
+                />
                 {/* 북마크 버튼 */}
               </div>
             </div>

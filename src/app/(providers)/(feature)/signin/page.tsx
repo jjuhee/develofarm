@@ -13,7 +13,6 @@ const page = () => {
         },
       },
     })
-    console.log("구글로그인 data", data)
   }
   const getKakaoSocialLogin = () => {
     const data = supabaseForClient.auth.signInWithOAuth({

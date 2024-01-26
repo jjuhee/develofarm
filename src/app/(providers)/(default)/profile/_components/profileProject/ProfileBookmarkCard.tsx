@@ -46,24 +46,33 @@ const ProfileBookmarkCard = ({ profileId }: { profileId: string }) => {
                 <div className="flex font-bold">
                   <div>
                     <p
-                      className={`p-[5px] px-[10px] mr-3 border border-solid rounded-[5px] ${
+                      className={`p-[5px] px-[10px] mr-3 border border-solid border-[#666666] rounded-full ${
                         bookmark.projects?.recruit_status
-                          ? "bg-[#666666]"
-                          : "bg-[#297A5F]"
-                      } text-white text-[14px]`}
+                          ? "bg-[#666666] text-white"
+                          : "bg-[#ffffff] text-bold"
+                      } text-[15px]`}
                     >
                       {bookmark.projects?.recruit_status
-                        ? "모집완료"
+                        ? "모집 완료"
                         : "모집 중"}
                     </p>
                   </div>
                   <div>
-                    <h2 className="text-[20px]">{bookmark.projects?.title}</h2>
+                    <h2 className="text-[20px]">
+                      {bookmark.projects?.title &&
+                      bookmark.projects?.title.length > 10
+                        ? bookmark.projects?.title.slice(0, 10) + "..."
+                        : bookmark.projects?.title}
+                    </h2>
                   </div>
                 </div>
               </Link>
-              <div className="pt-[20px] text-[14px]">
-                <p>{bookmark.projects?.content}</p>
+              <div className="pt-[20px] text-[14px] line-clamp-2">
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: bookmark.projects?.content as string,
+                  }}
+                />
                 {/* 북마크 버튼 */}
               </div>
             </div>
