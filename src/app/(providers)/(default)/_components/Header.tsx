@@ -14,6 +14,8 @@ import { LuFolder } from "react-icons/lu"
 import { IoLogOutOutline } from "react-icons/io5"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import { useRouter } from "next/navigation"
+
 const Header = () => {
   const { userId } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
@@ -28,6 +30,8 @@ const Header = () => {
     setViewMemberModal(false)
     setMemberPosition(null)
   }
+
+  const router = useRouter()
   const [email, setEmail] = useState<string>("")
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>()
 
@@ -73,7 +77,6 @@ const Header = () => {
 
   console.log("changeState", changeState)
   useEffect(() => {
-    console.log("USEEFFECT !")
     const subscription = supabaseForClient.auth.onAuthStateChange(
       (event, session) => {
         console.log(event, session)
@@ -95,7 +98,8 @@ const Header = () => {
         }
       },
     )
-    // subscription.data.subscription.unsubscribe()
+    subscription.data.subscription.unsubscribe()
+    console.log("onAuthTStateChange!!!!!")
   }, [])
 
   useOnClickOutSide({
@@ -111,6 +115,7 @@ const Header = () => {
     supabaseForClient.auth.signOut()
     setIsLoggedOut(true)
     alert("로그아웃 되었습니다.")
+    router.push("/")
     // customModal("로그아웃이 되었습니다", "alert")
   }
   //END
