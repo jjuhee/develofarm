@@ -113,7 +113,7 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
           <h2 className="text-[26px] font-bold">최종학력</h2>
         </div>
 
-        <div className="flex justify-between items-start pt-[36px]">
+        <div className="flex justify-between items-start pt-[35px]">
           <div>
             <div className="flex">
               <input
@@ -189,9 +189,9 @@ const ProfileEducationForm = ({ profileId }: { profileId: string }) => {
 
         <button
           onClick={handleCombinedAction}
-          className="mt-[20px] bg-green-500 text-white px-[10px] py-[5px] rounded"
+          className="text-[15px] ml-[480px] mb-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
         >
-          완료
+          내용 저장하기
         </button>
       </div>
     </div>

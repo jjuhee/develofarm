@@ -134,7 +134,7 @@ const ProfileCareerForm = ({ profileId }: { profileId: string }) => {
         <h2 className="text-[26px] font-bold">경력</h2>
         <button
           onClick={handleAddCareerSet}
-          className="flex ml-auto border-2 bg-[#B8FF65] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#666666] hover:text-[#B8FF65] transition-all duration-300"
+          className="flex ml-auto border-[1.5px] border-[#A6A6A6] bg-[#ffffff] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#EEEEEE] hover:border-[#000000] transition-all duration-300"
         >
           <GoPlus className="text-[25px] mx-[3px]" />
           추가하기
@@ -325,9 +325,9 @@ const ProfileCareerForm = ({ profileId }: { profileId: string }) => {
             handleAddCareer()
             handleUpdateCareers()
           }}
-          className="mt-[20px] bg-green-500 text-white px-[10px] py-[5px] rounded"
+          className="text-[15px] ml-[480px] mb-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
         >
-          완료
+          내용 저장하기
         </button>
       </div>
     </div>

@@ -202,7 +202,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                 name="userNickname"
                 value={user.user_nickname}
                 onChange={(e) => handleChange(e, "user_nickname")}
-                className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[872px] h-[48px] hover:border-[#000000]"
+                className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[20px] w-[872px] h-[48px] hover:border-[#000000]"
                 placeholder="닉네임을 입력하세요..."
                 maxLength={10}
               />
@@ -225,7 +225,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                     name="userPhoneNumber"
                     value={user.user_phone_number}
                     onChange={(e) => handleChange(e, "user_phone_number")}
-                    className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[431px] h-[48px] hover:border-[#000000]"
+                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[20px] w-[431px] h-[48px] hover:border-[#000000]"
                     placeholder="- 를 넣어서 입력하세요."
                     maxLength={13}
                   />
@@ -246,9 +246,9 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                   {positions?.map((position) => (
                     <li
                       key={position.id}
-                      className={`border border-[#CCCCCC] rounded-full font-bold text-[16px] w-[135px] h-[48px] flex items-center justify-center cursor-pointer hover:border-[#000000] ${
+                      className={`border border-[#CCCCCC] rounded-[8px] gap-[15px] font-bold text-[16px] w-[135px] h-[48px] flex items-center justify-center cursor-pointer hover:border-[#000000] ${
                         selectedPositionId === position.id
-                          ? "bg-[#B8FF65] text-[#000000] hover:bg-[#666666] hover:text-[#B8FF65]  transition-all duration-300"
+                          ? "bg-[#B8FF65] text-[#000000] hover:bg-[#B8FF65] hover:text-[#000000]  transition-all duration-300 border-none"
                           : ""
                       }`}
                       onClick={() => {
@@ -258,9 +258,9 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                     >
                       {position.name}
                       {isPositionDropdownOpen ? (
-                        <IoIosArrowUp />
+                        <IoIosArrowUp className="text-[25px]" />
                       ) : (
-                        <IoIosArrowDown />
+                        <IoIosArrowDown className="text-[25px]" />
                       )}
                       {selectedPositionId === position.id &&
                         isPositionDropdownOpen && (
@@ -287,7 +287,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                                           tech.techs?.id as string,
                                         )
                                       }
-                                      className="cursor-pointer accent-[#AAAAAA] h-[16px] w-[16px] rounded-[4px]"
+                                      className="cursor-pointer accent-[#000000] h-[16px] w-[16px] rounded-[4px]"
                                     />
                                     <label
                                       htmlFor={tech.techs?.id}
@@ -315,7 +315,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                     name="user_email"
                     value={user.user_email}
                     onChange={(e) => handleChange(e, "user_email")}
-                    className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[431px] h-[48px] hover:border-[#000000]"
+                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[20px] w-[431px] h-[48px] hover:border-[#000000]"
                     placeholder="이메일을 입력하세요..."
                   />
                   <button
@@ -333,7 +333,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                   </p>
                   <div className="relative">
                     <div
-                      className="border border-[#CCCCCC] rounded-full pl-[25px] font-bold text-[20px] w-[431px] h-[48px] flex items-center justify-beteewn cursor-pointer hover:border-[#000000]"
+                      className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[20px] w-[431px] h-[48px] flex items-center justify-beteewn cursor-pointer hover:border-[#000000]"
                       onClick={toggleStatusDropdown}
                     >
                       {
@@ -390,7 +390,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
                 (tech) =>
                   selectedTechs.includes(tech.techs?.id as string) && (
                     <span key={tech.id}>
-                      <p className="bottom-0 right-2 border-2 border-[#000000] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-full hover:bg-[#000000] hover:text-[#B8FF65] transition-all duration-300">
+                      <p className="bottom-0 right-2 border-none bg-[#E6E6E6] text-[16px] font-[700] py-2 px-6 rounded-full">
                         {tech.techs?.tech_name}
                       </p>
                     </span>
@@ -421,11 +421,12 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
         </div>
       </div>
       <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-full"
+        className="text-[15px] ml-[1135px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65]"
         onClick={handleCombinedAction}
       >
-        프로필 업데이트 하기
+        저장하기
       </button>
+
       <hr className="my-8 border-t-2 border-gray-300" />
     </div>
   )

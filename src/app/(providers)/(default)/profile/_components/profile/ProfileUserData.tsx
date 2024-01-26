@@ -102,7 +102,7 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
             {users.user_tech.map((tech) => (
               <p
                 key={tech.techs?.tech_name}
-                className="bottom-0 right-2 border-2 border-[#000000] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-full hover:bg-[#000000] hover:text-[#B8FF65] transition-all duration-300"
+                className="bottom-0 right-2 border-none bg-[#E6E6E6] text-[16px] font-[700] py-2 px-6 rounded-full"
               >
                 {tech.techs?.tech_name}
               </p>
