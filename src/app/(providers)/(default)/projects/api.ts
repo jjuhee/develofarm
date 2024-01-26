@@ -323,7 +323,6 @@ export async function getRegions() {
 
 // 검색어와 일치하는 프로젝트 가져오기
 export async function getSearchedProject(title: string) {
-  console.log("api에서 들어오는", title)
   const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
     .select(
@@ -332,7 +331,7 @@ export async function getSearchedProject(title: string) {
     .ilike("title", `%${title}%`)
 
   if (projectError) console.log("error", projectError)
-  console.log("data는 무라고나오ㅗ지?", projectData)
+
   return projectData || null
 }
 
