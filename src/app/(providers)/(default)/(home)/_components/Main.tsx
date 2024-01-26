@@ -27,18 +27,10 @@ export default function Main({ children }: { children: React.ReactNode }) {
 
   const getFetchProject = async () => {
     const bookmarksCountEachProject = await getBookmarksCountEachProject()
+    console.log("ssssssssss", bookmarksCountEachProject)
   }
 
   getFetchProject()
-  useEffect(() => {
-    //토큰 가져오는 함수
-    // const localStorageAuth = () => {
-    //   const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN
-    //   const userInfo = localStorage.getItem(`${AUTH_TOKEN}`)
-    //   console.log("어떻게 나오는 거지 ?", userInfo)
-    // }
-    // localStorageAuth()
-  }, [])
 
   const arr = [
     {

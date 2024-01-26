@@ -29,6 +29,7 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
     surfitArticles.sort(() => Math.random() - 0.5)
   }
 
+  console.log("아티클", surfitArticlesBundle)
   //받아오는 기사를 랜덤으로 섞어주기
 
   //surfitArticles에 데이터가 들어가 있음
@@ -72,6 +73,18 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                           : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
                       }
                     </div>
+                    <span className="text-[10px] m">
+                      <Link
+                        href={
+                          surfitArticlesBundle
+                            ? surfitArticlesBundle[selectedImageNumber + 1]
+                                ?.href
+                            : ""
+                        }
+                      >
+                        보러가기
+                      </Link>
+                    </span>
                   </div>
                 </div>
               ) : (
@@ -101,7 +114,7 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                           : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
                       }
                     </div>
-                    <span className="text-[10px] ml-1">
+                    <span className="text-[10px] m">
                       <Link href={surfitArticles[0].href}>보러가기</Link>
                     </span>
                   </div>
