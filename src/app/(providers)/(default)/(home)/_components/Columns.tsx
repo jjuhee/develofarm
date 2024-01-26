@@ -18,19 +18,12 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
     number | undefined
   >(undefined)
 
-  console.log("셀렉트 이미지 넘버", selectedImageNumber)
   const [surfitArticlesBundle, setSurfitArticlesBundle] = useState<
     TSurfitArticles[] | undefined
   >()
   useEffect(() => {
     setSurfitArticlesBundle(surfitArticles)
   })
-  console.log(
-    "setsurfitarticles",
-    Array.isArray(surfitArticles)
-      ? surfitArticlesBundle && surfitArticlesBundle[0]
-      : "",
-  )
   const onGetsurfitArticlesRandom = ({ surfitArticles }: Props) => {
     surfitArticles.sort(() => Math.random() - 0.5)
   }
@@ -43,8 +36,8 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
       <div className="my-0 mx-auto p-10 text-2xl font-bold text-center">
         인기 칼럼
       </div>
-      <div className="w-[900px] my-0 mx-auto">
-        <div className="h-[300px]">
+      <div className="w-[1000px] my-0 mx-auto">
+        <div className="h-[500px]">
           <div className="grid grid-cols-2 grid-rows-1 gap-x-2 h-full">
             {/* 왼쪽의 큰 이미지 */}
             <div className="relative overflow-hidden border border-#ccc col-span-1 row-span-2 rounded-xl shadow-lg">
@@ -64,7 +57,6 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                     />
                   </div>
                   <div className="flex-shrink-0 font-bold text-[12px] p-[5px]">
-                    제목
                     {
                       surfitArticlesBundle
                         ? surfitArticlesBundle[selectedImageNumber + 1]
@@ -72,7 +64,6 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                         : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
                     }
                     <div className="text-[10px] p-[5px]">
-                      내용
                       {
                         surfitArticlesBundle
                           ? surfitArticlesBundle[selectedImageNumber + 1]
@@ -97,14 +88,12 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                     />
                   </div>
                   <div className="flex-shrink-0 font-bold text-[12px] p-[5px]">
-                    제목
                     {
                       surfitArticlesBundle
                         ? surfitArticlesBundle[0]?.title || ""
                         : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
                     }
                     <div className="text-[10px] p-[5px]">
-                      내용
                       {
                         surfitArticlesBundle
                           ? surfitArticlesBundle[0]?.description || ""
