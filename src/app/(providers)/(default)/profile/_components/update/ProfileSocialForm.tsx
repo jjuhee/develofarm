@@ -94,17 +94,66 @@ const ProfileSocialForm = ({ profileId }: { profileId: string }) => {
   return (
     <div>
       {social_links && social_links.length > 0 ? (
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="flex text-[20px] font-bold h-[40px]">Blog</h2>
+        <div>
+          <div className="flex justify-between items-center">
+            <div>
+              <h2 className="flex text-[20px] font-bold h-[40px]">Blog</h2>
+              <div className="flex relative items-center">
+                <input
+                  type="text"
+                  name="blog_url"
+                  value={updatedSocialLinks.blog_url}
+                  onChange={handleInputChange}
+                  className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[590px] h-[48px]"
+                  placeholder="블로그 주소를 입력하세요..."
+                />
+                <button
+                  onClick={(e) => handleClearInput("blog_url", e)}
+                  className="absolute right-[15px] top-[10px] text-[#AAAAAA] text-[30px] hover:text-red-500"
+                >
+                  <HiOutlineXMark />
+                </button>
+              </div>
+            </div>
+            <div>
+              <h2 className="flex text-[20px] font-bold h-[40px]">Github</h2>
+              <div className="flex relative items-center">
+                <input
+                  type="text"
+                  name="github_url"
+                  value={updatedSocialLinks.github_url}
+                  onChange={handleInputChange}
+                  className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[590px] h-[48px]"
+                  placeholder="깃허브 주소를 입력하세요..."
+                />
+                <button
+                  onClick={(e) => handleClearInput("github_url", e)}
+                  className="absolute right-[15px] top-[10px] text-[#AAAAAA] text-[30px] hover:text-red-500"
+                >
+                  <HiOutlineXMark />
+                </button>
+              </div>
+            </div>
+          </div>
+          <button
+            type="submit"
+            onClick={handleUpdateSocialLinks}
+            className="text-[15px] ml-[1135px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65]"
+          >
+            수정하기
+          </button>
+        </div>
+      ) : (
+        <div>
+          <div className="flex justify-between items-center">
             <div className="flex relative items-center">
               <input
                 type="text"
                 name="blog_url"
-                value={updatedSocialLinks.blog_url}
-                onChange={handleInputChange}
+                value={newSocialLinks.blog_url}
+                onChange={handleAddInputChange}
                 className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[590px] h-[48px]"
-                placeholder="블로그 주소를 입력하세요..."
+                placeholder="새로운 블로그 주소를 입력하세요..."
               />
               <button
                 onClick={(e) => handleClearInput("blog_url", e)}
@@ -113,67 +162,30 @@ const ProfileSocialForm = ({ profileId }: { profileId: string }) => {
                 <HiOutlineXMark />
               </button>
             </div>
-          </div>
-          <div>
-            <h2 className="flex text-[20px] font-bold h-[40px]">Github</h2>
-            <div className="flex relative items-center">
-              <input
-                type="text"
-                name="github_url"
-                value={updatedSocialLinks.github_url}
-                onChange={handleInputChange}
-                className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[590px] h-[48px]"
-                placeholder="깃허브 주소를 입력하세요..."
-              />
-              <button
-                onClick={(e) => handleClearInput("github_url", e)}
-                className="absolute right-[15px] top-[10px] text-[#AAAAAA] text-[30px] hover:text-red-500"
-              >
-                <HiOutlineXMark />
-              </button>
+            <div>
+              <div className="flex relative items-center">
+                <input
+                  type="text"
+                  name="github_url"
+                  value={newSocialLinks.github_url}
+                  onChange={handleAddInputChange}
+                  className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[590px] h-[48px]"
+                  placeholder="새로운 깃허브 주소를 입력하세요..."
+                />
+                <button
+                  onClick={(e) => handleClearInput("github_url", e)}
+                  className="absolute right-[15px] top-[10px] text-[#AAAAAA] text-[30px] hover:text-red-500"
+                >
+                  <HiOutlineXMark />
+                </button>
+              </div>
             </div>
           </div>
-          <button type="submit" onClick={handleUpdateSocialLinks}>
-            수정하기
-          </button>
-        </div>
-      ) : (
-        <div className="flex justify-between items-center">
-          <div className="flex relative items-center">
-            <input
-              type="text"
-              name="blog_url"
-              value={newSocialLinks.blog_url}
-              onChange={handleAddInputChange}
-              className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[590px] h-[48px]"
-              placeholder="새로운 블로그 주소를 입력하세요..."
-            />
-            <button
-              onClick={(e) => handleClearInput("blog_url", e)}
-              className="absolute right-[15px] top-[10px] text-[#AAAAAA] text-[30px] hover:text-red-500"
-            >
-              <HiOutlineXMark />
-            </button>
-          </div>
-          <div>
-            <div className="flex relative items-center">
-              <input
-                type="text"
-                name="github_url"
-                value={newSocialLinks.github_url}
-                onChange={handleAddInputChange}
-                className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[590px] h-[48px]"
-                placeholder="새로운 깃허브 주소를 입력하세요..."
-              />
-              <button
-                onClick={(e) => handleClearInput("github_url", e)}
-                className="absolute right-[15px] top-[10px] text-[#AAAAAA] text-[30px] hover:text-red-500"
-              >
-                <HiOutlineXMark />
-              </button>
-            </div>
-          </div>
-          <button type="button" onClick={handleAddSocialLinks}>
+          <button
+            type="button"
+            onClick={handleAddSocialLinks}
+            className="text-[15px] ml-[1135px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65]"
+          >
             추가하기
           </button>
         </div>
