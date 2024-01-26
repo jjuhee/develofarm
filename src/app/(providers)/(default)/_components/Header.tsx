@@ -75,7 +75,6 @@ const Header = () => {
   const [changeState, setChangeState] = useState(false)
   const { openCustomModalHandler: customModal } = useCustomModal()
 
-  console.log("changeState", changeState)
   useEffect(() => {
     const subscription = supabaseForClient.auth.onAuthStateChange(
       (event, session) => {
@@ -98,8 +97,10 @@ const Header = () => {
         }
       },
     )
-    subscription.data.subscription.unsubscribe()
-    console.log("onAuthTStateChange!!!!!")
+    return () => {
+      subscription.data.subscription.unsubscribe()
+      console.log("unsubscribe!!")
+    }
   }, [])
 
   useOnClickOutSide({
