@@ -51,7 +51,7 @@ const CommentForm = ({ projectId }: Props) => {
 
   return (
     <form
-      className="flex flex-col border border-slate-600 p-5"
+      className="flex flex-col border border-slate-600 rounded-2xl p-5"
       onSubmit={onSubmitHandler}
     >
       <textarea
