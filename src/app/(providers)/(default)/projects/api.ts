@@ -352,6 +352,5 @@ type SupabaseResponse = {
 export async function getBookmarksCountEachProject() {
   const { data, error } = await supabaseForClient.rpc("get_top_projects")
   if (error) console.log("error", error)
-  console.log("북마크 갯수  프로젝트별로 count !!!@@@@@@", data)
   return data
 }

@@ -27,7 +27,6 @@ export default function Main({ children }: { children: React.ReactNode }) {
 
   const getFetchProject = async () => {
     const bookmarksCountEachProject = await getBookmarksCountEachProject()
-    console.log("북마크가 많은 순으로 프로젝트 갯수", bookmarksCountEachProject)
   }
 
   getFetchProject()
@@ -143,7 +142,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
         effect="fade"
         className="w-full h-[300px]"
       >
-        {arr.map((list, index) => (
+        {arr?.map((list, index) => (
           <SwiperSlide key={index} className="relative group">
             <div className="rounded-3xl w-full h-[80%] group-hover:border-transparent transition duration-300 relative overflow-hidden">
               <Image
