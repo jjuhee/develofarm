@@ -12,7 +12,8 @@ import Image from "next/image"
 import Spacer from "@/components/ui/Spacer"
 import { getBookmarksCountEachProject } from "../../projects/api"
 
-export default function Main({ children }: { children: React.ReactNode }) {
+// export default function Main({ children }: { children: React.ReactNode }) {
+export default function Main() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
   const [projectData, setProjectData] = useState<number>()
 
@@ -284,8 +285,10 @@ export default function Main({ children }: { children: React.ReactNode }) {
       </div>
       {/*  */}
       <Spacer y={100} />
-
-      {children}
+      <div>
+        <p> 최신 칼럼이 업데이트 예정입니다. </p>
+      </div>
+      {/* {children} */}
       <Spacer y={100} />
       <div className="border">
         {" "}
