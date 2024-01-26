@@ -48,12 +48,6 @@
 </div>
 </details>
 
-<summary>푸터</summary>
-<div markdown="1">
-푸터
-</div>
-</details>
-
 ## 최종 디자인 시안
 
 ## 깃허브 조회 수
