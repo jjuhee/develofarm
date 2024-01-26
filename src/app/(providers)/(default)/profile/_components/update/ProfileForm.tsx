@@ -421,7 +421,7 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
         </div>
       </div>
       <button
-        className="text-[15px] ml-[1135px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65]"
+        className="text-[15px] ml-[1135px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
         onClick={handleCombinedAction}
       >
         저장하기
