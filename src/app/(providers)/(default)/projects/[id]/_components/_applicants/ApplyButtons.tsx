@@ -82,45 +82,45 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
       "confirm",
       handler,
     )
+  }
 
-    /**
+  /**
    *@ function 신청자 목록에서 거절하기
    TODO: 신청자 삭제 기능 수정 중 */
-    const onRejectButtonHandler = () => {
-      removeMemberMutate.mutate(applicant.id)
-    }
-
-    return (
-      <div className="flex flex-row-reverse w-36 ml-auto mt-[-80px]">
-        <button
-          className="mr-5 hover:scale-110 transition-all duration-200"
-          onClick={() => {
-            onApplyButtonHandler()
-          }}
-        >
-          <Image
-            width={20}
-            height={20}
-            src="/icons/checkIcon.png"
-            alt="수락 아이콘"
-            className="w-11 h-11 p-2 bg-[#000000] object-none rounded-full"
-          />
-        </button>
-        <button
-          className="mr-3 hover:scale-110 transition-all duration-200"
-          onClick={onRejectButtonHandler}
-        >
-          <Image
-            width={12}
-            height={12}
-            src="/icons/rejectIcon.png"
-            alt="거절 아이콘"
-            className="w-11 h-11 p-2 rounded-full bg-slate-300 object-none"
-          />
-        </button>
-      </div>
-    )
+  const onRejectButtonHandler = () => {
+    removeMemberMutate.mutate(applicant.id)
   }
+
+  return (
+    <div className="flex flex-row-reverse w-36 ml-auto mt-[-80px]">
+      <button
+        className="mr-5 hover:scale-110 transition-all duration-200"
+        onClick={() => {
+          onApplyButtonHandler()
+        }}
+      >
+        <Image
+          width={20}
+          height={20}
+          src="/icons/checkIcon.png"
+          alt="수락 아이콘"
+          className="w-11 h-11 p-2 bg-[#000000] object-none rounded-full"
+        />
+      </button>
+      <button
+        className="mr-3 hover:scale-110 transition-all duration-200"
+        onClick={onRejectButtonHandler}
+      >
+        <Image
+          width={12}
+          height={12}
+          src="/icons/rejectIcon.png"
+          alt="거절 아이콘"
+          className="w-11 h-11 p-2 rounded-full bg-slate-300 object-none"
+        />
+      </button>
+    </div>
+  )
 }
 
 export default ApplyButtons

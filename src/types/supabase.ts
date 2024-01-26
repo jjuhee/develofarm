@@ -1,4 +1,6 @@
-export type Json =
+Need to install the following packages:
+supabase@1.136.3
+Ok to proceed? (y) export type Json =
   | string
   | number
   | boolean
@@ -401,6 +403,7 @@ export interface Database {
       }
       projects: {
         Row: {
+          bookmark_count: number | null
           content: string
           created_at: string | null
           id: string
@@ -417,6 +420,7 @@ export interface Database {
           views: number
         }
         Insert: {
+          bookmark_count?: number | null
           content: string
           created_at?: string | null
           id?: string
@@ -433,6 +437,7 @@ export interface Database {
           views?: number
         }
         Update: {
+          bookmark_count?: number | null
           content?: string
           created_at?: string | null
           id?: string
@@ -631,10 +636,31 @@ export interface Database {
       }
     }
     Views: {
-      [_ in never]: never
+      unique_projects: {
+        Row: {
+          project_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Functions: {
-      [_ in never]: never
+      get_top_projects: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          title: string
+          content: string
+          picture_url: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
