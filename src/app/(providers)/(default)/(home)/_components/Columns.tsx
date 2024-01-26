@@ -29,7 +29,6 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
     surfitArticles.sort(() => Math.random() - 0.5)
   }
 
-  console.log("아티클", surfitArticlesBundle)
   //받아오는 기사를 랜덤으로 섞어주기
 
   //surfitArticles에 데이터가 들어가 있음
@@ -58,37 +57,36 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                       objectFit="cover" // 이미지를 부모 요소에 맞춤
                     />
                   </div>
-                  <div className="flex-shrink-0 font-bold text-[12px] p-[5px]">
+                  <div className="flex-shrink-0 font-bold text-[12px] p-3">
                     {
                       surfitArticlesBundle
                         ? surfitArticlesBundle[selectedImageNumber + 1]
                             ?.title || ""
-                        : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
+                        : "" // 또는 빈 문자열 또는 다른 로딩 처리 방식
                     }
-                    <div className="text-[10px] p-[5px]">
-                      {
-                        surfitArticlesBundle
-                          ? surfitArticlesBundle[selectedImageNumber + 1]
-                              ?.description || ""
-                          : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
-                      }
-                    </div>
-                    <span className="text-[10px] m">
-                      <Link
-                        href={
-                          surfitArticlesBundle
-                            ? surfitArticlesBundle[selectedImageNumber + 1]
-                                ?.href
-                            : ""
-                        }
-                      >
-                        보러가기
-                      </Link>
-                    </span>
                   </div>
+                  <div className="text-[10px] p-3">
+                    {
+                      surfitArticlesBundle
+                        ? surfitArticlesBundle[selectedImageNumber + 1]
+                            ?.description || ""
+                        : "" // 또는 빈 문자열 또는 다른 로딩 처리 방식
+                    }
+                  </div>
+                  <Link
+                    href={
+                      surfitArticlesBundle
+                        ? surfitArticlesBundle[selectedImageNumber + 1]?.href
+                        : ""
+                    }
+                  >
+                    <span className="text-[10px] hover:border-b hover:border-b-black m-3">
+                      보러가기
+                    </span>
+                  </Link>
                 </div>
               ) : (
-                <div className="w-full h-full flex flex-col opacity-100 transition-opacity duration-500">
+                <div className="w-full h-full flex flex-col  ">
                   <div className="flex-grow relative w-full h-full">
                     <Image
                       alt="대체이미지"
@@ -101,23 +99,25 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                       objectFit="cover" // 이미지를 부모 요소에 맞춤
                     />
                   </div>
-                  <div className="flex-shrink-0 font-bold text-[12px] p-[5px]">
+                  <div className="flex-shrink-0 font-bold text-[12px] p-3">
                     {
                       surfitArticlesBundle
                         ? surfitArticlesBundle[0]?.title || ""
                         : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
                     }
-                    <div className="text-[10px] p-[5px]">
-                      {
-                        surfitArticlesBundle
-                          ? surfitArticlesBundle[0]?.description || ""
-                          : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
-                      }
-                    </div>
-                    <span className="text-[10px] m">
-                      <Link href={surfitArticles[0].href}>보러가기</Link>
-                    </span>
                   </div>
+                  <div className="text-[10px] p-3">
+                    {
+                      surfitArticlesBundle
+                        ? surfitArticlesBundle[0]?.description || ""
+                        : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
+                    }
+                  </div>
+                  <Link href={surfitArticles[0].href}>
+                    <span className="text-[10px] hover:border-b hover:border-b-black m-3">
+                      보러가기
+                    </span>
+                  </Link>
                 </div>
               )}
             </div>
@@ -129,7 +129,7 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                 <>
                   <div
                     key={index}
-                    className="hover hover:cursor-pointer relative overflow-hidden border border-#ccc col-span-1 row-span-2 rounded-xl shadow-lg"
+                    className="hover hover:cursor-pointer relative overflow-hidden hover:transform hover:scale-90 transition-transform duration-300 border border-#ccc col-span-1 row-span-2 rounded-xl shadow-lg"
                     // onClick={() => setSelectedImageNumber(index)}
                     style={{}}
                   >
@@ -141,16 +141,22 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                         {" "}
                         {/* 이미지가 부모 div의 70%만 차지하도록 수정 */}
                         <img
-                          src={surfitArticle.imgSrc}
+                          src={surfitArticle.imgSrc ? surfitArticle.imgSrc : ""}
                           className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="flex-shrink-0 ">
-                        <div className="font-bold text-[10px] p-[5px]">
-                          {surfitArticle.title}
+                        <div className="font-bold text-[10px] p-3">
+                          {surfitArticle.title
+                            ? surfitArticle.title
+                            : "제목이 없습니다."}
                         </div>
-                        <span className="text-[10px] ml-2">
-                          <Link href={surfitArticle.href}>보러가기</Link>
+                        <span className="text-[10px] ml-2 hover hover:border-b hover:border-b-black my-3 ">
+                          <Link
+                            href={surfitArticle.href ? surfitArticle.href : ""}
+                          >
+                            보러가기
+                          </Link>
                         </span>
                       </div>
                     </div>
