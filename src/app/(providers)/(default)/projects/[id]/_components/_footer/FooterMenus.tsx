@@ -8,11 +8,11 @@ import useUserStore from "@/store/user"
 import FooterPublicIcon from "./FooterPublicIcon"
 import { useQuery } from "@tanstack/react-query"
 import { getComments, getMembers } from "../../api"
-import { getBookmarks, getBookmarksByProjectId } from "../../../api"
+import { getBookmarks, getBookmarksByProjectId, getProject } from "../../../api"
 import Image from "next/image"
 
 type Props = {
-  project: Tables<"projects">
+  project: Exclude<Awaited<ReturnType<typeof getProject>>, null>
 }
 
 const FooterMenus = ({ project }: Props) => {
