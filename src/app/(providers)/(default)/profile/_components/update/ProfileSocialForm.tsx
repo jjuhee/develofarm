@@ -138,7 +138,7 @@ const ProfileSocialForm = ({ profileId }: { profileId: string }) => {
           <button
             type="submit"
             onClick={handleUpdateSocialLinks}
-            className="text-[15px] ml-[1100px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65]"
+            className="text-[15px] ml-[1100px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
           >
             주소 수정하기
           </button>
@@ -184,7 +184,7 @@ const ProfileSocialForm = ({ profileId }: { profileId: string }) => {
           <button
             type="button"
             onClick={handleAddSocialLinks}
-            className="text-[15px] ml-[1100px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65]"
+            className="text-[15px] ml-[1100px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
           >
             주소 추가하기
           </button>
