@@ -11,7 +11,7 @@ export async function setMember(newMember: TablesInsert<"project_members">) {
 }
 
 /** 신청자 목록에 로그인한 유저 있는지 조회 */
-export async function getApplicatinUser(projectId: string, userId: string) {
+export async function getApplicationUser(projectId: string, userId: string) {
   const { data, error } = await supabaseForClient
     .from("project_members")
     .select("*")
@@ -25,7 +25,9 @@ export async function getApplicatinUser(projectId: string, userId: string) {
 export async function getMembers(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("project_members")
-    .select("*, users(user_nickname, avatar_url)")
+    .select(
+      "*, users(user_nickname, avatar_url, positions(name), user_tech(id, techs(tech_name))), projects(number_of_people)",
+    )
     .eq("project_id", projectId)
   if (error) console.log("error", error)
   return data
@@ -43,11 +45,19 @@ export async function getMembersInProject(projectId: string) {
 
 /** 참여중인 멤버 등록 */
 export async function setProjectInMember(projectId: string, userId: string) {
-  const { error } = await supabaseForClient
+  const { data, error } = await supabaseForClient
     .from("project_members")
     .update({ application_status: true })
     .match({ project_id: projectId, user_id: userId })
+  if (error) console.log("error", error)
+}
 
+/** 신청자 멤버 삭제 */
+export async function removeProjectInMember(id: string) {
+  const { error } = await supabaseForClient
+    .from("project_members")
+    .delete()
+    .match({ id: id })
   if (error) console.log("error", error)
 }
 

@@ -5,6 +5,13 @@ import Columns from "./Columns"
 let browser: Browser
 let page: Page
 
+interface TSurfitArticles {
+  description: string
+  href: string
+  imgSrc: string
+  title: string
+}
+
 const GetSurfitArticles = async () => {
   if (!browser) {
     browser = await puppeteer.launch({ headless: "new" })
@@ -58,7 +65,7 @@ const Column = async () => {
 
   return (
     <>
-      <Columns surfitArticles={surfitArticles} />
+      <Columns surfitArticles={surfitArticles as TSurfitArticles[]} />
     </>
   )
 }

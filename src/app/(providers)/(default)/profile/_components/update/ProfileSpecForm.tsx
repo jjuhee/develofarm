@@ -6,6 +6,7 @@ import { getSpecs, updateSpecs, addSpec, deleteSpecs } from "../../api"
 import { Tables } from "@/types/supabase"
 import { HiOutlineXMark } from "react-icons/hi2"
 import { GoPlus } from "react-icons/go"
+import useCustomModalStore from "@/store/customModal"
 
 const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
   const {
@@ -97,6 +98,15 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
     }
   }
 
+  const modalStore = useCustomModalStore()
+  // 삭제 확인용 모달을 보여주는 함수
+  const showDeleteConfirmationModal = (handler: () => void) => {
+    modalStore.setViewCustomModal(true)
+    modalStore.setModalType("confirm")
+    modalStore.setModalMessage("이 내용을 삭제하시겠습니까?")
+    modalStore.setHandler(handler)
+  }
+
   // specs 데이터 로딩 중인 경우
   if (specsLoading) {
     return <div>Loading...</div>
@@ -123,7 +133,7 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
         <h2 className="text-[26px] font-bold">자격/어학/수상</h2>
         <button
           onClick={handleAddSpecSet}
-          className="flex ml-auto border-2 bg-[#B8FF65] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#666666] hover:text-[#B8FF65] transition-all duration-300"
+          className="flex ml-auto border-2 border-[#000000] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#000000] hover:text-[#B8FF65] transition-all duration-300"
         >
           <GoPlus className="text-[25px] mx-[3px]" />
           추가하기
@@ -153,13 +163,9 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
 
               <button
                 type="button"
-                onClick={() => {
-                  const confirmDelete =
-                    window.confirm("이 내용을 삭제하시겠습니까?")
-                  if (confirmDelete) {
-                    handleDeleteSpec(spec.id)
-                  }
-                }}
+                onClick={() =>
+                  showDeleteConfirmationModal(() => handleDeleteSpec(spec.id))
+                }
                 className="text-[#AAAAAA] text-[30px] hover:text-red-500"
               >
                 <HiOutlineXMark />
@@ -199,13 +205,11 @@ const ProfileSpecForm = ({ profileId }: { profileId: string }) => {
               />
               <button
                 type="button"
-                onClick={() => {
-                  const confirmDelete =
-                    window.confirm("이 내용을 삭제하시겠습니까?")
-                  if (confirmDelete) {
-                    handleRemoveSpecSet(setIndex)
-                  }
-                }}
+                onClick={() =>
+                  showDeleteConfirmationModal(() =>
+                    handleRemoveSpecSet(setIndex),
+                  )
+                }
                 className="text-[#AAAAAA] text-[30px] hover:text-red-500"
               >
                 <HiOutlineXMark />

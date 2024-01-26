@@ -3,6 +3,7 @@ import { Tables } from "@/types/supabase"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React from "react"
 import { removeComment } from "../../api"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 type Props = {
   comment: Tables<"comments">
@@ -12,6 +13,7 @@ const CommentRemoveEditButtons = ({ comment }: Props) => {
   const queryClient = useQueryClient()
   const { userId } = useUserStore()
   const isWriter = userId === comment.user_id
+  const { openCustomModalHandler } = useCustomModal()
 
   /**
    *@ mutaion 댓글 삭제 후 확인창 띄워주고 삭제
@@ -22,7 +24,7 @@ const CommentRemoveEditButtons = ({ comment }: Props) => {
       await queryClient.invalidateQueries({
         queryKey: ["comments", { projectId: comment.project_id }],
       })
-      alert("댓글이 삭제되었습니다!")
+      openCustomModalHandler("댓글이 삭제되었습니다", "alert")
     },
     onError: (error) => {
       console.log(error)
@@ -38,17 +40,25 @@ const CommentRemoveEditButtons = ({ comment }: Props) => {
     }
   }
 
+  /**
+   *@ TODO: 수정되는 기능 넣을 예정 */
+  const updateClickHandler = () => {
+    openCustomModalHandler("아직 수정기능이 준비중입니다", "alert")
+  }
+
   return (
     isWriter && (
-      <>
-        <button className="ml-5 text-sm">수정</button>
+      <div className="">
+        <button className="ml-2 text-sm" onClick={updateClickHandler}>
+          수정
+        </button>
         <button
           className="ml-2 text-sm"
           onClick={() => isDeleteClickHandler(comment.id)}
         >
           삭제
         </button>
-      </>
+      </div>
     )
   )
 }

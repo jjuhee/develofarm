@@ -13,7 +13,7 @@ interface Props {
   project: TProjectsType
   bookmarks: Tables<"bookmarks">[]
   currentUser: string
-  page: number
+  page?: number
 }
 
 const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
@@ -54,10 +54,10 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
           alt="project"
           fill
           sizes="auto"
-          className="object-cover w-full h-full transition group-hover:scale-110 "
+          className="object-cover w-full h-full"
         />
       </section>
-      <section className="relative flex flex-col w-full py-2 justify-between">
+      <section className="relative flex flex-col w-full lg:w-[60%] py-2 justify-between">
         <div className="flex flex-col gap-4">
           <div className="flex gap-3 items-center">
             <span
@@ -65,7 +65,7 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
                 recruit_status
                   ? "bg-[#666666] border-[#666666] text-white"
                   : "bg-white  border-black text-black"
-              } min-w-[90px] px-3 py-1 border-2 text-center rounded-2xl text-[16px] font-[700] `}
+              } min-w-[90px] py-1 border-2 text-center rounded-2xl text-[16px] font-[700] `}
             >
               {recruit_status ? "모집 완료" : "모집 중"}{" "}
             </span>

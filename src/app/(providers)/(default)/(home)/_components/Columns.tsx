@@ -1,25 +1,26 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
-interface SurfitArticles {
+
+interface TSurfitArticles {
   description: string
   href: string
   imgSrc: string
   title: string
 }
-interface props {
-  surfitArticles: SurfitArticles[]
+
+interface Props {
+  surfitArticles: TSurfitArticles[]
 }
 
-const Column: React.FC<props> = ({ surfitArticles }: props) => {
+const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
   const [selectedImageNumber, setSelectedImageNumber] = useState<
     number | undefined
   >(undefined)
 
   console.log("셀렉트 이미지 넘버", selectedImageNumber)
   const [surfitArticlesBundle, setSurfitArticlesBundle] = useState<
-    SurfitArticles[] | undefined
+    TSurfitArticles[] | undefined
   >()
   useEffect(() => {
     setSurfitArticlesBundle(surfitArticles)
@@ -30,7 +31,7 @@ const Column: React.FC<props> = ({ surfitArticles }: props) => {
       ? surfitArticlesBundle && surfitArticlesBundle[0]
       : "",
   )
-  const onGetsurfitArticlesRandom = ({ surfitArticles }: props) => {
+  const onGetsurfitArticlesRandom = ({ surfitArticles }: Props) => {
     surfitArticles.sort(() => Math.random() - 0.5)
   }
 

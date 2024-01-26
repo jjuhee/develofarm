@@ -12,6 +12,8 @@ import Image from "next/image"
 import { GoPerson } from "react-icons/go"
 import { LuFolder } from "react-icons/lu"
 import { IoLogOutOutline } from "react-icons/io5"
+import useOnClickOutSide from "@/hooks/useOnClickOutSide"
+import { useCustomModal } from "@/hooks/useCustomModal"
 const Header = () => {
   const { userId } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
@@ -19,13 +21,14 @@ const Header = () => {
     (state) => state,
   )
   const [isImageActive, setIsImageActive] = useState<boolean>(false)
+  const dropdownRef = useRef<HTMLInputElement>(null)
 
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
     setViewMemberModal(false)
     setMemberPosition(null)
   }
-  const [email, setEmail] = useState<string>()
+  const [email, setEmail] = useState<string>("")
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>()
 
   const [showTooltip, setShowTooltip] = useState(false)
@@ -65,20 +68,40 @@ const Header = () => {
   //로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
   //TODO : 로그아웃시 바로 isLoggedOut이 true 값으로 변하지 않는것을 해결해야함
   const [isLoggedOut, setIsLoggedOut] = useState<boolean>(true)
+  const [changeState, setChangeState] = useState(false)
+  const { openCustomModalHandler: customModal } = useCustomModal()
 
+  console.log("changeState", changeState)
   useEffect(() => {
-    const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
-    const getAuthToken: any = localStorage.getItem(AUTH_TOKEN)
-    const json1 = JSON.parse(getAuthToken)
-    setEmail(json1?.user.user_metadata.email)
-    setAvatarUrl(json1?.user.user_metadata.avatar_url)
-    console.log("헤더에서 로컬스토리지 받기", email, avatarUrl)
-    if (getAuthToken) {
-      setIsLoggedOut(false)
-    }
-  }, [isLoggedOut])
+    console.log("USEEFFECT !")
+    const subscription = supabaseForClient.auth.onAuthStateChange(
+      (event, session) => {
+        console.log(event, session)
 
-  console.log("리렌더링 ?", email, avatarUrl)
+        if (event === "INITIAL_SESSION") {
+        } else if (event === "SIGNED_IN") {
+          const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
+          const getAuthToken: any = localStorage.getItem(AUTH_TOKEN)
+          const json1 = JSON.parse(getAuthToken)
+          setEmail(json1?.user.user_metadata.email)
+          if (getAuthToken) {
+            setIsLoggedOut(false)
+          }
+          setAvatarUrl(json1?.user.user_metadata.avatar_url)
+        } else if (event === "SIGNED_OUT") {
+        } else if (event === "PASSWORD_RECOVERY") {
+        } else if (event === "TOKEN_REFRESHED") {
+        } else if (event === "USER_UPDATED") {
+        }
+      },
+    )
+    // subscription.data.subscription.unsubscribe()
+  }, [])
+
+  useOnClickOutSide({
+    ref: dropdownRef,
+    handler: () => setIsImageActive(false),
+  })
 
   //로그아웃 함수
   const onLogoutHandler = () => {
@@ -87,7 +110,8 @@ const Header = () => {
 
     supabaseForClient.auth.signOut()
     setIsLoggedOut(true)
-    alert("로그아웃이 되었습니다")
+    alert("로그아웃 되었습니다.")
+    // customModal("로그아웃이 되었습니다", "alert")
   }
   //END
   return (
@@ -117,7 +141,7 @@ const Header = () => {
           </Link>
 
           {/* isLoggedOut이 false 일때 로그인 상태 */}
-          {!isLoggedOut ? (
+          {isLoggedOut === false ? (
             <>
               <span
                 className={`text-md hover:cursor-pointer ${
@@ -128,11 +152,11 @@ const Header = () => {
                 <VscBell />
                 {showTooltip && (
                   <div className="relative flex">
-                    <div className="flex-row w-[200px] left-[-100px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-2 z-50 ">
+                    <div className="flex-row w-[200px] left-[-100px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-3 z-50 ">
                       {isAlarmData ? (
                         <>
                           <div className=" text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
-                            "새로운 프로젝트가 생겼어요!"
+                            새로운 프로젝트가 생겼어요!
                           </div>
                         </>
                       ) : (
@@ -145,16 +169,17 @@ const Header = () => {
                 )}
               </span>
 
-              <span
+              <div
                 className="rounded-full shadow-lg hover hover:cursor-pointer"
                 onClick={onAvavatarHandlerClick}
+                ref={dropdownRef}
               >
                 <Image
-                  className="rounded-xl"
+                  className="rounded-full"
                   alt="이미지"
                   src={avatarUrl ? avatarUrl : ""}
-                  width={20}
-                  height={20}
+                  width={36}
+                  height={36}
                 />
 
                 {isImageActive && (
@@ -186,7 +211,7 @@ const Header = () => {
                     </div>
                   </div>
                 )}
-              </span>
+              </div>
             </>
           ) : (
             // isLoggedOut이 true 일때 로그인 상태

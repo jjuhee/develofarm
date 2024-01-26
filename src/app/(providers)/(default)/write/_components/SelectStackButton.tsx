@@ -186,7 +186,7 @@ const SelectStackButton = ({
           {isActive === "디자인" ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] text-[15px] transition-all duration-300 z-10 ${
+          className={`absolute flex flex-col bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] text-[15px] transition-all duration-300 z-20 ${
             isActive === "디자인" ? "visible" : "invisible"
           }`}
         >

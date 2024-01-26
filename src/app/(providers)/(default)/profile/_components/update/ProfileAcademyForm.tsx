@@ -11,6 +11,7 @@ import {
 import { Tables } from "@/types/supabase"
 import { HiOutlineXMark } from "react-icons/hi2"
 import { GoPlus } from "react-icons/go"
+import useCustomModalStore from "@/store/customModal"
 
 const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
   const {
@@ -110,6 +111,15 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
     }
   }
 
+  const modalStore = useCustomModalStore()
+  // 삭제 확인용 모달을 보여주는 함수
+  const showDeleteConfirmationModal = (handler: () => void) => {
+    modalStore.setViewCustomModal(true)
+    modalStore.setModalType("confirm")
+    modalStore.setModalMessage("이 내용을 삭제하시겠습니까?")
+    modalStore.setHandler(handler)
+  }
+
   // academies 데이터 로딩 중인 경우
   if (academiesLoading) {
     return <div>Loading...</div>
@@ -181,13 +191,11 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
 
                   <button
                     type="button"
-                    onClick={() => {
-                      const confirmDelete =
-                        window.confirm("이 내용을 삭제하시겠습니까?")
-                      if (confirmDelete) {
-                        handleDeleteAcademy(academy.id)
-                      }
-                    }}
+                    onClick={() =>
+                      showDeleteConfirmationModal(() =>
+                        handleDeleteAcademy(academy.id),
+                      )
+                    }
                     className="text-[#AAAAAA] text-[30px] hover:text-red-500"
                   >
                     <HiOutlineXMark />
@@ -260,13 +268,11 @@ const ProfileAcademyForm = ({ profileId }: { profileId: string }) => {
               />
               <button
                 type="button"
-                onClick={() => {
-                  const confirmDelete =
-                    window.confirm("이 내용을 삭제하시겠습니까?")
-                  if (confirmDelete) {
-                    handleRemoveAcademySet(setIndex)
-                  }
-                }}
+                onClick={() =>
+                  showDeleteConfirmationModal(() =>
+                    handleRemoveAcademySet(setIndex),
+                  )
+                }
                 className="text-[#AAAAAA] text-[30px] hover:text-red-500"
               >
                 <HiOutlineXMark />
