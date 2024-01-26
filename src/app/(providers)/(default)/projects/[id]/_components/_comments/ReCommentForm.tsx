@@ -7,7 +7,7 @@ import useUserStore from "@/store/user"
 import Spacer from "@/components/ui/Spacer"
 import { getComments, setComment } from "../../api"
 import ReComments from "./ReComments"
-import CommentRemoveEditButtons from "./CommentRemoveEditButtons"
+import CommentRemoveButton from "./CommentRemoveButton"
 
 type Props = {
   comment: Exclude<Awaited<ReturnType<typeof getComments>>, null>[number]
@@ -73,7 +73,7 @@ const ReCommentForm = ({ comment }: Props) => {
             ? `${(comment.comments as unknown as any[]).length}개의 답글`
             : "댓글"}
         </button>
-        <CommentRemoveEditButtons comment={comment} />
+        {!comment.del_yn && <CommentRemoveButton comment={comment} />}
       </div>
       <Spacer y={20} />
       {showForm && (

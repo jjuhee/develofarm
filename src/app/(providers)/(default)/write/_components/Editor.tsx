@@ -105,7 +105,7 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
     }
 
     /* 쓰기/수정 둘다 사용 주의 */
-    const newData: TablesInsert<"projects"> = {
+    let newData: TablesInsert<"projects"> = {
       id: projectId,
       user_id: userId,
       title,

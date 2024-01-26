@@ -4,7 +4,6 @@ import { getMembers } from "../../api"
 import ApplyButtons from "./ApplyButtons"
 
 type Props = {
-  applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
   applicant: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
 }
 
