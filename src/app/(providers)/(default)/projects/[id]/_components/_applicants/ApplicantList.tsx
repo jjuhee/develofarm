@@ -6,7 +6,6 @@ import ApplyButtons from "./ApplyButtons"
 type Props = {
   applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
   applicant: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
-  applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
 }
 
 const ApplicantList = ({ applicant, applicants }: Props) => {
