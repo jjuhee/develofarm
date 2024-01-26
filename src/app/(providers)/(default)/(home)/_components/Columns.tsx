@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 
 interface TSurfitArticles {
   description: string
@@ -100,6 +101,9 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                           : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
                       }
                     </div>
+                    <span className="text-[10px] ml-1">
+                      <Link href={surfitArticles[0].href}>보러가기</Link>
+                    </span>
                   </div>
                 </div>
               )}
@@ -109,28 +113,36 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
               {/* 오른쪽의 4개 이미지 */}
 
               {surfitArticles.slice(1, 5).map((surfitArticle, index) => (
-                <div
-                  key={index}
-                  className="hover hover:cursor-pointer relative overflow-hidden border border-#ccc col-span-1 row-span-2 rounded-xl shadow-lg"
-                  onClick={() => setSelectedImageNumber(index)}
-                  style={{}}
-                >
-                  <div className="w-full h-full flex flex-col">
-                    <div className="flex-grow relative w-full h-3/4">
-                      {" "}
-                      {/* 이미지가 부모 div의 70%만 차지하도록 수정 */}
-                      <img
-                        src={surfitArticle.imgSrc}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-shrink-0 ">
-                      <div className="font-bold text-[10px] p-[5px]">
-                        {surfitArticle.title}
+                <>
+                  <div
+                    key={index}
+                    className="hover hover:cursor-pointer relative overflow-hidden border border-#ccc col-span-1 row-span-2 rounded-xl shadow-lg"
+                    // onClick={() => setSelectedImageNumber(index)}
+                    style={{}}
+                  >
+                    <div
+                      className="w-full h-full flex flex-col"
+                      onClick={() => setSelectedImageNumber(index)}
+                    >
+                      <div className="flex-grow relative w-full h-3/4">
+                        {" "}
+                        {/* 이미지가 부모 div의 70%만 차지하도록 수정 */}
+                        <img
+                          src={surfitArticle.imgSrc}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-shrink-0 ">
+                        <div className="font-bold text-[10px] p-[5px]">
+                          {surfitArticle.title}
+                        </div>
+                        <span className="text-[10px] ml-2">
+                          <Link href={surfitArticle.href}>보러가기</Link>
+                        </span>
                       </div>
                     </div>
                   </div>
-                </div>
+                </>
               ))}
             </div>
           </div>
