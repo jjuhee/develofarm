@@ -19,7 +19,9 @@ interface TBookmarksCountEachProject {
   picture_url: string | null
 }
 ;[]
-export default function Main({ children }: { children: React.ReactNode }) {
+
+// export default function Main({ children }: { children: React.ReactNode }) {
+export default function Main() {
   const [bookmarksCountProjects, setBookmarksCountProjects] = useState<
     TBookmarksCountEachProject[] | null
   >([])
@@ -323,8 +325,10 @@ export default function Main({ children }: { children: React.ReactNode }) {
       </div>
       {/*  */}
       <Spacer y={100} />
-
-      {children}
+      <div>
+        <p> 최신 칼럼이 업데이트 예정입니다. </p>
+      </div>
+      {/* {children} */}
       <Spacer y={100} />
       <div className="border">
         {" "}
