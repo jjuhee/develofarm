@@ -83,7 +83,7 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
       handler,
     )
   }
-
+  
   /**
    *@ function 신청자 목록에서 거절하기
    TODO: 신청자 삭제 기능 수정 중 */
