@@ -2,11 +2,18 @@ import { Tables, TablesInsert } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import React from "react"
 import useUserStore from "@/store/user"
-import { closeProject, getApplicationUser, setMember } from "../../api"
+import {
+  closeProject,
+  getApplicationUser,
+  removeProjectInMember,
+  setMember,
+} from "../../api"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import Button from "@/components/ui/Button"
+import { getProject } from "../../../api"
 
 type Props = {
-  project: Tables<"projects">
+  project: Exclude<Awaited<ReturnType<typeof getProject>>, null>
   isWriter: boolean
 }
 
@@ -22,7 +29,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     mutationFn: closeProject,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["project", { projectId: project.id }],
+        queryKey: ["closeProject", { projectId: project.id }],
       })
       openCustomModalHandler("마감되었습니다!", "alert")
     },
@@ -47,13 +54,32 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   })
 
   /**
+   *@ mutation 프로젝트 신청취소 후 해당 게시물Id로 최신 신청자 목록 불러오기 */
+  const removeMemberMutate = useMutation({
+    mutationFn: removeProjectInMember,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["applyUser", { projectId: project.id }],
+      })
+      openCustomModalHandler("신청이 취소되었습니다!", "alert")
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  /**
    *@ function 작성자가 게시물 모집완료 처리 */
   const closeProjectButtonHandler = (id: string) => {
     const handler = () => {
       closeProjectMutate.mutate(id)
     }
 
-    openCustomModalHandler("정말로 마감하시겠습니까?", "confirm", handler)
+    openCustomModalHandler(
+      "마감을 진행하면\n다신 수정할 수 없습니다\n정말로 마감하시겠습니까?",
+      "confirm",
+      handler,
+    )
   }
 
   /**
@@ -68,15 +94,21 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
 
   if (applyUserIsLoading) return <div>is Loading...</div>
 
-  const applyForProjectButtonHandler: React.FormEventHandler = (e) => {
-    e.preventDefault()
-
+  /**
+   *@ query 해당 유저 id를 구분해 프로젝트 신청하기 기능 */
+  const applyForProjectButtonHandler = () => {
     const newMember: TablesInsert<"project_members"> = {
       project_id: project.id,
       user_id: userId,
     }
 
     addMemberMutate.mutate(newMember)
+  }
+
+  /**
+   *@ query 신청자 목록 id를 프로젝트 신청취소 기능 */
+  const cancelForProjectButtonHandler = (id: string) => {
+    removeMemberMutate.mutate(id)
   }
 
   return (
@@ -92,19 +124,17 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
             마감하기
           </button>
         ) : isApplicantAuthenticated ? (
-          <button
-            disabled
-            className="px-4 py-2 border-2 rounded-3xl bg-slate-900 font-semibold text-white"
-          >
-            신청완료
-          </button>
+          <Button
+            color={"main-lime"}
+            text="신청취소"
+            handler={() => cancelForProjectButtonHandler(applyUser.id)}
+          />
         ) : (
-          <button
-            className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold hover:bg-slate-900 hover:text-white transition delay-150 ease-in-out"
-            onClick={applyForProjectButtonHandler}
-          >
-            신청하기
-          </button>
+          <Button
+            color={"main-lime"}
+            text="신청하기"
+            handler={applyForProjectButtonHandler}
+          />
         )}
       </>
     )
