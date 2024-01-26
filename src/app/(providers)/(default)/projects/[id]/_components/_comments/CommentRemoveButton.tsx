@@ -9,7 +9,7 @@ type Props = {
   comment: Tables<"comments">
 }
 
-const CommentRemoveEditButtons = ({ comment }: Props) => {
+const CommentRemoveButton = ({ comment }: Props) => {
   const queryClient = useQueryClient()
   const { userId } = useUserStore()
   const isWriter = userId === comment.user_id
@@ -34,10 +34,11 @@ const CommentRemoveEditButtons = ({ comment }: Props) => {
   /**
    *@ function 받아온 id를 삭제 함수에 넣어서 확인창으로 검사 후 삭제 처리 */
   const isDeleteClickHandler = (id: string) => {
-    const isDelCheck = window.confirm("정말로 삭제하시겠습니까?")
-    if (isDelCheck) {
+    const handler = () => {
       removeCommentMutate.mutate(id)
     }
+
+    openCustomModalHandler("정말로 삭제하시겠습니까?", "confirm", handler)
   }
 
   /**
@@ -63,4 +64,4 @@ const CommentRemoveEditButtons = ({ comment }: Props) => {
   )
 }
 
-export default CommentRemoveEditButtons
+export default CommentRemoveButton
