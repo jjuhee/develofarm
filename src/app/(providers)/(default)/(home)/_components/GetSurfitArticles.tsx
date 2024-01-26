@@ -1,5 +1,10 @@
 import React from "react"
-import puppeteer, { ElementHandle, Browser, Page } from "puppeteer"
+import puppeteer, {
+  ElementHandle,
+  Browser,
+  Page,
+  executablePath,
+} from "puppeteer"
 import Columns from "./Columns"
 
 let browser: Browser
@@ -16,7 +21,8 @@ const GetSurfitArticles = async () => {
   if (!browser) {
     browser = await puppeteer.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      executablePath: executablePath(),
+      // args: ["--no-sandbox", "--disable-setuid-sandbox"],
     })
   }
   if (!page) {

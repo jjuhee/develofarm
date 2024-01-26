@@ -16,7 +16,7 @@ interface Props {
   page?: number
 }
 
-const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
+const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
   const queryClient = useQueryClient()
 
   const {
@@ -50,8 +50,8 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
     <div className="flex">
       <section className="relative overflow-hidden rounded-xl w-full h-[270px] transition-all bg-slate-200 mr-10 hidden lg:block">
         <Image
-          src={picture_url || "/images/project_default.png"}
-          alt="project"
+          src={picture_url as string}
+          alt="project image"
           fill
           sizes="auto"
           className="object-cover w-full h-full"

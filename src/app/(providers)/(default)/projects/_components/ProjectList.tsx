@@ -2,7 +2,7 @@
 
 import { TProjectsType } from "@/types/extendedType"
 import { Tables } from "@/types/supabase"
-import React, { useMemo, useState } from "react"
+import React, { useMemo, useRef, useState } from "react"
 import ProjectCard from "./ProjectCard"
 import EmptyState from "@/components/EmptyState"
 import Spacer from "@/components/ui/Spacer"
@@ -13,6 +13,8 @@ import Pagination from "./Pagination"
 import useProjectsStore from "@/store/projects"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
+import Skeleton from "@mui/material/Skeleton"
+import Box from "@mui/material/Box"
 
 interface Props {
   option?: TProjectsOptions
@@ -36,6 +38,7 @@ export async function getServerSideProps() {
 
 const ProjectList = ({ option }: Props) => {
   const PAGE_SIZE = 5
+  const sortRef = useRef<HTMLUListElement>(null)
   const userId = useUserStore((state) => state.userId)
   const [recruitStatus, setRecruitStatus] = useState(false)
   const [order, setOrder] = useState(1)
@@ -44,7 +47,11 @@ const ProjectList = ({ option }: Props) => {
   const { page, setPage } = useProjectsStore((state) => state)
 
   /** 전체 프로젝트 가져오기 */
-  const { data: projects, refetch: projectRefetch } = useQuery({
+  const {
+    data: projects,
+    refetch: projectRefetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["projects", recruitStatus, { option: option }],
     queryFn: () =>
       getProjects({
@@ -109,6 +116,10 @@ const ProjectList = ({ option }: Props) => {
     })
   }
 
+  useOnClickOutSide({ ref: sortRef, handler: () => setIsOpenOrder(false) })
+
+  if (isLoading) return <div>로딩중</div>
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -129,7 +140,10 @@ const ProjectList = ({ option }: Props) => {
               {isOpenOrder ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </button>
             {isOpenOrder && (
-              <ul className="absolute z-10 bg-white shadow-md w-full cursor-pointer rounded-lg">
+              <ul
+                className="absolute z-10 bg-white shadow-md w-full cursor-pointer rounded-lg"
+                ref={sortRef}
+              >
                 <li
                   className="pl-5 py-1 hover:bg-[#D2D2D2]"
                   onClick={() => onChageOrder(1)}
@@ -158,17 +172,15 @@ const ProjectList = ({ option }: Props) => {
 
       {(projects?.length as number) > 0 ? (
         <ul className="flex flex-col gap-8">
-          {paginatedSortedProjects[(page as number) - 1]?.map((item) => {
-            return (
-              <ProjectCard
-                key={item?.id}
-                project={item as TProjectsType}
-                bookmarks={bookmarks as Tables<"bookmarks">[]}
-                currentUser={userId as string}
-                page={page as number}
-              />
-            )
-          })}
+          {paginatedSortedProjects[(page as number) - 1]?.map((item) => (
+            <ProjectCard
+              key={item?.id}
+              project={item as TProjectsType}
+              bookmarks={bookmarks as Tables<"bookmarks">[]}
+              currentUser={userId as string}
+              page={page as number}
+            />
+          ))}
         </ul>
       ) : (
         <EmptyState />

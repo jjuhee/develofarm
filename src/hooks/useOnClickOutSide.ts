@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 
 interface Props {
-  ref: React.RefObject<HTMLInputElement>
+  ref: React.RefObject<HTMLInputElement> | React.RefObject<HTMLUListElement>
   handler: () => void
 }
 
