@@ -14,7 +14,10 @@ interface TSurfitArticles {
 
 const GetSurfitArticles = async () => {
   if (!browser) {
-    browser = await puppeteer.launch({ headless: "new" })
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    })
   }
   if (!page) {
     page = await browser.newPage()
