@@ -114,7 +114,11 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   /**
    *@ query 신청자 목록 id를 프로젝트 신청취소 기능 */
   const cancelForProjectButtonHandler = (id: string) => {
-    removeMemberMutate.mutate(id)
+    const handler = () => {
+      removeMemberMutate.mutate(id)
+    }
+
+    openCustomModalHandler("신청을 취소하시겠습니까?", "confirm", handler)
   }
 
   return (
