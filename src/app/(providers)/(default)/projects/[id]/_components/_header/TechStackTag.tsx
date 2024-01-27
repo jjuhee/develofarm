@@ -9,7 +9,7 @@ type Props = {
 
 const TechStackTag = ({ project }: Props) => {
   const { data: projectTeck, isLoading } = useQuery({
-    queryKey: ["project", { projectId: project.id }],
+    queryKey: ["projectTeck", { projectId: project.id }],
     queryFn: () => getProjectTech(project.id),
   })
 
