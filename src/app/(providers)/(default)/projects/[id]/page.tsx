@@ -19,7 +19,7 @@ const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
 
   const { data: project, isLoading } = useQuery({
-    queryKey: ["project", id],
+    queryKey: ["project", { projectId: id }],
     queryFn: () => getProject(id),
   })
 

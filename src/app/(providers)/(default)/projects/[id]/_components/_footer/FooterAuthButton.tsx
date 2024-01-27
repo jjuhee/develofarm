@@ -29,8 +29,9 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     mutationFn: closeProject,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["closeProject", { projectId: project.id }],
+        queryKey: ["project", project.recruit_status],
       })
+
       openCustomModalHandler("마감되었습니다!", "alert")
     },
     onError: (error) => {
@@ -45,6 +46,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["applyUser", { projectId: project.id }],
+        exact: true,
       })
       openCustomModalHandler("신청이 완료되었습니다!", "alert")
     },
@@ -102,30 +104,36 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
       user_id: userId,
     }
 
-    addMemberMutate.mutate(newMember)
+    const handler = () => {
+      addMemberMutate.mutate(newMember)
+    }
+
+    openCustomModalHandler("신청하시겠습니까?", "confirm", handler)
   }
 
   /**
    *@ query 신청자 목록 id를 프로젝트 신청취소 기능 */
   const cancelForProjectButtonHandler = (id: string) => {
-    removeMemberMutate.mutate(id)
+    const handler = () => {
+      removeMemberMutate.mutate(id)
+    }
+
+    openCustomModalHandler("신청을 취소하시겠습니까?", "confirm", handler)
   }
 
   return (
     // 프로젝트가 모집완료 상태가 아니라면 보여주는 버튼
-    !project.recruit_status && (
+    project.recruit_status === false && (
       <>
         {/* 글 작성자 여부에 따른 버튼 */}
         {isWriter ? (
-          <button
-            className="px-4 py-2 border-2 rounded-3xl border-slate-600 font-semibold hover:bg-slate-900 hover:text-white transition delay-150 ease-in-out"
-            onClick={() => closeProjectButtonHandler(project.id)}
-          >
-            마감하기
-          </button>
+          <Button
+            type="border"
+            text="마감하기"
+            handler={() => closeProjectButtonHandler(project.id)}
+          />
         ) : isApplicantAuthenticated ? (
           <Button
-            color={"main-lime"}
             text="신청취소"
             handler={() => cancelForProjectButtonHandler(applyUser.id)}
           />
