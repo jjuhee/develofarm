@@ -82,7 +82,7 @@ const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
           ></p>
         </div>
         <div className="flex justify-between items-center">
-          <ul className="flex gap-3 ">
+          <ul className="flex gap-3 w-[550px] overflow-scroll">
             {project_tech?.map((tech, i) => (
               <li
                 key={i}
@@ -94,7 +94,7 @@ const ProjectCard = ({ project, bookmarks, currentUser }: Props) => {
           </ul>
           <Link
             href={`/projects/${project.id}`}
-            className="absolute bottom-0 right-2"
+            className="absolute bottom-1 right-2"
           >
             <Button
               color={"main-lime"}
