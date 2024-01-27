@@ -13,17 +13,17 @@ function ProvidersLayout({ children }: PropsWithChildren<{}>) {
 
   return (
     <div className="flex flex-col">
-      <Provider>
-        <Header />
-        <div className="flex w-full">
-          <div className="flex flex-col w-[1250px] my-0 mx-auto p-2">
-            {children}
-          </div>
+      {/* <Provider> */}
+      <Header />
+      <div className="flex w-full">
+        <div className="flex flex-col w-[1250px] my-0 mx-auto p-2">
+          {children}
         </div>
-        <Footer />
-        <FloatingButton mode={"default"} />
-        {viewCustomModal && <CustomModal />}
-      </Provider>
+      </div>
+      <Footer />
+      <FloatingButton mode={"default"} />
+      {viewCustomModal && <CustomModal />}
+      {/* </Provider> */}
     </div>
   )
 }

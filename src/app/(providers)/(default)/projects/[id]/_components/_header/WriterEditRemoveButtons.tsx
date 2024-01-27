@@ -51,11 +51,13 @@ const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
           ""
         ) : (
           <li className="ml-auto">
-            <Link href={`/write/${project.id}`}>수정</Link>
+            <Link className="text-zinc-400" href={`/write/${project.id}`}>
+              수정
+            </Link>
           </li>
         )}
 
-        <li>
+        <li className={`${project.recruit_status === true && "ml-auto"}`}>
           <button onClick={() => isDeleteClickHandler(project.id)}>삭제</button>
         </li>
       </>

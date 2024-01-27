@@ -15,7 +15,7 @@ const FooterList = () => {
       {/* TODO: 목록으로 돌아가면 현재 있는 게시물이 있는 리스트로 돌아가게 구현해야함 */}
       <button
         className="mt-8 border border-slate-950 px-5 py-1 rounded-lg transition delay-75 ease-in-out hover:text-white hover:bg-slate-900"
-        onClick={() => router.back()}
+        onClick={() => router.replace("/projects")}
       >
         목록
       </button>
