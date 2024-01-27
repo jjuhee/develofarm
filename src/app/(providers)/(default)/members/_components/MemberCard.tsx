@@ -45,7 +45,7 @@ const MemberCard = ({ user, title, currentUserId }: Props) => {
       className="flex flex-col justify-start w-[280px] h-[500px] rounded-3xl transition-all duration-200 cursor-pointer hover:scale-105"
       onClick={onClickMemberCardHandler}
     >
-      <div className=" bg-gray-200 mb-4">
+      <div className="mb-4 w-[280px] h-[280px] overflow-hidden">
         <Image
           src={user?.avatar_url || "/images/React.jpeg"}
           alt="user"
