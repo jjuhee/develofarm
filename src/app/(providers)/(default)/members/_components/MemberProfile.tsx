@@ -37,15 +37,14 @@ const MemberProfile = ({ currentUserId }: Props) => {
     <>
       <div className="flex w-full items-center justify-between">
         <div className="flex  items-center">
-          <div className="relative w-[123px] h-[123px] bg-gray-300 rounded-full mr-10">
+          <div className="w-[123px] h-[123px] bg-gray-300 overflow-hidden rounded-full mr-10">
             <Image
               src={
                 (selectedMember.avatar_url as string) || "/images/React.jpeg"
               }
               alt="member"
-              sizes="auto"
-              fill
-              className="absolute object-cover overflow-hidden rounded-full"
+              width={140}
+              height={140}
             />
           </div>
           <div className="flex flex-col gap-2">
