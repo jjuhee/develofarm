@@ -81,7 +81,7 @@ const ReCommentForm = ({ comment }: Props) => {
           <Spacer y={10} />
           <ReComments recomments={comment.comments} />
           <form
-            className="flex flex-col border border-slate-600 p-5 mb-5"
+            className="flex flex-col border border-slate-600 rounded-xl p-5 mb-5"
             onSubmit={onSubmitHandler}
           >
             <textarea

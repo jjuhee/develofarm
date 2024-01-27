@@ -90,7 +90,7 @@ export async function getProjects({
 export async function getProject(projectId: string) {
   const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
-    .select("*, user:users(*), region:project_regions(*)")
+    .select("*, user:users(*, project_members(id)), region:project_regions(*)")
     .eq("id", projectId)
     .single()
 
@@ -350,6 +350,7 @@ type SupabaseResponse = {
 
 export async function getBookmarksCountEachProject() {
   const { data, error } = await supabaseForClient.rpc("get_top_projects")
+  console.log("api에서 그룹화한 북마크 프로젝트 보내기", data)
   if (error) console.log("error", error)
   return data
 }
