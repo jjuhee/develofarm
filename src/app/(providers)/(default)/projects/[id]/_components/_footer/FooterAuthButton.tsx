@@ -46,6 +46,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["applyUser", { projectId: project.id }],
+        exact: true,
       })
       openCustomModalHandler("신청이 완료되었습니다!", "alert")
     },
@@ -103,7 +104,11 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
       user_id: userId,
     }
 
-    addMemberMutate.mutate(newMember)
+    const handler = () => {
+      addMemberMutate.mutate(newMember)
+    }
+
+    openCustomModalHandler("신청하시겠습니까?", "confirm", handler)
   }
 
   /**
