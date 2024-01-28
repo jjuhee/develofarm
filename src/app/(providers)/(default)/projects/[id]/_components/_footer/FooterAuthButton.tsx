@@ -29,7 +29,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     mutationFn: closeProject,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["project", project.recruit_status],
+        queryKey: ["project", { projectId: project.id }],
       })
 
       openCustomModalHandler("마감되었습니다!", "alert")
