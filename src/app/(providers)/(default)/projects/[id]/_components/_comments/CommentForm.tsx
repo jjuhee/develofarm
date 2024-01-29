@@ -4,6 +4,7 @@ import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import { setComment } from "../../api"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import Button from "@/components/ui/Button"
 
 type Props = {
   projectId: string
@@ -68,7 +69,7 @@ const CommentForm = ({ projectId }: Props) => {
           setContent(e.target.value)
         }}
       />
-      <button className="border-2 border-slate-900 px-3 py-2 ml-auto rounded-full hover:bg-slate-900 hover:text-white transition delay-150 ease-in-out font-semibold">
+      <button className="border border-neutral-600 px-6 py-2 ml-auto rounded-lg hover:bg-slate-900 hover:text-white transition delay-75 ease-in-out">
         댓글 쓰기
       </button>
     </form>
