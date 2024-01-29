@@ -29,7 +29,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     mutationFn: closeProject,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["project", project.recruit_status],
+        queryKey: ["project", { projectId: project.id }],
       })
 
       openCustomModalHandler("마감되었습니다!", "alert")
@@ -92,7 +92,8 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   })
 
   // 신청자가 맞는지 확인하는 변수
-  const isApplicantAuthenticated = userId === applyUser?.user_id
+  const isApplicantAuthenticated =
+    userId && applyUser?.user_id && userId === applyUser?.user_id
 
   if (applyUserIsLoading) return <div>is Loading...</div>
 
@@ -122,8 +123,9 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   }
 
   return (
-    // 프로젝트가 모집완료 상태가 아니라면 보여주는 버튼
-    project.recruit_status === false && (
+    // 프로젝트가 모집완료 상태가 아니고 로그인한 유저라면 보여주는 버튼
+    project.recruit_status === false &&
+    userId && (
       <>
         {/* 글 작성자 여부에 따른 버튼 */}
         {isWriter ? (
@@ -132,7 +134,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
             text="마감하기"
             handler={() => closeProjectButtonHandler(project.id)}
           />
-        ) : isApplicantAuthenticated ? (
+        ) : isApplicantAuthenticated && isApplicantAuthenticated ? (
           <Button
             text="신청취소"
             handler={() => cancelForProjectButtonHandler(applyUser.id)}

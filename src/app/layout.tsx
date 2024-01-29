@@ -17,12 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Provider>
-        <body className={inter.className}>
+      <body className={inter.className}>
+        <Provider>
           {children}
-          <div id="portal" className="z-100"></div>
-        </body>
-      </Provider>
+          <div id="portal" className="relative z-100"></div>
+        </Provider>
+      </body>
     </html>
   )
 }
