@@ -5,7 +5,7 @@ import React, { useState } from "react"
 import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import Spacer from "@/components/ui/Spacer"
-import { getComments, setComment } from "../../api"
+import { getComments, removeComment, setComment } from "../../api"
 import ReComments from "./ReComments"
 import CommentRemoveButton from "./CommentRemoveButton"
 import { useCustomModal } from "@/hooks/useCustomModal"
@@ -29,7 +29,7 @@ const ReCommentForm = ({ comment }: Props) => {
 
   /**
    *@ mutation 댓글 등록 후 해당 게시물Id로 댓글 최신 목록 불러오기 */
-  const AddCommentMutate = useMutation({
+  const AddReCommentMutate = useMutation({
     mutationFn: setComment,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -63,12 +63,38 @@ const ReCommentForm = ({ comment }: Props) => {
       content,
     }
 
-    AddCommentMutate.mutate(newComment)
+    AddReCommentMutate.mutate(newComment)
+  }
+
+  /**
+   *@ mutaion 댓글 삭제 후 확인창 띄워주고 삭제
+   TODO: 목록으로 돌아갈때 캐시가 남아 지워주는 작업 필요 */
+  const removeCommentMutate = useMutation({
+    mutationFn: removeComment,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["comments", { projectId: comment?.project_id }],
+      })
+      openCustomModalHandler("댓글이 삭제되었습니다", "alert")
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  /**
+   *@ function 받아온 id를 삭제 함수에 넣어서 확인창으로 검사 후 삭제 처리 */
+  const isDeleteClickHandler = (id: string) => {
+    const handler = () => {
+      removeCommentMutate.mutate(id)
+    }
+
+    openCustomModalHandler("정말로 삭제하시겠습니까?", "confirm", handler)
   }
 
   return (
     <>
-      <div className="flex align-middle">
+      <section className="flex align-middle">
         <button
           className="text-left min-w-[100px] font-semibold"
           onClick={toggleFormHandler}
@@ -78,11 +104,16 @@ const ReCommentForm = ({ comment }: Props) => {
             ? `${(comment.comments as unknown as any[]).length}개의 답글`
             : "댓글"}
         </button>
-        {!comment.del_yn && <CommentRemoveButton comment={comment} />}
-      </div>
+        {!comment.del_yn && (
+          <CommentRemoveButton
+            comment={comment}
+            handler={isDeleteClickHandler}
+          />
+        )}
+      </section>
       <Spacer y={20} />
       {showForm && (
-        <div>
+        <section>
           <Spacer y={10} />
           <ReComments recomments={comment.comments} />
           <form
@@ -100,7 +131,7 @@ const ReCommentForm = ({ comment }: Props) => {
               댓글 작성
             </button>
           </form>
-        </div>
+        </section>
       )}
     </>
   )

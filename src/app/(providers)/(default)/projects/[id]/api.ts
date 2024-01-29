@@ -115,6 +115,16 @@ export async function removeComment(commentId: string) {
   if (error) console.log("error", error)
 }
 
+/** 프로젝트 게시물에 대댓글 삭제 */
+export async function removeReComment(commentId: string) {
+  const { error } = await supabaseForClient
+    .from("comments")
+    .delete()
+    .eq("id", commentId)
+
+  if (error) console.log("error", error)
+}
+
 /** 프로젝트 게시물 기술 조회 */
 export async function getProjectTechWithPosition(projectId: string) {
   const { data: techs, error: techError } = await supabaseForClient
