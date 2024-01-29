@@ -1,6 +1,6 @@
 import React from "react"
 import puppeteer, { ElementHandle, Browser, Page } from "puppeteer"
-import Columns from "./Columns"
+// import Columns from "./Columns"
 
 let browser: Browser
 let page: Page
@@ -15,7 +15,7 @@ interface TSurfitArticles {
 const GetSurfitArticles = async () => {
   if (!browser) {
     browser = await puppeteer.launch({
-      headless: "new",
+      headless: true,
       args: ["--no-sandbox", "--disabled-setupid-sandbox"],
     })
   }
@@ -68,7 +68,7 @@ const Column = async () => {
 
   return (
     <>
-      <Columns surfitArticles={surfitArticles as TSurfitArticles[]} />
+      {/* <Columns surfitArticles={surfitArticles as TSurfitArticles[]} /> */}
     </>
   )
 }
