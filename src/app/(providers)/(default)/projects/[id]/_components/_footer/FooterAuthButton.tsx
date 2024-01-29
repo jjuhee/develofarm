@@ -21,7 +21,6 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   const queryClient = useQueryClient()
   const { userId } = useUserStore()
   const { openCustomModalHandler } = useCustomModal()
-  console.log("작성자확인", isWriter)
 
   /**
    *@ mutaion 게시물 마감 후 확인창 띄어주기
