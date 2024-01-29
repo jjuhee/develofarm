@@ -27,12 +27,14 @@ const page = () => {
 
   return (
     <>
-      <div className="flex flex-col justfiy-center items-center my-40  ">
+      <div className="flex flex-col h-ful mt-[200px]">
         <section className="text-xl">
-          <div className="text-center font-bold">간편하게 로그인하고 </div>
-          <div className="font-bold">당신의 꿈을 펼쳐보세요! </div>
+          <div className="text-center whitespace-pre-line font-bold">
+            {`간편하게 로그인하고 
+            당신의 꿈을 펼쳐보세요!`}
+          </div>
         </section>
-        <section className="flex flex-col justify-center items-center  box-sizing:inline">
+        <section className="flex flex-col items-center  box-sizing:inline">
           <div
             onClick={getGoogleSoicalLogin}
             className="flex items-center justify-center mx-4 my-1.5 border w-[16rem] text-center font-semibold cursor-pointer hover:border-#ccc p-2.5 mt-10 rounded-xl"

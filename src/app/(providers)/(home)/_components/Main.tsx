@@ -10,7 +10,7 @@ import "swiper/css/effect-coverflow"
 import "swiper/css/effect-fade"
 import Image from "next/image"
 import Spacer from "@/components/ui/Spacer"
-import { getBookmarksCountEachProject } from "../../projects/api"
+import { getBookmarksCountEachProject } from "../../(default)/projects/api"
 
 interface TBookmarksCountEachProject {
   id: string | null
@@ -230,7 +230,7 @@ export default function Main() {
         spaceBetween={20}
         speed={4000}
         effect="fade"
-        className="w-full h-[300px]"
+        className="w-full h-[300px] -z-20"
       >
         {bookmarksCountProjects
 
@@ -334,7 +334,7 @@ export default function Main() {
         {" "}
         <div className="w-full h-full relative">
           <div
-            className="w-full h-[450px] bg-cover bg-center relative"
+            className="w-full h-[600px] bg-cover bg-center relative"
             style={{ backgroundImage: `url('/images/banner_wrap2.png')` }}
           ></div>
         </div>

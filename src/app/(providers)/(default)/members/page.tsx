@@ -15,6 +15,7 @@ import MemberProfile from "./_components/MemberProfile"
 import EmptyState from "@/components/EmptyState"
 import useUserStore from "@/store/user"
 import { UsersType } from "@/types/extendedType"
+import Image from "next/image"
 
 const MembersPage = () => {
   const userId = useUserStore((state) => state.userId)
@@ -48,6 +49,7 @@ const MembersPage = () => {
     hasNextPage,
     isFetched,
     isFetchingNextPage,
+    isLoading,
   } = useInfiniteQuery({
     queryKey: ["users", title],
     queryFn: ({ pageParam }) =>
@@ -71,7 +73,7 @@ const MembersPage = () => {
   })
 
   const { ref } = useInView({
-    threshold: 1,
+    threshold: 0,
     onChange: (inView) => {
       if (!inView || !hasNextPage || isFetchingNextPage) return
       fetchNextPage()
@@ -79,6 +81,13 @@ const MembersPage = () => {
   })
 
   useOnClickOutSide({ ref: modalRef, handler: () => setViewMemberModal(false) })
+
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+      </div>
+    )
 
   return (
     <div>
