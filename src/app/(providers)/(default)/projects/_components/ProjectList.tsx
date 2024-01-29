@@ -129,6 +129,7 @@ const ProjectList = ({ option }: Props) => {
             <input
               id="recruit"
               type="checkbox"
+              checked={recruitStatus}
               onChange={onChangeRecruitHandler}
               className="
                 peer relative appearance-none shrink-0 w-4 h-4 border-2 border-[#666666] rounded-sm bg-white
