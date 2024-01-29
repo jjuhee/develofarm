@@ -90,7 +90,7 @@ export async function getProjects({
 export async function getProject(projectId: string) {
   const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
-    .select("*, user:users(*), region:project_regions(*)")
+    .select("*, user:users(*, project_members(id)), region:project_regions(*)")
     .eq("id", projectId)
     .single()
 
@@ -236,7 +236,7 @@ export async function getBookmarksCountByProject() {
 export async function getProjectTech(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("project_tech")
-    .select("*, techs(*)")
+    .select("techs(*)")
     .eq("project_id", projectId)
 
   const techs = data?.map((tech) => tech.techs?.tech_name)

@@ -8,6 +8,7 @@ import Spacer from "@/components/ui/Spacer"
 import { getComments, setComment } from "../../api"
 import ReComments from "./ReComments"
 import CommentRemoveButton from "./CommentRemoveButton"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 type Props = {
   comment: Exclude<Awaited<ReturnType<typeof getComments>>, null>[number]
@@ -18,6 +19,7 @@ const ReCommentForm = ({ comment }: Props) => {
   const [content, setContent] = useState<string>("")
   const { userId } = useUserStore()
   const queryClient = useQueryClient()
+  const { openCustomModalHandler } = useCustomModal()
 
   /**
    *@ funtion 대댓글 작성 폼 토글 기능 */
@@ -45,6 +47,9 @@ const ReCommentForm = ({ comment }: Props) => {
    *@ function 버튼 누르면 입력한 폼 인자로 넣어서 댓글 추가하는 함수 실행 */
   const onSubmitHandler: React.FormEventHandler = (e) => {
     e.preventDefault()
+
+    if (!userId)
+      return openCustomModalHandler("로그인 후에 작성 가능 합니다!", "alert")
 
     if (content.trim() === "") {
       alert("댓글을 입력해주세요!")
@@ -81,7 +86,7 @@ const ReCommentForm = ({ comment }: Props) => {
           <Spacer y={10} />
           <ReComments recomments={comment.comments} />
           <form
-            className="flex flex-col border border-slate-600 p-5 mb-5"
+            className="flex flex-col border border-slate-600 rounded-xl p-5 mb-5"
             onSubmit={onSubmitHandler}
           >
             <textarea
@@ -91,7 +96,7 @@ const ReCommentForm = ({ comment }: Props) => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
-            <button className="border-2 border-slate-900 px-3 py-2 ml-auto rounded-full hover:bg-slate-900 hover:text-white transition delay-150 ease-in-out font-semibold">
+            <button className="border border-neutral-600 px-6 py-2 ml-auto rounded-lg hover:bg-slate-900 hover:text-white transition delay-75 ease-in-out">
               댓글 작성
             </button>
           </form>

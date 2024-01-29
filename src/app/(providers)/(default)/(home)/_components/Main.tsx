@@ -19,6 +19,7 @@ interface TBookmarksCountEachProject {
   picture_url: string | null
 }
 ;[]
+
 export default function Main({ children }: { children: React.ReactNode }) {
   const [bookmarksCountProjects, setBookmarksCountProjects] = useState<
     TBookmarksCountEachProject[] | null
@@ -323,7 +324,6 @@ export default function Main({ children }: { children: React.ReactNode }) {
       </div>
       {/*  */}
       <Spacer y={100} />
-
       {children}
       <Spacer y={100} />
       <div className="border">

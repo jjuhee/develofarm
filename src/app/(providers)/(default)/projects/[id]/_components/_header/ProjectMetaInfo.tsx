@@ -15,7 +15,7 @@ const ProjectMetaInfo = ({ project }: Props) => {
   return (
     <section>
       <article className="flex items-center justify-between border-t-2 border-b-2 border-zinc-600">
-        <div className="pr-10 mt-7 mb-12 min-w-[220px] min-h-[85px]">
+        <div className="mt-7 mb-12 min-w-[220px] min-h-[85px]">
           <span>
             <Image
               width={16}
@@ -28,7 +28,7 @@ const ProjectMetaInfo = ({ project }: Props) => {
           <h3 className="font-semibold mb-3 text-lg">프로젝트 방식</h3>
           <p>{project.is_offline ? "오프라인" : "온라인"}</p>
         </div>
-        <div className="pr-12 mt-7 mb-12 min-w-[190px] min-h-[85px]">
+        <div className="mt-7 mb-12 min-w-[190px] min-h-[85px]">
           <span>
             <Image
               width={16}
@@ -47,7 +47,7 @@ const ProjectMetaInfo = ({ project }: Props) => {
               : "온라인"}
           </p>
         </div>
-        <div className="pr-10 mt-7 mb-12 min-w-[160px] min-h-[85px]">
+        <div className="mt-7 mb-12 min-w-[160px] min-h-[85px]">
           <span>
             <Image
               width={20}
@@ -60,7 +60,7 @@ const ProjectMetaInfo = ({ project }: Props) => {
           <h3 className="font-semibold mb-3 text-lg">모집 인원</h3>
           <h3>{project.number_of_people} 명</h3>
         </div>
-        <div className="pr-10 mt-7 mb-12 min-w-[250px] min-h-[85px]">
+        <div className="mt-7 mb-12 min-w-[250px] min-h-[85px]">
           <span>
             <Image
               width={20}

@@ -75,33 +75,33 @@ const Header = () => {
   const [changeState, setChangeState] = useState(false)
   const { openCustomModalHandler: customModal } = useCustomModal()
 
-  console.log("changeState", changeState)
+  //
+  let chekcoutAuthToken
   useEffect(() => {
     const subscription = supabaseForClient.auth.onAuthStateChange(
       (event, session) => {
-        console.log(event, session)
+        console.log("session 확인", event, session)
 
-        if (event === "INITIAL_SESSION") {
-        } else if (event === "SIGNED_IN") {
+        console.log("useEffect내의 isloggedout", isLoggedOut)
+        if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
           const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
           const getAuthToken: any = localStorage.getItem(AUTH_TOKEN)
           const json1 = JSON.parse(getAuthToken)
+          chekcoutAuthToken = json1
           setEmail(json1?.user.user_metadata.email)
           if (getAuthToken) {
             setIsLoggedOut(false)
+
+            setAvatarUrl(json1?.user.user_metadata.avatar_url)
           }
-          setAvatarUrl(json1?.user.user_metadata.avatar_url)
-        } else if (event === "SIGNED_OUT") {
-        } else if (event === "PASSWORD_RECOVERY") {
-        } else if (event === "TOKEN_REFRESHED") {
-        } else if (event === "USER_UPDATED") {
         }
       },
     )
-    // subscription.data.subscription.unsubscribe()
-    console.log("onAuthTStateChange!!!!!")
+    return () => {
+      subscription.data.subscription.unsubscribe()
+      console.log("unsubscribe!!")
+    }
   }, [])
-
   useOnClickOutSide({
     ref: dropdownRef,
     handler: () => setIsImageActive(false),
