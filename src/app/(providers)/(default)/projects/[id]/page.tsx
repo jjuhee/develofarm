@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react"
 import Spacer from "@/components/ui/Spacer"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { getProject } from "../api"
 import WriterEditRemoveButtons from "./_components/_header/WriterEditRemoveButtons"
@@ -17,6 +17,7 @@ import StarterKit from "@tiptap/starter-kit"
 
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
+  const router = useRouter()
 
   const { data: project, isLoading } = useQuery({
     queryKey: ["project", { projectId: id }],
@@ -51,9 +52,17 @@ const DetailPage = () => {
 
   return (
     <div className="flex flex-col w-full my-0 mx-auto">
-      <Spacer y={90} />
+      <Spacer y={30} />
       <header>
+        <button
+          className="mt-8 border border-slate-950 px-5 py-1 rounded-lg transition delay-75 ease-in-out hover:text-white hover:bg-slate-900"
+          onClick={() => router.replace("/projects")}
+        >
+          목록
+        </button>
+        <Spacer y={50} />
         <div className="flex items-center">
+          {/* TODO: 목록으로 돌아가면 현재 있는 게시물이 있는 리스트로 돌아가게 구현해야함 */}
           <span
             className={`${
               project.recruit_status
