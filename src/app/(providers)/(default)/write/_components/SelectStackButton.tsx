@@ -55,9 +55,7 @@ const SelectStackButton = ({
     }
   }
 
-  /** 테크가 하나라도 포함 되어있으면 포지션이 체크 되었다고 판단하는 함수
-   * TODO: (issue) 프론트의 javascript 백엔드의 javascript 구분 못함
-   */
+  /** 테크가 하나라도 포함 되어있으면 포지션이 체크 되었다고 판단하는 함수 */
   const isPositionChecked = (position_id: string) => {
     if (!categoryData.techs) return false
 
@@ -91,10 +89,10 @@ const SelectStackButton = ({
           }`}
         >
           {allTechs?.[0]?.map((tech, i) => (
-            <li key={i}>
+            <li key={i} className="">
               <label
                 htmlFor={tech?.id}
-                className="cursor-pointer text-[16px] text-black"
+                className="flex items-center gap-1 cursor-pointer text-[16px] text-black "
               >
                 <input
                   type="checkbox"
@@ -105,7 +103,13 @@ const SelectStackButton = ({
                       item.position_id === POSITION_ID.front &&
                       item.tech_id === tech.id,
                   )}
-                  className="mr-2 accent-black"
+                  className="
+                  peer relative appearance-none shrink-0 w-3 h-3 border-2 border-[#666666] rounded-sm bg-white
+                  focus:outline-none focus:ring-offset-0 focus:ring-1 focus:ring-main-lime
+                  checked:bg-black checked:border-0
+                  disabled:border-steel-400 disabled:bg-steel-400
+                  checked:bg-[url('/icons/checked.png')] bg-no-repeat bg-center cursor-pointer
+                "
                   onChange={(e) =>
                     onChangeHandler(e, "be33a56c-a4da-43a3-984f-c6acd667b2ae")
                   }
@@ -144,7 +148,7 @@ const SelectStackButton = ({
             <li key={i}>
               <label
                 htmlFor={tech?.id}
-                className="cursor-pointer text-[16px] text-black"
+                className="flex items-center gap-1 cursor-pointer text-[16px] text-black"
               >
                 <input
                   type="checkbox"
@@ -155,7 +159,13 @@ const SelectStackButton = ({
                       item.position_id === POSITION_ID.back &&
                       item.tech_id === tech.id,
                   )}
-                  className="mr-2 accent-black"
+                  className="
+                  peer relative appearance-none shrink-0 w-3 h-3 border-2 border-[#666666] rounded-sm bg-white
+                  focus:outline-none focus:ring-offset-0 focus:ring-1 focus:ring-main-lime
+                  checked:bg-black checked:border-0
+                  disabled:border-steel-400 disabled:bg-steel-400
+                  checked:bg-[url('/icons/checked.png')] bg-no-repeat bg-center cursor-pointer
+                "
                   onChange={(e) =>
                     onChangeHandler(e, "0e68d5ef-ebc4-40d5-afe8-9bf557a52746")
                   }
@@ -194,7 +204,7 @@ const SelectStackButton = ({
             <li key={i}>
               <label
                 htmlFor={tech?.id}
-                className="cursor-pointer text-[16px] text-black"
+                className="flex items-center gap-1 cursor-pointer text-[16px] text-black"
               >
                 <input
                   type="checkbox"
@@ -205,7 +215,13 @@ const SelectStackButton = ({
                       item.position_id === POSITION_ID.design &&
                       item.tech_id === tech.id,
                   )}
-                  className="mr-2 accent-black"
+                  className="
+                  peer relative appearance-none shrink-0 w-3 h-3 border-2 border-[#666666] rounded-sm bg-white
+                  focus:outline-none focus:ring-offset-0 focus:ring-1 focus:ring-main-lime
+                  checked:bg-black checked:border-0
+                  disabled:border-steel-400 disabled:bg-steel-400
+                  checked:bg-[url('/icons/checked.png')] bg-no-repeat bg-center cursor-pointer
+                "
                   onChange={(e) =>
                     onChangeHandler(e, "e2be10af-aa25-4aa8-b18a-9e004d4f9bed")
                   }

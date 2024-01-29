@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Provider>
           {children}
-          <div id="portal" className="relative z-100"></div>
+          <div id="portal" className="relative z-50"></div>
         </Provider>
       </body>
     </html>

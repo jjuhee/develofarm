@@ -73,7 +73,7 @@ const MemberProfile = ({ currentUserId }: Props) => {
             </p>
 
             <ul
-              className={`flex flex-col gap-3 absolute h-[200px] overflow-scroll scroll-smooth bg-white text-black py-[15px] px-[20px] border-[1px] w-full mt-2 rounded-lg border-black transition-all ${
+              className={`flex flex-col gap-3 absolute h-[200px] overflow-scroll scroll-smooth scrollbar-hide bg-white text-black py-[15px] px-[20px] border-[1px] w-full mt-2 rounded-lg border-black transition-all ${
                 isActive ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -96,7 +96,7 @@ const MemberProfile = ({ currentUserId }: Props) => {
                   ))}
                 </>
               ) : (
-                <div>
+                <>
                   <p className="text-[15px] font-[500]">
                     현재 초청할 수 있는 프로젝트가 없습니다.
                   </p>
@@ -106,7 +106,7 @@ const MemberProfile = ({ currentUserId }: Props) => {
                   >
                     새 프로젝트 올리기 {"->"}
                   </Link>
-                </div>
+                </>
               )}
             </ul>
           </div>

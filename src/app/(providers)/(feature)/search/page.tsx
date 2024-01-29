@@ -171,7 +171,7 @@ const SearchPage = () => {
 
   console.log("data", searchedData)
   return (
-    <div className="min-h-[700px]">
+    <div className="">
       <section className="flex justify-center align-center mt-40">
         <form onSubmit={onSubmitHandler} className="relative">
           <div className="relative flex items-center">
