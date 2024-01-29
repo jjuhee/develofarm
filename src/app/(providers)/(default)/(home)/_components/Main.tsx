@@ -11,7 +11,7 @@ import "swiper/css/effect-fade"
 import Image from "next/image"
 import Spacer from "@/components/ui/Spacer"
 import { getBookmarksCountEachProject } from "../../projects/api"
-
+import { useRouter } from "next/navigation"
 interface TBookmarksCountEachProject {
   id: string | null
   title: string | null
@@ -21,6 +21,7 @@ interface TBookmarksCountEachProject {
 ;[]
 
 export default function Main({ children }: { children: React.ReactNode }) {
+  const router = useRouter()
   const [bookmarksCountProjects, setBookmarksCountProjects] = useState<
     TBookmarksCountEachProject[] | null
   >([])
@@ -32,22 +33,12 @@ export default function Main({ children }: { children: React.ReactNode }) {
     const bookmarksCountEachProject = await getBookmarksCountEachProject()
     setBookmarksCountProjects(bookmarksCountEachProject)
     console.log("북마크 gorup화 한 project", bookmarksCountEachProject)
-    console.log("ssssssssss", bookmarksCountEachProject?.slice(0, 7))
   }
 
-  const arr = [
-    {
-      title: "제목1",
-      content: "내용1",
-      img: "https://content.surfit.io/thumbs/image/K2lP5/YYnRj/26981104865aa1e4610a86/cover-top-1x.webp",
-    },
-    { title: "제목2", content: "내용2" },
-    { title: "제목3", content: "내용3" },
-    { title: "제목4", content: "내용4" },
-    { title: "제목5", content: "내용5" },
-    { title: "제목6", content: "내용6" },
-    { title: "제목7", content: "내용7" },
-  ]
+  const onDetailProjectsHandler = (projectId: string) => {
+    console.log("프로젝트아이디", projectId)
+    router.push(`../../projects/${projectId}/`)
+  }
   return (
     <>
       <div className=" flex flex-col justify-center items-center  relative w-full">
@@ -143,7 +134,8 @@ export default function Main({ children }: { children: React.ReactNode }) {
           .map((list: TBookmarksCountEachProject, index: number) => (
             <SwiperSlide
               key={index}
-              className="relative group border border-gray-300 rounded-t-2xl overflow-hidden"
+              className="relative group border border-gray-300 rounded-t-2xl overflow-hidden hover hover:cursor-pointer"
+              onClick={() => onDetailProjectsHandler(list.id as string)}
             >
               <div className="rounded-t-lg w-full h-[70%] group-hover:border-transparent transition duration-300 relative overflow-hidden ">
                 <Image
@@ -238,7 +230,9 @@ export default function Main({ children }: { children: React.ReactNode }) {
             <SwiperSlide
               key={index}
               className="relative group border border-gray-300 rounded-t-2xl overflow-hidden"
+              onClick={() => onDetailProjectsHandler(list.id as string)}
             >
+              {list.id}
               <div className="rounded-t-lg w-full h-[70%] group-hover:border-transparent transition duration-300 relative overflow-hidden ">
                 <Image
                   src={list.picture_url ? list.picture_url : ""}
