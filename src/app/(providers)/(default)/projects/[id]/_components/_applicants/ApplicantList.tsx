@@ -10,12 +10,6 @@ type Props = {
 }
 
 const ApplicantList = ({ applicant, applicants }: Props) => {
-  /**
-   *@ param 참여 중인 멤버 인원 수 */
-  const applyApplications = applicants?.filter(
-    (applicant) => applicant.application_status === true,
-  )
-
   return (
     <section
       key={applicant.id}
