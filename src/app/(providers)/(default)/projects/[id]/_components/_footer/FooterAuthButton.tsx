@@ -21,6 +21,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   const queryClient = useQueryClient()
   const { userId } = useUserStore()
   const { openCustomModalHandler } = useCustomModal()
+  console.log("작성자확인", isWriter)
 
   /**
    *@ mutaion 게시물 마감 후 확인창 띄어주기
@@ -92,7 +93,8 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   })
 
   // 신청자가 맞는지 확인하는 변수
-  const isApplicantAuthenticated = userId === applyUser?.user_id
+  const isApplicantAuthenticated =
+    userId && applyUser?.user_id && userId === applyUser?.user_id
 
   if (applyUserIsLoading) return <div>is Loading...</div>
 
@@ -122,8 +124,9 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   }
 
   return (
-    // 프로젝트가 모집완료 상태가 아니라면 보여주는 버튼
-    project.recruit_status === false && (
+    // 프로젝트가 모집완료 상태가 아니고 로그인한 유저라면 보여주는 버튼
+    project.recruit_status === false &&
+    userId && (
       <>
         {/* 글 작성자 여부에 따른 버튼 */}
         {isWriter ? (
@@ -132,7 +135,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
             text="마감하기"
             handler={() => closeProjectButtonHandler(project.id)}
           />
-        ) : isApplicantAuthenticated ? (
+        ) : isApplicantAuthenticated && isApplicantAuthenticated ? (
           <Button
             text="신청취소"
             handler={() => cancelForProjectButtonHandler(applyUser.id)}
