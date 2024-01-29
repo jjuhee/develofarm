@@ -73,7 +73,7 @@ const Header = () => {
   //TODO : 로그아웃시 바로 isLoggedOut이 true 값으로 변하지 않는것을 해결해야함
   const [isLoggedOut, setIsLoggedOut] = useState<boolean>(true)
   const [changeState, setChangeState] = useState(false)
-  const { openCustomModalHandler: customModal } = useCustomModal()
+  const { openCustomModalHandler } = useCustomModal()
 
   //
   let chekcoutAuthToken
@@ -114,9 +114,9 @@ const Header = () => {
 
     supabaseForClient.auth.signOut()
     setIsLoggedOut(true)
-    alert("로그아웃 되었습니다.")
+    openCustomModalHandler("로그아웃 되었습니다.", "alert")
+    // alert("로그아웃 되었습니다.")
     router.push("/")
-    // customModal("로그아웃이 되었습니다", "alert")
   }
   //END
   return (

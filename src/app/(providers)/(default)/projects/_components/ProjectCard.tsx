@@ -8,6 +8,7 @@ import type { TProjectsType } from "@/types/extendedType"
 import Link from "next/link"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateProjectViews } from "../[id]/api"
+import { useRouter } from "next/navigation"
 
 interface Props {
   project: TProjectsType
@@ -18,6 +19,7 @@ interface Props {
 
 const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   const {
     id,
@@ -44,13 +46,17 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
   const onClickToDetailPage = () => {
     const countViews = views + 1
     viewsMutate({ projectId: project.id, countViews })
+    router.push(`/projects/${id}`)
   }
 
   return (
-    <div className="flex">
+    <div
+      className="flex cursor-pointer border-b border-[#666666] py-[40px] last:border-none first:pt-0 "
+      onClick={onClickToDetailPage}
+    >
       <section className="relative overflow-hidden rounded-xl w-full h-[270px] transition-all bg-slate-200 mr-10 hidden lg:block">
         <Image
-          src={picture_url || "/images/project_default.png"}
+          src={picture_url as string}
           alt="project"
           fill
           sizes="auto"
@@ -81,27 +87,47 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
             dangerouslySetInnerHTML={{ __html: content }}
           ></p>
         </div>
-        <div className="flex justify-between items-center">
-          <ul className="flex gap-3 w-[550px] overflow-scroll">
-            {project_tech?.map((tech, i) => (
-              <li
-                key={i}
-                className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl"
-              >
-                {tech?.techs?.tech_name}
-              </li>
-            ))}
+        <div className="flex justify-between items-center mt-10 lg:mt-0">
+          <ul className="flex gap-3  relative">
+            {project_tech.length > 5 ? (
+              <>
+                {project_tech?.slice(0, 5).map((tech, i) => (
+                  <li
+                    key={i}
+                    className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl"
+                  >
+                    {tech?.techs?.tech_name}
+                  </li>
+                ))}
+                <li className="group">
+                  <div className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl">
+                    ...
+                  </div>
+                  <div className="absolute right-0 top-[50px] bg-[#E6E6E6] text-[#636366] rounded-lg z-10 hidden group-hover:block">
+                    {project_tech?.slice(5).map((tech, i) => (
+                      <li
+                        key={i}
+                        className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl"
+                      >
+                        {tech?.techs?.tech_name}
+                      </li>
+                    ))}
+                  </div>
+                </li>
+              </>
+            ) : (
+              <>
+                {project_tech?.map((tech, i) => (
+                  <li
+                    key={i}
+                    className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl"
+                  >
+                    {tech?.techs?.tech_name}
+                  </li>
+                ))}
+              </>
+            )}
           </ul>
-          <Link
-            href={`/projects/${project.id}`}
-            className="absolute bottom-1 right-2"
-          >
-            <Button
-              color={"main-lime"}
-              text="상세보기"
-              handler={onClickToDetailPage}
-            />
-          </Link>
         </div>
 
         <div className="absolute top-[12px] right-2">
