@@ -21,8 +21,6 @@ export const getUsers = async ({
   const { data, error } = await query
   if (error) return console.log(error.message)
 
-  console.log("data", data)
-
   return data || null
 }
 
@@ -58,5 +56,23 @@ export const getProjectByUserId = async (userId: string) => {
 
   if (error) return console.log(error.message)
 
+  return data
+}
+
+interface invitationValue {
+  project_id: string
+  receiver_id: string
+  type: string
+  sender_nickname: string
+}
+
+//TODO: 멤버 초대
+export const inviteUser = async (invitation: invitationValue) => {
+  const { data, error } = await supabaseForClient
+    .from("notifications")
+    .insert([{ ...invitation }])
+    .select("*")
+
+  if (error) return console.log(error.message)
   return data
 }
