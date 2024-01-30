@@ -1,8 +1,12 @@
+"use client"
+
 import BookmarkButton from "@/components/BookmarkButton"
 import useUserStore from "@/store/user"
 import { Tables } from "@/types/supabase"
-import React from "react"
-import { IoShareSocialOutline } from "react-icons/io5"
+import Image from "next/image"
+
+import React, { useState } from "react"
+import PublicShareButton from "./PublicShareButton"
 
 interface Props {
   bookmarks: Tables<"bookmarks">[]
@@ -11,7 +15,12 @@ interface Props {
 }
 
 const FooterPublicIcon = ({ bookmarks, projectId, bookmarksCount }: Props) => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
   const userId = useUserStore((state) => state.userId)
+
+  const openModalClickHandler = () => {
+    setIsOpenModal(!isOpenModal)
+  }
 
   return (
     <>
@@ -25,9 +34,19 @@ const FooterPublicIcon = ({ bookmarks, projectId, bookmarksCount }: Props) => {
         </span>
         {bookmarksCount}
       </span>
-      <span className="pr-5">
-        <IoShareSocialOutline size={30} />
+      <span
+        className="relative pr-5 cursor-pointer"
+        onClick={openModalClickHandler}
+      >
+        <Image
+          width={24}
+          height={24}
+          src="/icons/shareIcon.png"
+          alt="공유 아이콘"
+          className="float-left mt-1 mr-2"
+        />
       </span>
+      {isOpenModal && <PublicShareButton />}
     </>
   )
 }
