@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { deleteSpecs, getSpecs } from "../../api"
 import { Tables } from "@/types/supabase"
@@ -14,11 +14,11 @@ const ProfileSpecForm = ({
   setNewSpecData,
 }: {
   userId: string
-  setUpdatedSpecData: any
+  setUpdatedSpecData: Dispatch<SetStateAction<Tables<"specs">[]>>
   newSpecData: any
-  setNewSpecData: any
+  setNewSpecData: Dispatch<SetStateAction<Tables<"specs">[]>>
 }) => {
-  const [newSpecForms, setNewSpecForms] = useState([])
+  const [newSpecForms, setNewSpecForms] = useState<Tables<"specs">[]>([])
   const [hiddenInputs, setHiddenInputs] = useState<boolean[]>([])
 
   const {
@@ -33,17 +33,17 @@ const ProfileSpecForm = ({
 
   const handleInputChange = (
     index: number,
-    field: string,
+    field: keyof Tables<"specs">,
     value: string | boolean,
   ) => {
-    const updatedSpecs = [...specs]
-    updatedSpecs[index][field] = value
+    const updatedSpecs = [...(specs as Tables<"specs">[])]
+    ;(updatedSpecs[index][field] as string) = value as string
     setUpdatedSpecData(updatedSpecs)
   }
 
   const handleNewSpecInputChange = (
     formIndex: number,
-    field: string,
+    field: keyof Tables<"specs">,
     value: string | boolean,
   ) => {
     setNewSpecData((prevData: any) => {
@@ -54,8 +54,8 @@ const ProfileSpecForm = ({
   }
 
   const handleAddNewAcademyForm = () => {
-    setNewSpecForms([...newSpecForms, {}])
-    setNewSpecData([...newSpecData, {}])
+    setNewSpecForms([...newSpecForms, {} as Tables<"specs">])
+    setNewSpecData([...newSpecData, {} as Tables<"specs">])
   }
 
   const handleDeleteNewSpecForm = (formIndex: number) => {
@@ -118,7 +118,7 @@ const ProfileSpecForm = ({
                     onChange={(e) =>
                       handleInputChange(index, "spec_date", e.target.value)
                     }
-                    className="pt-[5px]"
+                    className="pt-[5px] cursor-pointer"
                   />
 
                   <div className="relative flex items-center">
@@ -160,7 +160,7 @@ const ProfileSpecForm = ({
                     e.target.value,
                   )
                 }
-                className="pt-[5px]"
+                className="pt-[5px] cursor-pointer"
               />
               <div className="relative flex items-center">
                 <input

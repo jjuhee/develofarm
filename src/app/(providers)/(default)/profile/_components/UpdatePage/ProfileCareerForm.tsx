@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { deleteCareers, getCareers } from "../../api"
 import { Tables } from "@/types/supabase"
@@ -14,11 +14,11 @@ const ProfileCareerForm = ({
   setNewCareerData,
 }: {
   userId: string
-  setUpdatedCareerData: any
-  newCareerData: any
-  setNewCareerData: any
+  setUpdatedCareerData: Dispatch<SetStateAction<Tables<"careers">[]>>
+  newCareerData: Tables<"careers">[]
+  setNewCareerData: Dispatch<SetStateAction<Tables<"careers">[]>>
 }) => {
-  const [newCareerForms, setNewCareerForms] = useState([])
+  const [newCareerForms, setNewCareerForms] = useState<Tables<"careers">[]>([])
   const [hiddenInputs, setHiddenInputs] = useState<boolean[]>([])
 
   const {
@@ -33,17 +33,17 @@ const ProfileCareerForm = ({
 
   const handleInputChange = (
     index: number,
-    field: string,
+    field: keyof Tables<"careers">,
     value: string | boolean,
   ) => {
-    const updatedCareers = [...careers]
-    updatedCareers[index][field] = value
+    const updatedCareers = [...(careers as Tables<"careers">[])]
+    ;(updatedCareers[index][field] as string) = value as string
     setUpdatedCareerData(updatedCareers)
   }
 
   const handleNewCareerInputChange = (
     formIndex: number,
-    field: string,
+    field: keyof Tables<"careers">,
     value: string | boolean,
   ) => {
     setNewCareerData((prevData: any) => {
@@ -54,8 +54,8 @@ const ProfileCareerForm = ({
   }
 
   const handleAddNewCareerForm = () => {
-    setNewCareerForms([...newCareerForms, {}])
-    setNewCareerData([...newCareerData, {}])
+    setNewCareerForms([...newCareerForms, {} as Tables<"careers">])
+    setNewCareerData([...newCareerData, {} as Tables<"careers">])
   }
 
   const handleDeleteNewCareerForm = (formIndex: number) => {
@@ -65,7 +65,7 @@ const ProfileCareerForm = ({
       return updatedForms
     })
 
-    setNewCareerData((prevData: any) => {
+    setNewCareerData((prevData: Tables<"careers">[]) => {
       const updatedData = [...prevData]
       updatedData.splice(formIndex, 1)
       return updatedData
@@ -119,6 +119,7 @@ const ProfileCareerForm = ({
                       onChange={(e) =>
                         handleInputChange(index, "period_from", e.target.value)
                       }
+                      className="cursor-pointer"
                     />
                     <span> ~ </span>
                     <input
@@ -127,9 +128,13 @@ const ProfileCareerForm = ({
                       onChange={(e) =>
                         handleInputChange(index, "period_to", e.target.value)
                       }
+                      className="cursor-pointer"
                     />
                     <div className="pt-[30px]">
-                      <label htmlFor={`employed_status_${index}`}>
+                      <label
+                        htmlFor={`employed_status_${index}`}
+                        className="cursor-pointer"
+                      >
                         <input
                           type="checkbox"
                           id={`employed_status_${index}`}
@@ -141,7 +146,7 @@ const ProfileCareerForm = ({
                               e.target.checked,
                             )
                           }
-                          className="mr-[5px] accent-[#AAAAAA]"
+                          className="mr-[5px] accent-[#AAAAAA] cursor-pointer"
                         />
                         재직중
                       </label>
@@ -209,6 +214,7 @@ const ProfileCareerForm = ({
                       e.target.value,
                     )
                   }
+                  className="cursor-pointer"
                 />
                 <span> ~ </span>
                 <input
@@ -222,9 +228,13 @@ const ProfileCareerForm = ({
                       e.target.value,
                     )
                   }
+                  className="cursor-pointer"
                 />
                 <div className="pt-[35px]">
-                  <label htmlFor={`employed_status_new_${formIndex}`}>
+                  <label
+                    htmlFor={`employed_status_new_${formIndex}`}
+                    className="cursor-pointer"
+                  >
                     <input
                       type="checkbox"
                       id={`employed_status_new_${formIndex}`}
@@ -238,7 +248,7 @@ const ProfileCareerForm = ({
                           e.target.checked,
                         )
                       }
-                      className="mr-[5px] accent-[#AAAAAA]"
+                      className="mr-[5px] accent-[#AAAAAA] cursor-pointer"
                     />
                     재직중
                   </label>

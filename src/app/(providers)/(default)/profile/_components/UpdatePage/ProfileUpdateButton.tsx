@@ -19,18 +19,31 @@ import ProfileEducationForm from "./ProfileEducationForm"
 import ProfileAcademyForm from "./ProfileAcademyForm"
 import ProfileSpecForm from "./ProfileSpecForm"
 import ProfileSocialForm from "./ProfileSocialForm"
+import { Tables } from "@/types/supabase"
 
 const ProfileUpdateButton = ({ userId }: { userId: string }) => {
-  const [updatedCareerData, setUpdatedCareerData] = useState([])
-  const [newCareerData, setNewCareerData] = useState([])
-  const [updatedEducationData, setUpdatedEducationData] = useState([])
-  const [newEducationData, setNewEducationData] = useState([])
-  const [updatedAcademyData, setUpdatedAcademyData] = useState([])
-  const [newAcademyData, setNewAcademyData] = useState([])
-  const [updatedSpecData, setUpdatedSpecData] = useState([])
-  const [newSpecData, setNewSpecData] = useState([])
-  const [updatedLinkData, setUpdatedLinkData] = useState([])
-  const [newLinkData, setNewLinkData] = useState([])
+  const [updatedCareerData, setUpdatedCareerData] = useState<
+    Tables<"careers">[]
+  >([])
+  const [newCareerData, setNewCareerData] = useState<Tables<"careers">[]>([])
+  const [updatedEducationData, setUpdatedEducationData] = useState<
+    Tables<"education">[]
+  >([])
+  const [newEducationData, setNewEducationData] = useState<
+    Tables<"education">[]
+  >([])
+  const [updatedAcademyData, setUpdatedAcademyData] = useState<
+    Tables<"academies">[]
+  >([])
+  const [newAcademyData, setNewAcademyData] = useState<Tables<"academies">[]>(
+    [],
+  )
+  const [updatedSpecData, setUpdatedSpecData] = useState<Tables<"specs">[]>([])
+  const [newSpecData, setNewSpecData] = useState<Tables<"specs">[]>([])
+  const [updatedLinkData, setUpdatedLinkData] = useState<
+    Tables<"social_links">[]
+  >([])
+  const [newLinkData, setNewLinkData] = useState<Tables<"social_links">[]>([])
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

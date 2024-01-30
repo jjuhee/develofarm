@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { deleteAcademies, getAcademy } from "../../api"
 import { Tables } from "@/types/supabase"
@@ -14,11 +14,13 @@ const ProfileAcademyForm = ({
   setNewAcademyData,
 }: {
   userId: string
-  setUpdatedAcademyData: any
+  setUpdatedAcademyData: Dispatch<SetStateAction<Tables<"academies">[]>>
   newAcademyData: any
-  setNewAcademyData: any
+  setNewAcademyData: Dispatch<SetStateAction<Tables<"academies">[]>>
 }) => {
-  const [newAcademyForms, setNewAcademyForms] = useState([])
+  const [newAcademyForms, setNewAcademyForms] = useState<Tables<"academies">[]>(
+    [],
+  )
   const [hiddenInputs, setHiddenInputs] = useState<boolean[]>([])
 
   const {
@@ -33,17 +35,17 @@ const ProfileAcademyForm = ({
 
   const handleInputChange = (
     index: number,
-    field: string,
+    field: keyof Tables<"academies">,
     value: string | boolean,
   ) => {
-    const updatedAcademies = [...academies]
-    updatedAcademies[index][field] = value
+    const updatedAcademies = [...(academies as Tables<"academies">[])]
+    ;(updatedAcademies[index][field] as string) = value as string
     setUpdatedAcademyData(updatedAcademies)
   }
 
   const handleNewCareerInputChange = (
     formIndex: number,
-    field: string,
+    field: keyof Tables<"academies">,
     value: string | boolean,
   ) => {
     setNewAcademyData((prevData: any) => {
@@ -54,8 +56,8 @@ const ProfileAcademyForm = ({
   }
 
   const handleAddNewAcademyForm = () => {
-    setNewAcademyForms([...newAcademyForms, {}])
-    setNewAcademyData([...newAcademyData, {}])
+    setNewAcademyForms([...newAcademyForms, {} as Tables<"academies">])
+    setNewAcademyData([...newAcademyData, {} as Tables<"academies">])
   }
 
   const hideInputsAndDelete = async (index: number, academyId: string) => {
@@ -119,6 +121,7 @@ const ProfileAcademyForm = ({
                       onChange={(e) =>
                         handleInputChange(index, "period_from", e.target.value)
                       }
+                      className="cursor-pointer"
                     />
                     <span> ~ </span>
                     <input
@@ -127,6 +130,7 @@ const ProfileAcademyForm = ({
                       onChange={(e) =>
                         handleInputChange(index, "period_to", e.target.value)
                       }
+                      className="cursor-pointer"
                     />
                   </div>
                   <div>
@@ -177,14 +181,8 @@ const ProfileAcademyForm = ({
         {/* 새로운 교육/활동 데이터 추가 */}
         {newAcademyForms.map((form, formIndex) => (
           <div key={formIndex}>
-            <div className="flex justify-between items-start pt-[30px] pb-[20px]">
+            <div className="flex justify-between items-start pt-[30px]">
               <div className="pt-[5px]">
-                <button
-                  type="button"
-                  onClick={() => handleDeleteNewAcademyForm(formIndex)}
-                >
-                  삭제
-                </button>
                 <input
                   type="date"
                   placeholder="From"
@@ -196,6 +194,7 @@ const ProfileAcademyForm = ({
                       e.target.value,
                     )
                   }
+                  className="cursor-pointer"
                 />
                 <input
                   type="date"
@@ -208,6 +207,7 @@ const ProfileAcademyForm = ({
                       e.target.value,
                     )
                   }
+                  className="cursor-pointer"
                 />
               </div>
 
@@ -234,19 +234,21 @@ const ProfileAcademyForm = ({
                     <HiOutlineXMark />
                   </button>
                 </div>
-                <input
-                  type="text"
-                  value={newAcademyData[formIndex]?.academy_major || ""}
-                  onChange={(e) =>
-                    handleNewCareerInputChange(
-                      formIndex,
-                      "academy_major",
-                      e.target.value,
-                    )
-                  }
-                  className="p-1"
-                  placeholder="활동내용"
-                />
+                <div className="pt-[20px]">
+                  <input
+                    type="text"
+                    value={newAcademyData[formIndex]?.academy_major || ""}
+                    onChange={(e) =>
+                      handleNewCareerInputChange(
+                        formIndex,
+                        "academy_major",
+                        e.target.value,
+                      )
+                    }
+                    className="p-1"
+                    placeholder="활동내용"
+                  />
+                </div>
               </div>
             </div>
             <hr className="my-8 border-t-2 border-gray-300" />

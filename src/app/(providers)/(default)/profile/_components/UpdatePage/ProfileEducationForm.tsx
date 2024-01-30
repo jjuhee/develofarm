@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { Dispatch, SetStateAction, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { deleteEducation, getEducation } from "../../api"
 import { Tables } from "@/types/supabase"
@@ -14,11 +14,13 @@ const ProfileEducationForm = ({
   setNewEducationData,
 }: {
   userId: string
-  setUpdatedEducationData: any
+  setUpdatedEducationData: Dispatch<SetStateAction<Tables<"education">[]>>
   newEducationData: any
-  setNewEducationData: any
+  setNewEducationData: Dispatch<SetStateAction<Tables<"education">[]>>
 }) => {
-  const [newEducationForms, setNewEducationForms] = useState([])
+  const [newEducationForms, setNewEducationForms] = useState<
+    Tables<"education">[]
+  >([])
   const [hiddenInputs, setHiddenInputs] = useState<boolean[]>([])
 
   const {
@@ -33,17 +35,17 @@ const ProfileEducationForm = ({
 
   const handleInputChange = (
     index: number,
-    field: string,
+    field: keyof Tables<"education">,
     value: string | boolean,
   ) => {
-    const UpdatedEducation = [...education]
-    UpdatedEducation[index][field] = value
+    const UpdatedEducation = [...(education as Tables<"education">[])]
+    ;(UpdatedEducation[index][field] as string) = value as string
     setUpdatedEducationData(UpdatedEducation)
   }
 
   const handleNewEducationInputChange = (
     formIndex: number,
-    field: string,
+    field: keyof Tables<"education">,
     value: string | boolean,
   ) => {
     setNewEducationData((prevData: any) => {
@@ -54,8 +56,8 @@ const ProfileEducationForm = ({
   }
 
   const handleAddNewEducationForm = () => {
-    setNewEducationForms([...newEducationForms, {}])
-    setNewEducationData([...newEducationData, {}])
+    setNewEducationForms([...newEducationForms, {} as Tables<"education">])
+    setNewEducationData([...newEducationData, {} as Tables<"education">])
   }
 
   const hideInputsAndDelete = async (index: number, educationId: string) => {
@@ -119,6 +121,7 @@ const ProfileEducationForm = ({
                       onChange={(e) =>
                         handleInputChange(index, "period_from", e.target.value)
                       }
+                      className="cursor-pointer"
                     />
                     <span> ~ </span>
                     <input
@@ -127,6 +130,7 @@ const ProfileEducationForm = ({
                       onChange={(e) =>
                         handleInputChange(index, "period_to", e.target.value)
                       }
+                      className="cursor-pointer"
                     />
                     <div className="flex gap-[10px] pt-[30px]">
                       {[
@@ -149,9 +153,12 @@ const ProfileEducationForm = ({
                                 e.target.value,
                               )
                             }
-                            className="mr-[5px] accent-[#AAAAAA]"
+                            className="mr-[5px] accent-[#AAAAAA] cursor-pointer"
                           />
-                          <label htmlFor={`eduCheckbox_${index}_${id}`}>
+                          <label
+                            htmlFor={`eduCheckbox_${index}_${id}`}
+                            className="cursor-pointer"
+                          >
                             {label}
                           </label>
                         </div>
@@ -221,6 +228,7 @@ const ProfileEducationForm = ({
                         e.target.value,
                       )
                     }
+                    className="cursor-pointer"
                   />
                   <span> ~ </span>
                   <input
@@ -234,6 +242,7 @@ const ProfileEducationForm = ({
                         e.target.value,
                       )
                     }
+                    className="cursor-pointer"
                   />
                 </div>
                 <div className="flex gap-[10px] pt-[30px]">
@@ -259,9 +268,12 @@ const ProfileEducationForm = ({
                             e.target.value,
                           )
                         }
-                        className="mr-[5px] accent-[#AAAAAA]"
+                        className="mr-[5px] accent-[#AAAAAA] cursor-pointer"
                       />
-                      <label htmlFor={`newEduCheckbox_${formIndex}_${id}`}>
+                      <label
+                        htmlFor={`newEduCheckbox_${formIndex}_${id}`}
+                        className="cursor-pointer"
+                      >
                         {label}
                       </label>
                     </div>

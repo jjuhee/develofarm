@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { getSocialLinks } from "../../api"
 import { Tables } from "@/types/supabase"
@@ -10,9 +11,9 @@ const ProfileSocialForm = ({
   setNewLinkData,
 }: {
   userId: string
-  setUpdatedLinkData: any
+  setUpdatedLinkData: Dispatch<SetStateAction<Tables<"social_links">[]>>
   newLinkData: any
-  setNewLinkData: any
+  setNewLinkData: Dispatch<SetStateAction<Tables<"social_links">[]>>
 }) => {
   const {
     data: social_links,
@@ -24,9 +25,13 @@ const ProfileSocialForm = ({
     enabled: !!userId,
   })
 
-  const handleInputChange = (index: number, field: string, value: string) => {
-    const updatedLinks = [...social_links]
-    updatedLinks[index][field] = value
+  const handleInputChange = (
+    index: number,
+    field: keyof Tables<"social_links">,
+    value: string,
+  ) => {
+    const updatedLinks = [...(social_links as Tables<"social_links">[])]
+    ;(updatedLinks[index][field] as string) = value as string
     setUpdatedLinkData(updatedLinks)
   }
 
