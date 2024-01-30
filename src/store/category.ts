@@ -2,13 +2,13 @@ import { Tables } from "@/types/supabase"
 import { create } from "zustand"
 
 type TCategoryState = {
-  title: string
-  selectCategory: (title: string) => void
+  category: string
+  selectCategory: (category: string) => void
 }
 
 const useCategoryStore = create<TCategoryState>()((set) => ({
-  title: "전체보기",
-  selectCategory: (title: string) => set({ title: title }),
+  category: "전체보기",
+  selectCategory: (category: string) => set({ category: category }),
 }))
 
 export default useCategoryStore
