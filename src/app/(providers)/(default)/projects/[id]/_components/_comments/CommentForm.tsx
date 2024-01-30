@@ -67,6 +67,7 @@ const CommentForm = ({ projectId }: Props) => {
         value={content}
         onChange={(e) => {
           setContent(e.target.value)
+          console.log(e.target.value)
         }}
       />
       <button className="border border-neutral-600 px-6 py-2 ml-auto rounded-lg hover:bg-slate-900 hover:text-white transition delay-75 ease-in-out">

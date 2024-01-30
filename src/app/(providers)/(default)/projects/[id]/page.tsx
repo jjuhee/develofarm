@@ -14,6 +14,7 @@ import ProjectWriterInfo from "./_components/_header/ProjectWriterInfo"
 import FooterList from "./_components/_footer/FooterList"
 import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
+import Image from "next/image"
 
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -48,7 +49,12 @@ const DetailPage = () => {
   const { userId: currentUser } = useUserStore()
   const isWriter = currentUser === project?.user_id
 
-  if (isLoading || !project) return <div>is Loading...</div>
+  if (isLoading || !project)
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+      </div>
+    )
 
   return (
     <div className="flex flex-col w-full my-0 mx-auto">

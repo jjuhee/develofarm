@@ -1,5 +1,3 @@
-"use clienet"
-
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
 import { TablesInsert } from "@/types/supabase"
@@ -73,7 +71,7 @@ const ReCommentForm = ({ comment }: Props) => {
     mutationFn: removeComment,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["comments", { projectId: comment?.project_id }],
+        queryKey: ["comments", { projectId: comment.project_id }],
       })
       openCustomModalHandler("댓글이 삭제되었습니다", "alert")
     },
@@ -99,7 +97,7 @@ const ReCommentForm = ({ comment }: Props) => {
           className="text-left min-w-[100px] font-semibold"
           onClick={toggleFormHandler}
         >
-          {/* TODO: 댓글이 1000개 이상일경우 표시해주는 형식 바꿀 예정 */}
+          {/* TODO: 댓글이 수가 많아질 경우 표시해주는 형식 바꿀 예정 */}
           {comment.comments && (comment.comments as unknown as any[]).length > 0
             ? `${(comment.comments as unknown as any[]).length}개의 답글`
             : "댓글"}
@@ -125,7 +123,10 @@ const ReCommentForm = ({ comment }: Props) => {
               placeholder="댓글 내용을 입력하세요"
               maxLength={500}
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={(e) => {
+                setContent(e.target.value)
+                console.log(e.target.value)
+              }}
             />
             <button className="border border-neutral-600 px-6 py-2 ml-auto rounded-lg hover:bg-slate-900 hover:text-white transition delay-75 ease-in-out">
               댓글 작성

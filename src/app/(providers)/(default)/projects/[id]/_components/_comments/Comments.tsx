@@ -22,7 +22,12 @@ const Comments = ({ project }: Props) => {
     queryFn: () => getComments(project.id),
   })
 
-  if (commentsIsLoading) return <div>is Loading...</div>
+  if (commentsIsLoading)
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+      </div>
+    )
 
   return (
     <>
@@ -61,7 +66,9 @@ const Comments = ({ project }: Props) => {
                 {comment.del_yn === true ? (
                   <div className="h-auto font-semibold">삭제된 댓글입니다!</div>
                 ) : (
-                  <div className="h-auto font-semibold">{comment.content}</div>
+                  <p className="h-auto font-semibold whitespace-pre">
+                    {comment.content}
+                  </p>
                 )}
                 <Spacer y={10} />
                 {comment.user && <ReCommentForm comment={comment} />}

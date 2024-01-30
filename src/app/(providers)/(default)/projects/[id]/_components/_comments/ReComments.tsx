@@ -72,7 +72,9 @@ const ReComments = ({ recomments }: Props) => {
               comment={recomment}
             />
             <div className="flex flex-col pl-14 min-h-28 border-b-2">
-              <div className="h-auto font-semibold">{recomment.content}</div>
+              <p className="h-auto font-semibold whitespace-pre">
+                {recomment.content}
+              </p>
             </div>
           </div>
         )
