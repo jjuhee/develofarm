@@ -89,7 +89,7 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
         </div>
         <div className="flex justify-between items-center mt-10 lg:mt-0">
           <ul className="flex gap-3  relative">
-            {project_tech.length > 5 ? (
+            {project_tech?.length > 5 ? (
               <>
                 {project_tech?.slice(0, 5).map((tech, i) => (
                   <li
