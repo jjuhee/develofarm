@@ -7,11 +7,10 @@ import { UsersType } from "@/types/extendedType"
 
 interface Props {
   user: UsersType
-  title: string
   currentUserId: string
 }
 
-const MemberCard = ({ user, title, currentUserId }: Props) => {
+const MemberCard = ({ user, currentUserId }: Props) => {
   const router = useRouter()
 
   const { openCustomModalHandler } = useCustomModal()

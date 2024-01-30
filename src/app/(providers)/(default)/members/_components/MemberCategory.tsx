@@ -2,28 +2,32 @@
 
 import useCategoryStore from "@/store/category"
 import useMembersStore from "@/store/members"
-import React, { useState } from "react"
+import React from "react"
 import type { Tables } from "@/types/supabase"
 
 interface Props {
   positions: Tables<"positions">[]
 }
 
+interface TCategoryHandler {
+  title?: string
+  position?: Tables<"positions">
+}
+
 const MemberCategory = ({ positions }: Props) => {
-  const { selectCategory } = useCategoryStore((state) => state)
+  const { selectCategory, category } = useCategoryStore((state) => state)
   const { setMemberPosition } = useMembersStore((state) => state)
-  const [isActive, setIsActive] = useState("전체보기")
 
-  const onClickAllViewHandler = (title: string) => {
-    setIsActive(title)
-    selectCategory(title)
-    setMemberPosition(null)
-  }
-
-  const onClickCategoryHandler = (position: Tables<"positions">) => {
-    setIsActive(position.name)
-    selectCategory(position.name)
-    setMemberPosition(position)
+  const onClickCategoryHandler = ({ title, position }: TCategoryHandler) => {
+    /** 전체보기 선택했을 때 */
+    if (title) {
+      selectCategory(title)
+      setMemberPosition(null)
+      /** position 카테고리를 선택했을 때 */
+    } else if (position) {
+      selectCategory(position.name)
+      setMemberPosition(position)
+    } else return
 
     window.scroll({
       top: 0,
@@ -33,9 +37,9 @@ const MemberCategory = ({ positions }: Props) => {
   return (
     <ul className="flex py-[20px] gap-[20px] text-[17px] text-[#777E90] font-[700]">
       <li
-        onClick={() => onClickAllViewHandler("전체보기")}
+        onClick={() => onClickCategoryHandler({ title: "전체보기" })}
         className={`cursor-pointer py-2 px-4 ${
-          isActive === "전체보기"
+          category === "전체보기"
             ? "font-bold text-black bg-main-lime"
             : "font-[400] border-[1.5px] border-[#EAEAEA] text-[#666666]"
         }`}
@@ -45,9 +49,9 @@ const MemberCategory = ({ positions }: Props) => {
       {positions?.map((position) => (
         <li
           key={position.id}
-          onClick={() => onClickCategoryHandler(position)}
+          onClick={() => onClickCategoryHandler({ position })}
           className={`cursor-pointer py-2 px-4 ${
-            isActive === position.name
+            category === position.name
               ? "font-bold text-black bg-main-lime"
               : "font-[400] border-[1.5px] border-[#EAEAEA] text-[#666666]"
           }`}
