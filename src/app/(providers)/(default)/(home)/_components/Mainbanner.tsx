@@ -3,15 +3,19 @@ import React from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay, Pagination } from "swiper/modules"
 import Image from "next/image"
+import javascript from "/public/images/language/javascript_logo.png"
 
 const Mainbanner = () => {
   const bannerArray = [
     {
       title: "프론트엔드 개발자",
       bannerDescription: [
-        { name: "REACT", img: "" },
-        { name: "JAVASCRIPT", img: "" },
-        { name: "JQUERY", img: "" },
+        {
+          name: "REACT",
+          img: "/images/language/react_logo.png",
+        },
+        { name: "JAVASCRIPT", img: javascript },
+        { name: "JQUERY", img: "/images/language/jquery_logo.png" },
         { name: "NEXTJS", img: "" },
         { name: "VUEJS", img: "" },
       ],
@@ -60,27 +64,28 @@ const Mainbanner = () => {
                 modules={[Autoplay, Pagination]}
                 autoplay={{
                   disableOnInteraction: false,
-                  pauseOnMouseEnter: true,
+                  pauseOnMouseEnter: false,
                 }}
                 slidesPerView={3}
                 spaceBetween={20}
                 speed={2000}
                 effect="slide"
-                className="w-full h-[110px] bg-green-300 border border-gray-300"
+                className="w-full h-[110px] bg-black "
               >
                 {list.bannerDescription.map((list: any, index: number) => (
                   <SwiperSlide
                     key={index}
-                    className="   rounded-3xl border border-white  w-[100px] "
+                    className="  flex items-center rounded-3xl   w-[100px] "
                   >
                     {/* 이미지 */}
                     <div className="flex items-center">
-                      <div className="mr-3 rounded-3xl text-[30px] text-white font-bold">
+                      <div className="ml-3 mr-3 rounded-3xl text-[30px] text-white font-bold">
                         {list.name}
                       </div>
-                      <div className="mr-3 border border-black p-4 rounded-full w-[40%] h-[90px] transition duration-300 overflow-hidden relative">
+                      <div className="content-justify m-2  p-4 rounded-full w-[55%] h-[90px] transition duration-300 overflow-hidden relative">
                         <Image
-                          src={"/images/keyboard.jpg"}
+                          // src={list.img ? list.img : ""}
+                          src={"/images/firework.jpg"}
                           alt="대체 텍스트"
                           layout="fill"
                           objectFit="cover"
@@ -98,6 +103,12 @@ const Mainbanner = () => {
           </div>
         </div>
       ))}
+      <div
+        className="group border border-gray-200 flex items-center justify-center h-[110px]"
+        style={{ backgroundColor: "#b8ff65" }}
+      >
+        <span className="text-[40px]">디벨로팜 입니다.</span>
+      </div>
     </>
   )
 }
