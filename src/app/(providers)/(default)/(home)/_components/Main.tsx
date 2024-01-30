@@ -12,6 +12,8 @@ import Image from "next/image"
 import Spacer from "@/components/ui/Spacer"
 import { getBookmarksCountEachProject } from "../../projects/api"
 import { useRouter } from "next/navigation"
+import Mainbanner from "./Mainbanner"
+import MostBookmarked from "./MostBookmarked"
 interface TBookmarksCountEachProject {
   id: string | null
   title: string | null
@@ -41,73 +43,8 @@ export default function Main({ children }: { children: React.ReactNode }) {
   }
   return (
     <>
-      <div className=" flex flex-col justify-center items-center  relative w-full">
-        <div className="w-[100%] h-[100%]">
-          <Swiper
-            spaceBetween={10}
-            centeredSlides={true}
-            autoplay={{
-              delay: 30000,
-              disableOnInteraction: false,
-            }}
-            pagination={{
-              clickable: true,
-              el: ".swiper-pagination-custom",
-            }}
-            navigation={{
-              nextEl: ".swiper-button-next-custom",
-              prevEl: ".swiper-button-prev-custom",
-            }}
-            modules={[Autoplay, Pagination, Navigation]}
-            className="mySwiper"
-          >
-            <SwiperSlide>
-              <div className="w-full h-full flex items-center justify-center">
-                <div
-                  className="w-full h-[600px] bg-cover bg-center"
-                  style={{ backgroundImage: `url('/images/screenshot.png')` }}
-                ></div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="w-full h-full flex items-center justify-center">
-                <div
-                  className="w-full h-[600px] bg-cover bg-center"
-                  style={{
-                    backgroundImage: `url('/images/brainstorming2.jpg')`,
-                  }}
-                >
-                  {" "}
-                  <div className="text-white text-3xl font-semibold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    새로운 프로젝트에 합류하세요{" "}
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              {" "}
-              <div className="w-full h-full flex items-center justify-center">
-                <div
-                  className="w-full h-[600px] bg-cover bg-center"
-                  style={{
-                    backgroundImage: `url('/images/keyboard.jpg')`,
-                  }}
-                >
-                  {" "}
-                  <div className="text-black text-3xl font-semibold absolute z-10 top-3/4 left-3/4 transform -translate-x-1/2 -translate-y-1/2 w-[500px]">
-                    <div>develofarm이</div> 당신을 기다리고 있습니다
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-          </Swiper>
-
-          {/* 추가된 부분: 직접 요소를 지정하여 위치를 조절 */}
-          <div className="swiper-pagination swiper-pagination-custom"></div>
-          <div className="swiper-button-next swiper-button-next-custom"></div>
-          <div className="swiper-button-prev swiper-button-prev-custom"></div>
-        </div>
-      </div>
+      <Mainbanner />
+      <MostBookmarked />
       {/* 경계 */}
       <Spacer y={100} />
       <div className="mx-y mx-auto p-10 text-2xl font-bold">
@@ -210,7 +147,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
       <Swiper
         direction="horizontal"
         loop={true}
-        modules={[Autoplay, Pagination]}
+        modules={[Autoplay]}
         autoplay={{
           delay: 0,
           pauseOnMouseEnter: true,
@@ -219,8 +156,8 @@ export default function Main({ children }: { children: React.ReactNode }) {
         }}
         slidesPerView={4}
         spaceBetween={20}
-        speed={4000}
-        effect="fade"
+        speed={3000}
+        effect="slide"
         className="w-full h-[300px]"
       >
         {bookmarksCountProjects
@@ -232,7 +169,6 @@ export default function Main({ children }: { children: React.ReactNode }) {
               className="relative group border border-gray-300 rounded-t-2xl overflow-hidden"
               onClick={() => onDetailProjectsHandler(list.id as string)}
             >
-              {list.id}
               <div className="rounded-t-lg w-full h-[70%] group-hover:border-transparent transition duration-300 relative overflow-hidden ">
                 <Image
                   src={list.picture_url ? list.picture_url : ""}
