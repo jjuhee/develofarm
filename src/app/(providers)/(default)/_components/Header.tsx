@@ -17,7 +17,7 @@ import { useCustomModal } from "@/hooks/useCustomModal"
 import { useRouter } from "next/navigation"
 
 const Header = () => {
-  const { userId } = useUserStore((state) => state)
+  const { userId, setUserId, setUser } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
   const { setViewMemberModal, setMemberPosition } = useMembersStore(
     (state) => state,
@@ -42,7 +42,7 @@ const Header = () => {
     setIsImageActive(false)
   }
 
-  const onAvavatarHandlerClick = (event: React.MouseEvent) => {
+  const onAvatarHandlerClick = (event: React.MouseEvent) => {
     event.stopPropagation()
     setIsImageActive((prev) => !prev)
     setShowTooltip(false)
@@ -72,27 +72,25 @@ const Header = () => {
   //로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
   //TODO : 로그아웃시 바로 isLoggedOut이 true 값으로 변하지 않는것을 해결해야함
   const [isLoggedOut, setIsLoggedOut] = useState<boolean>(true)
-  const [changeState, setChangeState] = useState(false)
   const { openCustomModalHandler } = useCustomModal()
 
-  //
-  let chekcoutAuthToken
   useEffect(() => {
     const subscription = supabaseForClient.auth.onAuthStateChange(
       (event, session) => {
-        console.log("session 확인", event, session)
-
-        console.log("useEffect내의 isloggedout", isLoggedOut)
         if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
-          const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
-          const getAuthToken: any = localStorage.getItem(AUTH_TOKEN)
-          const json1 = JSON.parse(getAuthToken)
-          chekcoutAuthToken = json1
-          setEmail(json1?.user.user_metadata.email)
-          if (getAuthToken) {
+          if (session?.user) {
+            const userData = {
+              id: session.user.id,
+              nickName: session.user.user_metadata?.name as string,
+              avatarUrl: session.user.user_metadata?.avatar_url,
+              email: session.user.email as string,
+              createdAt: session.user.email as string,
+            }
+            setUser(userData)
             setIsLoggedOut(false)
-
-            setAvatarUrl(json1?.user.user_metadata.avatar_url)
+            setUserId(session?.user.id)
+            setEmail(session?.user?.email as string)
+            setAvatarUrl(session?.user?.user_metadata.avatar_url)
           }
         }
       },
@@ -176,7 +174,7 @@ const Header = () => {
 
               <div
                 className="rounded-full shadow-lg hover hover:cursor-pointer"
-                onClick={onAvavatarHandlerClick}
+                onClick={onAvatarHandlerClick}
                 ref={dropdownRef}
               >
                 <Image
