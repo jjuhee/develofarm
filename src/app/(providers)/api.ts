@@ -10,3 +10,5 @@ export const getUserId = async () => {
 
   return data.user?.id
 }
+
+// 로그인한 유저 정보보
