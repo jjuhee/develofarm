@@ -1,6 +1,9 @@
-import { Tables } from "@/types/supabase"
+import Checkbox from "@/components/ui/Checkbox"
 import React, { useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
+
+import type { Tables } from "@/types/supabase"
+
 /* TEMP : 포지션id를 못넘겨줘서 임시 사용입니다 */
 const POSITION_ID = {
   front: "be33a56c-a4da-43a3-984f-c6acd667b2ae",
@@ -28,7 +31,7 @@ const SelectStackButton = ({
     }
   }
 
-  const onChangeHandler = (
+  const onCheckTechsHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
     position_id: string,
   ) => {
@@ -94,24 +97,18 @@ const SelectStackButton = ({
                 htmlFor={tech?.id}
                 className="flex items-center gap-1 cursor-pointer text-[16px] text-black "
               >
-                <input
-                  type="checkbox"
+                <Checkbox
                   id={tech?.id}
-                  // 포지션이 프론트이고, 테크가 있으면 체크
-                  checked={categoryData.techs?.some(
+                  value={categoryData.techs?.some(
                     (item) =>
                       item.position_id === POSITION_ID.front &&
                       item.tech_id === tech.id,
                   )}
-                  className="
-                  peer relative appearance-none shrink-0 w-3 h-3 border-2 border-[#666666] rounded-sm bg-white
-                  focus:outline-none focus:ring-offset-0 focus:ring-1 focus:ring-main-lime
-                  checked:bg-black checked:border-0
-                  disabled:border-steel-400 disabled:bg-steel-400
-                  checked:bg-[url('/icons/checked.png')] bg-no-repeat bg-center cursor-pointer
-                "
-                  onChange={(e) =>
-                    onChangeHandler(e, "be33a56c-a4da-43a3-984f-c6acd667b2ae")
+                  handler={(e) =>
+                    onCheckTechsHandler(
+                      e,
+                      "be33a56c-a4da-43a3-984f-c6acd667b2ae",
+                    )
                   }
                 />
                 {tech?.tech_name}
@@ -150,24 +147,18 @@ const SelectStackButton = ({
                 htmlFor={tech?.id}
                 className="flex items-center gap-1 cursor-pointer text-[16px] text-black"
               >
-                <input
-                  type="checkbox"
+                <Checkbox
                   id={tech?.id}
-                  // 포지션이 프론트이고, 테크가 있으면 체크
-                  checked={categoryData.techs?.some(
+                  value={categoryData.techs?.some(
                     (item) =>
                       item.position_id === POSITION_ID.back &&
                       item.tech_id === tech.id,
                   )}
-                  className="
-                  peer relative appearance-none shrink-0 w-3 h-3 border-2 border-[#666666] rounded-sm bg-white
-                  focus:outline-none focus:ring-offset-0 focus:ring-1 focus:ring-main-lime
-                  checked:bg-black checked:border-0
-                  disabled:border-steel-400 disabled:bg-steel-400
-                  checked:bg-[url('/icons/checked.png')] bg-no-repeat bg-center cursor-pointer
-                "
-                  onChange={(e) =>
-                    onChangeHandler(e, "0e68d5ef-ebc4-40d5-afe8-9bf557a52746")
+                  handler={(e) =>
+                    onCheckTechsHandler(
+                      e,
+                      "0e68d5ef-ebc4-40d5-afe8-9bf557a52746",
+                    )
                   }
                 />
                 {tech?.tech_name}
@@ -206,24 +197,18 @@ const SelectStackButton = ({
                 htmlFor={tech?.id}
                 className="flex items-center gap-1 cursor-pointer text-[16px] text-black"
               >
-                <input
-                  type="checkbox"
-                  name="디자인"
+                <Checkbox
                   id={tech?.id}
-                  checked={categoryData.techs?.some(
+                  value={categoryData.techs?.some(
                     (item) =>
                       item.position_id === POSITION_ID.design &&
                       item.tech_id === tech.id,
                   )}
-                  className="
-                  peer relative appearance-none shrink-0 w-3 h-3 border-2 border-[#666666] rounded-sm bg-white
-                  focus:outline-none focus:ring-offset-0 focus:ring-1 focus:ring-main-lime
-                  checked:bg-black checked:border-0
-                  disabled:border-steel-400 disabled:bg-steel-400
-                  checked:bg-[url('/icons/checked.png')] bg-no-repeat bg-center cursor-pointer
-                "
-                  onChange={(e) =>
-                    onChangeHandler(e, "e2be10af-aa25-4aa8-b18a-9e004d4f9bed")
+                  handler={(e) =>
+                    onCheckTechsHandler(
+                      e,
+                      "e2be10af-aa25-4aa8-b18a-9e004d4f9bed",
+                    )
                   }
                 />
                 {tech?.tech_name}
