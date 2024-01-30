@@ -13,7 +13,6 @@ import { HiOutlineXMark } from "react-icons/hi2"
 
 //해당 이용자의 localstorage 가져오기
 interface keywordsInterface {
-  id?: number
   num: number
   text?: string
 }
@@ -57,7 +56,7 @@ const SearchPage = () => {
   const [order, setOrder] = useState(1)
 
   const [keywords, setKeywords] = useState<keywordsInterface[]>([])
-  const [userId, setUserId] = useState<number>()
+
   const [text, setText] = useState<string>()
 
   //북마크
@@ -65,6 +64,16 @@ const SearchPage = () => {
     queryKey: ["bookmarks", currentUser],
     queryFn: () => getBookmarksByUserId(currentUser),
     enabled: !!currentUser,
+  })
+
+  const { data: searchedData, refetch } = useQuery({
+    queryKey: ["searchedProjects", text],
+    queryFn: () => {
+      if (text) {
+        return getSearchedProject(text)
+      }
+    },
+    enabled: false,
   })
 
   //프로젝트 기술 스택
@@ -86,14 +95,6 @@ const SearchPage = () => {
   useEffect(() => {
     //window 객체가 완전히 불려진 상태에서 localstorage를 확인하는 조건문(처음에만 들어옴)
     if (typeof window !== "undefined") {
-      //로그인한 이용자의 id 추출하여 keywods의 id 값으로 들어감-----
-      const result2: any = localStorage.getItem(
-        "sb-aksbymviolrkiainilpq-auth-token",
-      )
-      const user_id = JSON.parse(result2).user.id
-      setUserId(user_id)
-      //------------------------------
-
       //--만약 로컬스토리지에 keywords가 있다면 keywords state에 넣는다.
       if (localStorage.getItem("keywords")) {
         const result1: any = localStorage.getItem("keywords")
@@ -121,7 +122,6 @@ const SearchPage = () => {
     }
 
     const newKeyword: keywordsInterface = {
-      id: userId,
       num: keywords.length,
       text: searchInput,
     }
@@ -169,19 +169,9 @@ const SearchPage = () => {
     setText(text)
   }
 
-  const { data: searchedData, refetch } = useQuery({
-    queryKey: ["searchedProjecs", text],
-    queryFn: () => {
-      if (text) {
-        return getSearchedProject(text)
-      }
-    },
-    enabled: false,
-  })
-
   console.log("data", searchedData)
   return (
-    <div className="h-[70vh]">
+    <div className="">
       <section className="flex justify-center align-center mt-40">
         <form onSubmit={onSubmitHandler} className="relative">
           <div className="relative flex items-center">
@@ -234,7 +224,7 @@ const SearchPage = () => {
                   onClick={() =>
                     onSearchKeywordChangeHandler(keyword.text as string)
                   }
-                  key={keyword.id}
+                  key={keyword.text}
                 >
                   <div className="bg-gray-200 rounded-3xl p-1 pr-2 ml-2 relative flex gap-1 items-center">
                     <span className="flex-grow whitespace-nowrap overflow-hidden">
@@ -273,7 +263,9 @@ const SearchPage = () => {
           })}
         </ul>
       ) : (
-        <></>
+        <div className="mt-5">
+          <p>검색 결과가 없습니다.</p>
+        </div>
         // <EmptyState />
       )}
     </div>

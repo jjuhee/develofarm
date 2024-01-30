@@ -7,11 +7,10 @@ import { UsersType } from "@/types/extendedType"
 
 interface Props {
   user: UsersType
-  title: string
   currentUserId: string
 }
 
-const MemberCard = ({ user, title, currentUserId }: Props) => {
+const MemberCard = ({ user, currentUserId }: Props) => {
   const router = useRouter()
 
   const { openCustomModalHandler } = useCustomModal()
@@ -45,7 +44,7 @@ const MemberCard = ({ user, title, currentUserId }: Props) => {
       className="flex flex-col justify-start w-[280px] h-[500px] rounded-3xl transition-all duration-200 cursor-pointer hover:scale-105"
       onClick={onClickMemberCardHandler}
     >
-      <div className=" bg-gray-200 mb-4">
+      <div className="mb-4 w-[280px] h-[280px] overflow-hidden">
         <Image
           src={user?.avatar_url || "/images/React.jpeg"}
           alt="user"

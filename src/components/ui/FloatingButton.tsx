@@ -31,7 +31,7 @@ const FloatingButton = ({ mode }: Props) => {
   }, [])
 
   return (
-    <div className="fixed right-[40px] bottom-[40px] ">
+    <div className="fixed right-[50px] bottom-[50px] z-10">
       {showButton && (
         <Image
           src={"/images/top_button.png"}

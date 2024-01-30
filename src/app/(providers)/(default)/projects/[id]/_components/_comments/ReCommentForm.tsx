@@ -5,8 +5,10 @@ import React, { useState } from "react"
 import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import Spacer from "@/components/ui/Spacer"
-import { getComments, setComment } from "../../api"
+import { getComments, removeComment, setComment } from "../../api"
 import ReComments from "./ReComments"
+import CommentRemoveButton from "./CommentRemoveButton"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 type Props = {
   comment: Exclude<Awaited<ReturnType<typeof getComments>>, null>[number]
@@ -17,6 +19,7 @@ const ReCommentForm = ({ comment }: Props) => {
   const [content, setContent] = useState<string>("")
   const { userId } = useUserStore()
   const queryClient = useQueryClient()
+  const { openCustomModalHandler } = useCustomModal()
 
   /**
    *@ funtion 대댓글 작성 폼 토글 기능 */
@@ -26,7 +29,7 @@ const ReCommentForm = ({ comment }: Props) => {
 
   /**
    *@ mutation 댓글 등록 후 해당 게시물Id로 댓글 최신 목록 불러오기 */
-  const AddCommentMutate = useMutation({
+  const AddReCommentMutate = useMutation({
     mutationFn: setComment,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -45,6 +48,9 @@ const ReCommentForm = ({ comment }: Props) => {
   const onSubmitHandler: React.FormEventHandler = (e) => {
     e.preventDefault()
 
+    if (!userId)
+      return openCustomModalHandler("로그인 후에 작성 가능 합니다!", "alert")
+
     if (content.trim() === "") {
       alert("댓글을 입력해주세요!")
       return false
@@ -57,37 +63,75 @@ const ReCommentForm = ({ comment }: Props) => {
       content,
     }
 
-    AddCommentMutate.mutate(newComment)
+    AddReCommentMutate.mutate(newComment)
+  }
+
+  /**
+   *@ mutaion 댓글 삭제 후 확인창 띄워주고 삭제
+   TODO: 목록으로 돌아갈때 캐시가 남아 지워주는 작업 필요 */
+  const removeCommentMutate = useMutation({
+    mutationFn: removeComment,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["comments", { projectId: comment?.project_id }],
+      })
+      openCustomModalHandler("댓글이 삭제되었습니다", "alert")
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  /**
+   *@ function 받아온 id를 삭제 함수에 넣어서 확인창으로 검사 후 삭제 처리 */
+  const isDeleteClickHandler = (id: string) => {
+    const handler = () => {
+      removeCommentMutate.mutate(id)
+    }
+
+    openCustomModalHandler("정말로 삭제하시겠습니까?", "confirm", handler)
   }
 
   return (
     <>
-      <button className="text-left pl-2" onClick={toggleFormHandler}>
-        {comment.comments && (comment.comments as unknown as any[]).length > 0
-          ? `${(comment.comments as unknown as any[]).length}개의 답글`
-          : "댓글"}
-      </button>
-
+      <section className="flex align-middle">
+        <button
+          className="text-left min-w-[100px] font-semibold"
+          onClick={toggleFormHandler}
+        >
+          {/* TODO: 댓글이 1000개 이상일경우 표시해주는 형식 바꿀 예정 */}
+          {comment.comments && (comment.comments as unknown as any[]).length > 0
+            ? `${(comment.comments as unknown as any[]).length}개의 답글`
+            : "댓글"}
+        </button>
+        {!comment.del_yn && (
+          <CommentRemoveButton
+            comment={comment}
+            handler={isDeleteClickHandler}
+          />
+        )}
+      </section>
+      <Spacer y={20} />
       {showForm && (
-        <div>
+        <section>
           <Spacer y={10} />
           <ReComments recomments={comment.comments} />
           <form
-            className="flex flex-col border border-slate-600 p-5 mb-5"
+            className="flex flex-col border border-slate-600 rounded-xl p-5 mb-5"
             onSubmit={onSubmitHandler}
           >
             <textarea
-              className="outline-none resize-none"
+              className="outline-none resize-none rounded-lg"
               placeholder="댓글 내용을 입력하세요"
               maxLength={500}
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
-            <button className="border-2 border-slate-900 px-3 py-2 ml-auto rounded-full hover:bg-slate-900 hover:text-white transition delay-150 ease-in-out font-semibold">
+            <button className="border border-neutral-600 px-6 py-2 ml-auto rounded-lg hover:bg-slate-900 hover:text-white transition delay-75 ease-in-out">
               댓글 작성
             </button>
           </form>
-        </div>
+        </section>
       )}
     </>
   )

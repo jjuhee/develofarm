@@ -18,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
-        <div id="portal" className="z-100"></div>
+        <Provider>
+          {children}
+          <div id="portal" className="relative z-50"></div>
+        </Provider>
       </body>
     </html>
   )

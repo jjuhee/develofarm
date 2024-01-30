@@ -12,20 +12,27 @@ import Image from "next/image"
 import { GoPerson } from "react-icons/go"
 import { LuFolder } from "react-icons/lu"
 import { IoLogOutOutline } from "react-icons/io5"
+import useOnClickOutSide from "@/hooks/useOnClickOutSide"
+import { useCustomModal } from "@/hooks/useCustomModal"
+import { useRouter } from "next/navigation"
+
 const Header = () => {
-  const { userId } = useUserStore((state) => state)
+  const { userId, setUserId, setUser } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
   const { setViewMemberModal, setMemberPosition } = useMembersStore(
     (state) => state,
   )
   const [isImageActive, setIsImageActive] = useState<boolean>(false)
+  const dropdownRef = useRef<HTMLInputElement>(null)
 
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
     setViewMemberModal(false)
     setMemberPosition(null)
   }
-  const [email, setEmail] = useState<string>()
+
+  const router = useRouter()
+  const [email, setEmail] = useState<string>("")
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>()
 
   const [showTooltip, setShowTooltip] = useState(false)
@@ -35,7 +42,8 @@ const Header = () => {
     setIsImageActive(false)
   }
 
-  const onAvavatarHandlerClick = (event: React.MouseEvent) => {
+  const onAvatarHandlerClick = (event: React.MouseEvent) => {
+    event.stopPropagation()
     setIsImageActive((prev) => !prev)
     setShowTooltip(false)
   }
@@ -64,20 +72,38 @@ const Header = () => {
   //로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
   //TODO : 로그아웃시 바로 isLoggedOut이 true 값으로 변하지 않는것을 해결해야함
   const [isLoggedOut, setIsLoggedOut] = useState<boolean>(true)
+  const { openCustomModalHandler } = useCustomModal()
 
   useEffect(() => {
-    const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN as string
-    const getAuthToken: any = localStorage.getItem(AUTH_TOKEN)
-    const json1 = JSON.parse(getAuthToken)
-    setEmail(json1?.user.user_metadata.email)
-    setAvatarUrl(json1?.user.user_metadata.avatar_url)
-    console.log("헤더에서 로컬스토리지 받기", email, avatarUrl)
-    if (getAuthToken) {
-      setIsLoggedOut(false)
+    const subscription = supabaseForClient.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
+          if (session?.user) {
+            const userData = {
+              id: session.user.id,
+              nickName: session.user.user_metadata?.name as string,
+              avatarUrl: session.user.user_metadata?.avatar_url,
+              email: session.user.email as string,
+              createdAt: session.user.email as string,
+            }
+            setUser(userData)
+            setIsLoggedOut(false)
+            setUserId(session?.user.id)
+            setEmail(session?.user?.email as string)
+            setAvatarUrl(session?.user?.user_metadata.avatar_url)
+          }
+        }
+      },
+    )
+    return () => {
+      subscription.data.subscription.unsubscribe()
+      console.log("unsubscribe!!")
     }
-  }, [isLoggedOut])
-
-  console.log("리렌더링 ?", email, avatarUrl)
+  }, [])
+  useOnClickOutSide({
+    ref: dropdownRef,
+    handler: () => setIsImageActive(false),
+  })
 
   //로그아웃 함수
   const onLogoutHandler = () => {
@@ -86,7 +112,9 @@ const Header = () => {
 
     supabaseForClient.auth.signOut()
     setIsLoggedOut(true)
-    alert("로그아웃이 되었습니다")
+    openCustomModalHandler("로그아웃 되었습니다.", "alert")
+    // alert("로그아웃 되었습니다.")
+    router.push("/")
   }
   //END
   return (
@@ -116,7 +144,7 @@ const Header = () => {
           </Link>
 
           {/* isLoggedOut이 false 일때 로그인 상태 */}
-          {!isLoggedOut ? (
+          {isLoggedOut === false ? (
             <>
               <span
                 className={`text-md hover:cursor-pointer ${
@@ -127,7 +155,7 @@ const Header = () => {
                 <VscBell />
                 {showTooltip && (
                   <div className="relative flex">
-                    <div className="flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-2 z-50 ">
+                    <div className="flex-row w-[200px] left-[-100px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-3 z-50 ">
                       {isAlarmData ? (
                         <>
                           <div className=" text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
@@ -144,46 +172,49 @@ const Header = () => {
                 )}
               </span>
 
-              {/* 로그인시 , 프로필,프로젝트 등 */}
-              <span
+              <div
                 className="rounded-full shadow-lg hover hover:cursor-pointer"
-                onClick={onAvavatarHandlerClick}
+                onClick={onAvatarHandlerClick}
+                ref={dropdownRef}
               >
                 <Image
-                  className="rounded-xl"
+                  className="rounded-full"
                   alt="이미지"
                   src={avatarUrl ? avatarUrl : ""}
-                  width={20}
-                  height={20}
+                  width={36}
+                  height={36}
                 />
-              </span>
-              {isImageActive && (
-                <div className="relative flex">
-                  <div className="right-2 flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-4 z-50 ">
-                    <div>유저 이메일</div>
-                    <div className="text-xs text-gray-400">{email}</div>
-                    <Link href={`/profile/${userId}`}>
-                      <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
-                        <GoPerson />
-                        <span className="ml-2">내 프로필</span>
-                      </span>
-                    </Link>
-                    <Link href={`/profile/${userId}/profileProject`}>
-                      <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
-                        <LuFolder />
-                        <span className="ml-2">내 프로젝트</span>
-                      </span>
-                    </Link>
-                    <button
-                      onClick={onLogoutHandler}
-                      className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold"
-                    >
-                      <IoLogOutOutline />
-                      <span className="ml-2">로그아웃</span>
-                    </button>
+
+                {isImageActive && (
+                  <div className="relative flex">
+                    <div className="left-[-100px] flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg  p-4 absolute top-2 z-50 ">
+                      <>
+                        <div>유저 이메일</div>
+                        <div className="text-xs text-gray-400">{email}</div>
+                        <Link href={`/profile/${userId}`}>
+                          <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
+                            <GoPerson />
+                            <span className="ml-2">내 프로필</span>
+                          </span>
+                        </Link>
+                        <Link href={`/profile/${userId}/profileProject`}>
+                          <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
+                            <LuFolder />
+                            <span className="ml-2">내 프로젝트</span>
+                          </span>
+                        </Link>
+                        <button
+                          onClick={onLogoutHandler}
+                          className="flex items-center w-full over hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold"
+                        >
+                          <IoLogOutOutline />
+                          <span className="ml-2">로그아웃</span>
+                        </button>
+                      </>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </>
           ) : (
             // isLoggedOut이 true 일때 로그인 상태

@@ -1,7 +1,7 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
 import { TablesInsert, TablesUpdate } from "@/types/supabase"
 
-/** 신청자 목록에 멤버 추가 */
+/** 신청하기: 신청자 목록에 멤버 추가 */
 export async function setMember(newMember: TablesInsert<"project_members">) {
   const { error } = await supabaseForClient
     .from("project_members")
@@ -49,7 +49,16 @@ export async function setProjectInMember(projectId: string, userId: string) {
     .from("project_members")
     .update({ application_status: true })
     .match({ project_id: projectId, user_id: userId })
-  console.log("update result:", data)
+  if (error) console.log("error", error)
+}
+
+/** 신청자 멤버 삭제 */
+export async function removeProjectInMember(id: string) {
+  const { data, error } = await supabaseForClient
+    .from("project_members")
+    .delete()
+    .match({ id: id })
+  console.log(data, "삭제한데이터")
   if (error) console.log("error", error)
 }
 
@@ -101,6 +110,16 @@ export async function removeComment(commentId: string) {
   const { error } = await supabaseForClient
     .from("comments")
     .update({ del_yn: true })
+    .eq("id", commentId)
+
+  if (error) console.log("error", error)
+}
+
+/** 프로젝트 게시물에 대댓글 삭제 */
+export async function removeReComment(commentId: string) {
+  const { error } = await supabaseForClient
+    .from("comments")
+    .delete()
     .eq("id", commentId)
 
   if (error) console.log("error", error)
