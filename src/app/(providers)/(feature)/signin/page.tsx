@@ -27,7 +27,7 @@ const page = () => {
 
   return (
     <>
-      <div className="flex flex-col h-ful mt-[200px]">
+      <div className="flex flex-col justify-center items-center w-full mt-[100px]">
         <section className="text-xl">
           <div className="text-center whitespace-pre-line font-bold">
             {`간편하게 로그인하고 
