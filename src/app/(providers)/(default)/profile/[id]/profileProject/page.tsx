@@ -2,8 +2,8 @@
 
 import React from "react"
 import { useParams } from "next/navigation"
-import ProfileSharedProjectCard from "../../_components/profileProject/ProfileSharedProjectCard"
-import ProfileBookmarkCard from "../../_components/profileProject/ProfileBookmarkCard"
+import ProfileSharedProjectCard from "../../_components/profile/projectLists/ProfileSharedProjectCard"
+import ProfileBookmarkCard from "../../_components/profile/projectLists/ProfileBookmarkCard"
 
 const ProfileProjectPage = () => {
   const { id } = useParams<{ id: string }>()
