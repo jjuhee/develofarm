@@ -7,9 +7,10 @@ import Link from "next/link"
 type Props = {
   applicant: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
   applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
+  isWriter: boolean
 }
 
-const ApplicantList = ({ applicant, applicants }: Props) => {
+const ApplicantList = ({ applicant, applicants, isWriter }: Props) => {
   return (
     <section
       key={applicant.id}
@@ -45,7 +46,9 @@ const ApplicantList = ({ applicant, applicants }: Props) => {
         </Link>
       </div>
       <p className="my-1 mx-16">한줄 소개가 업데이트 될 예정입니다</p>
-      <ApplyButtons applicant={applicant} applicants={applicants} />
+      {isWriter && (
+        <ApplyButtons applicant={applicant} applicants={applicants} />
+      )}
     </section>
   )
 }

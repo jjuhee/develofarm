@@ -35,12 +35,10 @@ const Applicants = ({ applicants, status, project, isWriter }: Props) => {
           /<span className="px-1">{project?.number_of_people}</span>
         </h2>
       ) : (
-        isWriter && (
-          <h2 className="text-2xl font-bold clear-left">
-            신청자 현황
-            <span className="ml-3">{pendingApplications.length}</span>
-          </h2>
-        )
+        <h2 className="text-2xl font-bold clear-left">
+          신청자 현황
+          <span className="ml-3">{pendingApplications.length}</span>
+        </h2>
       )}
       {applicants
         .filter((applicant) => applicant.application_status === status)
@@ -48,13 +46,12 @@ const Applicants = ({ applicants, status, project, isWriter }: Props) => {
           return status ? (
             <MembersInProject applicant={applicant} key={applicant.id} />
           ) : (
-            isWriter && (
-              <ApplicantList
-                key={applicant.id}
-                applicants={applicants}
-                applicant={applicant}
-              />
-            )
+            <ApplicantList
+              key={applicant.id}
+              applicants={applicants}
+              applicant={applicant}
+              isWriter={isWriter}
+            />
           )
         })}
     </div>
