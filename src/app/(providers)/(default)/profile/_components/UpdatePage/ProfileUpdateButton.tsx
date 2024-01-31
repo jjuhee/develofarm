@@ -10,7 +10,6 @@ import {
   addAcademy,
   updateSpecs,
   addSpec,
-  updateSocialLinks,
   addSocialLinks,
 } from "../../api"
 import ProfileUserDataForm from "./ProfileUserDataForm"
@@ -40,9 +39,6 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
   )
   const [updatedSpecData, setUpdatedSpecData] = useState<Tables<"specs">[]>([])
   const [newSpecData, setNewSpecData] = useState<Tables<"specs">[]>([])
-  const [updatedLinkData, setUpdatedLinkData] = useState<
-    Tables<"social_links">[]
-  >([])
   const [newLinkData, setNewLinkData] = useState<Tables<"social_links">[]>([])
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -52,7 +48,6 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
     const educationResult = await updateEducation(userId, updatedEducationData)
     const academyResult = await updateAcademies(userId, updatedAcademyData)
     const specResult = await updateSpecs(userId, updatedSpecData)
-    const linkResult = await updateSocialLinks(userId, updatedLinkData)
 
     const addCareerPromises = newCareerData.map((careerData) =>
       addCareer(userId, careerData),
@@ -81,7 +76,6 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
       educationResult &&
       academyResult &&
       specResult &&
-      linkResult &&
       addCareerResults.every(Boolean) &&
       addEducationrResults.every(Boolean) &&
       addAcademyResults.every(Boolean) &&
@@ -92,7 +86,6 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
       setUpdatedEducationData([])
       setUpdatedAcademyData([])
       setUpdatedSpecData([])
-      setUpdatedLinkData([])
       setNewCareerData([])
       setNewEducationData([])
       setNewAcademyData([])
@@ -137,7 +130,6 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
         </div>
         <ProfileSocialForm
           userId={userId}
-          setUpdatedLinkData={setUpdatedLinkData}
           newLinkData={newLinkData}
           setNewLinkData={setNewLinkData}
         />

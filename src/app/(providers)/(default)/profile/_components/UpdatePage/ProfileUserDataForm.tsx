@@ -129,18 +129,43 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
 
   // 유저 프로필 업데이트 및 기술 추가 통합 처리
   const handleCombinedAction = async () => {
-    // 유저 닉네임이 비어있지 않은지 확인
-    if (!user.user_nickname.trim()) {
-      const modalStore = useCustomModalStore.getState()
+    const modalStore = useCustomModalStore.getState()
+    modalStore.setViewCustomModal(true)
+    modalStore.setModalType("confirm")
+    modalStore.setModalMessage("저장하시겠습니까?")
+    modalStore.setHandler(async () => {
+      modalStore.setViewCustomModal(false)
 
-      modalStore.setViewCustomModal(true)
-      modalStore.setModalType("alert")
-      modalStore.setModalMessage("닉네임을 입력하세요.")
+      // 유저 닉네임이 비어있지 않은지 확인
+      if (!user.user_nickname.trim()) {
+        modalStore.setViewCustomModal(true)
+        modalStore.setModalType("alert")
+        modalStore.setModalMessage("닉네임을 입력하세요.")
+        return
+      }
 
-      return
-    }
-    await handleUpdateProfile()
-    await handleAddUserTech()
+      try {
+        await handleUpdateProfile()
+        await handleAddUserTech()
+
+        modalStore.setViewCustomModal(true)
+        modalStore.setModalType("success")
+        modalStore.setModalMessage(
+          "사용자 프로필이 성공적으로 업데이트되었습니다!",
+        )
+        modalStore.setHandler(() => {
+          modalStore.setViewCustomModal(false)
+        })
+      } catch (error) {
+        console.error("사용자 프로필 업데이트 중 오류가 발생했습니다:", error)
+        modalStore.setViewCustomModal(true)
+        modalStore.setModalType("error")
+        modalStore.setModalMessage("오류가 발생하여 업데이트에 실패했습니다.")
+        modalStore.setHandler(() => {
+          modalStore.setViewCustomModal(false)
+        })
+      }
+    })
   }
 
   // 직무 및 기술 드롭다운 토글
