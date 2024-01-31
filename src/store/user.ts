@@ -11,15 +11,15 @@ type TUserData = {
 type TUserState = {
   userId: string
   setUserId: (userId: string) => void
-  user: TUserData
-  setUser: (user: TUserData) => void
+  user: TUserData | null
+  setUser: (user: TUserData | null) => void
 }
 
 const useUserStore = create<TUserState>((set) => ({
   userId: "",
   setUserId: (userId) => set({ userId }),
-  user: {} as TUserData,
-  setUser: (user: TUserData) => set({ user: user }),
+  user: null,
+  setUser: (user) => set({ user: user }),
 }))
 
 export default useUserStore
