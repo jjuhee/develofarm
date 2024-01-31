@@ -1,5 +1,5 @@
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
-import { TProjectsType } from "@/types/extendedType"
+import { TProjectsByUserId, TProjectsType } from "@/types/extendedType"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import React, { useRef, useState } from "react"
@@ -8,7 +8,7 @@ import { inviteUser } from "../api"
 import useUserStore from "@/store/user"
 
 interface Props {
-  projects: TProjectsType[]
+  projects: TProjectsByUserId[]
   receiverId: string
 }
 
@@ -28,7 +28,14 @@ const MemberInvitationCard = ({ projects, receiverId }: Props) => {
   })
 
   /** 프로젝트에 초대하기 */
-  const onClickInviteUserHandler = (project: TProjectsType) => {
+  const onClickInviteUserHandler = (project: TProjectsByUserId) => {
+    // console.log(project.notifications?.[1]?.status)
+
+    // const filtered = project.notifications.filter(
+    //   (item) => item.status === true,
+    // )
+    // console.log("filterd", filtered)
+
     const newInvitation = {
       project_id: project.id,
       receiver_id: receiverId,
@@ -65,19 +72,20 @@ const MemberInvitationCard = ({ projects, receiverId }: Props) => {
         >
           {(projects?.length as number) > 0 ? (
             <>
-              {projects?.map((project: TProjectsType) => (
+              {projects?.map((project: TProjectsByUserId) => (
                 <li
                   className="flex items-center justify-between "
                   key={project.id}
                 >
                   <p className="text-[15px] font-[500] w-full">
-                    {project.title.length > 11
+                    {project.title?.length > 11
                       ? project.title.slice(0, 11) + "..."
                       : project.title}
                   </p>
                   <span
                     onClick={() => onClickInviteUserHandler(project)}
-                    className="flex items-center justify-center text-[10px] font-[700] w-[50px] h-[23px] rounded-md text-center text-black bg-white border-[1px] border-black cursor-pointer hover:bg-[#CCCCCC] hover:text-black hover:border-black transition-all duration-300"
+                    className={`flex items-center justify-center text-[10px] font-[700] w-[50px] h-[23px] rounded-md text-center text-black bg-white border-[1px] border-black cursor-pointer hover:bg-[#CCCCCC] hover:text-black hover:border-black transition-all duration-300
+                    `}
                   >
                     초대
                   </span>

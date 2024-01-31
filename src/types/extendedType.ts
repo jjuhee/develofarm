@@ -1,4 +1,7 @@
-import { getUsers } from "@/app/(providers)/(default)/members/api"
+import {
+  getProjectByUserId,
+  getUsers,
+} from "@/app/(providers)/(default)/members/api"
 import { getProjects } from "@/app/(providers)/(default)/projects/api"
 import { Tables } from "./supabase"
 
@@ -28,4 +31,9 @@ export type UsersType = Exclude<
 export type TProjectsType = Exclude<
   Awaited<ReturnType<typeof getProjects>>,
   undefined
+>[number]
+
+export type TProjectsByUserId = Exclude<
+  Awaited<ReturnType<typeof getProjectByUserId>>,
+  void
 >[number]
