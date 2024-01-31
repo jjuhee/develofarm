@@ -13,7 +13,7 @@ const useUrlStore = create<TUrlState>()(
       setUrl: (url) => set({ url: url }),
     }),
     {
-      name: "user-storage", // name of the item in the storage (must be unique)
+      name: "url-storage", // name of the item in the storage (must be unique)
       storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
   ),
