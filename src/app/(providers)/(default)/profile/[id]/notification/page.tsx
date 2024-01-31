@@ -2,18 +2,21 @@
 import Button from "@/components/ui/Button"
 import { getNotifications, setNotification } from "@/app/(providers)/api"
 import useUserStore from "@/store/user"
-import { supabaseForClient } from "@/supabase/supabase.client"
 import { Tables, TablesUpdate } from "@/types/supabase"
-import { RealtimePostgresInsertPayload } from "@supabase/supabase-js"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
+import Checkbox from "@/components/ui/Checkbox"
 //import useNotiStore from "@/store/notification"
 
 const NotificationPage = () => {
   const [notificationList, setNotificationList] = useState<
     Tables<"notifications">[]
   >([])
+  const [filteredNotiList, setFilteredNotiList] = useState<
+    Tables<"notifications">[]
+  >([])
+  const [checkState, setCheckState] = useState<boolean>(false)
   const { userId } = useUserStore((state) => state)
   // const { notiState } = useNotiStore((state) => state)
   const router = useRouter()
@@ -54,14 +57,23 @@ const NotificationPage = () => {
     updateNotification.mutate({ id: noti.id, status: true })
   }
 
+  const onCheckFilterNotiHandler = () => {
+    if (checkState) {
+      setFilteredNotiList(
+        notificationList.filter((noti) => noti.status === false),
+      )
+    }
+    setCheckState(!checkState)
+  }
+
   return (
     <div>
-      <div className="flex justify-between items-center my-0 mx-auto pt-[10px]">
+      <div className="flex justify-between items-center my-0 mx-auto py-[23px]">
         <div className="flex items-center">
-          <input
-            type="checkbox"
+          <Checkbox
             id="unreadNotificationsCheckbox"
-            className="form-checkbox h-6 w-6 text-indigo-600 transition duration-150 ease-in-out"
+            value={checkState}
+            handler={onCheckFilterNotiHandler}
           />
           <label htmlFor="unreadNotificationsCheckbox" className="ml-2">
             읽지 않은 알림만 보기
@@ -71,22 +83,47 @@ const NotificationPage = () => {
       </div>
       <div>
         <ul>
-          {notificationList?.map((noti, index) => {
-            return (
-              <li
-                key={noti.id}
-                className={`cursor-pointer p-[10px] bg-white leading-[38px] first:border-t-[1px] border-b-[1px]
+          {/* Todo: 컴포넌트 분리?;; */}
+          {!checkState &&
+            notificationList?.map((noti, index) => {
+              return (
+                <li
+                  key={noti.id}
+                  className={`cursor-pointer p-[10px] bg-white leading-[38px] first:border-t-[1px] border-b-[1px]
                 ${noti.status ? "bg-white" : "bg-[#efefef]"}`}
-                onClick={() => onClickNotificationHandler(noti)}
-              >
-                <h2 className="font-[700]">
-                  {noti.status ? "알림" : "읽지 않은 알림"}
-                </h2>
-                {/* TODO: 신청수락, 모집마감 추가, 함수로 빼기 */}
-                <p className="">{getNotificationMessage(noti)}</p>
-              </li>
-            )
-          })}
+                  onClick={() => onClickNotificationHandler(noti)}
+                >
+                  <h2 className="font-[700]">
+                    {noti.status ? "알림" : "읽지 않은 알림"}
+                  </h2>
+                  {/* TODO: 신청수락, 모집마감 추가, 함수로 빼기 */}
+                  <p className="">{getNotificationMessage(noti)}</p>
+                </li>
+              )
+            })}
+          {checkState &&
+            filteredNotiList?.map((noti, index) => {
+              return (
+                <li
+                  key={noti.id}
+                  className={`cursor-pointer p-[10px] bg-white leading-[38px] first:border-t-[1px] border-b-[1px]
+                ${noti.status ? "bg-white" : "bg-[#efefef]"}`}
+                  onClick={() => onClickNotificationHandler(noti)}
+                >
+                  <h2 className="font-[700]">
+                    {noti.status ? "알림" : "읽지 않은 알림"}
+                  </h2>
+                  {/* TODO: 신청수락, 모집마감 추가, 함수로 빼기 */}
+                  <p className="">{getNotificationMessage(noti)}</p>
+                </li>
+              )
+            })}
+          {checkState && filteredNotiList.length === 0 && (
+            <li className="p-[10px] bg-white leading-[38px] border-t-[1px] border-b-[1px]">
+              <h2 className="font-[700]">새 알림이 없습니다.</h2>
+              <br />
+            </li>
+          )}
         </ul>
       </div>
     </div>
