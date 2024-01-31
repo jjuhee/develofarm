@@ -1,14 +1,14 @@
 import Image from "next/image"
 import formatDate from "@/utils/formatDate"
 import BookmarkButton from "@/components/BookmarkButton"
-import Button from "@/components/ui/Button"
-
-import type { Tables } from "@/types/supabase"
-import type { TProjectsType } from "@/types/extendedType"
-import Link from "next/link"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateProjectViews } from "../[id]/api"
 import { useRouter } from "next/navigation"
+import ProjectCardTechs from "./ProjectCardTechs"
+
+import type { Tables } from "@/types/supabase"
+import type { TProjectsType } from "@/types/extendedType"
+import DOMPurify from "dompurify"
 
 interface Props {
   project: TProjectsType
@@ -24,14 +24,11 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
   const {
     id,
     content,
-    created_at,
     picture_url,
     project_start_date,
     project_end_date,
     title,
-    user_id,
     recruit_status,
-    project_tech,
     views,
   } = project
 
@@ -42,7 +39,7 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
     },
   })
 
-  /** 조회수 업데이트 */
+  /** 조회수 업데이트 및 이동 핸들러*/
   const onClickToDetailPage = () => {
     const countViews = views + 1
     viewsMutate({ projectId: project.id, countViews })
@@ -84,49 +81,17 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
           </span>
           <p
             className="line-clamp-3"
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(content, {
+                ALLOWED_TAGS: [],
+                ALLOWED_ATTR: [],
+              }),
+            }}
           ></p>
         </div>
         <div className="flex justify-between items-center mt-10 lg:mt-0">
-          <ul className="flex gap-3  relative">
-            {project_tech.length > 5 ? (
-              <>
-                {project_tech?.slice(0, 5).map((tech, i) => (
-                  <li
-                    key={i}
-                    className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl"
-                  >
-                    {tech?.techs?.tech_name}
-                  </li>
-                ))}
-                <li className="group">
-                  <div className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl">
-                    ...
-                  </div>
-                  <div className="absolute right-0 top-[50px] bg-[#E6E6E6] text-[#636366] rounded-lg z-10 hidden group-hover:block">
-                    {project_tech?.slice(5).map((tech, i) => (
-                      <li
-                        key={i}
-                        className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl"
-                      >
-                        {tech?.techs?.tech_name}
-                      </li>
-                    ))}
-                  </div>
-                </li>
-              </>
-            ) : (
-              <>
-                {project_tech?.map((tech, i) => (
-                  <li
-                    key={i}
-                    className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl"
-                  >
-                    {tech?.techs?.tech_name}
-                  </li>
-                ))}
-              </>
-            )}
+          <ul className="flex gap-3 relative">
+            <ProjectCardTechs project={project} />
           </ul>
         </div>
 
