@@ -8,12 +8,14 @@ import { RealtimePostgresInsertPayload } from "@supabase/supabase-js"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
+//import useNotiStore from "@/store/notification"
 
 const NotificationPage = () => {
   const [notificationList, setNotificationList] = useState<
     Tables<"notifications">[]
   >([])
   const { userId } = useUserStore((state) => state)
+  // const { notiState } = useNotiStore((state) => state)
   const router = useRouter()
   const queryClient = useQueryClient()
 
@@ -23,7 +25,7 @@ const NotificationPage = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["notificationPage", userId],
+    queryKey: ["notifications", { type: "page" }],
     queryFn: () => getNotifications(userId),
     enabled: !!userId,
   })
@@ -32,7 +34,7 @@ const NotificationPage = () => {
     mutationFn: setNotification,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["notificationPage", userId],
+        queryKey: ["notifications"],
       })
       // TODO: 바로 안지워질 때 체크
       console.log("로그를 안찍으면 안지워져요.", notifications)
@@ -43,6 +45,7 @@ const NotificationPage = () => {
   useEffect(() => {
     if (notifications) {
       setNotificationList(() => [...notifications])
+      console.log("jhee:알람페이지의 useEffect")
     }
   }, [notifications])
 

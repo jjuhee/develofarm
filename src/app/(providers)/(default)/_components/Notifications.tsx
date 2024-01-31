@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import React, { MouseEvent, useEffect, useState } from "react"
 import { getNotifications, setNotification } from "../../api"
 import { BsArrowUpRight } from "react-icons/bs"
+//import useNotiStore from "@/store/notification"
 
 interface Props {
   showTooltip: boolean
@@ -20,6 +21,7 @@ const Notifications = ({ showTooltip }: Props) => {
   const { userId } = useUserStore((state) => state)
   const router = useRouter()
   const queryClient = useQueryClient()
+  // const { setNotiState } = useNotiStore((state) => state)
 
   const {
     data: notifications,
@@ -27,7 +29,7 @@ const Notifications = ({ showTooltip }: Props) => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["notifications", userId],
+    queryKey: ["notifications"],
     queryFn: () => getNotifications(userId, false),
     enabled: !!userId,
   })
@@ -36,7 +38,7 @@ const Notifications = ({ showTooltip }: Props) => {
     mutationFn: setNotification,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["notifications", userId],
+        queryKey: ["notifications"],
       })
       // TODO: 바로 안지워질 때 체크
       console.log("로그를 안찍으면 안지워져요.", notifications)
@@ -47,6 +49,8 @@ const Notifications = ({ showTooltip }: Props) => {
   useEffect(() => {
     if (notifications) {
       setNotificationList(() => [...notifications])
+      console.log("jhee: 헤더의 useEffect notiList update!")
+      // setNotiState(false)
     }
   }, [notifications])
 
@@ -65,8 +69,11 @@ const Notifications = ({ showTooltip }: Props) => {
         (payload: RealtimePostgresInsertPayload<Tables<"notifications">>) => {
           const newItem = payload.new
           if (newItem.receiver_id === userId && newItem.status === false) {
-            setNotificationList((oldList) => [newItem, ...oldList])
-            console.log("noti", payload.new)
+            //setNotificationList((oldList) => [newItem, ...oldList])
+            console.log("noti가 욌음", payload.new)
+            queryClient.invalidateQueries({
+              queryKey: ["notifications"],
+            })
           }
         },
       )
