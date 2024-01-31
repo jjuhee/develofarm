@@ -15,6 +15,7 @@ import { IoLogOutOutline } from "react-icons/io5"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import useUrlStore from "@/store/url"
 import { usePathname } from "next/navigation"
+import Notifications from "./Notifications"
 
 const Header = () => {
   const [showTooltip, setShowTooltip] = useState(false)
@@ -37,12 +38,12 @@ const Header = () => {
     setMemberPosition(null)
   }
 
-  const onAlarmHandleClick = () => {
+  const onClickAlarmHandler = () => {
     setShowTooltip(!showTooltip)
     setIsImageActive(false)
   }
 
-  const onAvatarHandlerClick = (event: React.MouseEvent) => {
+  const onClickAvatarHandler = (event: React.MouseEvent) => {
     event.stopPropagation()
     setIsImageActive((prev) => !prev)
     setShowTooltip(false)
@@ -141,35 +142,17 @@ const Header = () => {
             // user의 정보가 있을 때 프로필 메뉴 보여주기
             user ? (
               <>
-                <span
-                  className={`text-md hover:cursor-pointer ${
-                    showTooltip ? "show" : ""
-                  }`}
-                  onClick={onAlarmHandleClick}
+                <div
+                  className="text-md hover:cursor-pointer"
+                  onClick={onClickAlarmHandler}
                 >
                   <VscBell />
-                  {showTooltip && (
-                    <div className="relative flex">
-                      <div className="flex-row w-[200px] left-[-100px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-3 z-50 ">
-                        {isAlarmData ? (
-                          <>
-                            <div className=" text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
-                              새로운 프로젝트가 생겼어요!
-                            </div>
-                          </>
-                        ) : (
-                          <div className="text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
-                            알림이 없습니다
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </span>
+                  <Notifications showTooltip={showTooltip} />
+                </div>
 
                 <div
                   className="rounded-full shadow-lg hover hover:cursor-pointer"
-                  onClick={onAvatarHandlerClick}
+                  onClick={onClickAvatarHandler}
                   ref={dropdownRef}
                 >
                   <Image
