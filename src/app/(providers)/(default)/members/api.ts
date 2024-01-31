@@ -63,7 +63,7 @@ interface invitationValue {
   project_id: string
   receiver_id: string
   type: string
-  sender_nickname: string
+  sender_nickname: string | undefined
 }
 
 //TODO: 멤버 초대
