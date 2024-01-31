@@ -3,8 +3,8 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query"
-import { getProjects } from "./api"
-import ProjectsComponent from "./_components/ProjectsComponent"
+import { getProjects } from "../api"
+import ProjectsPage from "../page"
 
 const initialOption = {
   isOffline: null,
@@ -27,8 +27,11 @@ export default async function Page() {
   })
 
   return (
+    // Neat! Serialization is now as easy as passing props.
+    // HydrationBoundary is a Client Component, so hydration will happen there.
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProjectsComponent />
+      {/* <Posts /> */}
+      <ProjectsPage />
     </HydrationBoundary>
   )
 }

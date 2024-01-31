@@ -5,10 +5,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateProjectViews } from "../[id]/api"
 import { useRouter } from "next/navigation"
 import ProjectCardTechs from "./ProjectCardTechs"
+import sanitizeHtml from "sanitize-html"
 
 import type { Tables } from "@/types/supabase"
 import type { TProjectsType } from "@/types/extendedType"
-import DOMPurify from "dompurify"
 
 interface Props {
   project: TProjectsType
@@ -82,9 +82,8 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
           <p
             className="line-clamp-3"
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(content, {
-                ALLOWED_TAGS: [],
-                ALLOWED_ATTR: [],
+              __html: sanitizeHtml(content, {
+                allowedTags: [],
               }),
             }}
           ></p>

@@ -19,22 +19,6 @@ interface Props {
   option?: TProjectsOptions
 }
 
-// TODO: SSR로 처음 데이터 가져오기
-export async function getServerSideProps() {
-  const queryClient = new QueryClient()
-
-  await queryClient.fetchQuery({
-    queryKey: ["projects"],
-    queryFn: () => getProjects,
-  })
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  }
-}
-
 const ProjectList = ({ option }: Props) => {
   const PAGE_SIZE = 5
   const userId = useUserStore((state) => state.userId)
@@ -46,11 +30,7 @@ const ProjectList = ({ option }: Props) => {
   const { page, setPage } = useProjectsStore((state) => state)
 
   /** 전체 프로젝트 가져오기 */
-  const {
-    data: projects,
-    refetch: projectRefetch,
-    isLoading,
-  } = useQuery({
+  const { data: projects, isLoading } = useQuery({
     queryKey: ["projects", recruitStatus, { option: option }],
     queryFn: () =>
       getProjects({

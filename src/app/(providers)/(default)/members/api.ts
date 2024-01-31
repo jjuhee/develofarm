@@ -70,7 +70,7 @@ interface invitationValue {
 export const inviteUser = async (invitation: invitationValue) => {
   const { data, error } = await supabaseForClient
     .from("notifications")
-    .insert([{ ...invitation }])
+    .upsert([{ ...invitation }], { onConflict: "" })
     .select("*")
 
   if (error) return console.log(error.message)

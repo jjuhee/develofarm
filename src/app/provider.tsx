@@ -11,6 +11,20 @@ interface Props {
 const Provider = ({ children }: Props) => {
   const queryClient = new QueryClient()
 
+  // TODO: initial setting
+  // const [queryClient] = useState(
+  //   () =>
+  //     new QueryClient({
+  //       defaultOptions: {
+  //         queries: {
+  //           // With SSR, we usually want to set some default staleTime
+  //           // above 0 to avoid refetching immediately on the client
+  //           staleTime: 60 * 1000,
+  //         },
+  //       },
+  //     }),
+  // )
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={true} />
