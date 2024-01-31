@@ -14,16 +14,16 @@ import { HiOutlineXMark } from "react-icons/hi2"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import useCustomModalStore from "@/store/customModal"
 
-const ProfileForm = ({ profileId }: { profileId: string }) => {
+const ProfileUserDataForm = ({ userId }: { userId: string }) => {
   // 유저 정보 및 데이터 상태 관리
   const {
     data: users,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["users", profileId],
-    queryFn: () => getUser(profileId),
-    enabled: !!profileId,
+    queryKey: ["users", userId],
+    queryFn: () => getUser(userId),
+    enabled: !!userId,
   })
 
   // 직무 및 기술 데이터 상태 관리
@@ -107,13 +107,23 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
   const handleAddUserTech = async () => {
     try {
       const techData = selectedTechs.map((techId) => ({
-        user_id: profileId,
+        user_id: userId,
         tech_id: techId,
       }))
-      await addUserTech(techData, profileId)
+      await addUserTech(techData, userId)
       console.log("사용자 기술 데이터가 성공적으로 추가되었습니다!")
     } catch (error) {
       console.error("사용자 기술 데이터 추가 중 오류 발생:", error)
+    }
+  }
+
+  // 유저 프로필 업데이트 처리
+  const handleUpdateProfile = async () => {
+    try {
+      await updateUser(userId, user)
+      console.log("사용자 프로필 수정이 성공적으로 업데이트되었습니다!")
+    } catch (error) {
+      console.error("사용자 프로필 수정 중 오류가 발생했습니다:", error)
     }
   }
 
@@ -162,16 +172,6 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
   const handlePositionSelection = (positionId: string) => {
     setSelectedPositionId(positionId)
     setUser((prevUser) => ({ ...prevUser, positionId }))
-  }
-
-  // 유저 프로필 업데이트 처리
-  const handleUpdateProfile = async () => {
-    try {
-      await updateUser(profileId, user)
-      console.log("사용자 프로필 수정이 성공적으로 업데이트되었습니다!")
-    } catch (error) {
-      console.error("사용자 프로필 수정 중 오류가 발생했습니다:", error)
-    }
   }
 
   if (isLoading || positionsLoading) {
@@ -432,4 +432,4 @@ const ProfileForm = ({ profileId }: { profileId: string }) => {
   )
 }
 
-export default ProfileForm
+export default ProfileUserDataForm

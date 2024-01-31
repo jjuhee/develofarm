@@ -1,13 +1,14 @@
 import Image from "next/image"
 import formatDate from "@/utils/formatDate"
 import BookmarkButton from "@/components/BookmarkButton"
-import Button from "@/components/ui/Button"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { updateProjectViews } from "../[id]/api"
+import { useRouter } from "next/navigation"
+import ProjectCardTechs from "./ProjectCardTechs"
 
 import type { Tables } from "@/types/supabase"
 import type { TProjectsType } from "@/types/extendedType"
-import Link from "next/link"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { updateProjectViews } from "../[id]/api"
+import DOMPurify from "dompurify"
 
 interface Props {
   project: TProjectsType
@@ -18,18 +19,16 @@ interface Props {
 
 const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   const {
     id,
     content,
-    created_at,
     picture_url,
     project_start_date,
     project_end_date,
     title,
-    user_id,
     recruit_status,
-    project_tech,
     views,
   } = project
 
@@ -40,17 +39,21 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
     },
   })
 
-  /** 조회수 업데이트 */
+  /** 조회수 업데이트 및 이동 핸들러*/
   const onClickToDetailPage = () => {
     const countViews = views + 1
     viewsMutate({ projectId: project.id, countViews })
+    router.push(`/projects/${id}`)
   }
 
   return (
-    <div className="flex">
+    <div
+      className="flex cursor-pointer border-b border-[#666666] py-[40px] last:border-none first:pt-0 "
+      onClick={onClickToDetailPage}
+    >
       <section className="relative overflow-hidden rounded-xl w-full h-[270px] transition-all bg-slate-200 mr-10 hidden lg:block">
         <Image
-          src={picture_url || "/images/project_default.png"}
+          src={picture_url as string}
           alt="project"
           fill
           sizes="auto"
@@ -78,30 +81,18 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
           </span>
           <p
             className="line-clamp-3"
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(content, {
+                ALLOWED_TAGS: [],
+                ALLOWED_ATTR: [],
+              }),
+            }}
           ></p>
         </div>
-        <div className="flex justify-between items-center">
-          <ul className="flex gap-3 w-[550px] overflow-scroll">
-            {project_tech?.map((tech, i) => (
-              <li
-                key={i}
-                className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl"
-              >
-                {tech?.techs?.tech_name}
-              </li>
-            ))}
+        <div className="flex justify-between items-center mt-10 lg:mt-0">
+          <ul className="flex gap-3 relative">
+            <ProjectCardTechs project={project} />
           </ul>
-          <Link
-            href={`/projects/${project.id}`}
-            className="absolute bottom-1 right-2"
-          >
-            <Button
-              color={"main-lime"}
-              text="상세보기"
-              handler={onClickToDetailPage}
-            />
-          </Link>
         </div>
 
         <div className="absolute top-[12px] right-2">

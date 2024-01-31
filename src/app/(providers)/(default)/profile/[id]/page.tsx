@@ -1,13 +1,13 @@
 "use client"
 
 import React, { useEffect } from "react"
-import ProfileActions from "../_components/profile/ProfileActions"
-import ProfileUserData from "../_components/profile/ProfileUserData"
-import ProfileResume from "../_components/profile/resumes/ProfileResume"
-import ProfileProjectList from "../_components/profile/projectLists/ProfileProjectList"
-import ProfileSocialLinks from "../_components/profile/ProfileSocialLinks"
 import { useParams } from "next/navigation"
 import { useProfileStore } from "@/store/profile"
+import ProfileActions from "../_components/ProfilePage/ProfileActions"
+import ProfileUserData from "../_components/ProfilePage/ProfileUserData"
+import ProfileResume from "../_components/ProfilePage/resumes/ProfileResume"
+import ProfileProjectList from "../_components/ProfilePage/projectLists/ProfileProjectList"
+import ProfileSocialLinks from "../_components/ProfilePage/ProfileSocialLinks"
 
 const ProfilePage = () => {
   const { id } = useParams<{ id: string }>()

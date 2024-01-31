@@ -23,7 +23,9 @@ const GetSurfitArticles = async () => {
   if (!page) {
     page = await browser.newPage()
   }
+
   await page.goto("https://www.surfit.io/")
+
   await page.waitForSelector(".ct-item > div")
   const articleNodes = (await page.$$(
     ".ct-item > div",

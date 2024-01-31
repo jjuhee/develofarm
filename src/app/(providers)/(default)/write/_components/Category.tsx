@@ -1,15 +1,16 @@
 "use client"
 
-import { useQuery } from "@tanstack/react-query"
 import React, { Dispatch, useRef, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
 import { getRegions, getTechsByPositions } from "../../projects/api"
 import SelectStackButton from "./SelectStackButton"
-import { Tables } from "@/types/supabase"
 import Button from "@/components/ui/Button"
-import { useCustomModal } from "@/hooks/useCustomModal"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
+import { useCustomModal } from "@/hooks/useCustomModal"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import useProjectsStore from "@/store/projects"
+
+import type { Tables } from "@/types/supabase"
 
 interface Props {
   categoryData: TCategoryData
@@ -65,11 +66,6 @@ const Category = ({
     setPage(1)
   }
 
-  useOnClickOutSide({
-    ref: dropdownRef,
-    handler: () => setIsRegionActive(false),
-  })
-
   /** 검색 초기화 */
   const onClickResetFilteringHandler = () => {
     setCategoryData({
@@ -91,6 +87,11 @@ const Category = ({
       })
     setPage(1)
   }
+
+  useOnClickOutSide({
+    ref: dropdownRef,
+    handler: () => setIsRegionActive(false),
+  })
 
   return (
     <section className="flex flex-col gap-3">
@@ -131,7 +132,7 @@ const Category = ({
               <h5 className="text-[20px] font-[600]">활동 지역</h5>
               <div ref={dropdownRef} className="relative">
                 <div
-                  className={`category flex items-center justify-between px-[20px] py-[5px] rounded-lg w-[180px] h-[40px] ${
+                  className={`category flex items-center justify-between px-[20px] py-[5px] rounded-lg w-[210px] h-[40px] ${
                     isRegionActive
                       ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold"
                       : "bg-[#D2D2D2] border-[#D2D2D2] text-black font-semibold"
@@ -182,6 +183,7 @@ const Category = ({
                 type="number"
                 value={numberOfMembers}
                 min={0}
+                max={100}
                 onChange={(e) =>
                   setCategoryData({
                     ...categoryData,
@@ -199,9 +201,8 @@ const Category = ({
           <ul className="flex flex-col gap-4 items-center">
             <li className="flex items-center gap-4">
               <label className="w-[50px] text-[16px]">시작일</label>
-              {/* TODO 3 : 유효성검사 - 날짜 오늘날짜 이후,종료일은 시작날짜 이후로만 선택되게하기  */}
               <input
-                className={`category w-[184px] px-[20px] py-[5px]
+                className={`category w-[184px] px-[20px] py-[5px] cursor-pointer
                 ${
                   startDate
                     ? "border-black text-black font-semibold"
@@ -211,6 +212,14 @@ const Category = ({
                 type="date"
                 name="project_start_date"
                 value={startDate}
+                min={
+                  isWritePage
+                    ? new Date().toISOString().split("T")[0]
+                    : new Date(new Date().getFullYear() - 100, 0, 1)
+                        .toISOString()
+                        .split("T")[0]
+                }
+                max={endDate && endDate}
                 onChange={(e) =>
                   setCategoryData({
                     ...categoryData,
@@ -222,14 +231,30 @@ const Category = ({
             <li className="flex items-center gap-4">
               <label className="w-[50px] text-[16px]">종료일</label>
               <input
-                className={`category w-[184px] px-[20px] py-[5px]
+                className={`category w-[184px] px-[20px] py-[5px] cursor-pointer
                 ${
                   endDate
                     ? "border-black text-black font-semibold"
                     : "border-[#A6A6A6] text-[#2D2D2D] font-medium"
-                }`}
+                } disabled:text-[#A6A6A6] disabled:cursor-not-allowed 
+                `}
                 type="date"
                 name="project_end_date"
+                disabled={isWritePage && !startDate}
+                min={
+                  isWritePage
+                    ? startDate
+                    : startDate
+                      ? startDate
+                      : new Date(new Date().getFullYear() - 100, 0, 1)
+                          .toISOString()
+                          .split("T")[0]
+                }
+                max={
+                  new Date(new Date().getFullYear() + 100, 11, 31)
+                    .toISOString()
+                    .split("T")[0]
+                }
                 value={endDate}
                 onChange={(e) =>
                   setCategoryData({

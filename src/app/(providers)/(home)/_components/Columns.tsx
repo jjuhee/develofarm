@@ -101,6 +101,7 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                       objectFit="cover" // 이미지를 부모 요소에 맞춤
                     />
                   </div>
+
                   <div className="flex-shrink-0 font-bold text-[12px] p-3">
                     {
                       surfitArticlesBundle

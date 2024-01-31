@@ -22,6 +22,9 @@ const Pagination = ({ pageCount, currentPage, onPageChange }: Props) => {
     (_, index) => startPage + index,
   )
 
+  /** 페이지가 없을 경우 return; */
+  if (pageCount === 0) return
+
   return (
     <nav className="flex justify-center mt-10">
       <ul className="flex gap-2 items-center">

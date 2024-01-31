@@ -15,11 +15,12 @@ import MemberProfile from "./_components/MemberProfile"
 import EmptyState from "@/components/EmptyState"
 import useUserStore from "@/store/user"
 import { UsersType } from "@/types/extendedType"
+import Image from "next/image"
 
 const MembersPage = () => {
   const userId = useUserStore((state) => state.userId)
 
-  const title = useCategoryStore((state) => state.title)
+  const category = useCategoryStore((state) => state.category)
 
   const { viewMemberModal, setViewMemberModal, memberPosition } =
     useMembersStore((state) => state)
@@ -48,8 +49,9 @@ const MembersPage = () => {
     hasNextPage,
     isFetched,
     isFetchingNextPage,
+    isLoading,
   } = useInfiniteQuery({
-    queryKey: ["users", title],
+    queryKey: ["users", category],
     queryFn: ({ pageParam }) =>
       getUsers({ pageParam, positionId: memberPosition?.id }),
     initialPageParam: 0,
@@ -62,7 +64,7 @@ const MembersPage = () => {
     select: (data) => {
       return data.pages.flatMap((page) => page as UsersType[])
     },
-    enabled: !!title,
+    enabled: !!category,
   })
 
   const { data: positions } = useQuery({
@@ -71,7 +73,7 @@ const MembersPage = () => {
   })
 
   const { ref } = useInView({
-    threshold: 1,
+    threshold: 0,
     onChange: (inView) => {
       if (!inView || !hasNextPage || isFetchingNextPage) return
       fetchNextPage()
@@ -79,6 +81,13 @@ const MembersPage = () => {
   })
 
   useOnClickOutSide({ ref: modalRef, handler: () => setViewMemberModal(false) })
+
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+      </div>
+    )
 
   return (
     <div>
@@ -88,11 +97,11 @@ const MembersPage = () => {
           <span className="text-[16px] text-[#80E500] font-[600]">
             Our members
           </span>
-          <h3 className="text-[40px] font-[700]">{title}</h3>
+          <h3 className="text-[40px] font-[700]">{category}</h3>
           <p className="text-[16px] font-[400] text-[#606060] mt-3">
-            {title === "전체보기"
+            {category === "전체보기"
               ? "멤버 전체보기 페이지입니다."
-              : `${title} 멤버 페이지입니다.`}
+              : `${category} 멤버 페이지입니다.`}
           </p>
 
           <MemberCategory positions={positions as Tables<"positions">[]} />
@@ -104,7 +113,6 @@ const MembersPage = () => {
                     <MemberCard
                       key={user?.id}
                       user={user}
-                      title={title}
                       currentUserId={userId}
                     />
                   ))}
