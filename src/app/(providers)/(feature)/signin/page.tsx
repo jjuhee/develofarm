@@ -2,7 +2,7 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
 import Image from "next/image"
 import React from "react"
-const page = () => {
+const SigninPage = () => {
   const getGoogleSoicalLogin = () => {
     const data = supabaseForClient.auth.signInWithOAuth({
       provider: "google",
@@ -81,4 +81,4 @@ const page = () => {
   )
 }
 
-export default page
+export default SigninPage

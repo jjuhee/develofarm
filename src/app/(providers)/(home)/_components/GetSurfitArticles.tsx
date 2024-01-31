@@ -71,5 +71,4 @@ const Column = async () => {
     </>
   )
 }
-
 export default Column

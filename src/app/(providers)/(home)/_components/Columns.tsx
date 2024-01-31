@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-
+import SelectedLeftColumn from "./SelectedLeftColumn"
 interface TSurfitArticles {
   description: string
   href: string
@@ -14,7 +14,7 @@ interface Props {
   surfitArticles: TSurfitArticles[]
 }
 
-const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
+const Column = ({ surfitArticles }: Props) => {
   const [selectedImageNumber, setSelectedImageNumber] = useState<
     number | undefined
   >(undefined)
@@ -40,51 +40,15 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
       <div className="w-[1000px] my-0 mx-auto">
         <div className="h-[500px]">
           <div className="grid grid-cols-2 grid-rows-1 gap-x-2 h-full">
-            {/* 왼쪽의 큰 이미지 */}
             <div className="relative overflow-hidden border border-#ccc col-span-1 row-span-2 rounded-xl shadow-lg">
               {selectedImageNumber !== undefined ? (
-                <div className="w-full h-full flex flex-col opacity-100 transition-opacity duration-500">
-                  <div className="flex-grow relative w-full h-full">
-                    <Image
-                      alt="대체이미지"
-                      src={
-                        surfitArticlesBundle
-                          ? surfitArticlesBundle[selectedImageNumber + 1]
-                              ?.imgSrc
-                          : "/images/Frame1.png"
-                      }
-                      layout="fill" // 부모 요소의 크기에 맞게 설정
-                      objectFit="cover" // 이미지를 부모 요소에 맞춤
-                    />
-                  </div>
-                  <div className="flex-shrink-0 font-bold text-[12px] p-3">
-                    {
-                      surfitArticlesBundle
-                        ? surfitArticlesBundle[selectedImageNumber + 1]
-                            ?.title || ""
-                        : "" // 또는 빈 문자열 또는 다른 로딩 처리 방식
-                    }
-                  </div>
-                  <div className="text-[10px] p-3">
-                    {
-                      surfitArticlesBundle
-                        ? surfitArticlesBundle[selectedImageNumber + 1]
-                            ?.description || ""
-                        : "" // 또는 빈 문자열 또는 다른 로딩 처리 방식
-                    }
-                  </div>
-                  <Link
-                    href={
-                      surfitArticlesBundle
-                        ? surfitArticlesBundle[selectedImageNumber + 1]?.href
-                        : ""
-                    }
-                  >
-                    <span className="text-[10px] hover:border-b hover:border-b-black m-3">
-                      보러가기
-                    </span>
-                  </Link>
-                </div>
+                <>
+                  {/* 오른쪽 4개의 칼럼중 1개 선택시 왼쪽의 칼럼으로 들어오는 로직 */}
+                  <SelectedLeftColumn
+                    surfitArticlesBundle={surfitArticlesBundle}
+                    selectedImageNumber={selectedImageNumber}
+                  />
+                </>
               ) : (
                 <div className="w-full h-full flex flex-col  ">
                   <div className="flex-grow relative w-full h-full">
