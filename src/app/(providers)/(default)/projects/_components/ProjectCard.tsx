@@ -4,11 +4,11 @@ import BookmarkButton from "@/components/BookmarkButton"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateProjectViews } from "../[id]/api"
 import { useRouter } from "next/navigation"
-import useHtmlParser from "@/hooks/useHtmlParser"
 import ProjectCardTechs from "./ProjectCardTechs"
 
 import type { Tables } from "@/types/supabase"
 import type { TProjectsType } from "@/types/extendedType"
+import DOMPurify from "dompurify"
 
 interface Props {
   project: TProjectsType
@@ -81,7 +81,12 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
           </span>
           <p
             className="line-clamp-3"
-            dangerouslySetInnerHTML={useHtmlParser(content)}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(content, {
+                ALLOWED_TAGS: [],
+                ALLOWED_ATTR: [],
+              }),
+            }}
           ></p>
         </div>
         <div className="flex justify-between items-center mt-10 lg:mt-0">

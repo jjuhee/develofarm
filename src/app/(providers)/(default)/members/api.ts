@@ -50,7 +50,7 @@ export const getPositionById = async ({
 export const getProjectByUserId = async (userId: string) => {
   const { data, error } = await supabaseForClient
     .from("projects")
-    .select("*")
+    .select("*, notifications(*)")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
 

@@ -4,7 +4,7 @@ import Image from "next/image"
 import { getProjectByUserId } from "../api"
 import { useRouter } from "next/navigation"
 import MemberInvitationCard from "./MemberInvitationCard"
-import { TProjectsType } from "@/types/extendedType"
+import { TProjectsByUserId, TProjectsType } from "@/types/extendedType"
 
 interface Props {
   currentUserId: string
@@ -52,7 +52,7 @@ const MemberProfile = ({ currentUserId }: Props) => {
           </div>
         </div>
         <MemberInvitationCard
-          projects={projects as TProjectsType[]}
+          projects={projects as TProjectsByUserId[]}
           receiverId={selectedMember.id}
         />
       </div>
