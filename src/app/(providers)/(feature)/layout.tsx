@@ -6,10 +6,10 @@ import CustomModal from "@/components/CustomModal"
 
 function ProvidersLayout({ children }: PropsWithChildren<{}>) {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-[100vh]">
       <Header />
-      <div className="flex w-full h-full justify-between">
-        <div className="flex flex-col w-[1250px] mx-auto">{children}</div>
+      <div className="flex flex-col w-full h-full justify-between">
+        <div className="flex flex-col max-w-[1250px] mx-auto">{children}</div>
         <Footer />
       </div>
       <FloatingButton />
