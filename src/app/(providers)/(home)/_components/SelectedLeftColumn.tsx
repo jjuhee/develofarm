@@ -16,6 +16,19 @@ const SelectedLeftColumn = ({
   surfitArticlesBundle,
   selectedImageNumber,
 }: SurfitArticlesProps) => {
+  console.log(
+    "selectedImageNumber",
+    surfitArticlesBundle
+      ? surfitArticlesBundle[selectedImageNumber]?.imgSrc
+      : "",
+    surfitArticlesBundle
+      ? surfitArticlesBundle[selectedImageNumber]?.title
+      : "",
+    surfitArticlesBundle
+      ? surfitArticlesBundle[selectedImageNumber]?.description
+      : "",
+    surfitArticlesBundle ? surfitArticlesBundle[selectedImageNumber]?.href : "",
+  )
   return (
     <div>
       <div className="w-full h-full flex flex-col opacity-100 transition-opacity duration-500">
