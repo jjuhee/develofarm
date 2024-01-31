@@ -21,7 +21,7 @@ const NotificationPage = () => {
     Tables<"notifications">[]
   >([])
   const [checkState, setCheckState] = useState<boolean>(false)
-  const userId = useUserStore((state) => state.user.id)
+  const userId = useUserStore((state) => state?.user?.id) as string
   // const { notiState } = useNotiStore((state) => state)
   const router = useRouter()
   const queryClient = useQueryClient()
