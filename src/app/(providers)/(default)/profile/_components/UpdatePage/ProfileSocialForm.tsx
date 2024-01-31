@@ -54,7 +54,7 @@ const ProfileSocialForm = ({
 
   return (
     <form>
-      <div>
+      <div className="pt-[20px]">
         {social_links?.map((link: Tables<"social_links">, index: number) => (
           <div key={link.id}>
             <div className="flex justify-between items-center">

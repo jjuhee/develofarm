@@ -121,7 +121,7 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
             setNewEducationData={setNewEducationData}
           />
         </div>
-        <div className="flex justify-between items-start">
+        <div className="flex justify-between items-start pt-[20px]">
           <ProfileAcademyForm
             userId={userId}
             setUpdatedAcademyData={setUpdatedAcademyData}

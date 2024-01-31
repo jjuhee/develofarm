@@ -196,6 +196,7 @@ const ProfileAcademyForm = ({
                   }
                   className="cursor-pointer"
                 />
+                <span> ~ </span>
                 <input
                   type="date"
                   placeholder="To"
