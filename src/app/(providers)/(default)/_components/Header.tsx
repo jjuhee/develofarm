@@ -15,6 +15,7 @@ import { IoLogOutOutline } from "react-icons/io5"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import { useRouter } from "next/navigation"
+import Notifications from "./Notifications"
 
 const Header = () => {
   const { userId, setUserId, setUser } = useUserStore((state) => state)
@@ -37,7 +38,7 @@ const Header = () => {
 
   const [showTooltip, setShowTooltip] = useState(false)
 
-  const onAlarmHandleClick = (event: React.MouseEvent) => {
+  const onClickedAlarmHandler = (event: React.MouseEvent) => {
     setShowTooltip(!showTooltip)
     setIsImageActive(false)
   }
@@ -47,27 +48,6 @@ const Header = () => {
     setIsImageActive((prev) => !prev)
     setShowTooltip(false)
   }
-  const [isAlarmData, setIsAlarmData] = useState<{ [key: string]: any }>()
-  const client = supabaseForClient
-
-  //public schema의 projects 테이블을 구독, unmount시 구독취소
-  useEffect(() => {
-    const channelA = client
-      .channel("schema-db-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "projects",
-        },
-        (payload) => setIsAlarmData(payload),
-      )
-      .subscribe()
-    return () => {
-      channelA.unsubscribe()
-    }
-  })
 
   //로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
   //TODO : 로그아웃시 바로 isLoggedOut이 true 값으로 변하지 않는것을 해결해야함
@@ -146,31 +126,13 @@ const Header = () => {
           {/* isLoggedOut이 false 일때 로그인 상태 */}
           {isLoggedOut === false ? (
             <>
-              <span
-                className={`text-md hover:cursor-pointer ${
-                  showTooltip ? "show" : ""
-                }`}
-                onClick={onAlarmHandleClick}
+              <div
+                className="text-md hover:cursor-pointer"
+                onClick={onClickedAlarmHandler}
               >
                 <VscBell />
-                {showTooltip && (
-                  <div className="relative flex">
-                    <div className="flex-row w-[200px] left-[-100px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-3 z-50 ">
-                      {isAlarmData ? (
-                        <>
-                          <div className=" text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
-                            새로운 프로젝트가 생겼어요!
-                          </div>
-                        </>
-                      ) : (
-                        <div className="text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
-                          알림이 없습니다
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </span>
+                <Notifications showTooltip={showTooltip} />
+              </div>
 
               <div
                 className="rounded-full shadow-lg hover hover:cursor-pointer"
