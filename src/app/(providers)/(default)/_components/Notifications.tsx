@@ -40,8 +40,6 @@ const Notifications = ({ showTooltip }: Props) => {
       await queryClient.invalidateQueries({
         queryKey: ["notifications"],
       })
-      // TODO: 바로 안지워질 때 체크
-      console.log("로그를 안찍으면 안지워져요.", notifications)
     },
   })
 
@@ -49,7 +47,6 @@ const Notifications = ({ showTooltip }: Props) => {
   useEffect(() => {
     if (notifications) {
       setNotificationList(() => [...notifications])
-      console.log("jhee: 헤더의 useEffect notiList update!")
       // setNotiState(false)
     }
   }, [notifications])

@@ -43,8 +43,6 @@ const NotificationPage = () => {
       await queryClient.invalidateQueries({
         queryKey: ["notifications"],
       })
-      // TODO: 바로 안지워질 때 체크
-      console.log("로그를 안찍으면 안지워져요.", notifications)
     },
   })
 
@@ -61,7 +59,7 @@ const NotificationPage = () => {
   useEffect(() => {
     if (notifications) {
       setNotificationList(() => [...notifications])
-      console.log("jhee:알람페이지의 useEffect")
+      setFilteredNotiList(notifications.filter((noti) => noti.status === false))
     }
   }, [notifications])
 
@@ -72,7 +70,7 @@ const NotificationPage = () => {
 
   const onCheckFilterNotiHandler = () => {
     if (checkState) {
-      setFilteredNotiList(
+      setFilteredNotiList(() =>
         notificationList.filter((noti) => noti.status === false),
       )
     }
@@ -80,8 +78,8 @@ const NotificationPage = () => {
   }
 
   const onClickRemoveAllNotiHandler = () => {
-    console.log("내 아이디 왜 없음", userId)
     deleteAllMuate.mutate(userId)
+    setNotificationList([])
   }
 
   return (
@@ -113,31 +111,35 @@ const NotificationPage = () => {
               return (
                 <li
                   key={noti.id}
-                  className={`cursor-pointer p-[10px] bg-white leading-[38px] first:border-t-[1px] border-b-[1px]
+                  className={`cursor-pointer p-[10px] leading-[38px] first:border-t-[1px] border-b-[1px]
                 ${noti.status ? "bg-white" : "bg-[#efefef]"}`}
                   onClick={() => onClickNotificationHandler(noti)}
                 >
                   <h2 className="font-[700]">
                     {noti.status ? "알림" : "읽지 않은 알림"}
                   </h2>
-                  {/* TODO: 신청수락, 모집마감 추가, 함수로 빼기 */}
                   <p className="">{getNotificationMessage(noti)}</p>
                 </li>
               )
             })}
+          {!checkState && notificationList.length === 0 && (
+            <li className="p-[10px] bg-white leading-[38px] border-t-[1px] border-b-[1px]">
+              <h2 className="font-[700]">새 알림이 없습니다.</h2>
+              <br />
+            </li>
+          )}
           {checkState &&
             filteredNotiList?.map((noti, index) => {
               return (
                 <li
                   key={noti.id}
-                  className={`cursor-pointer p-[10px] bg-white leading-[38px] first:border-t-[1px] border-b-[1px]
+                  className={`cursor-pointer p-[10px] leading-[38px] first:border-t-[1px] border-b-[1px]
                 ${noti.status ? "bg-white" : "bg-[#efefef]"}`}
                   onClick={() => onClickNotificationHandler(noti)}
                 >
                   <h2 className="font-[700]">
                     {noti.status ? "알림" : "읽지 않은 알림"}
                   </h2>
-                  {/* TODO: 신청수락, 모집마감 추가, 함수로 빼기 */}
                   <p className="">{getNotificationMessage(noti)}</p>
                 </li>
               )
