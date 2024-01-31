@@ -1,6 +1,56 @@
-import React from "react"
+"use client"
+import Button from "@/components/ui/Button"
+import { getNotifications, setNotification } from "@/app/(providers)/api"
+import useUserStore from "@/store/user"
+import { supabaseForClient } from "@/supabase/supabase.client"
+import { Tables, TablesUpdate } from "@/types/supabase"
+import { RealtimePostgresInsertPayload } from "@supabase/supabase-js"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
+import React, { useEffect, useState } from "react"
 
 const NotificationPage = () => {
+  const [notificationList, setNotificationList] = useState<
+    Tables<"notifications">[]
+  >([])
+  const { userId } = useUserStore((state) => state)
+  const router = useRouter()
+  const queryClient = useQueryClient()
+
+  const {
+    data: notifications,
+    isSuccess,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["notificationPage", userId],
+    queryFn: () => getNotifications(userId),
+    enabled: !!userId,
+  })
+
+  const updateNotification = useMutation({
+    mutationFn: setNotification,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["notificationPage", userId],
+      })
+      // TODO: 바로 안지워질 때 체크
+      console.log("로그를 안찍으면 안지워져요.", notifications)
+    },
+  })
+
+  /* 이미 있는것 유즈 쿼리로 불러오기 */
+  useEffect(() => {
+    if (notifications) {
+      setNotificationList(() => [...notifications])
+    }
+  }, [notifications])
+
+  const onClickNotificationHandler = (noti: TablesUpdate<"notifications">) => {
+    router.push(`/projects/${noti.project_id}`)
+    updateNotification.mutate({ id: noti.id, status: true })
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center my-0 mx-auto pt-[10px]">
@@ -14,27 +64,48 @@ const NotificationPage = () => {
             읽지 않은 알림만 보기
           </label>
         </div>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full">
-          전체 지우기
-        </button>
+        <Button type="border" text="전체 지우기" handler={() => {}} />
       </div>
       <div>
-        <div className="border-t-4 my-4">
-          <h2 className="pt-3 pb-2">알림</h2>
-          <p className="pb-3">
-            프로젝트 구인 사이트 개발 프로젝트 신청이 수락되었습니다.
-          </p>
-          <hr className=" border-t-4" />
-          <h2 className="pt-3 pb-2">알림</h2>
-          <p className="pb-3">
-            프로젝트 구인 사이트 개발 프로젝트의 ‘프론트엔드 개발자’로 참여 신청
-            완료하였습니다.
-          </p>
-          <hr className=" border-t-4" />
-        </div>
+        <ul>
+          {notificationList?.map((noti, index) => {
+            return (
+              <li
+                key={noti.id}
+                className={`cursor-pointer p-[10px] bg-white leading-[38px] first:border-t-[1px] border-b-[1px]
+                ${noti.status ? "bg-white" : "bg-[#efefef]"}`}
+                onClick={() => onClickNotificationHandler(noti)}
+              >
+                <h2 className="font-[700]">
+                  {noti.status ? "알림" : "읽지 않은 알림"}
+                </h2>
+                {/* TODO: 신청수락, 모집마감 추가, 함수로 빼기 */}
+                <p className="">{getNotificationMessage(noti)}</p>
+              </li>
+            )
+          })}
+        </ul>
       </div>
     </div>
   )
 }
 
 export default NotificationPage
+
+const getNotificationMessage = (noti: Tables<"notifications">) => {
+  let sender = `${noti.sender_nickname} 님이`
+  switch (noti.type) {
+    case "comment":
+      return `${sender} 댓글을 남겼습니다.`
+    case "recomment":
+      return `${sender} 대댓글을 남겼습니다.`
+    case "invitation":
+      return `${sender} 프로젝트 초대요청을 보냈습니다.`
+    case "application":
+      return `${sender} 회원님의 프로젝트에 참여를 신청하였습니다.`
+    case "acception":
+      return `회원님이 신청하신 프로젝트에 참여 멤버가 되었습니다.`
+    case "rejection":
+      return `회원님이 신청하신 프로젝트에 함께하지 못하게 되었습니다.`
+  }
+}

@@ -1,5 +1,4 @@
 "use client"
-
 import useUserStore from "@/store/user"
 import { supabaseForClient } from "@/supabase/supabase.client"
 import { Tables, TablesUpdate } from "@/types/supabase"
@@ -8,6 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import React, { MouseEvent, useEffect, useState } from "react"
 import { getNotifications, setNotification } from "../../api"
+import { BsArrowUpRight } from "react-icons/bs"
 
 interface Props {
   showTooltip: boolean
@@ -21,9 +21,14 @@ const Notifications = ({ showTooltip }: Props) => {
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const { data: notifications } = useQuery({
+  const {
+    data: notifications,
+    isSuccess,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["notifications", userId],
-    queryFn: () => getNotifications(userId),
+    queryFn: () => getNotifications(userId, false),
     enabled: !!userId,
   })
 
@@ -33,20 +38,20 @@ const Notifications = ({ showTooltip }: Props) => {
       await queryClient.invalidateQueries({
         queryKey: ["notifications", userId],
       })
+      // TODO: 바로 안지워질 때 체크
       console.log("로그를 안찍으면 안지워져요.", notifications)
     },
   })
 
-  //public schema의 projects 테이블을 구독, unmount시 구독취소
-  // TODO : 로직 Api로 옮기기
-  // 이미 있는것 유즈 쿼리로 불러오기
-  // 테이블을 구독하여 다 가져와서 내 id 와 비교 하여 보여줌
+  /* 이미 있는것 유즈 쿼리로 불러오기 */
   useEffect(() => {
     if (notifications) {
       setNotificationList(() => [...notifications])
     }
   }, [notifications])
 
+  // TODO : 로직 Api로 옮기기
+  /* 테이블을 구독하여 다 가져와서 내 id 와 비교 하여 보여줌 */
   useEffect(() => {
     const channel = supabaseForClient
       .channel("db-changes")
@@ -83,9 +88,9 @@ const Notifications = ({ showTooltip }: Props) => {
 
   return (
     <div>
-      <div className="reletive text-[13px] *:bg-white">
+      <div className="relative text-[13px] *:bg-white">
         <ul
-          className={`absolute flex flex-col mt-[3px] rounded-lg border-[1px] border-[#F2F4F7] shadow-md w-[243px] right-[60px] top-[70px] z-10 ${
+          className={`absolute flex flex-col mt-[3px] rounded-lg border-[1px] border-[#F2F4F7] shadow-md w-[243px] left-[-220px] top-[20px] z-10 ${
             showTooltip ? "visible" : "invisible"
           }`}
         >
@@ -98,36 +103,29 @@ const Notifications = ({ showTooltip }: Props) => {
             return (
               <li
                 key={noti.id}
-                className="cursor-pointer px-[18px] bg-white leading-[38px] h-[38px] first:rounded-t-lg last:rounded-b-lg hover:bg-[#DBFFB2]"
+                className="cursor-pointer px-[18px] bg-white leading-[38px] h-[38px] first:rounded-t-lg last:rounded-b-lg hover:bg-[#DBFFB2] truncate"
                 onClick={() => onClickNotificationHandler(noti)}
               >
-                {/* TODO: 신청수락, 모집마감 추가, 길면 ...처리, 함수로 빼기 */}
-                {noti.sender_nickname} 님이
-                {noti.type === "comment" && "댓글을 남겼습니다."}
-                {noti.type === "recomment" &&
-                  "회원님의 댓글에 대댓글을 남겼습니다."}
-                {noti.type === "invitation" &&
-                  "프로젝트 초대요청을 보냈습니다."}
-                {noti.type === "application" &&
-                  "회원님의 프로젝트에 참여를 신청하였습니다."}
+                {getNotificationMessage(noti)}
               </li>
             )
           })}
 
+          {notificationList.length === 0 && (
+            <li className="px-[18px] bg-white text-[13px] leading-[38px] h-[38px] first:rounded-t-lg last:rounded-b-lg hover:bg-[#DBFFB2]">
+              새 알림이 없습니다
+            </li>
+          )}
+
           <li
-            className="font-[600] cursor-pointer px-[18px] bg-white leading-[38px] h-[38px] first:rounded-t-lg last:rounded-b-lg hover:bg-[#DBFFB2]"
+            className="flex items-center gap-1 font-[600] cursor-pointer px-[18px] bg-white leading-[38px] h-[38px] first:rounded-t-lg last:rounded-b-lg hover:bg-[#DBFFB2]"
             onClick={onClickNotificationPageHandler}
           >
             {notificationList.length > 7
               ? "알람페이지에서 더보기..."
               : "알림페이지로 이동"}
+            <BsArrowUpRight />
           </li>
-
-          {notificationList.length === 0 && (
-            <li className="cursor-pointer px-[18px] bg-white text-[13px] leading-[38px] h-[38px] first:rounded-t-lg last:rounded-b-lg hover:bg-[#DBFFB2]">
-              알림이 없습니다
-            </li>
-          )}
         </ul>
       </div>
     </div>
@@ -135,3 +133,21 @@ const Notifications = ({ showTooltip }: Props) => {
 }
 
 export default Notifications
+
+const getNotificationMessage = (noti: Tables<"notifications">) => {
+  let sender = `${noti.sender_nickname} 님이`
+  switch (noti.type) {
+    case "comment":
+      return `${sender} 댓글을 남겼습니다.`
+    case "recomment":
+      return `${sender} 대댓글을 남겼습니다.`
+    case "invitation":
+      return `${sender} 프로젝트 초대요청을 보냈습니다.`
+    case "application":
+      return `${sender} 회원님의 프로젝트에 참여를 신청하였습니다.`
+    case "acception":
+      return `회원님이 신청하신 프로젝트에 참여 멤버가 되었습니다.`
+    case "rejection":
+      return `회원님이 신청하신 프로젝트에 함께하지 못하게 되었습니다.`
+  }
+}
