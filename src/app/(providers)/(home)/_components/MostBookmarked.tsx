@@ -2,7 +2,7 @@
 import React from "react"
 
 const MostBookmarked = () => {
-  return <div>MostBookmarked</div>
+  return <div></div>
 }
 
 export default MostBookmarked
