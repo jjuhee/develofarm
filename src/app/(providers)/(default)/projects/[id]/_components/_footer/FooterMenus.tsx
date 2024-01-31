@@ -72,9 +72,18 @@ const FooterMenus = ({ project }: Props) => {
     enabled: !!project.id,
   })
 
-  if (commentsIsLoading) return <div>is Loading...</div>
-  if (applicantsIsLoading) return <div>is Loading...</div>
-  if (commentsIsLoading) return <div>is Loading...</div>
+  if (commentsIsLoading)
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+      </div>
+    )
+  if (applicantsIsLoading)
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+      </div>
+    )
 
   return (
     <>
@@ -123,7 +132,7 @@ const FooterMenus = ({ project }: Props) => {
         <FooterPublicIcon
           bookmarks={bookmarks as Tables<"bookmarks">[]}
           bookmarksCount={bookmarksCount as number}
-          projectId={project.id}
+          project={project}
         />
         {/* 사용자에 따라서 다른 버튼 */}
         <FooterAuthButton project={project} isWriter={isWriter} />

@@ -1,20 +1,20 @@
 "use client"
 
-import BookmarkButton from "@/components/BookmarkButton"
-import useUserStore from "@/store/user"
-import { Tables } from "@/types/supabase"
-import Image from "next/image"
-
 import React, { useState } from "react"
+import { Tables } from "@/types/supabase"
+import useUserStore from "@/store/user"
+import { getProject } from "../../../api"
 import PublicShareButton from "./PublicShareButton"
+import BookmarkButton from "@/components/BookmarkButton"
+import Image from "next/image"
 
 interface Props {
   bookmarks: Tables<"bookmarks">[]
-  projectId: string
+  project: Exclude<Awaited<ReturnType<typeof getProject>>, null>
   bookmarksCount: number
 }
 
-const FooterPublicIcon = ({ bookmarks, projectId, bookmarksCount }: Props) => {
+const FooterPublicIcon = ({ bookmarks, project, bookmarksCount }: Props) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
   const userId = useUserStore((state) => state.userId)
 
@@ -29,7 +29,7 @@ const FooterPublicIcon = ({ bookmarks, projectId, bookmarksCount }: Props) => {
           <BookmarkButton
             currentUser={userId}
             bookmarks={bookmarks}
-            projectId={projectId}
+            projectId={project.id}
           />
         </span>
         {bookmarksCount}
@@ -46,7 +46,7 @@ const FooterPublicIcon = ({ bookmarks, projectId, bookmarksCount }: Props) => {
           className="float-left mt-1 mr-2"
         />
       </span>
-      {isOpenModal && <PublicShareButton />}
+      {isOpenModal && <PublicShareButton project={project} />}
     </>
   )
 }

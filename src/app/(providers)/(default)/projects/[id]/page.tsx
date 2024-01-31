@@ -11,7 +11,6 @@ import useUserStore from "@/store/user"
 import ProjectMetaInfo from "./_components/_header/ProjectMetaInfo"
 import TechStackTag from "./_components/_header/TechStackTag"
 import ProjectWriterInfo from "./_components/_header/ProjectWriterInfo"
-import FooterList from "./_components/_footer/FooterList"
 import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Image from "next/image"
@@ -98,7 +97,6 @@ const DetailPage = () => {
         </section>
         <FooterMenus project={project} />
         <Spacer y={50} />
-        <FooterList />
       </main>
     </div>
   )
