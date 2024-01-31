@@ -58,18 +58,20 @@ const Mainbanner = () => {
               </span>
 
               {/* 슬라이드 안의 하나의 카드 */}
+
               <Swiper
                 direction="horizontal"
                 loop={true}
                 modules={[Autoplay, Pagination]}
                 autoplay={{
+                  delay: 0,
                   disableOnInteraction: false,
                   pauseOnMouseEnter: false,
                 }}
                 slidesPerView={3}
                 spaceBetween={20}
-                speed={2000}
-                effect="slide"
+                speed={4000}
+                effect="fade"
                 className="w-full h-[110px] bg-black "
               >
                 {list.bannerDescription.map((list: any, index: number) => (

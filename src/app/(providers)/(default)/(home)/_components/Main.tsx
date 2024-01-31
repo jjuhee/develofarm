@@ -38,9 +38,9 @@ export default function Main({ children }: { children: React.ReactNode }) {
   }
 
   const onDetailProjectsHandler = (projectId: string) => {
-    console.log("프로젝트아이디", projectId)
     router.push(`../../projects/${projectId}/`)
   }
+  const bannerArray = [{ number: 1 }, { number: 2 }]
   return (
     <>
       <Mainbanner />
@@ -58,12 +58,13 @@ export default function Main({ children }: { children: React.ReactNode }) {
           delay: 0,
           pauseOnMouseEnter: true,
           disableOnInteraction: false,
+          reverseDirection: false,
         }}
         slidesPerView={4}
         spaceBetween={20}
         speed={4000}
         effect="fade"
-        className="w-full h-[300px]"
+        className="w-full h-[300px] "
       >
         {bookmarksCountProjects
 
@@ -71,10 +72,10 @@ export default function Main({ children }: { children: React.ReactNode }) {
           .map((list: TBookmarksCountEachProject, index: number) => (
             <SwiperSlide
               key={index}
-              className="relative group border border-gray-300 rounded-t-2xl overflow-hidden hover hover:cursor-pointer"
+              className="hover:-translate-y-6 border border-gray-300 rounded-2xl overflow-hidden cursor-pointer "
               onClick={() => onDetailProjectsHandler(list.id as string)}
             >
-              <div className="rounded-t-lg w-full h-[70%] group-hover:border-transparent transition duration-300 relative overflow-hidden ">
+              <div className="rounded-t-lg w-full h-[70%] group-hover:border-transparent transition duration-300 relative overflow-hidden hover:scale-120 ">
                 <Image
                   src={list.picture_url ? list.picture_url : ""}
                   alt="대체 텍스트"
@@ -113,100 +114,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
           ))}
       </Swiper>
       <Spacer y={40} />
-      <Swiper
-        direction="horizontal"
-        loop={true}
-        modules={[Autoplay]}
-        autoplay={{
-          delay: 0,
-          pauseOnMouseEnter: true,
-          disableOnInteraction: false,
-          reverseDirection: true,
-        }}
-        slidesPerView={4}
-        spaceBetween={20}
-        speed={3000}
-        effect="slide"
-        className="w-full h-[300px]"
-      >
-        {bookmarksCountProjects
 
-          ?.slice(0, 7)
-          .map((list: TBookmarksCountEachProject, index: number) => (
-            <SwiperSlide
-              key={index}
-              className="relative group border border-gray-300 rounded-t-2xl overflow-hidden"
-              onClick={() => onDetailProjectsHandler(list.id as string)}
-            >
-              <div className="rounded-t-lg w-full h-[70%] group-hover:border-transparent transition duration-300 relative overflow-hidden ">
-                <Image
-                  src={list.picture_url ? list.picture_url : ""}
-                  alt="대체 텍스트"
-                  layout="fill" // 부모 요소의 크기에 맞게 설정
-                  objectFit="cover" // 이미지를 부모 요소에 맞춤
-                />
-                <div>ddd</div>
-              </div>
-              <div className="absolute bottom-0 left-0 text-black h-[30%] w-full">
-                <div className="mb-2">
-                  <h2 className="text-[17px] font-bold pt-2 pl-2">
-                    {list.title
-                      ? list.title.length > 23
-                        ? list.title.slice(0, 23) + "..."
-                        : list.title
-                      : ""}
-                  </h2>
-                  <p className="text-[12px] pt-2 pl-2">
-                    {list.content
-                      ? list.content
-                          .replaceAll("<p>", "")
-                          .replaceAll("</p>", "").length > 27
-                        ? list.content
-                            .replaceAll("<p>", "")
-                            .replaceAll("</p>", "")
-                            .substring(0, 27) + "..."
-                        : list.content
-                      : ""}
-                  </p>
-                </div>
-              </div>
-              <div className="absolute top-0 right-0 flex flex-col items-end p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="mb-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-red-700"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 21.35l-1.45-1.32C5.4 14.25 2 11.28 2 7.5 2 4.42 4.42 2 7.5 2c1.74 0 3.41.81 4.5 2.09C13.09 2.81 14.76 2 16.5 2 19.58 2 22 4.42 22 7.5c0 3.78-3.4 6.75-8.55 12.54L12 21.35z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-blue-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 2C7 2 2 7 2 12s5 10 10 10 10-5 10-10-5-10-10-10zm-1 14l-1 1-1-1M12 6v8"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-      </Swiper>
       <Spacer y={100} />
       <div className="border">
         {" "}
@@ -214,11 +122,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
           <div
             className="w-full h-[600px] bg-cover bg-center relative"
             style={{ backgroundImage: `url('/images/banner_wrap.png')` }}
-          >
-            {/* <div className="text-white text-3xl font-semibold absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              [Developer]: 당신의 꿈을 그려보세요!
-            </div> */}
-          </div>
+          ></div>
         </div>
       </div>
       {/*  */}
