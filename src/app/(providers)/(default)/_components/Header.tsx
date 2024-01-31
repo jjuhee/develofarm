@@ -13,12 +13,15 @@ import { GoPerson } from "react-icons/go"
 import { LuFolder } from "react-icons/lu"
 import { IoLogOutOutline } from "react-icons/io5"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
+import useUrlStore from "@/store/url"
+import { usePathname } from "next/navigation"
 
 const Header = () => {
   const [showTooltip, setShowTooltip] = useState(false)
   const [isImageActive, setIsImageActive] = useState<boolean>(false)
   const [isAlarmData, setIsAlarmData] = useState<{ [key: string]: any }>()
   const [isAuthIntialized, setIsAuthIntialized] = useState<boolean>(false)
+  const { setUrl } = useUrlStore()
   const { user, setUser } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
   const { setViewMemberModal, setMemberPosition } = useMembersStore(
@@ -26,6 +29,7 @@ const Header = () => {
   )
   const dropdownRef = useRef<HTMLInputElement>(null)
   const client = supabaseForClient
+  const pathname = usePathname()
 
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
@@ -85,6 +89,7 @@ const Header = () => {
               createdAt: session.user.email as string,
             }
             setUser(userData)
+            setUrl(pathname)
           }
         } else if (event === "SIGNED_OUT") {
           setUser(null)
