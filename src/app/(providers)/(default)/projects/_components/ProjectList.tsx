@@ -13,6 +13,7 @@ import Pagination from "./Pagination"
 import useProjectsStore from "@/store/projects"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
+import Checkbox from "@/components/ui/Checkbox"
 
 interface Props {
   option?: TProjectsOptions
@@ -126,24 +127,20 @@ const ProjectList = ({ option }: Props) => {
         </p>
         <div className="flex items-center gap-[30px]">
           <div className="flex items-center gap-2">
-            <input
+            <Checkbox
               id="recruit"
-              type="checkbox"
-              checked={recruitStatus}
-              onChange={onChangeRecruitHandler}
-              className="
-                peer relative appearance-none shrink-0 w-4 h-4 border-2 border-[#666666] rounded-sm bg-white
-                focus:outline-none focus:ring-offset-0 focus:ring-1 focus:ring-main-lime
-                checked:bg-black checked:border-0
-                disabled:border-steel-400 disabled:bg-steel-400
-                checked:bg-[url('/icons/checked.png')] bg-no-repeat bg-center cursor-pointer
-              "
+              value={recruitStatus}
+              handler={onChangeRecruitHandler}
             />
-
             <label htmlFor="recruit" className="cursor-pointer">
               모집 중인 공고만 보기
             </label>
           </div>
+          {/* <SortButton
+            onChangeRecruitHandler={onChangeRecruitHandler}
+            setIsOpenOrder={setIsOpenOrder}
+            onChangeOrder={onChangeOrder}
+          /> */}
           <div
             className="relative w-[120px] text-[14px] font-[400]"
             ref={sortRef}

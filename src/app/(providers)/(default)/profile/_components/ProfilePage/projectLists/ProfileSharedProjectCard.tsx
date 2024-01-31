@@ -1,16 +1,16 @@
 import React from "react"
 import { useQuery } from "@tanstack/react-query"
-import { getProfileBookmarks } from "../../api"
+import { getProjects } from "../../../api"
 import Link from "next/link"
 
-const ProfileBookmarkCard = ({ profileId }: { profileId: string }) => {
+const ProfileSharedProjectCard = ({ profileId }: { profileId: string }) => {
   const {
-    data: bookmarks,
+    data: projects,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["bookmarks", profileId],
-    queryFn: () => getProfileBookmarks({ userId: profileId }),
+    queryKey: ["projects", profileId],
+    queryFn: () => getProjects({ userId: profileId }),
     enabled: !!profileId,
   })
 
@@ -19,58 +19,56 @@ const ProfileBookmarkCard = ({ profileId }: { profileId: string }) => {
   }
 
   if (isError) {
-    return <div>찜한 프로젝트 데이터를 불러오는 중 오류가 발생했습니다.</div>
+    return <div>게시한 프로젝트 데이터를 불러오는 중 오류가 발생했습니다.</div>
   }
 
-  if (!bookmarks || bookmarks.length === 0) {
-    return <div className="pt-[50px]">찜한 프로젝트가 없습니다.</div>
+  if (!projects || projects.length === 0) {
+    return <div className="pt-[50px]">게시한 프로젝트글이 없습니다.</div>
   }
 
   return (
     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 mt-5">
-      {bookmarks?.map((bookmark) => (
+      {projects?.map((project) => (
         <div
-          key={bookmark.id}
+          key={project.id}
           className="border border-gray-300 h-[356px] w-[371px] bg-white rounded-[20px]  shadow-md mt-4 mb-4 transition-transform transform hover:scale-105"
         >
           <div className="flex flex-col items-left">
-            <Link href={`/projects/${bookmark.id}`}>
+            <Link href={`/projects/${project.id}`}>
               <img
                 className="h-[222.98px] w-full bg-[#3498db] object-cover rounded-t-[20px]"
-                src={`${bookmark.projects?.picture_url}`}
-                alt={`Image for ${bookmark.projects?.title}`}
+                src={`${project.picture_url}`}
+                alt={`Image for ${project.title}`}
               />
             </Link>
             <div className="p-[20px]">
-              <Link href={`/projects/${bookmark.projects?.id}`}>
+              <Link href={`/projects/${project.id}`}>
                 <div className="flex font-bold">
                   <div>
                     <p
                       className={`p-[5px] px-[10px] mr-3 border border-solid border-[#666666] rounded-full ${
-                        bookmark.projects?.recruit_status
+                        project.recruit_status
                           ? "bg-[#666666] text-white"
                           : "bg-[#ffffff] text-bold"
                       } text-[15px]`}
                     >
-                      {bookmark.projects?.recruit_status
-                        ? "모집 완료"
-                        : "모집 중"}
+                      {project.recruit_status ? "모집 완료" : "모집 중"}
                     </p>
                   </div>
                   <div>
                     <h2 className="text-[20px]">
-                      {bookmark.projects?.title &&
-                      bookmark.projects?.title.length > 10
-                        ? bookmark.projects?.title.slice(0, 10) + "..."
-                        : bookmark.projects?.title}
+                      {project.title && project.title.length > 10
+                        ? project.title.slice(0, 10) + "..."
+                        : project.title}
                     </h2>
                   </div>
                 </div>
               </Link>
+
               <div className="pt-[20px] text-[14px] line-clamp-2">
                 <p
                   dangerouslySetInnerHTML={{
-                    __html: bookmark.projects?.content as string,
+                    __html: project.content as string,
                   }}
                 />
                 {/* 북마크 버튼 */}
@@ -82,4 +80,5 @@ const ProfileBookmarkCard = ({ profileId }: { profileId: string }) => {
     </div>
   )
 }
-export default ProfileBookmarkCard
+
+export default ProfileSharedProjectCard

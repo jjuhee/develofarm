@@ -51,7 +51,7 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                         surfitArticlesBundle
                           ? surfitArticlesBundle[selectedImageNumber + 1]
                               ?.imgSrc
-                          : ""
+                          : "/images/Frame1.png"
                       }
                       layout="fill" // 부모 요소의 크기에 맞게 설정
                       objectFit="cover" // 이미지를 부모 요소에 맞춤
@@ -89,20 +89,25 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                 <div className="w-full h-full flex flex-col  ">
                   <div className="flex-grow relative w-full h-full">
                     <Image
-                      alt="대체이미지"
+                      alt="/images/firework.jpg"
                       src={
                         surfitArticlesBundle
-                          ? surfitArticlesBundle[0]?.imgSrc
-                          : ""
+                          ? surfitArticlesBundle[0]?.imgSrc === undefined
+                            ? "/images/firework.jpg"
+                            : surfitArticlesBundle[0].imgSrc
+                          : "/images/Frame1.png"
                       }
                       layout="fill" // 부모 요소의 크기에 맞게 설정
                       objectFit="cover" // 이미지를 부모 요소에 맞춤
                     />
                   </div>
+
                   <div className="flex-shrink-0 font-bold text-[12px] p-3">
                     {
                       surfitArticlesBundle
-                        ? surfitArticlesBundle[0]?.title || ""
+                        ? surfitArticlesBundle[0]?.title === undefined
+                          ? "제목이 없는 기사 입니다."
+                          : surfitArticlesBundle[0].title
                         : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
                     }
                   </div>
@@ -113,7 +118,7 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                         : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
                     }
                   </div>
-                  <Link href={surfitArticles[0].href}>
+                  <Link href={surfitArticles[0]?.href}>
                     <span className="text-[10px] hover:border-b hover:border-b-black m-3">
                       보러가기
                     </span>
@@ -122,7 +127,7 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3" key={2}>
               {/* 오른쪽의 4개 이미지 */}
 
               {surfitArticles.slice(1, 5).map((surfitArticle, index) => (
@@ -153,7 +158,7 @@ const Column: React.FC<Props> = ({ surfitArticles }: Props) => {
                         </div>
                         <span className="text-[10px] ml-2 hover hover:border-b hover:border-b-black my-3 ">
                           <Link
-                            href={surfitArticle.href ? surfitArticle.href : ""}
+                            href={surfitArticle?.href ? surfitArticle.href : ""}
                           >
                             보러가기
                           </Link>

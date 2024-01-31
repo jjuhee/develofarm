@@ -30,5 +30,6 @@
     ".next/types/**/*.ts",
     "src/components/Modal.jsx"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "types": ["@types/sanitize-html"]
 }
