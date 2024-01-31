@@ -18,7 +18,7 @@ const Notifications = ({ showTooltip }: Props) => {
   const [notificationList, setNotificationList] = useState<
     Tables<"notifications">[]
   >([])
-  const { userId } = useUserStore((state) => state)
+  const userId = useUserStore((state) => state.user.id)
   const router = useRouter()
   const queryClient = useQueryClient()
   // const { setNotiState } = useNotiStore((state) => state)

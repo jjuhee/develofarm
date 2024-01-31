@@ -40,9 +40,12 @@ export async function setNotification(noti: TablesUpdate<"notifications">) {
     .eq("id", noti.id as string)
 }
 
-export async function deleteNotification(noti: TablesUpdate<"notifications">) {
+export async function deleteNotification(receiverId: string) {
   const { data, error } = await supabaseForClient
     .from("notifications")
     .delete()
-    .eq("receiver_id", noti.receiver_id as string)
+    .eq("receiver_id", receiverId)
+
+  console.log("data", data)
+  throw error
 }

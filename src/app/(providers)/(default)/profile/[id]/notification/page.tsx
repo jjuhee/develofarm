@@ -1,6 +1,10 @@
 "use client"
 import Button from "@/components/ui/Button"
-import { getNotifications, setNotification } from "@/app/(providers)/api"
+import {
+  deleteNotification,
+  getNotifications,
+  setNotification,
+} from "@/app/(providers)/api"
 import useUserStore from "@/store/user"
 import { Tables, TablesUpdate } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -17,7 +21,7 @@ const NotificationPage = () => {
     Tables<"notifications">[]
   >([])
   const [checkState, setCheckState] = useState<boolean>(false)
-  const { userId } = useUserStore((state) => state)
+  const userId = useUserStore((state) => state.user.id)
   // const { notiState } = useNotiStore((state) => state)
   const router = useRouter()
   const queryClient = useQueryClient()
@@ -33,7 +37,7 @@ const NotificationPage = () => {
     enabled: !!userId,
   })
 
-  const updateNotification = useMutation({
+  const updateNotiMutate = useMutation({
     mutationFn: setNotification,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -41,6 +45,15 @@ const NotificationPage = () => {
       })
       // TODO: 바로 안지워질 때 체크
       console.log("로그를 안찍으면 안지워져요.", notifications)
+    },
+  })
+
+  const deleteAllMuate = useMutation({
+    mutationFn: deleteNotification,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["notifications"],
+      })
     },
   })
 
@@ -54,7 +67,7 @@ const NotificationPage = () => {
 
   const onClickNotificationHandler = (noti: TablesUpdate<"notifications">) => {
     router.push(`/projects/${noti.project_id}`)
-    updateNotification.mutate({ id: noti.id, status: true })
+    updateNotiMutate.mutate({ id: noti.id, status: true })
   }
 
   const onCheckFilterNotiHandler = () => {
@@ -64,6 +77,11 @@ const NotificationPage = () => {
       )
     }
     setCheckState(!checkState)
+  }
+
+  const onClickRemoveAllNotiHandler = () => {
+    console.log("내 아이디 왜 없음", userId)
+    deleteAllMuate.mutate(userId)
   }
 
   return (
@@ -79,7 +97,13 @@ const NotificationPage = () => {
             읽지 않은 알림만 보기
           </label>
         </div>
-        <Button type="border" text="전체 지우기" handler={() => {}} />
+        <div className="*:w-[100px] *:h-[36px] *:text-[15px] *:p-0">
+          <Button
+            type="border"
+            text="전체 지우기"
+            handler={onClickRemoveAllNotiHandler}
+          />
+        </div>
       </div>
       <div>
         <ul>
