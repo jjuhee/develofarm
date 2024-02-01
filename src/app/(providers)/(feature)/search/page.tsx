@@ -165,8 +165,8 @@ const SearchPage = () => {
       <Spacer y={70} />
       {/* -------프로젝트 리스트 들어오기 ---------- */}
       <SearchedProjectLists
-        searchedProjects={searchedData}
-        bookmarks={bookmarks}
+        searchedProjects={searchedData as Tables<"projects">[]}
+        bookmarks={bookmarks as Tables<"bookmarks">[]}
         currentUser={currentUser}
       />
     </div>
