@@ -8,7 +8,7 @@ import { TProjectsByUserId } from "@/types/extendedType"
 
 const ProfileActions = ({ profileId }: { profileId: string }) => {
   const selectedMember = useMembersStore((state) => state.selectedMember)
-  const { userId } = useUserStore()
+  const userId = useUserStore((state) => state?.user?.id) as string
 
   const { data: projects } = useQuery({
     queryKey: ["projects", userId],

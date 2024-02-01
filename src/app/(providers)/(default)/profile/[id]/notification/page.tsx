@@ -8,9 +8,10 @@ import {
 import useUserStore from "@/store/user"
 import { Tables, TablesUpdate } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import Checkbox from "@/components/ui/Checkbox"
+import { useProfileStore } from "@/store/profile"
 //import useNotiStore from "@/store/notification"
 
 const NotificationPage = () => {
@@ -25,6 +26,13 @@ const NotificationPage = () => {
   // const { notiState } = useNotiStore((state) => state)
   const router = useRouter()
   const queryClient = useQueryClient()
+
+  const { id } = useParams<{ id: string }>()
+  const setId = useProfileStore((state) => state.setId)
+
+  useEffect(() => {
+    setId(id)
+  }, [id, setId])
 
   const {
     data: notifications,
