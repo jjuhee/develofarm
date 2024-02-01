@@ -23,10 +23,8 @@ const InitialLeftColumn = ({
             alt="/images/firework.jpg"
             src={
               surfitArticlesBundle
-                ? surfitArticlesBundle[0]?.imgSrc === undefined
-                  ? "/images/firework.jpg"
-                  : surfitArticlesBundle[0].imgSrc
-                : "/images/Frame1.png"
+                ? surfitArticlesBundle[0].imgSrc
+                : "/images/firework.jpg"
             }
             layout="fill" // 부모 요소의 크기에 맞게 설정
             objectFit="cover" // 이미지를 부모 요소에 맞춤
@@ -34,13 +32,9 @@ const InitialLeftColumn = ({
         </div>
 
         <div className="flex-shrink-0 font-bold text-[12px] p-3">
-          {
-            surfitArticlesBundle
-              ? surfitArticlesBundle[0]?.title === undefined
-                ? "제목이 없는 기사 입니다."
-                : surfitArticlesBundle[0].title
-              : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
-          }
+          {surfitArticlesBundle
+            ? surfitArticlesBundle[0].title
+            : "제목이 없는 기사 입니다."}
         </div>
         <div className="text-[10px] p-3">
           {

@@ -4,23 +4,24 @@ import React from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay, Pagination } from "swiper/modules"
 import Spacer from "@/components/ui/Spacer"
+import { useRouter } from "next/navigation"
 
 interface TBookmarksCountEachProject {
-  id: string | null
-  title: string | null
-  content: string | null
-  picture_url: string | null
+  id: string
+  title: string
+  content: string
+  picture_url: string
 }
 ;[]
 
 interface MostBookmarkedProps {
-  onDetailProjectsHandler: (value: string) => void
   bookmarksCountProjects: TBookmarksCountEachProject[] | null
 }
-const MostBookmarked = ({
-  onDetailProjectsHandler,
-  bookmarksCountProjects,
-}: MostBookmarkedProps) => {
+const MostBookmarked = ({ bookmarksCountProjects }: MostBookmarkedProps) => {
+  const router = useRouter()
+  const onDetailProjectsHandler = (projectId: string) => {
+    router.push(`/projects/${projectId}/`)
+  }
   return (
     <div>
       {" "}
@@ -51,7 +52,7 @@ const MostBookmarked = ({
             <SwiperSlide
               key={index}
               className="hover:-translate-y-6 border border-gray-300 rounded-2xl overflow-hidden cursor-pointer "
-              onClick={() => onDetailProjectsHandler(list.id as string)}
+              onClick={() => onDetailProjectsHandler(list.id)}
             >
               <div className="rounded-t-lg w-full h-[70%] group-hover:border-transparent transition duration-300 relative overflow-hidden hover:scale-120 ">
                 <Image
@@ -65,23 +66,20 @@ const MostBookmarked = ({
               <div className="absolute bottom-0 left-0 text-black h-[30%] w-full">
                 <div className="mb-2">
                   <h2 className="text-[17px] font-bold pt-2 pl-2">
-                    {list.title
-                      ? list.title.length > 23
-                        ? list.title.slice(0, 23) + "..."
-                        : list.title
-                      : ""}
+                    {list.title.length > 23
+                      ? list.title.slice(0, 23) + "..."
+                      : list.title}
                   </h2>
                   <p className="text-[12px] pt-2 pl-2">
-                    {list.content
+                    {list.content.replaceAll("<p>", "").replaceAll("</p>", "")
+                      .length > 27
                       ? list.content
                           .replaceAll("<p>", "")
-                          .replaceAll("</p>", "").length > 27
-                        ? list.content
-                            .replaceAll("<p>", "")
-                            .replaceAll("</p>", "")
-                            .substring(0, 27) + "..."
-                        : list.content
-                      : ""}
+                          .replaceAll("</p>", "")
+                          .substring(0, 27) + "..."
+                      : list.content
+                          .replaceAll("<p>", "")
+                          .replaceAll("</p>", "")}
                   </p>
                 </div>
               </div>

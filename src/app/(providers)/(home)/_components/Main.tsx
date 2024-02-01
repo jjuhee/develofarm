@@ -13,39 +13,31 @@ import MostBookmarked from "./MostBookmarked"
 import TypingNetbookImage from "./TypingNetbookImage"
 import WatchingScreenImage from "./WatchingScreenImage"
 interface TBookmarksCountEachProject {
-  id: string | null
-  title: string | null
-  content: string | null
-  picture_url: string | null
+  id: string
+  title: string
+  content: string
+  picture_url: string
 }
 ;[]
 
 export default function Main({ children }: { children: React.ReactNode }) {
   const router = useRouter()
-  const [bookmarksCountProjects, setBookmarksCountProjects] = useState<
-    TBookmarksCountEachProject[] | null
-  >([])
+  const [mostbookmarkedProjectsCounted, setMostbookmarkedProjectsCounted] =
+    useState<TBookmarksCountEachProject[] | null>([])
 
   useEffect(() => {
     const getFetchProject = async () => {
-      const bookmarksCountEachProject = await getBookmarksCountEachProject()
-      setBookmarksCountProjects(bookmarksCountEachProject)
-      console.log("북마크 gorup화 한 project", bookmarksCountEachProject)
+      const mostBookmarkedCountProject = await getBookmarksCountEachProject()
+      setMostbookmarkedProjectsCounted(mostBookmarkedCountProject)
+      console.log("북마크 gorup화 한 project", mostBookmarkedCountProject)
     }
     getFetchProject()
   }, [])
 
-  const onDetailProjectsHandler = (projectId: string) => {
-    router.push(`../../projects/${projectId}/`)
-  }
-  const bannerArray = [{ number: 1 }, { number: 2 }]
   return (
     <>
       <Mainbanner />
-      <MostBookmarked
-        bookmarksCountProjects={bookmarksCountProjects}
-        onDetailProjectsHandler={onDetailProjectsHandler}
-      />
+      <MostBookmarked bookmarksCountProjects={mostbookmarkedProjectsCounted} />
 
       <TypingNetbookImage />
       {children}

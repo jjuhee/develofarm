@@ -35,13 +35,12 @@ const SearchPage = () => {
     getAuth()
   }, [currentUser])
 
-  const [page, setPage] = useState<number>(1)
-
   const [keywords, setKeywords] = useState<keywordsInterface[]>([])
 
   const [text, setText] = useState<string>()
 
   //북마크
+  //currentUserId 와 같이 더 명확하게
   const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
     queryKey: ["bookmarks", currentUser],
     queryFn: () => getBookmarksByUserId(currentUser),
@@ -132,7 +131,7 @@ const SearchPage = () => {
     localStorage.setItem("keywords", JSON.stringify(nextKeyword))
   }
   //검색어 기록  전체 삭제
-  const onRemoveAllKeywordsHnalder = () => {
+  const onRemoveAllKeywordsHandler = () => {
     setKeywords([])
     localStorage.setItem("keywords", JSON.stringify([]))
   }
@@ -157,7 +156,7 @@ const SearchPage = () => {
         setText={setText}
       />
       <SearchedHistory
-        onRemoveAllKeywordsHnalder={onRemoveAllKeywordsHnalder}
+        onRemoveAllKeywordsHnalder={onRemoveAllKeywordsHandler}
         keywords={keywords}
         onSearchKeywordChangeHandler={onSearchKeywordChangeHandler}
         onRemoveEachKeywordHandler={onRemoveEachKeywordHandler}
