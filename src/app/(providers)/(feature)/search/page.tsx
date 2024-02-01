@@ -47,7 +47,6 @@ const SearchPage = () => {
     queryFn: () => getBookmarksByUserId(currentUser),
     enabled: !!currentUser,
   })
-
   const { data: searchedData, refetch } = useQuery({
     queryKey: ["searchedProjects", text],
     queryFn: () => {
