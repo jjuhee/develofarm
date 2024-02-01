@@ -1,10 +1,11 @@
 import useMembersStore from "@/store/members"
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
-import { getProjectByUserId } from "../api"
+import { getInvitationByReceiverId, getProjectByUserId } from "../api"
 import { useRouter } from "next/navigation"
 import MemberInvitationCard from "./MemberInvitationCard"
-import { TProjectsByUserId, TProjectsType } from "@/types/extendedType"
+import { Tables } from "@/types/supabase"
+import { TProjectsByUserId } from "@/types/extendedType"
 import useUserStore from "@/store/user"
 
 const MemberProfile = () => {
@@ -16,6 +17,17 @@ const MemberProfile = () => {
     queryKey: ["projects", currentUserId],
     queryFn: () => getProjectByUserId(currentUserId),
     enabled: !!currentUserId,
+  })
+
+  //TODO: receiverId가 같고 type이 invitation인 notifications 가져오기
+  const { data: invitationByReceiverId } = useQuery<
+    unknown,
+    Error,
+    Tables<"notifications">[]
+  >({
+    queryKey: ["invitations", selectedMember.id],
+    queryFn: () => getInvitationByReceiverId(selectedMember.id),
+    enabled: !!selectedMember.id,
   })
 
   const onClickToProfilePageHandler = () => {
@@ -51,6 +63,7 @@ const MemberProfile = () => {
         <MemberInvitationCard
           projects={projects as TProjectsByUserId[]}
           receiverId={selectedMember.id}
+          invitations={invitationByReceiverId as Tables<"notifications">[]}
         />
       </div>
       <div className="flex flex-col w-full gap-3">
