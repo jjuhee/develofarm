@@ -27,7 +27,6 @@ const SearchedProjectLists = ({
               key={item?.id}
               project={item as TProjectsType}
               bookmarks={bookmarks}
-              currentUser={currentUser}
             />
           ))}
         </ul>
