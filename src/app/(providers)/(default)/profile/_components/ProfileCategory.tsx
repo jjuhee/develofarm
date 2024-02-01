@@ -6,7 +6,7 @@ import useUserStore from "@/store/user"
 import { useProfileStore } from "@/store/profile"
 
 const ProfileCategory = () => {
-  const { userId } = useUserStore()
+  const userId = useUserStore((state) => state?.user?.id) as string
   const { id } = useProfileStore()
   const [activeLink, setActiveLink] = useState("")
 
