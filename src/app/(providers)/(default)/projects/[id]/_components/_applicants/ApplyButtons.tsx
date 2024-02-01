@@ -7,6 +7,8 @@ import {
 } from "../../api"
 import Image from "next/image"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import useUserStore from "@/store/user"
+import useAddNotiMutate from "@/hooks/useAddNotiMutate"
 
 type Props = {
   applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
@@ -14,8 +16,10 @@ type Props = {
 }
 
 const ApplyButtons = ({ applicant, applicants }: Props) => {
+  const { user } = useUserStore((state) => state)
   const queryClient = useQueryClient()
   const { openCustomModalHandler } = useCustomModal()
+  const addNotiMutate = useAddNotiMutate()
 
   /*@ param 참여 중인 멤버 인원 수 */
   const applyApplications = applicants?.filter(
@@ -71,10 +75,17 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
       ) {
         return openCustomModalHandler("모집인원이 가득찼습니다!", "alert")
       } else {
+        const newAcceptionNoti = {
+          project_id: applicant.project_id,
+          receiver_id: applicant.user_id,
+          type: "acception",
+          sender_nickname: user?.nickName as string,
+        }
         updateMemberMutate.mutate({
           projectId: applicant.project_id,
           userId: applicant.user_id,
         })
+        addNotiMutate(newAcceptionNoti)
       }
     }
 
@@ -90,7 +101,14 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
    TODO: 신청자 삭제 기능 수정 중 */
   const onRejectButtonHandler = () => {
     const handler = () => {
+      const newRejectionNoti = {
+        project_id: applicant.project_id,
+        receiver_id: applicant.user_id,
+        type: "rejection",
+        sender_nickname: user?.nickName as string,
+      }
       removeMemberMutate.mutate(applicant.id)
+      addNotiMutate(newRejectionNoti)
     }
 
     openCustomModalHandler("거절하시겠습니까?", "confirm", handler)

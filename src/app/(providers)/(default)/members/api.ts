@@ -1,4 +1,5 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
+import { Tables, TablesInsert, TablesUpdate } from "@/types/supabase"
 
 export const getUsers = async ({
   pageParam,
@@ -59,18 +60,13 @@ export const getProjectByUserId = async (userId: string) => {
   return data
 }
 
-interface invitationValue {
-  project_id: string
-  receiver_id: string
-  type: string
-  sender_nickname: string
-}
-
 //TODO: 멤버 초대
-export const inviteUser = async (invitation: invitationValue) => {
+export const addNotification = async (
+  notification: TablesInsert<"notifications">,
+) => {
   const { data, error } = await supabaseForClient
     .from("notifications")
-    .insert([{ ...invitation }])
+    .insert([{ ...notification }])
     .select("*")
 
   if (error) return console.log(error.message)

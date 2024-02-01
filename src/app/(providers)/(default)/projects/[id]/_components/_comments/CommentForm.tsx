@@ -4,17 +4,20 @@ import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import { setComment } from "../../api"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import useAddNotiMutate from "@/hooks/useAddNotiMutate"
 
 type Props = {
   projectId: string
+  projectUserId: string
 }
 
-const CommentForm = ({ projectId }: Props) => {
+const CommentForm = ({ projectId, projectUserId }: Props) => {
   const [content, setContent] = useState<string>("")
 
   const queryClient = useQueryClient()
   const { user } = useUserStore((state) => state)
   const { openCustomModalHandler } = useCustomModal()
+  const addNotiMutate = useAddNotiMutate()
 
   /**
    *@ mutation 댓글 등록 후 해당 게시물Id로 댓글 최신 목록 불러오기 */
@@ -52,6 +55,14 @@ const CommentForm = ({ projectId }: Props) => {
     }
 
     AddCommentMutate.mutate(newComment)
+
+    const newCommentNoti = {
+      project_id: projectId,
+      receiver_id: projectUserId,
+      type: "comment",
+      sender_nickname: user?.nickName as string,
+    }
+    addNotiMutate(newCommentNoti)
   }
 
   return (

@@ -70,7 +70,7 @@ const Comments = ({ project }: Props) => {
           )
         })}
         <Spacer y={30} />
-        <CommentForm projectId={project.id} />
+        <CommentForm projectId={project.id} projectUserId={project.user_id} />
       </section>
     </>
   )
