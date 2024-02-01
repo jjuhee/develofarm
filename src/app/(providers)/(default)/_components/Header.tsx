@@ -13,14 +13,13 @@ import { GoPerson } from "react-icons/go"
 import { LuFolder } from "react-icons/lu"
 import { IoLogOutOutline } from "react-icons/io5"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
+import { usePathname, useRouter } from "next/navigation"
 import useUrlStore from "@/store/url"
-import { usePathname } from "next/navigation"
 import Notifications from "./Notifications"
 
 const Header = () => {
   const [showTooltip, setShowTooltip] = useState(false)
   const [isImageActive, setIsImageActive] = useState<boolean>(false)
-  const [isAlarmData, setIsAlarmData] = useState<{ [key: string]: any }>()
   const [isAuthIntialized, setIsAuthIntialized] = useState<boolean>(false)
   const { setUrl } = useUrlStore()
   const { user, setUser } = useUserStore((state) => state)
@@ -29,7 +28,7 @@ const Header = () => {
     (state) => state,
   )
   const dropdownRef = useRef<HTMLInputElement>(null)
-  const client = supabaseForClient
+  const router = useRouter()
   const pathname = usePathname()
 
   const onClickMemberCategoryHandler = () => {
@@ -51,29 +50,20 @@ const Header = () => {
 
   //로그아웃 함수
   const onLogoutHandler = () => {
-    //-- 이 부분은 주석이 있어야만 정상적으로 수행되는 코드 입니다.
-    // localStorage.removeItem('keywords');
-
     supabaseForClient.auth.signOut()
+
+    // 내프로젝트나 내프로필인 경우 홈화면으로 돌아가기
+    if (
+      pathname === `/profile/${user?.id}` ||
+      pathname === `/profile/${user?.id}/profileProject`
+    ) {
+      router.push("/")
+    }
   }
 
-  //public schema의 projects 테이블을 구독, unmount시 구독취소
-  useEffect(() => {
-    const channelA = client
-      .channel("schema-db-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "projects",
-        },
-        (payload) => setIsAlarmData(payload),
-      )
-      .subscribe()
-    return () => {
-      channelA.unsubscribe()
-    }
+  useOnClickOutSide({
+    ref: dropdownRef,
+    handler: () => setIsImageActive(false),
   })
 
   // 로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
@@ -105,10 +95,9 @@ const Header = () => {
     }
   }, [])
 
-  useOnClickOutSide({
-    ref: dropdownRef,
-    handler: () => setIsImageActive(false),
-  })
+  useEffect(() => {
+    setUrl(pathname)
+  }, [pathname])
 
   //END
   return (
@@ -158,7 +147,7 @@ const Header = () => {
                   <Image
                     className="rounded-full"
                     alt="이미지"
-                    src={user.avatarUrl ? user.avatarUrl : ""}
+                    src={user?.avatarUrl ? user?.avatarUrl : ""}
                     width={36}
                     height={36}
                   />

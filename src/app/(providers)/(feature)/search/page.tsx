@@ -1,15 +1,14 @@
 "use client"
 import React, { useEffect, useState } from "react"
-import { FaSearch } from "react-icons/fa"
 import { getSearchedProject } from "../../(default)/projects/api"
-import { useQuery } from "@tanstack/react-query"
-import ProjectCard from "../../(default)/projects/_components/ProjectCard"
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { getBookmarksByUserId } from "../../(default)/projects/api"
 import { Tables } from "@/types/supabase"
 import { supabaseForClient } from "@/supabase/supabase.client"
-import { TProjectsType } from "@/types/extendedType"
 import Spacer from "@/components/ui/Spacer"
-import { HiOutlineXMark } from "react-icons/hi2"
+import SearchedProjectLists from "./_components/SearchedProjectLists"
+import SearchInput from "./_components/SearchInput"
+import SearchedHistory from "./_components/SearchedHistory"
 
 //해당 이용자의 localstorage 가져오기
 interface keywordsInterface {
@@ -36,36 +35,17 @@ const SearchPage = () => {
     getAuth()
   }, [currentUser])
 
-  const initialCategoryData: TCategoryData = {
-    startDate: "",
-    endDate: "",
-    isOffline: null,
-    region: "",
-    numberOfMembers: 0,
-    positions: [],
-    techs: [],
-  }
-
-  const [categoryData, setCategoryData] =
-    useState<TCategoryData>(initialCategoryData)
-
-  const [page, setPage] = useState<number>(1)
-
-  const [recruitStatus, setRecruitStatus] = useState(false)
-
-  const [order, setOrder] = useState(1)
-
   const [keywords, setKeywords] = useState<keywordsInterface[]>([])
 
   const [text, setText] = useState<string>()
 
   //북마크
+  //currentUserId 와 같이 더 명확하게
   const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
     queryKey: ["bookmarks", currentUser],
     queryFn: () => getBookmarksByUserId(currentUser),
     enabled: !!currentUser,
   })
-
   const { data: searchedData, refetch } = useQuery({
     queryKey: ["searchedProjects", text],
     queryFn: () => {
@@ -75,14 +55,10 @@ const SearchPage = () => {
     },
     enabled: false,
   })
+  // const {data} =useInfiniteQuery({
 
-  //프로젝트 기술 스택
-  /** 프로젝트 기술 스택 가져오기 */
-  // const { data: techs } = useQuery({
-  //   queryKey: ["techs", projectId],
-  //   queryFn: () => getProjectTech(projectId),
-  //   enabled: !!projectId,
   // })
+  console.log("searchedData", searchedData)
 
   // ------PageCard--------------
 
@@ -113,6 +89,7 @@ const SearchPage = () => {
 
   //검색버튼 클릭하여 데이터(아이디,num,검색어) 추가
   const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    console.log("엔터시 여기로 들어오기", text)
     event.preventDefault()
 
     const searchInput: string = event.currentTarget.search.value
@@ -154,7 +131,7 @@ const SearchPage = () => {
     localStorage.setItem("keywords", JSON.stringify(nextKeyword))
   }
   //검색어 기록  전체 삭제
-  const onRemoveAllKeywordsHnalder = () => {
+  const onRemoveAllKeywordsHandler = () => {
     setKeywords([])
     localStorage.setItem("keywords", JSON.stringify([]))
   }
@@ -172,102 +149,26 @@ const SearchPage = () => {
   console.log("data", searchedData)
   return (
     <div className="">
-      <section className="flex justify-center align-center mt-40">
-        <form onSubmit={onSubmitHandler} className="relative">
-          <div className="relative flex items-center">
-            <button type="submit" className="top-3">
-              <FaSearch
-                size={20}
-                className="absolute left-3 top-4 text-gray-500 ml-3"
-              />
-            </button>
-            <input
-              className="p-3 pl-[60px] rounded-3xl border border-gray w-[800px] focus:border-transparent focus:ring-2 focus:ring-green-300 transition-all duration-300"
-              type="text"
-              name="search"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="검색어를 입력해주세요"
-            ></input>
-            {text ? (
-              <span
-                onClick={onRemoveTextHandler}
-                className="absolute right-4 hover:cursor-pointer"
-              >
-                <HiOutlineXMark />
-              </span>
-            ) : (
-              <></>
-            )}
-          </div>
-        </form>
-      </section>
-      <section>
-        <div className="flex justify-center items-center">
-          <div className="flex justify-between mt-10 w-[500px]">
-            <h2 className="font-bold text-gray-700">최근 검색어</h2>
-            <button
-              className="hover:shadow-md hover:border-b rounded-xl "
-              onClick={onRemoveAllKeywordsHnalder}
-            >
-              전체삭제
-            </button>
-          </div>
-        </div>
-        {/* 로컬스토리지에서도 제한을 둘것? */}
-        <div className="flex justify-center mt-5 ">
-          <ul className=" flex flex-row w-[50rem] justify-center items-center mt-2 gap-3">
-            {keywords?.length ? (
-              keywords.slice(0, 7).map((keyword) => (
-                <div
-                  className="bg-gray-200 rounded-3xl p-1 ml-2 relative hover:cursor-pointer "
-                  onClick={() =>
-                    onSearchKeywordChangeHandler(keyword.text as string)
-                  }
-                  key={keyword.text}
-                >
-                  <div className="bg-gray-200 rounded-3xl p-1 pr-2 ml-2 relative flex gap-1 items-center">
-                    <span className="flex-grow whitespace-nowrap overflow-hidden">
-                      {keyword.text}
-                    </span>
-                    <button
-                      onClick={() => onRemoveEachKeywordHandler(keyword.num)}
-                    >
-                      <span>
-                        <HiOutlineXMark />
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <>당신의 꿈을 펼쳐보세요!</>
-            )}
-          </ul>
-        </div>
-      </section>
+      <SearchInput
+        onSubmitHandler={onSubmitHandler}
+        text={text}
+        onRemoveTextHandler={onRemoveTextHandler}
+        setText={setText}
+      />
+      <SearchedHistory
+        onRemoveAllKeywordsHnalder={onRemoveAllKeywordsHandler}
+        keywords={keywords}
+        onSearchKeywordChangeHandler={onSearchKeywordChangeHandler}
+        onRemoveEachKeywordHandler={onRemoveEachKeywordHandler}
+      />
 
       <Spacer y={70} />
       {/* -------프로젝트 리스트 들어오기 ---------- */}
-      {(searchedData?.length as number) > 0 ? (
-        <ul className="flex flex-col gap-8">
-          {searchedData?.map((item: Tables<"projects">) => {
-            return (
-              <ProjectCard
-                key={item?.id}
-                project={item as TProjectsType}
-                bookmarks={bookmarks as Tables<"bookmarks">[]}
-                currentUser={currentUser}
-              />
-            )
-          })}
-        </ul>
-      ) : (
-        <div className="mt-5">
-          <p>검색 결과가 없습니다.</p>
-        </div>
-        // <EmptyState />
-      )}
+      <SearchedProjectLists
+        searchedProjects={searchedData as Tables<"projects">[]}
+        bookmarks={bookmarks as Tables<"bookmarks">[]}
+        currentUser={currentUser}
+      />
     </div>
   )
 }
