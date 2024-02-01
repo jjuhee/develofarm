@@ -147,6 +147,7 @@ const ProfileAcademyForm = ({
                         }
                         className="w-[250px] text-xl font-bold p-1"
                         placeholder="활동명"
+                        maxLength={10}
                       />
                       <button
                         type="button"
@@ -169,6 +170,7 @@ const ProfileAcademyForm = ({
                         }
                         className="p-1"
                         placeholder="활동내용"
+                        maxLength={10}
                       />
                     </div>
                   </div>
@@ -226,6 +228,7 @@ const ProfileAcademyForm = ({
                     }
                     className="w-[250px] text-xl font-bold p-1"
                     placeholder="활동명"
+                    maxLength={10}
                   />
                   <button
                     type="button"
@@ -248,6 +251,7 @@ const ProfileAcademyForm = ({
                     }
                     className="p-1"
                     placeholder="활동내용"
+                    maxLength={10}
                   />
                 </div>
               </div>

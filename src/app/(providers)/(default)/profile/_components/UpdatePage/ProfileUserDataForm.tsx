@@ -13,6 +13,7 @@ import { TbPointFilled } from "react-icons/tb"
 import { HiOutlineXMark } from "react-icons/hi2"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import useCustomModalStore from "@/store/customModal"
+import Checkbox from "@/components/ui/Checkbox"
 
 const ProfileUserDataForm = ({ userId }: { userId: string }) => {
   // 유저 정보 및 데이터 상태 관리
@@ -300,19 +301,17 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
                                     key={tech.id}
                                     className="py-1 px-4 flex items-center text-black"
                                   >
-                                    <input
-                                      type="checkbox"
-                                      id={tech.techs?.id}
-                                      checked={selectedTechs.some(
+                                    <Checkbox
+                                      id={tech.techs?.id as string}
+                                      value={selectedTechs.some(
                                         (id) => id === tech.techs?.id,
                                       )}
-                                      onChange={(e) =>
+                                      handler={(e) =>
                                         handleTechCheckboxChange(
                                           e,
                                           tech.techs?.id as string,
                                         )
                                       }
-                                      className="cursor-pointer accent-[#000000] h-[16px] w-[16px] rounded-[4px]"
                                     />
                                     <label
                                       htmlFor={tech.techs?.id}

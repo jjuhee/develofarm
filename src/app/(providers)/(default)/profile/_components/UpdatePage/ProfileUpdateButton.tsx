@@ -21,6 +21,7 @@ import ProfileSocialForm from "./ProfileSocialForm"
 import { Tables } from "@/types/supabase"
 
 const ProfileUpdateButton = ({ userId }: { userId: string }) => {
+  // 여러 유형의 데이터를 관리하는 state 변수들을 선언
   const [updatedCareerData, setUpdatedCareerData] = useState<
     Tables<"careers">[]
   >([])
@@ -41,14 +42,17 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
   const [newSpecData, setNewSpecData] = useState<Tables<"specs">[]>([])
   const [newLinkData, setNewLinkData] = useState<Tables<"social_links">[]>([])
 
+  // 업데이트 버튼 클릭 시 실행되는 함수
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    // 각 유형의 데이터를 업데이트하는 API 호출
     const careersResult = await updateCareers(userId, updatedCareerData)
     const educationResult = await updateEducation(userId, updatedEducationData)
     const academyResult = await updateAcademies(userId, updatedAcademyData)
     const specResult = await updateSpecs(userId, updatedSpecData)
 
+    // 새로운 데이터를 추가하는 API 호출
     const addCareerPromises = newCareerData.map((careerData) =>
       addCareer(userId, careerData),
     )
@@ -65,6 +69,7 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
       addSocialLinks(userId, linkData),
     )
 
+    // 모든 Promise를 기다리고 결과를 확인하여 상태 초기화 또는 오류 처리
     const addCareerResults = await Promise.all(addCareerPromises)
     const addEducationrResults = await Promise.all(addEducationPromises)
     const addAcademyResults = await Promise.all(addAcademyPromises)
@@ -82,6 +87,7 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
       addSpecResults.every(Boolean) &&
       addLinkResults
     ) {
+      // 모든 업데이트 및 추가가 성공하면 상태 초기화
       setUpdatedCareerData([])
       setUpdatedEducationData([])
       setUpdatedAcademyData([])
@@ -92,6 +98,7 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
       setNewSpecData([])
       setNewLinkData([])
     } else {
+      // 하나라도 실패하면 에러 메시지 출력
       console.error("Update failed")
     }
   }
