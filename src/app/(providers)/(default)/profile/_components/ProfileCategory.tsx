@@ -8,35 +8,24 @@ import { useProfileStore } from "@/store/profile"
 const ProfileCategory = () => {
   const userId = useUserStore((state) => state?.user?.id) as string
   const { id } = useProfileStore()
-  const [activeLink, setActiveLink] = useState("")
+  const [activeLink, setActiveLink] = useState(`/profile/${userId}`)
 
-  useEffect(() => {
-    // 컴포넌트가 마운트될 때 로컬 스토리지에서 활성 링크를 가져옵니다.
-    const storedActiveLink = localStorage.getItem("activeLink")
-
-    // 로컬 스토리지에 활성 링크가 설정되어 있지 않으면 기본 활성 링크를 설정합니다.
-    if (!storedActiveLink) {
-      const defaultLink = `/profile/${userId}`
-      setActiveLink(defaultLink)
-      localStorage.setItem("activeLink", defaultLink)
-    } else {
-      // 로컬 스토리지에서 활성 링크가 이미 설정되어 있으면 그 값을 사용합니다.
-      setActiveLink(storedActiveLink)
-    }
-  }, [userId])
-
-  // 링크 클릭 시 호출되는 함수로, 활성 링크를 설정하고 로컬 스토리지에 저장합니다.
+  // 클릭된 링크를 기억하고 활성화 상태를 업데이트하는 함수
   const handleLinkClick = (link: string): void => {
     setActiveLink(link)
-    localStorage.setItem("activeLink", link)
   }
 
-  // 사용자가 자신의 프로필을 보고 있지 않은 경우 컴포넌트를 렌더링하지 않습니다.
+  useEffect(() => {
+    // 페이지가 로드될 때 한 번 실행되는 효과
+    // 현재 경로를 기반으로 초기 activeLink 값을 설정
+    setActiveLink(window.location.pathname)
+  }, []) // 컴포넌트가 마운트될 때 한 번만 실행되도록 설정
+
   if (userId !== id) {
     return null
   }
 
-  // 링크를 렌더링하는 함수로, 현재 활성 링크에 따라 스타일이 변경됩니다.
+  // 링크를 렌더링하는 함수
   const renderLink = (to: string, text: string) => (
     <Link href={to} key={to}>
       <div
