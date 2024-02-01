@@ -9,6 +9,7 @@ import { getComments, removeComment, setComment } from "../../api"
 import ReComments from "./ReComments"
 import CommentRemoveButton from "./CommentRemoveButton"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import useAddNotiMutate from "@/hooks/useAddNotiMutate"
 
 type Props = {
   comment: Exclude<Awaited<ReturnType<typeof getComments>>, null>[number]
@@ -17,9 +18,10 @@ type Props = {
 const ReCommentForm = ({ comment }: Props) => {
   const [showForm, setShowForm] = useState<boolean>(false)
   const [content, setContent] = useState<string>("")
-  const { userId } = useUserStore()
+  const { user } = useUserStore((state) => state)
   const queryClient = useQueryClient()
   const { openCustomModalHandler } = useCustomModal()
+  const addNotiMutate = useAddNotiMutate()
 
   /**
    *@ funtion 대댓글 작성 폼 토글 기능 */
@@ -48,7 +50,7 @@ const ReCommentForm = ({ comment }: Props) => {
   const onSubmitHandler: React.FormEventHandler = (e) => {
     e.preventDefault()
 
-    if (!userId)
+    if (!user)
       return openCustomModalHandler("로그인 후에 작성 가능 합니다!", "alert")
 
     if (content.trim() === "") {
@@ -59,11 +61,20 @@ const ReCommentForm = ({ comment }: Props) => {
     const newComment: TablesInsert<"comments"> = {
       project_id: comment.project_id,
       comment_id: comment.id,
-      user_id: userId,
+      user_id: user.id,
       content,
     }
 
     AddReCommentMutate.mutate(newComment)
+
+    const newReCommentNoti = {
+      project_id: comment.project_id,
+      receiver_id: comment.user_id,
+      type: "recomment",
+      sender_nickname: user?.nickName as string,
+    }
+
+    addNotiMutate(newReCommentNoti)
   }
 
   /**

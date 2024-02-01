@@ -71,6 +71,8 @@ export async function getProjects({
 
   const { data, error } = await query
 
+  if (error) return console.log(error.message)
+
   /** 북마크 수를 프로젝트에 추가 
       북마크 수 정보가 있다면 업데이트, 없다면 기존 값 유지 */
   const projectsWithBookmarkCount = data?.map((project) => {
@@ -184,7 +186,7 @@ export async function removeBookmarks({
   currentUser,
 }: {
   projectId: string
-  currentUser?: string
+  currentUser?: string | undefined
 }) {
   const { error } = await supabaseForClient
     .from("bookmarks")

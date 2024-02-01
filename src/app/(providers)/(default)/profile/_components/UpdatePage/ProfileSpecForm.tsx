@@ -130,6 +130,7 @@ const ProfileSpecForm = ({
                       }
                       className="w-[250px] text-xl font-bold p-1"
                       placeholder="활동명"
+                      maxLength={10}
                     />
 
                     <button
@@ -175,6 +176,7 @@ const ProfileSpecForm = ({
                   }
                   className="w-[250px] text-xl font-bold p-1"
                   placeholder="활동명"
+                  maxLength={10}
                 />
                 <button
                   type="button"
