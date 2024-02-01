@@ -40,7 +40,7 @@ const MemberInvitationCard = ({ projects, receiverId }: Props) => {
       project_id: project.id,
       receiver_id: receiverId,
       type: "invitation",
-      sender_nickname: user.nickName,
+      sender_nickname: user?.nickName as string,
     }
 
     inviteMutate(newInvitation)
