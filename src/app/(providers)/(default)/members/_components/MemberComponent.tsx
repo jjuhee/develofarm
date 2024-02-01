@@ -18,8 +18,6 @@ import MemberCard from "./MemberCard"
 import MemberProfile from "./MemberProfile"
 
 const MembersComponent = () => {
-  const userId = useUserStore((state) => state.userId)
-
   const category = useCategoryStore((state) => state.category)
 
   const { viewMemberModal, setViewMemberModal, memberPosition } =
@@ -110,11 +108,7 @@ const MembersComponent = () => {
               {(infinityUsers?.length as number) > 0 ? (
                 <>
                   {infinityUsers?.map((user: UsersType, index) => (
-                    <MemberCard
-                      key={user?.id + index}
-                      user={user}
-                      currentUserId={userId}
-                    />
+                    <MemberCard key={user?.id + index} user={user} />
                   ))}
                 </>
               ) : (
@@ -135,7 +129,7 @@ const MembersComponent = () => {
             className="flex flex-col bg-white w-[732px] h-auto py-10 px-[50px] gap-[30px] rounded-3xl"
             ref={modalRef}
           >
-            <MemberProfile currentUserId={userId} />
+            <MemberProfile />
           </div>
         </div>
       )}
