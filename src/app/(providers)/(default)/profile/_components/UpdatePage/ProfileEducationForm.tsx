@@ -6,6 +6,7 @@ import { deleteEducation, getEducation } from "../../api"
 import { Tables } from "@/types/supabase"
 import { GoPlus } from "react-icons/go"
 import { HiOutlineXMark } from "react-icons/hi2"
+import Checkbox from "@/components/ui/Checkbox"
 
 const ProfileEducationForm = ({
   userId,
@@ -140,20 +141,13 @@ const ProfileEducationForm = ({
                         { id: "onLeave", label: "휴학", value: "4" },
                       ].map(({ id, label, value }) => (
                         <div key={id}>
-                          <input
-                            type="checkbox"
+                          <Checkbox
                             id={`eduCheckbox_${index}_${id}`}
                             name="graduated"
-                            value={value}
-                            checked={edu.graduated === value}
-                            onChange={(e) =>
-                              handleInputChange(
-                                index,
-                                "graduated",
-                                e.target.value,
-                              )
+                            value={edu.graduated === value}
+                            handler={() =>
+                              handleInputChange(index, "graduated", value)
                             }
-                            className="mr-[5px] accent-[#AAAAAA] cursor-pointer"
                           />
                           <label
                             htmlFor={`eduCheckbox_${index}_${id}`}
@@ -180,6 +174,7 @@ const ProfileEducationForm = ({
                         }
                         className="w-[250px] text-xl font-bold p-1"
                         placeholder="학교명"
+                        maxLength={10}
                       />
                       <button
                         type="button"
@@ -202,6 +197,7 @@ const ProfileEducationForm = ({
                         }
                         className="p-1"
                         placeholder="전공 및 학위"
+                        maxLength={10}
                       />
                     </div>
                   </div>
@@ -253,22 +249,17 @@ const ProfileEducationForm = ({
                     { id: "onLeave", label: "휴학", value: "4" },
                   ].map(({ id, label, value }) => (
                     <div key={id}>
-                      <input
-                        type="checkbox"
+                      <Checkbox
                         id={`newEduCheckbox_${formIndex}_${id}`}
                         name="graduated"
-                        value={value}
-                        checked={
-                          newEducationData[formIndex]?.graduated === value
-                        }
-                        onChange={(e) =>
+                        value={newEducationData[formIndex]?.graduated === value}
+                        handler={() =>
                           handleNewEducationInputChange(
                             formIndex,
                             "graduated",
-                            e.target.value,
+                            value,
                           )
                         }
-                        className="mr-[5px] accent-[#AAAAAA] cursor-pointer"
                       />
                       <label
                         htmlFor={`newEduCheckbox_${formIndex}_${id}`}
@@ -294,6 +285,7 @@ const ProfileEducationForm = ({
                   }
                   className="w-[250px] text-xl font-bold p-1"
                   placeholder="학교명"
+                  maxLength={10}
                 />
                 <button
                   type="button"
@@ -315,6 +307,7 @@ const ProfileEducationForm = ({
                     }
                     className="p-1"
                     placeholder="전공 및 학위"
+                    maxLength={10}
                   />
                 </div>
               </div>
