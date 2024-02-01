@@ -112,7 +112,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     }
     const newReCommentNoti = {
       project_id: project.id,
-      receiver_id: user.id,
+      receiver_id: project.user_id,
       type: "application",
       sender_nickname: user?.nickName as string,
     }

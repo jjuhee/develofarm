@@ -69,7 +69,7 @@ const ReCommentForm = ({ comment }: Props) => {
 
     const newReCommentNoti = {
       project_id: comment.project_id,
-      receiver_id: user.id,
+      receiver_id: comment.user_id,
       type: "recomment",
       sender_nickname: user?.nickName as string,
     }
