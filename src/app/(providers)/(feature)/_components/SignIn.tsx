@@ -3,12 +3,34 @@
 import { useCustomModal } from "@/hooks/useCustomModal"
 import useUrlStore from "@/store/url"
 import { supabaseForClient } from "@/supabase/supabase.client"
+import { Provider, SignInWithOAuthCredentials } from "@supabase/supabase-js"
 import Image from "next/image"
 import React from "react"
 
 const SignIn = () => {
   const url = useUrlStore((state) => state.url)
   const { openCustomModalHandler } = useCustomModal()
+
+  // TODO: 함수 하나로 만들어서 재사용 가능할 듯
+  // const getSocialLogin = async ({ provider, options }: SignInWithOAuthCredentials) => {
+  //   try {
+  //     await supabaseForClient.auth.signInWithOAuth({
+  //       provider,
+  //       options,
+  //     })
+  //   } catch (error) {
+  //     openCustomModalHandler(`${provider}AuthFailed: ${error}`, "alert")
+  //   }
+  // }
+
+  // getSocialLogin("google", {
+  //   queryParams: {
+  //     access_type: "offline",
+  //     prompt: "consent",
+  //   },
+  //   // TODO: process.env로 하면 유동적으로 변경할 수 있을 것 같습니다.
+  //   redirectTo: `http://localhost:3000${url}`,
+  // })
 
   const getGoogleSoicalLogin = async () => {
     try {
@@ -19,6 +41,7 @@ const SignIn = () => {
             access_type: "offline",
             prompt: "consent",
           },
+          // TODO: process.env로 하면 유동적으로 변경할 수 있을 것 같습니다.
           redirectTo: `http://localhost:3000${url}`,
         },
       })

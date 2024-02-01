@@ -33,9 +33,11 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
     positions: [],
     techs: [],
   }
+  // TODO: useState 하나로 만들면 힘들까요?
   const [title, setTitle] = useState<string>("")
   const [content, setContent] = useState<string>("")
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  // TODO: 이름이 왜 카테고리일까요?
   const [categoryData, setCategoryData] =
     useState<TCategoryData>(initialCategoryData)
 
@@ -46,6 +48,8 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
     mutationFn: setProject,
     onSuccess: (insertedData) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
+
+      // TODO: https://tkdodo.eu/blog/mastering-mutations-in-react-query#some-callbacks-might-not-fire
       customModal(isEditMode ? "수정 완료~!" : "게시물 작성 완료~!", "alert")
       resetState()
       /* 게시물의 상세페이지로 이동, DB 문제로 게시물이 작성되지 않았으면 프로젝트 페이지로 이동 */

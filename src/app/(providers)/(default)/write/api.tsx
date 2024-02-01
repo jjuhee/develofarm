@@ -10,7 +10,22 @@ interface TParam {
   techs: TTechs[]
   file: File | null
 }
+
+// const upsertProject = async (project) => {
+//   const { data: projectData, error: projectError } = await supabaseForClient
+//     .from("projects")
+//     .upsert(project)
+//     .select()
+
+//   if (projectError) {
+//     console.log("error", projectError)
+//     throw projectError
+//   }
+// }
+
+// TODO: supabase api들을 각각의 함수로 만들어 이해하기 쉽게 만들어봅시다.
 export async function setProject({ isEditMode, project, techs, file }: TParam) {
+  // await upsertProject(project)
   const { data: projectData, error: projectError } = await supabaseForClient
     .from("projects")
     .upsert(project)
