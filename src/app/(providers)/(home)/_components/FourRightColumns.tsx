@@ -22,7 +22,6 @@ const FourRightColumns = ({
             <div
               key={index}
               className="hover hover:cursor-pointer relative overflow-hidden hover:transform hover:scale-90 transition-transform duration-300 border border-#ccc col-span-1 row-span-2 rounded-xl shadow-lg"
-              style={{}}
             >
               <div
                 className="w-full h-full flex flex-col"

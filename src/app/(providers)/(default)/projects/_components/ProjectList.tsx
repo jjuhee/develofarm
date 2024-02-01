@@ -14,6 +14,7 @@ import useProjectsStore from "@/store/projects"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import Checkbox from "@/components/ui/Checkbox"
+import useBookmarks from "@/hooks/useBookmarks"
 
 interface Props {
   option?: TProjectsOptions
@@ -61,12 +62,12 @@ const ProjectList = ({ option }: Props) => {
   })
 
   /** 현재 유저 북마크 데이터 가져오기 */
-  const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
-    queryKey: ["bookmarks", userId],
-    queryFn: () => getBookmarksByUserId(userId as string),
-    enabled: !!userId,
-  })
-
+  // const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
+  //   queryKey: ["bookmarks", userId],
+  //   queryFn: () => getBookmarksByUserId(userId as string),
+  //   enabled: !!userId,
+  // })
+  const bookmarks = useBookmarks(userId)
   /** 프로젝트 리스트 정렬 */
   const sortedProjects = useMemo(() => {
     const draft = projects ? [...projects] : []
