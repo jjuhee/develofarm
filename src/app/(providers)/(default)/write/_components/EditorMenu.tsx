@@ -15,10 +15,20 @@ interface Props {
   editor: Editor
 }
 
+// type Level = 1 | 2 | 3 | 4 | 5 | 6;
+
+
 const EditorMenu = ({ editor }: Props) => {
   const dropdownRef = useRef<HTMLInputElement>(null)
   const [isActive, setIsActive] = useState(false)
   const [selectedValue, setSelectedValue] = useState<string | null>("제목 1")
+
+  // TODO: 함수 하나로도 만들 수 있을 것 같습니다.
+  // const setHeadingFontHandler = (value: string, level: Level) => {
+  //   setSelectedValue(value);
+  //   editor.chain().focus().toggleHeading({ level }).run()
+  //   setIsActive(false)
+  // }
 
   const setH1FontHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     setSelectedValue(e.currentTarget.textContent)
@@ -67,9 +77,8 @@ const EditorMenu = ({ editor }: Props) => {
           {isActive ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col mt-[3px] rounded-lg border-[0.5px] *:w-[81px] *:h-[29px] *:leading-[29px] *:px-[7px] *:bg-white text-[14px] z-10 ${
-            isActive ? "visible" : "invisible"
-          }`}
+          className={`absolute flex flex-col mt-[3px] rounded-lg border-[0.5px] *:w-[81px] *:h-[29px] *:leading-[29px] *:px-[7px] *:bg-white text-[14px] z-10 ${isActive ? "visible" : "invisible"
+            }`}
         >
           <button
             type="button"
@@ -106,33 +115,29 @@ const EditorMenu = ({ editor }: Props) => {
           size={33}
           cursor={"pointer"}
           onClick={() => editor.chain().focus().toggleBold().run()}
-          className={`edit-menu ${
-            editor.isActive("bold") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
-          }`}
+          className={`edit-menu ${editor.isActive("bold") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
+            }`}
         />
         <BsTypeItalic
           size={33}
           cursor={"pointer"}
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={`edit-menu ${
-            editor.isActive("italic") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
-          }`}
+          className={`edit-menu ${editor.isActive("italic") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
+            }`}
         />
         <BsTypeStrikethrough
           size={33}
           cursor={"pointer"}
           onClick={() => editor.chain().focus().toggleStrike().run()}
-          className={`edit-menu ${
-            editor.isActive("strike") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
-          }`}
+          className={`edit-menu ${editor.isActive("strike") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
+            }`}
         />
         <BsTypeUnderline
           size={33}
           cursor={"pointer"}
           onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className={`edit-menu ${
-            editor.isActive("underline") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
-          }`}
+          className={`edit-menu ${editor.isActive("underline") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
+            }`}
         />
         {/* TODO: (jhee) 글자 색상 추가 예정, 참고 용!! */}
         {/* <MdFormatColorText
@@ -149,31 +154,28 @@ const EditorMenu = ({ editor }: Props) => {
           size={33}
           cursor={"pointer"}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={`edit-menu ${
-            editor.isActive("bulletList")
-              ? "bg-[#e6e6e6] border-[#e6e6e6]"
-              : " "
-          }`}
+          className={`edit-menu ${editor.isActive("bulletList")
+            ? "bg-[#e6e6e6] border-[#e6e6e6]"
+            : " "
+            }`}
         />
         <BsListOl
           size={33}
           cursor={"pointer"}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={`edit-menu ${
-            editor.isActive("orderedList")
-              ? "bg-[#e6e6e6] border-[#e6e6e6]"
-              : " "
-          }`}
+          className={`edit-menu ${editor.isActive("orderedList")
+            ? "bg-[#e6e6e6] border-[#e6e6e6]"
+            : " "
+            }`}
         />
         <RiDoubleQuotesL
           size={33}
           cursor={"pointer"}
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={`edit-menu ${
-            editor.isActive("blockquote")
-              ? "bg-[#e6e6e6] border-[#e6e6e6]"
-              : " "
-          }`}
+          className={`edit-menu ${editor.isActive("blockquote")
+            ? "bg-[#e6e6e6] border-[#e6e6e6]"
+            : " "
+            }`}
         />
         <BsDash
           size={33}
@@ -185,9 +187,8 @@ const EditorMenu = ({ editor }: Props) => {
           size={33}
           cursor={"pointer"}
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          className={`edit-menu ${
-            editor.isActive("codeBlock") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
-          }`}
+          className={`edit-menu ${editor.isActive("codeBlock") ? "bg-[#e6e6e6] border-[#e6e6e6]" : " "
+            }`}
         />
       </div>
     </div>
