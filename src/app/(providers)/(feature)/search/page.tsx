@@ -257,7 +257,6 @@ const SearchPage = () => {
                 key={item?.id}
                 project={item as TProjectsType}
                 bookmarks={bookmarks as Tables<"bookmarks">[]}
-                currentUser={currentUser}
               />
             )
           })}

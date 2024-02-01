@@ -4,7 +4,6 @@ import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import { setComment } from "../../api"
 import { useCustomModal } from "@/hooks/useCustomModal"
-import Button from "@/components/ui/Button"
 
 type Props = {
   projectId: string
@@ -14,7 +13,7 @@ const CommentForm = ({ projectId }: Props) => {
   const [content, setContent] = useState<string>("")
 
   const queryClient = useQueryClient()
-  const { userId } = useUserStore()
+  const { user } = useUserStore((state) => state)
   const { openCustomModalHandler } = useCustomModal()
 
   /**
@@ -38,7 +37,7 @@ const CommentForm = ({ projectId }: Props) => {
   const onSubmitHandler: React.FormEventHandler = (e) => {
     e.preventDefault()
 
-    if (!userId)
+    if (!user)
       return openCustomModalHandler("로그인 후에 작성 가능 합니다!", "alert")
 
     if (content.trim() === "") {
@@ -48,7 +47,7 @@ const CommentForm = ({ projectId }: Props) => {
 
     const newComment: TablesInsert<"comments"> = {
       project_id: projectId,
-      user_id: userId,
+      user_id: user.id,
       content,
     }
 

@@ -18,7 +18,7 @@ import { UsersType } from "@/types/extendedType"
 import Image from "next/image"
 
 const MembersPage = () => {
-  const userId = useUserStore((state) => state.userId)
+  const userId = useUserStore((state) => state.user?.id)
 
   const category = useCategoryStore((state) => state.category)
 
@@ -110,11 +110,7 @@ const MembersPage = () => {
               {(infinityUsers?.length as number) > 0 ? (
                 <>
                   {infinityUsers?.map((user: UsersType) => (
-                    <MemberCard
-                      key={user?.id}
-                      user={user}
-                      currentUserId={userId}
-                    />
+                    <MemberCard key={user?.id} user={user} />
                   ))}
                 </>
               ) : (
@@ -135,7 +131,7 @@ const MembersPage = () => {
             className="flex flex-col bg-white w-[732px] h-auto py-10 px-[50px] gap-[30px] rounded-3xl"
             ref={modalRef}
           >
-            <MemberProfile currentUserId={userId} />
+            <MemberProfile />
           </div>
         </div>
       )}

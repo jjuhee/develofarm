@@ -60,7 +60,7 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
     },
   })
   /** 현재 인증된 유저 데이터 가져오기 */
-  const { userId } = useUserStore()
+  const userId = useUserStore((state) => state.user?.id) as string
 
   /** 수정시 : 내용 가져오기 */
   /** 이미지도 불러와야하나.. */

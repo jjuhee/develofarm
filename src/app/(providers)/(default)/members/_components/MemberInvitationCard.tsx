@@ -51,19 +51,21 @@ const MemberInvitationCard = ({ projects, receiverId }: Props) => {
   return (
     <div className="flex h-full mb-8" ref={dropdownRef}>
       <div className="relative">
-        <p
-          className=" flex items-center gap-2 bg-main-lime py-2 pl-6 pr-4 rounded-lg text-black font-[600] cursor-pointer"
-          onClick={() => setIsActive(!isActive)}
-        >
-          내 프로젝트에 초대하기
-          <span>
-            {isActive ? (
-              <IoIosArrowUp className="text-[20px]" />
-            ) : (
-              <IoIosArrowDown className="text-[20px]" />
-            )}
-          </span>
-        </p>
+        {user?.id !== receiverId && (
+          <p
+            className=" flex items-center gap-2 bg-main-lime py-2 pl-6 pr-4 rounded-lg text-black font-[600] cursor-pointer"
+            onClick={() => setIsActive(!isActive)}
+          >
+            내 프로젝트에 초대하기
+            <span>
+              {isActive ? (
+                <IoIosArrowUp className="text-[20px]" />
+              ) : (
+                <IoIosArrowDown className="text-[20px]" />
+              )}
+            </span>
+          </p>
+        )}
 
         <ul
           className={`flex flex-col gap-3 absolute h-[200px] overflow-scroll scroll-smooth scrollbar-hide bg-white text-black py-[15px] px-[20px] border-[1px] w-full mt-2 rounded-lg border-black transition-all ${

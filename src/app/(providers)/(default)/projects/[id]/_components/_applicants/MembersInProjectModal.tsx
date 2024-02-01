@@ -14,7 +14,7 @@ const MembersInProjectModal = ({ project }: Props) => {
   /**
    *@ param 신청자 목록 hover시 나타나는 사용자 목록 div를 담은 변수*/
   const [isShow, setIsShow] = useState<boolean>(false)
-  const { userId } = useUserStore()
+  const { user } = useUserStore((state) => state)
 
   /**
    *@ query 해당 게시물 id를 구분하고 신청자 목록 조회 */
@@ -57,7 +57,7 @@ const MembersInProjectModal = ({ project }: Props) => {
                     {applicant.users?.user_nickname}
                   </li>
                   <span className="absolute ml-28">
-                    {applicant.user_id === userId && "(나)"}
+                    {applicant.user_id === user?.id && "(나)"}
                   </span>
                 </ul>
               )

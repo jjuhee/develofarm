@@ -8,15 +8,16 @@ import { MdBookmarkBorder, MdOutlineBookmark } from "react-icons/md"
 import type { Tables } from "@/types/supabase"
 import { useRouter } from "next/navigation"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import useUserStore from "@/store/user"
 
 interface Props {
   projectId: string
-  currentUser: string
   bookmarks: Tables<"bookmarks">[]
 }
 
-const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
+const BookmarkButton = ({ projectId, bookmarks }: Props) => {
   const queryClient = useQueryClient()
+  const { user: currentUser } = useUserStore((state) => state)
 
   const router = useRouter()
 
@@ -49,11 +50,11 @@ const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
     /** 로그인 됐을 때 */
     /** 이미 추가 됐을 경우 */
     if (isBookmarked) {
-      await removeBookmarks({ projectId, currentUser })
+      await removeBookmarks({ projectId, currentUser: currentUser?.id })
       queryClient.invalidateQueries({ queryKey: ["bookmarks"] })
-    } else {
+    } else if (currentUser) {
       /** 추가되어 있지 않을 경우 새로 추가 */
-      addMutate({ projectId, currentUser })
+      addMutate({ projectId, currentUser: currentUser.id })
     }
   }
 

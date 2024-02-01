@@ -18,7 +18,7 @@ type Props = {
 const ReComments = ({ recomments }: Props) => {
   const queryClient = useQueryClient()
   const { openCustomModalHandler } = useCustomModal()
-  console.log(recomments, "데이터")
+
   /**
    *@ mutaion 댓글 삭제 후 확인창 띄워주고 삭제
    TODO: 목록으로 돌아갈때 캐시가 남아 지워주는 작업 필요 */
