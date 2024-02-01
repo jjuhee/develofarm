@@ -4,8 +4,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import React, { useRef, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
-import { inviteUser } from "../api"
+// import { inviteUser } from "../api"
 import useUserStore from "@/store/user"
+import useAddNotiMutate from "@/hooks/useAddNotiMutate"
 
 interface Props {
   projects: TProjectsByUserId[]
@@ -13,29 +14,13 @@ interface Props {
 }
 
 const MemberInvitationCard = ({ projects, receiverId }: Props) => {
-  const queryClient = useQueryClient()
   const [isActive, setIsActive] = useState(false)
   const dropdownRef = useRef<HTMLInputElement>(null)
   const { user } = useUserStore((state) => state)
-
-  const { mutate: inviteMutate } = useMutation({
-    mutationFn: inviteUser,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["invitations"],
-      })
-    },
-  })
+  const addNotiMutate = useAddNotiMutate()
 
   /** 프로젝트에 초대하기 */
   const onClickInviteUserHandler = (project: TProjectsByUserId) => {
-    // console.log(project.notifications?.[1]?.status)
-
-    // const filtered = project.notifications.filter(
-    //   (item) => item.status === true,
-    // )
-    // console.log("filterd", filtered)
-
     const newInvitation = {
       project_id: project.id,
       receiver_id: receiverId,
@@ -43,7 +28,7 @@ const MemberInvitationCard = ({ projects, receiverId }: Props) => {
       sender_nickname: user?.nickName as string,
     }
 
-    inviteMutate(newInvitation)
+    addNotiMutate(newInvitation)
   }
 
   useOnClickOutSide({ ref: dropdownRef, handler: () => setIsActive(false) })

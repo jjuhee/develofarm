@@ -29,23 +29,25 @@ export async function getNotifications(userId: string, status?: boolean) {
 
   const { data, error } = await query
 
-  if (error) console.log("error", error)
+  if (error) console.log(error)
   return data
 }
 
 export async function setNotification(noti: TablesUpdate<"notifications">) {
-  const { data, error } = await supabaseForClient
+  const { error } = await supabaseForClient
     .from("notifications")
     .update(noti)
     .eq("id", noti.id as string)
+
+  if (error) console.log(error)
 }
 
 export async function deleteNotification(receiverId: string) {
-  const { data, error } = await supabaseForClient
+  const { error } = await supabaseForClient
     .from("notifications")
     .delete()
     .eq("receiver_id", receiverId)
 
-  console.log("data", data)
+  if (error) console.log(error)
   throw error
 }
