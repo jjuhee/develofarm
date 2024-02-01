@@ -29,12 +29,16 @@ const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
     },
   })
 
-  const handler = () => {
-    router.push("/signin")
-  }
+  /** 이미 북마크 된 것 판별 */
+  const isBookmarked =
+    bookmarks && bookmarks.some((bookmark) => bookmark.project_id === projectId)
 
   const onClickHandler = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
+
+    const moveToSigninPage = () => {
+      router.push("/signin")
+    }
 
     /** 로그인 되지 않았을 때 */
     if (!currentUser) {
@@ -42,7 +46,7 @@ const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
         `로그인이 필요합니다.
         로그인 페이지로 이동하시겠습니까?`,
         "confirm",
-        handler,
+        moveToSigninPage,
       )
     }
 
@@ -56,9 +60,6 @@ const BookmarkButton = ({ projectId, currentUser, bookmarks }: Props) => {
       addMutate({ projectId, currentUser })
     }
   }
-
-  const isBookmarked =
-    bookmarks && bookmarks.some((bookmark) => bookmark.project_id === projectId)
 
   return (
     <div className="cursor-pointer text-gray-400" onClick={onClickHandler}>

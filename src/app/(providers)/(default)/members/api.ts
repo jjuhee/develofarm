@@ -50,7 +50,7 @@ export const getPositionById = async ({
 export const getProjectByUserId = async (userId: string) => {
   const { data, error } = await supabaseForClient
     .from("projects")
-    .select("*, notifications(*)")
+    .select("*")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
 
@@ -68,11 +68,36 @@ interface invitationValue {
 
 //TODO: 멤버 초대
 export const inviteUser = async (invitation: invitationValue) => {
+  try {
+    const { data, error } = await supabaseForClient
+      .from("notifications")
+      .upsert({ ...invitation })
+      .select("*")
+
+    if (error) {
+      if (
+        error.message.includes("duplicate key value violates unique constraint")
+      ) {
+        // 중복된 키 값 오류 처리
+        console.log("이미 존재하는 초대입니다.")
+      } else {
+        console.error(error.message)
+      }
+      return
+    }
+    return data
+  } catch (error) {
+    console.error("데이터베이스 오류:", error)
+  }
+}
+
+export const getInvitationByReceiverId = async (receiverId: string) => {
   const { data, error } = await supabaseForClient
     .from("notifications")
-    .upsert([{ ...invitation }], { onConflict: "" })
     .select("*")
+    .eq("receiver_id", receiverId)
 
-  if (error) return console.log(error.message)
+  if (error) return console.log(error)
+
   return data
 }
