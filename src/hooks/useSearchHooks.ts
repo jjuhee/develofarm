@@ -4,7 +4,7 @@ interface keywordsInterface {
   num: number
   text?: string
 }
-const useKeywordsHooks = () => {
+const useSearchHooks = () => {
   const [keywords, setKeywords] = useState<keywordsInterface[]>([])
   const [text, setText] = useState<string>("")
 
@@ -66,4 +66,4 @@ const useKeywordsHooks = () => {
   }
 }
 
-export default useKeywordsHooks
+export default useSearchHooks

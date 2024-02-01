@@ -14,7 +14,7 @@ import SearchedProjectLists from "./_components/SearchedProjectLists"
 import SearchInput from "./_components/SearchInput"
 import SearchedHistory from "./_components/SearchedHistory"
 import { useInView } from "react-intersection-observer"
-import useKeywordsHooks from "@/hooks/useKeywordsHooks"
+import useSearchHooks from "@/hooks/useSearchHooks"
 import useBookmarks from "@/hooks/useBookmarks"
 
 //해당 이용자의 localstorage 가져오기
@@ -41,7 +41,7 @@ const SearchPage = () => {
     onRemoveTextHandler,
     onSearchKeywordChangeHandler,
     onSubmitHandler,
-  } = useKeywordsHooks()
+  } = useSearchHooks()
   /** 현재 인증된 유저 데이터 가져오기 */
   //zustand로 user 가져오기
   useEffect(() => {
@@ -52,18 +52,9 @@ const SearchPage = () => {
     getAuth()
   }, [currentUserId])
 
-  // const [keywords, setKeywords] = useState<keywordsInterface[]>([])
-
-  // const [text, setText] = useState<string>()
-
-  //북마크
-  //currentUserId 와 같이 더 명확하게
-  // const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
-  //   queryKey: ["bookmarks", currentUserId],
-  //   queryFn: () => getBookmarksByUserId(currentUserId),
-  //   enabled: !!currentUserId,
-  // })
+  //bookmark custom hook
   const bookmarks = useBookmarks(currentUserId)
+
   const {
     data: searchedData,
     fetchNextPage,
