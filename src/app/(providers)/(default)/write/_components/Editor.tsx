@@ -44,7 +44,7 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: setProject,
-    onSuccess: (insertedData) => {
+    onSuccess: (insertedData: any) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
       customModal(isEditMode ? "수정 완료~!" : "게시물 작성 완료~!", "alert")
       resetState()

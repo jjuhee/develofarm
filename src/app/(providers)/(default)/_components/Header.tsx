@@ -15,11 +15,11 @@ import { IoLogOutOutline } from "react-icons/io5"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import { usePathname, useRouter } from "next/navigation"
 import useUrlStore from "@/store/url"
+import Notifications from "./Notifications"
 
 const Header = () => {
   const [showTooltip, setShowTooltip] = useState(false)
   const [isImageActive, setIsImageActive] = useState<boolean>(false)
-  const [isAlarmData, setIsAlarmData] = useState<{ [key: string]: any }>()
   const [isAuthIntialized, setIsAuthIntialized] = useState<boolean>(false)
   const { setUrl } = useUrlStore()
   const { user, setUser } = useUserStore((state) => state)
@@ -28,7 +28,6 @@ const Header = () => {
     (state) => state,
   )
   const dropdownRef = useRef<HTMLInputElement>(null)
-  const client = supabaseForClient
   const router = useRouter()
   const pathname = usePathname()
 
@@ -38,12 +37,12 @@ const Header = () => {
     setMemberPosition(null)
   }
 
-  const onAlarmHandleClick = () => {
+  const onClickAlarmHandler = () => {
     setShowTooltip(!showTooltip)
     setIsImageActive(false)
   }
 
-  const onAvatarHandlerClick = (event: React.MouseEvent) => {
+  const onClickAvatarHandler = (event: React.MouseEvent) => {
     event.stopPropagation()
     setIsImageActive((prev) => !prev)
     setShowTooltip(false)
@@ -51,9 +50,6 @@ const Header = () => {
 
   //로그아웃 함수
   const onLogoutHandler = () => {
-    //-- 이 부분은 주석이 있어야만 정상적으로 수행되는 코드 입니다.
-    // localStorage.removeItem('keywords');
-
     supabaseForClient.auth.signOut()
 
     // 내프로젝트나 내프로필인 경우 홈화면으로 돌아가기
@@ -68,25 +64,6 @@ const Header = () => {
   useOnClickOutSide({
     ref: dropdownRef,
     handler: () => setIsImageActive(false),
-  })
-
-  //public schema의 projects 테이블을 구독, unmount시 구독취소
-  useEffect(() => {
-    const channelA = client
-      .channel("schema-db-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "projects",
-        },
-        (payload) => setIsAlarmData(payload),
-      )
-      .subscribe()
-    return () => {
-      channelA.unsubscribe()
-    }
   })
 
   // 로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
@@ -154,35 +131,17 @@ const Header = () => {
             // user의 정보가 있을 때 프로필 메뉴 보여주기
             user ? (
               <>
-                <span
-                  className={`text-md hover:cursor-pointer ${
-                    showTooltip ? "show" : ""
-                  }`}
-                  onClick={onAlarmHandleClick}
+                <div
+                  className="text-md hover:cursor-pointer"
+                  onClick={onClickAlarmHandler}
                 >
                   <VscBell />
-                  {showTooltip && (
-                    <div className="relative flex">
-                      <div className="flex-row w-[200px] left-[-100px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg p-4 absolute top-3 z-50 ">
-                        {isAlarmData ? (
-                          <>
-                            <div className=" text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
-                              새로운 프로젝트가 생겼어요!
-                            </div>
-                          </>
-                        ) : (
-                          <div className="text-[18px] border border-gray-200 rounded-xl p-2 hover hover:cursor-pointer hover:shadow-lg">
-                            알림이 없습니다
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </span>
+                  <Notifications showTooltip={showTooltip} />
+                </div>
 
                 <div
                   className="rounded-full shadow-lg hover hover:cursor-pointer"
-                  onClick={onAvatarHandlerClick}
+                  onClick={onClickAvatarHandler}
                   ref={dropdownRef}
                 >
                   <Image

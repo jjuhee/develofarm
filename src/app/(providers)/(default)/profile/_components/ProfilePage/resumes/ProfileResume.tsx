@@ -4,7 +4,7 @@ import ProfileEducation from "./ProfileEducation"
 import ProfileAcademy from "./ProfileAcademy"
 import ProfileSpec from "./ProfileSpec"
 
-const ProfileResume = ({ profileId }: { profileId: any }) => {
+const ProfileResume = ({ profileId }: { profileId: string }) => {
   return (
     <div>
       <div className="flex justify-between items-start">

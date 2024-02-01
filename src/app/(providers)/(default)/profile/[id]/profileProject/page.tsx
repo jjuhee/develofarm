@@ -1,12 +1,18 @@
 "use client"
 
-import React from "react"
 import { useParams } from "next/navigation"
+import { useEffect } from "react"
 import ProfileSharedProjectCard from "../../_components/ProfilePage/projectLists/ProfileSharedProjectCard"
 import ProfileBookmarkCard from "../../_components/ProfilePage/projectLists/ProfileBookmarkCard"
+import { useProfileStore } from "@/store/profile"
 
 const ProfileProjectPage = () => {
   const { id } = useParams<{ id: string }>()
+  const setProfileId = useProfileStore((state) => state.setId)
+
+  useEffect(() => {
+    setProfileId(id)
+  }, [id, setProfileId])
 
   return (
     <div>
