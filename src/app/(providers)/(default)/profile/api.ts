@@ -295,39 +295,30 @@ export async function getSocialLinks({ userId }: { userId: string }) {
   return data
 }
 
-export async function updateSocialLinks(
-  userId: string,
-  updatedSocialLinks: any,
-) {
-  const { data, error } = await supabaseForClient
-    .from("social_links")
-    .update(updatedSocialLinks)
-    .eq("user_id", userId)
-
-  if (error) {
-    console.log("error", error)
-    return null
-  }
-
-  return data
-}
-
 export async function addSocialLinks(
   userId: string,
   newSocialLinksData: any,
 ): Promise<any | null> {
+  const deleteResult = await supabaseForClient
+    .from("social_links")
+    .delete()
+    .eq("user_id", userId)
+
+  if (deleteResult.error) {
+    console.error(deleteResult.error)
+    return null
+  }
+
   const { data, error } = await supabaseForClient.from("social_links").insert([
     {
       user_id: userId,
       ...newSocialLinksData,
     },
   ])
-
   if (error) {
-    console.error("Error adding social links:", error)
+    console.error("Error adding user tech data:", error)
     return null
   }
-
   return data
 }
 
