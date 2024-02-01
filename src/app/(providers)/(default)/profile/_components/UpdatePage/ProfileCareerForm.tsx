@@ -6,6 +6,7 @@ import { deleteCareers, getCareers } from "../../api"
 import { Tables } from "@/types/supabase"
 import { GoPlus } from "react-icons/go"
 import { HiOutlineXMark } from "react-icons/hi2"
+import Checkbox from "@/components/ui/Checkbox"
 
 const ProfileCareerForm = ({
   userId,
@@ -18,9 +19,11 @@ const ProfileCareerForm = ({
   newCareerData: Tables<"careers">[]
   setNewCareerData: Dispatch<SetStateAction<Tables<"careers">[]>>
 }) => {
+  // 새로운 경력 관련 양식과 숨겨진 입력 상태 변수 선언
   const [newCareerForms, setNewCareerForms] = useState<Tables<"careers">[]>([])
   const [hiddenInputs, setHiddenInputs] = useState<boolean[]>([])
 
+  // 경력 데이터를 불러오는 쿼리 훅 사용
   const {
     data: careers,
     isLoading,
@@ -31,6 +34,7 @@ const ProfileCareerForm = ({
     enabled: !!userId,
   })
 
+  // 입력값이 변경될 때 호출되는 함수
   const handleInputChange = (
     index: number,
     field: keyof Tables<"careers">,
@@ -41,6 +45,7 @@ const ProfileCareerForm = ({
     setUpdatedCareerData(updatedCareers)
   }
 
+  // 새로운 경력 데이터 입력값 변경 시 호출되는 함수
   const handleNewCareerInputChange = (
     formIndex: number,
     field: keyof Tables<"careers">,
@@ -53,11 +58,13 @@ const ProfileCareerForm = ({
     })
   }
 
+  // 새로운 경력 데이터 양식 추가 시 호출되는 함수
   const handleAddNewCareerForm = () => {
     setNewCareerForms([...newCareerForms, {} as Tables<"careers">])
     setNewCareerData([...newCareerData, {} as Tables<"careers">])
   }
 
+  // 새로운 경력 데이터 양식 삭제 시 호출되는 함수
   const handleDeleteNewCareerForm = (formIndex: number) => {
     setNewCareerForms((prevForms) => {
       const updatedForms = [...prevForms]
@@ -72,6 +79,7 @@ const ProfileCareerForm = ({
     })
   }
 
+  // 입력값을 숨기고 해당 데이터를 삭제하는 함수
   const hideInputsAndDelete = async (index: number, careerId: string) => {
     try {
       await deleteCareers(userId, [careerId])
@@ -84,7 +92,6 @@ const ProfileCareerForm = ({
       console.error("Error deleting career data:", error)
     }
   }
-
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -135,18 +142,16 @@ const ProfileCareerForm = ({
                         htmlFor={`employed_status_${index}`}
                         className="cursor-pointer"
                       >
-                        <input
-                          type="checkbox"
+                        <Checkbox
                           id={`employed_status_${index}`}
-                          checked={career.employed_status}
-                          onChange={(e) =>
+                          value={career.employed_status}
+                          handler={(e) =>
                             handleInputChange(
                               index,
                               "employed_status",
                               e.target.checked,
                             )
                           }
-                          className="mr-[5px] accent-[#AAAAAA] cursor-pointer"
                         />
                         재직중
                       </label>
@@ -167,6 +172,7 @@ const ProfileCareerForm = ({
                         }
                         className="w-[250px] text-xl font-bold p-1"
                         placeholder="회사명"
+                        maxLength={10}
                       />
                       <button
                         type="button"
@@ -189,6 +195,7 @@ const ProfileCareerForm = ({
                         }
                         className="p-1"
                         placeholder="담당직무"
+                        maxLength={10}
                       />
                     </div>
                   </div>
@@ -235,20 +242,16 @@ const ProfileCareerForm = ({
                     htmlFor={`employed_status_new_${formIndex}`}
                     className="cursor-pointer"
                   >
-                    <input
-                      type="checkbox"
+                    <Checkbox
                       id={`employed_status_new_${formIndex}`}
-                      checked={
-                        newCareerData[formIndex]?.employed_status || false
-                      }
-                      onChange={(e) =>
+                      value={newCareerData[formIndex]?.employed_status || false}
+                      handler={(e) =>
                         handleNewCareerInputChange(
                           formIndex,
                           "employed_status",
                           e.target.checked,
                         )
                       }
-                      className="mr-[5px] accent-[#AAAAAA] cursor-pointer"
                     />
                     재직중
                   </label>
@@ -269,6 +272,7 @@ const ProfileCareerForm = ({
                     }
                     className="w-[250px] text-xl font-bold p-1"
                     placeholder="회사명"
+                    maxLength={10}
                   />
                   <button
                     type="button"
@@ -291,6 +295,7 @@ const ProfileCareerForm = ({
                     }
                     className="p-1"
                     placeholder="담장직무"
+                    maxLength={10}
                   />
                 </div>
               </div>

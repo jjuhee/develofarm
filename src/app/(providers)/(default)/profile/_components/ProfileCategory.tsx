@@ -6,7 +6,7 @@ import useUserStore from "@/store/user"
 import { useProfileStore } from "@/store/profile"
 
 const ProfileCategory = () => {
-  const { userId } = useUserStore()
+  const userId = useUserStore((state) => state?.user?.id) as string
   const { id } = useProfileStore()
   const [activeLink, setActiveLink] = useState("")
 
@@ -34,7 +34,7 @@ const ProfileCategory = () => {
   )
 
   return (
-    <div className="flex gap-[50px] text-[36px] font-bold py-[40px]">
+    <div className="flex gap-[50px] text-[36px] font-bold pt-[30px]">
       {renderLink(`/profile/${userId}`, "내 프로필")}
       {renderLink(`/profile/${userId}/profileProject`, "내 프로젝트")}
       {renderLink(`/profile/${userId}/notification`, "알림")}

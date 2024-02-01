@@ -4,14 +4,15 @@ import useMembersStore from "@/store/members"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import { useRouter } from "next/navigation"
 import { UsersType } from "@/types/extendedType"
+import useUserStore from "@/store/user"
 
 interface Props {
   user: UsersType
-  currentUserId: string
 }
 
-const MemberCard = ({ user, currentUserId }: Props) => {
+const MemberCard = ({ user }: Props) => {
   const router = useRouter()
+  const currentUserId = useUserStore((state) => state.user?.id)
 
   const { openCustomModalHandler } = useCustomModal()
 
@@ -20,7 +21,6 @@ const MemberCard = ({ user, currentUserId }: Props) => {
   )
 
   const { user_nickname, position, user_comment, user_tech } = user
-
   const onClickMemberCardHandler = () => {
     const handler = () => {
       router.push("/signin")

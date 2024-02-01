@@ -16,7 +16,7 @@ interface Props {
 
 const FooterPublicIcon = ({ bookmarks, project, bookmarksCount }: Props) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
-  const userId = useUserStore((state) => state.userId)
+  const userId = useUserStore((state) => state.user?.id)
 
   const openModalClickHandler = () => {
     setIsOpenModal(!isOpenModal)
@@ -26,11 +26,7 @@ const FooterPublicIcon = ({ bookmarks, project, bookmarksCount }: Props) => {
     <>
       <span className="flex ml-auto pr-5 items-center">
         <span className="pr-1">
-          <BookmarkButton
-            currentUser={userId}
-            bookmarks={bookmarks}
-            projectId={project.id}
-          />
+          <BookmarkButton bookmarks={bookmarks} projectId={project.id} />
         </span>
         {bookmarksCount}
       </span>

@@ -13,11 +13,10 @@ import DOMPurify from "dompurify"
 interface Props {
   project: TProjectsType
   bookmarks: Tables<"bookmarks">[]
-  currentUser: string
   page?: number
 }
 
-const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
+const ProjectCard = ({ project, bookmarks, page }: Props) => {
   const queryClient = useQueryClient()
   const router = useRouter()
 
@@ -96,11 +95,7 @@ const ProjectCard = ({ project, bookmarks, currentUser, page }: Props) => {
         </div>
 
         <div className="absolute top-[12px] right-2">
-          <BookmarkButton
-            projectId={id}
-            currentUser={currentUser}
-            bookmarks={bookmarks}
-          />
+          <BookmarkButton projectId={id} bookmarks={bookmarks} />
         </div>
       </section>
     </div>
