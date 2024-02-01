@@ -21,7 +21,7 @@ interface Props {
 
 const ProjectList = ({ option }: Props) => {
   const PAGE_SIZE = 5
-  const userId = useUserStore((state) => state.userId)
+  const { user } = useUserStore((state) => state)
   const [recruitStatus, setRecruitStatus] = useState(false)
   const [order, setOrder] = useState(1)
   const [isOpenOrder, setIsOpenOrder] = useState(false)
@@ -42,9 +42,9 @@ const ProjectList = ({ option }: Props) => {
 
   /** 현재 유저 북마크 데이터 가져오기 */
   const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
-    queryKey: ["bookmarks", userId],
-    queryFn: () => getBookmarksByUserId(userId as string),
-    enabled: !!userId,
+    queryKey: ["bookmarks", user?.id],
+    queryFn: () => getBookmarksByUserId(user?.id as string),
+    enabled: !!user?.id,
   })
 
   /** 프로젝트 리스트 정렬 */
@@ -168,7 +168,7 @@ const ProjectList = ({ option }: Props) => {
                 key={item?.id}
                 project={item as TProjectsType}
                 bookmarks={bookmarks as Tables<"bookmarks">[]}
-                currentUser={userId as string}
+                // currentUser={user?.id as string}
                 page={page as number}
               />
             )

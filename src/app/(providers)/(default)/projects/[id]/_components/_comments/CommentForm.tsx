@@ -4,18 +4,20 @@ import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import { setComment } from "../../api"
 import { useCustomModal } from "@/hooks/useCustomModal"
-import Button from "@/components/ui/Button"
+import useAddNotiMutate from "@/hooks/useAddNotiMutate"
 
 type Props = {
   projectId: string
+  projectUserId: string
 }
 
-const CommentForm = ({ projectId }: Props) => {
+const CommentForm = ({ projectId, projectUserId }: Props) => {
   const [content, setContent] = useState<string>("")
 
   const queryClient = useQueryClient()
-  const { userId } = useUserStore()
+  const { user } = useUserStore((state) => state)
   const { openCustomModalHandler } = useCustomModal()
+  const addNotiMutate = useAddNotiMutate()
 
   /**
    *@ mutation 댓글 등록 후 해당 게시물Id로 댓글 최신 목록 불러오기 */
@@ -38,7 +40,7 @@ const CommentForm = ({ projectId }: Props) => {
   const onSubmitHandler: React.FormEventHandler = (e) => {
     e.preventDefault()
 
-    if (!userId)
+    if (!user)
       return openCustomModalHandler("로그인 후에 작성 가능 합니다!", "alert")
 
     if (content.trim() === "") {
@@ -48,11 +50,19 @@ const CommentForm = ({ projectId }: Props) => {
 
     const newComment: TablesInsert<"comments"> = {
       project_id: projectId,
-      user_id: userId,
+      user_id: user.id,
       content,
     }
 
     AddCommentMutate.mutate(newComment)
+
+    const newCommentNoti = {
+      project_id: projectId,
+      receiver_id: projectUserId,
+      type: "comment",
+      sender_nickname: user?.nickName as string,
+    }
+    addNotiMutate(newCommentNoti)
   }
 
   return (

@@ -362,6 +362,51 @@ export interface Database {
           },
         ]
       }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          project_id: string
+          receiver_id: string
+          sender_nickname: string
+          status: boolean
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          project_id: string
+          receiver_id: string
+          sender_nickname: string
+          status?: boolean
+          type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          project_id?: string
+          receiver_id?: string
+          sender_nickname?: string
+          status?: boolean
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       position_tech: {
         Row: {
           id: string

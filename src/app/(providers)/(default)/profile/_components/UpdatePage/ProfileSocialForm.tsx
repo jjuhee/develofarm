@@ -6,12 +6,10 @@ import { HiOutlineXMark } from "react-icons/hi2"
 
 const ProfileSocialForm = ({
   userId,
-  setUpdatedLinkData,
   newLinkData,
   setNewLinkData,
 }: {
   userId: string
-  setUpdatedLinkData: Dispatch<SetStateAction<Tables<"social_links">[]>>
   newLinkData: any
   setNewLinkData: Dispatch<SetStateAction<Tables<"social_links">[]>>
 }) => {
@@ -32,7 +30,7 @@ const ProfileSocialForm = ({
   ) => {
     const updatedLinks = [...(social_links as Tables<"social_links">[])]
     ;(updatedLinks[index][field] as string) = value as string
-    setUpdatedLinkData(updatedLinks)
+    setNewLinkData(updatedLinks)
   }
 
   const handleNewLinkInputChange = (field: string, value: string) => {
@@ -54,7 +52,7 @@ const ProfileSocialForm = ({
 
   return (
     <form>
-      <div>
+      <div className="pt-[20px]">
         {social_links?.map((link: Tables<"social_links">, index: number) => (
           <div key={link.id}>
             <div className="flex justify-between items-center">

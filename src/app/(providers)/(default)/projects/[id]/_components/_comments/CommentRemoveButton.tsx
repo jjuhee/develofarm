@@ -8,8 +8,8 @@ type Props = {
 }
 
 const CommentRemoveButton = ({ comment, handler }: Props) => {
-  const { userId } = useUserStore()
-  const isWriter = userId === comment?.user_id
+  const { user } = useUserStore((state) => state)
+  const isWriter = user?.id === comment?.user_id
 
   return (
     isWriter && (

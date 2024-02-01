@@ -4,16 +4,14 @@ import Image from "next/image"
 import { getInvitationByReceiverId, getProjectByUserId } from "../api"
 import { useRouter } from "next/navigation"
 import MemberInvitationCard from "./MemberInvitationCard"
-import { TProjectsByUserId } from "@/types/extendedType"
 import { Tables } from "@/types/supabase"
+import { TProjectsByUserId } from "@/types/extendedType"
+import useUserStore from "@/store/user"
 
-interface Props {
-  currentUserId: string
-}
-
-const MemberProfile = ({ currentUserId }: Props) => {
+const MemberProfile = () => {
   const selectedMember = useMembersStore((state) => state.selectedMember)
   const router = useRouter()
+  const currentUserId = useUserStore((state) => state.user?.id) as string
 
   const { data: projects } = useQuery({
     queryKey: ["projects", currentUserId],
@@ -55,8 +53,7 @@ const MemberProfile = ({ currentUserId }: Props) => {
           </div>
           <div className="flex flex-col gap-2">
             <h3 className="text-[30px] font-[700]">
-              {" "}
-              j{selectedMember.user_nickname}
+              {selectedMember.user_nickname}
             </h3>
             <p className="text-[20px] font-[600]">
               {selectedMember.position?.name || "포지션을 정해주세요."}

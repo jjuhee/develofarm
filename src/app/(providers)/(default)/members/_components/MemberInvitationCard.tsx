@@ -1,12 +1,12 @@
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
-import { TProjectsByUserId, TProjectsType } from "@/types/extendedType"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { TProjectsByUserId } from "@/types/extendedType"
+import { useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import React, { useRef, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
-import { inviteUser } from "../api"
 import useUserStore from "@/store/user"
 import { Tables } from "@/types/supabase"
+import useAddNotiMutate from "@/hooks/useAddNotiMutate"
 
 interface Props {
   projects: TProjectsByUserId[]
@@ -19,15 +19,7 @@ const MemberInvitationCard = ({ projects, receiverId, invitations }: Props) => {
   const [isActive, setIsActive] = useState(false)
   const dropdownRef = useRef<HTMLInputElement>(null)
   const { user } = useUserStore((state) => state)
-
-  const { mutate: inviteMutate } = useMutation({
-    mutationFn: inviteUser,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["invitations"],
-      })
-    },
-  })
+  const addNotiMutate = useAddNotiMutate()
 
   /** 프로젝트에 초대하기 */
   const onClickInviteUserHandler = (project: TProjectsByUserId) => {
@@ -35,10 +27,10 @@ const MemberInvitationCard = ({ projects, receiverId, invitations }: Props) => {
       project_id: project.id,
       receiver_id: receiverId,
       type: "invitation",
-      sender_nickname: user.nickName,
+      sender_nickname: user?.nickName as string,
     }
 
-    inviteMutate(newInvitation)
+    addNotiMutate(newInvitation)
   }
 
   /** 이미 초대한 프로젝트 색깔 변경 및 disable 처리 */
@@ -55,19 +47,21 @@ const MemberInvitationCard = ({ projects, receiverId, invitations }: Props) => {
   return (
     <div className="flex h-full mb-8" ref={dropdownRef}>
       <div className="relative">
-        <p
-          className=" flex items-center gap-2 bg-main-lime py-2 pl-6 pr-4 rounded-lg text-black font-[600] cursor-pointer"
-          onClick={() => setIsActive(!isActive)}
-        >
-          내 프로젝트에 초대하기
-          <span>
-            {isActive ? (
-              <IoIosArrowUp className="text-[20px]" />
-            ) : (
-              <IoIosArrowDown className="text-[20px]" />
-            )}
-          </span>
-        </p>
+        {user?.id !== receiverId && (
+          <p
+            className=" flex items-center gap-2 bg-main-lime py-2 pl-6 pr-4 rounded-lg text-black font-[600] cursor-pointer"
+            onClick={() => setIsActive(!isActive)}
+          >
+            내 프로젝트에 초대하기
+            <span>
+              {isActive ? (
+                <IoIosArrowUp className="text-[20px]" />
+              ) : (
+                <IoIosArrowDown className="text-[20px]" />
+              )}
+            </span>
+          </p>
+        )}
 
         <ul
           className={`flex flex-col gap-3 absolute h-[200px] overflow-scroll scroll-smooth scrollbar-hide bg-white text-black py-[15px] px-[20px] border-[1px] w-full mt-2 rounded-lg border-black transition-all ${
