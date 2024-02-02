@@ -4,6 +4,7 @@ import {
 } from "@/app/(providers)/(default)/members/api"
 import { getProjects } from "@/app/(providers)/(default)/projects/api"
 import { Tables } from "./supabase"
+import { getProjectMembers } from "@/app/(providers)/(default)/profile/api"
 
 export type ExtendedProjectsType = Tables<"projects"> & {
   project_tech: ExtendedProjectTechType[]
