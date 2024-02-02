@@ -1,4 +1,4 @@
-import { Tables, TablesInsert } from "@/types/supabase"
+import { TablesInsert } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
 import useUserStore from "@/store/user"
@@ -11,6 +11,7 @@ import {
 import { useCustomModal } from "@/hooks/useCustomModal"
 import Button from "@/components/ui/Button"
 import { getProject } from "../../../api"
+import useAddNotiMutate from "@/hooks/useAddNotiMutate"
 
 type Props = {
   project: Exclude<Awaited<ReturnType<typeof getProject>>, null>
@@ -21,7 +22,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   const queryClient = useQueryClient()
   const { user } = useUserStore((state) => state)
   const { openCustomModalHandler } = useCustomModal()
-
+  const addNotiMutate = useAddNotiMutate()
   /**
    *@ mutaion 게시물 마감 후 확인창 띄어주기
    TODO: 새로고침 후 반영되는 거 수정예정 */
@@ -109,9 +110,16 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
       project_id: project.id,
       user_id: user.id,
     }
+    const newReCommentNoti = {
+      project_id: project.id,
+      receiver_id: project.user_id,
+      type: "application",
+      sender_nickname: user?.nickName as string,
+    }
 
     const handler = (message?: string) => {
       addMemberMutate.mutate({ ...newMember, appeal_message: message })
+      addNotiMutate(newReCommentNoti)
     }
 
     openCustomModalHandler("신청하시겠습니까?", "confirm", handler, true)

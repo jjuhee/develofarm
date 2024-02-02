@@ -5,7 +5,6 @@ import useMembersStore from "@/store/members"
 import Link from "next/link"
 import React, { useEffect, useRef, useState } from "react"
 import { IoMdSearch } from "react-icons/io"
-import { VscBell } from "react-icons/vsc"
 import { supabaseForClient } from "@/supabase/supabase.client"
 import useUserStore from "@/store/user"
 import Image from "next/image"
@@ -135,7 +134,6 @@ const Header = () => {
                   className="text-md hover:cursor-pointer"
                   onClick={onClickAlarmHandler}
                 >
-                  <VscBell />
                   <Notifications showTooltip={showTooltip} />
                 </div>
 

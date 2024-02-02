@@ -2,9 +2,13 @@ import Link from "next/link"
 import useUserStore from "@/store/user"
 import MemberInvitationCard from "../../../members/_components/MemberInvitationCard"
 import { useQuery } from "@tanstack/react-query"
-import { getProjectByUserId } from "../../../members/api"
+import {
+  getInvitationByReceiverId,
+  getProjectByUserId,
+} from "../../../members/api"
 import useMembersStore from "@/store/members"
 import { TProjectsByUserId } from "@/types/extendedType"
+import { Tables } from "@/types/supabase"
 
 const ProfileActions = ({ profileId }: { profileId: string }) => {
   const selectedMember = useMembersStore((state) => state.selectedMember)
@@ -14,6 +18,17 @@ const ProfileActions = ({ profileId }: { profileId: string }) => {
     queryKey: ["projects", userId],
     queryFn: () => getProjectByUserId(userId),
     enabled: !!userId,
+  })
+
+  //TODO: receiverId가 같고 type이 invitation인 notifications 가져오기
+  const { data: invitationByReceiverId } = useQuery<
+    unknown,
+    Error,
+    Tables<"notifications">[]
+  >({
+    queryKey: ["invitations", selectedMember.id],
+    queryFn: () => getInvitationByReceiverId(selectedMember.id),
+    enabled: !!selectedMember.id,
   })
 
   return (
@@ -31,6 +46,7 @@ const ProfileActions = ({ profileId }: { profileId: string }) => {
           <MemberInvitationCard
             projects={projects as TProjectsByUserId[]}
             receiverId={selectedMember.id}
+            invitations={invitationByReceiverId as Tables<"notifications">[]}
           />
         </button>
       )}

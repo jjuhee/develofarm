@@ -1,12 +1,17 @@
 import { TProjectsType } from "@/types/extendedType"
+import { Tables } from "@/types/supabase"
 import React from "react"
 
 interface Props {
   project: TProjectsType
 }
 
+interface TTechType extends Tables<"project_tech"> {
+  techs: Tables<"techs"> | null
+}
+
 const ProjectCardTechs = ({ project }: Props) => {
-  const techs = project?.project_tech
+  const techs: TTechType[] = project?.project_tech
   return (
     <>
       {techs?.length > 5 ? (
