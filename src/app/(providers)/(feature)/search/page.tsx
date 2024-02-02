@@ -14,8 +14,9 @@ import SearchedProjectLists from "./_components/SearchedProjectLists"
 import SearchInput from "./_components/SearchInput"
 import SearchedHistory from "./_components/SearchedHistory"
 import { useInView } from "react-intersection-observer"
-import useSearchHooks from "@/hooks/useSearchHooks"
+import useKeywordsHooks from "@/hooks/useSearchHooks"
 import useBookmarks from "@/hooks/useBookmarks"
+import useUserStore from "@/store/user"
 
 //해당 이용자의 localstorage 가져오기
 interface keywordsInterface {
@@ -41,7 +42,7 @@ const SearchPage = () => {
     onRemoveTextHandler,
     onSearchKeywordChangeHandler,
     onSubmitHandler,
-  } = useSearchHooks()
+  } = useKeywordsHooks()
   /** 현재 인증된 유저 데이터 가져오기 */
   //zustand로 user 가져오기
   useEffect(() => {
@@ -51,10 +52,15 @@ const SearchPage = () => {
     }
     getAuth()
   }, [currentUserId])
-
-  //bookmark custom hook
+  const userId = useUserStore((state) => state.userId)
+  setCurrentUserId(userId)
+  console.log(
+    "현재유저의 아이디 검색페이지",
+    userId,
+    "스테이트값의 유저",
+    currentUserId,
+  )
   const bookmarks = useBookmarks(currentUserId)
-
   const {
     data: searchedData,
     fetchNextPage,
@@ -131,7 +137,7 @@ const SearchPage = () => {
         onSearchKeywordChangeHandler={onSearchKeywordChangeHandler}
         onRemoveEachKeywordHandler={onRemoveEachKeywordHandler}
       />
-
+      <>어디감? `</>
       <Spacer y={70} />
       {/* -------프로젝트 리스트 들어오기 ---------- */}
       <SearchedProjectLists
@@ -140,7 +146,7 @@ const SearchPage = () => {
         currentUser={currentUserId}
       />
       <div ref={ref} className="w-full h-[100px]">
-        무한스크롤바{" "}
+        무한스크롤바 스크롤바 어디감?
       </div>
     </div>
   )
