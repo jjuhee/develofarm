@@ -12,8 +12,6 @@ function ProvidersLayout({ children }: PropsWithChildren<{}>) {
         <div className="flex flex-col max-w-[1250px] mx-auto">{children}</div>
         <Footer />
       </div>
-      <FloatingButton />
-      <CustomModal />
     </div>
   )
 }

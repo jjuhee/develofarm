@@ -10,8 +10,6 @@ function ProvidersLayout({ children }: PropsWithChildren<{}>) {
       <Header />
       <div className="flex flex-col w-full">{children}</div>
       <Footer />
-      <FloatingButton mode={"default"} />
-      <CustomModal />
     </div>
   )
 }
