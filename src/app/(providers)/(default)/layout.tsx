@@ -14,8 +14,6 @@ function ProvidersLayout({ children }: PropsWithChildren<{}>) {
         </div>
         <Footer />
       </div>
-      <FloatingButton mode={"default"} />
-      <CustomModal />
     </div>
   )
 }
