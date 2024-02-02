@@ -412,18 +412,21 @@ export interface Database {
       }
       project_members: {
         Row: {
+          appeal_message: string | null
           application_status: boolean | null
           id: string
           project_id: string
           user_id: string
         }
         Insert: {
+          appeal_message?: string | null
           application_status?: boolean | null
           id?: string
           project_id: string
           user_id: string
         }
         Update: {
+          appeal_message?: string | null
           application_status?: boolean | null
           id?: string
           project_id?: string
