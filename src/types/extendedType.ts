@@ -31,7 +31,7 @@ export type UsersType = Exclude<
 
 export type TProjectsType = Exclude<
   Awaited<ReturnType<typeof getProjects>>,
-  undefined
+  void
 >[number]
 
 export type TProjectsByUserId = Exclude<

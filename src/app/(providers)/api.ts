@@ -1,15 +1,15 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
 import { TablesUpdate } from "@/types/supabase"
 
-/** 로그인한 유저 아이디 가져오기 */
-export const getUserId = async () => {
-  const { data, error } = await supabaseForClient.auth.getUser()
+export async function getUserByUserId(userId: string) {
+  const { data, error } = await supabaseForClient
+    .from("users")
+    .select("*")
+    .eq("id", userId)
 
-  if (error) {
-    console.error(error)
-  }
+  if (error) return console.log(error)
 
-  return data.user?.id
+  return data[0]
 }
 
 /**
@@ -29,23 +29,25 @@ export async function getNotifications(userId: string, status?: boolean) {
 
   const { data, error } = await query
 
-  if (error) console.log("error", error)
+  if (error) console.log(error)
   return data
 }
 
 export async function setNotification(noti: TablesUpdate<"notifications">) {
-  const { data, error } = await supabaseForClient
+  const { error } = await supabaseForClient
     .from("notifications")
     .update(noti)
     .eq("id", noti.id as string)
+
+  if (error) console.log(error)
 }
 
 export async function deleteNotification(receiverId: string) {
-  const { data, error } = await supabaseForClient
+  const { error } = await supabaseForClient
     .from("notifications")
     .delete()
     .eq("receiver_id", receiverId)
 
-  console.log("data", data)
+  if (error) console.log(error)
   throw error
 }
