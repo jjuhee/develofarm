@@ -132,7 +132,7 @@ const Category = ({
               <h5 className="text-[20px] font-[600]">활동 지역</h5>
               <div ref={dropdownRef} className="relative">
                 <div
-                  className={`category flex items-center justify-between px-[20px] py-[5px] rounded-lg w-[210px] h-[40px] ${
+                  className={`category flex items-center justify-between px-[20px] py-[5px] rounded-lg w-[200px] h-[40px] ${
                     isRegionActive
                       ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold"
                       : "bg-[#D2D2D2] border-[#D2D2D2] text-black font-semibold"
@@ -184,12 +184,14 @@ const Category = ({
                 value={numberOfMembers}
                 min={0}
                 max={100}
-                onChange={(e) =>
+                onChange={(e) => {
+                  e.target.value =
+                    Number(e.target.value) > 100 ? "100" : e.target.value
                   setCategoryData({
                     ...categoryData,
                     numberOfMembers: Number(e.target.value),
                   })
-                }
+                }}
               />
               <span>명</span>
             </div>
