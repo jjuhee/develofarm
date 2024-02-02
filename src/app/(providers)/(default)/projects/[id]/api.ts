@@ -3,6 +3,7 @@ import { TablesInsert, TablesUpdate } from "@/types/supabase"
 
 /** 신청하기: 신청자 목록에 멤버 추가 */
 export async function setMember(newMember: TablesInsert<"project_members">) {
+  console.log("newMember", newMember)
   const { error } = await supabaseForClient
     .from("project_members")
     .insert(newMember)

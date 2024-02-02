@@ -3,29 +3,27 @@ import { create } from "zustand"
 type TCustomModalType = {
   viewCustomModal: boolean
   setViewCustomModal: (viewCustomModal: boolean) => void
-  modalResult: boolean
-  setModalResult: (modalResult: boolean) => void
   modalType: string
   setModalType: (modalType: string) => void
   modalMessage: string
   setModalMessage: (modalMessage: string) => void
-  handler?: () => void // New field for handler
-  setHandler: (handler?: () => void) => void // Setter for handler
+  isInput: boolean | null | undefined
+  setIsInput: (isInput: boolean | null | undefined) => void
+  handler?: (message?: string) => void // New field for handler
+  setHandler: (handler?: (message?: string) => void) => void // Setter for handler
 }
 
 const useCustomModalStore = create<TCustomModalType>()((set) => ({
   viewCustomModal: false,
-  setViewCustomModal: (viewCustomModal: boolean) =>
-    set({ viewCustomModal: viewCustomModal }),
-  modalResult: false,
-  setModalResult: (modalResult: boolean) => set({ modalResult: modalResult }),
+  setViewCustomModal: (viewCustomModal) => set({ viewCustomModal }),
   modalType: "",
-  setModalType: (modalType: string) => set({ modalType: modalType }),
+  setModalType: (modalType) => set({ modalType }),
   modalMessage: "",
-  setModalMessage: (modalMessage: string) =>
-    set({ modalMessage: modalMessage }),
+  setModalMessage: (modalMessage) => set({ modalMessage }),
+  isInput: null,
+  setIsInput: (isInput) => set({ isInput }),
   handler: undefined, // Initialize handler as undefined
-  setHandler: (handler?: () => void) => set({ handler: handler }), // Setter for handler
+  setHandler: (handler) => set({ handler }), // Setter for handler
 }))
 
 export default useCustomModalStore
