@@ -1,24 +1,24 @@
 "use client"
 import React, { useEffect } from "react"
 import Editor from "./_components/Editor"
-import useUserStore from "@/store/user"
-import { useCustomModal } from "@/hooks/useCustomModal"
 import { useRouter } from "next/navigation"
 import useLoginConfirmModal from "@/hooks/useLoginConfirmModal"
 
 const WritePage = () => {
-  const user = useUserStore((state) => state.user)
+  const accessToken = localStorage.getItem(
+    process.env.NEXT_PUBLIC_AUTH_TOKEN as string,
+  )
   const openLoginConfirmModal = useLoginConfirmModal()
   const router = useRouter()
 
   useEffect(() => {
-    if (user === null) {
+    if (accessToken === null) {
       openLoginConfirmModal()
       router.replace("/")
     }
-  }, [user])
+  }, [accessToken])
 
-  return <>{user && <Editor />}</>
+  return <>{accessToken && <Editor />}</>
 }
 
 export default WritePage
