@@ -15,20 +15,31 @@ import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import { usePathname, useRouter } from "next/navigation"
 import useUrlStore from "@/store/url"
 import Notifications from "./Notifications"
+import { useQuery } from "@tanstack/react-query"
+import { getUserByUserId } from "../../api"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 const Header = () => {
-  const [showTooltip, setShowTooltip] = useState(false)
-  const [isImageActive, setIsImageActive] = useState<boolean>(false)
-  const [isAuthIntialized, setIsAuthIntialized] = useState<boolean>(false)
   const { setUrl } = useUrlStore()
   const { user, setUser } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
   const { setViewMemberModal, setMemberPosition } = useMembersStore(
     (state) => state,
   )
+  const [showTooltip, setShowTooltip] = useState(false)
+  const [isImageActive, setIsImageActive] = useState<boolean>(false)
+  const [isAuthInitialized, setIsAuthInitialized] = useState<boolean>(false)
+  const [sessionUserId, setSessionUserId] = useState<string>("")
   const dropdownRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
   const pathname = usePathname()
+  const { openCustomModalHandler } = useCustomModal()
+
+  const { data: savedUserData, error } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUserByUserId(sessionUserId),
+    enabled: !!sessionUserId,
+  })
 
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
@@ -69,30 +80,40 @@ const Header = () => {
   useEffect(() => {
     const subscription = supabaseForClient.auth.onAuthStateChange(
       (event, session) => {
+        session && setSessionUserId(session.user.id)
         if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
-          if (session?.user) {
-            const userData = {
-              id: session.user.id,
-              nickName: session.user.user_metadata?.name as string,
-              avatarUrl: session.user.user_metadata?.avatar_url,
-              email: session.user.email as string,
-              createdAt: session.user.email as string,
+          if (session && savedUserData) {
+            //TODO: 저장된 유저 데이터 가져오기
+            // 가져온 유저 데이터 전역 데이터로 관리
+            if (savedUserData) {
+              const userData = {
+                id: savedUserData.id,
+                nickName: savedUserData.user_nickname,
+                avatarUrl: savedUserData.avatar_url,
+                email: savedUserData.user_email,
+                createdAt: savedUserData.created_at,
+              }
+              setUser(userData)
+              setUrl(pathname)
+            } else {
+              openCustomModalHandler(
+                "유저 데이터를 불러오지 못했습니다.\n로그인을 다시 실행해주세요",
+                "alert",
+              )
             }
-            setUser(userData)
-            setUrl(pathname)
           }
         } else if (event === "SIGNED_OUT") {
           setUser(null)
         }
         // 로그인이나 로그아웃 상태를 가지고 있을 경우
-        setIsAuthIntialized(true)
+        setIsAuthInitialized(true)
       },
     )
     return () => {
       subscription.data.subscription.unsubscribe()
       console.log("unsubscribe!!")
     }
-  }, [])
+  }, [savedUserData])
 
   useEffect(() => {
     setUrl(pathname)
@@ -126,7 +147,7 @@ const Header = () => {
           </Link>
 
           {/* 유저가 로그인 중일 때 메뉴 숨기기 */}
-          {isAuthIntialized ? (
+          {isAuthInitialized ? (
             // user의 정보가 있을 때 프로필 메뉴 보여주기
             user ? (
               <>
