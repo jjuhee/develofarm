@@ -61,7 +61,7 @@ const ReCommentForm = ({ comment }: Props) => {
     const newComment: TablesInsert<"comments"> = {
       project_id: comment.project_id,
       comment_id: comment.id,
-      user_id: user.id,
+      user_id: user.id as string,
       content,
     }
 

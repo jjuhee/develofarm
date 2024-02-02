@@ -50,7 +50,7 @@ const CommentForm = ({ projectId, projectUserId }: Props) => {
 
     const newComment: TablesInsert<"comments"> = {
       project_id: projectId,
-      user_id: user.id,
+      user_id: user.id as string,
       content,
     }
 

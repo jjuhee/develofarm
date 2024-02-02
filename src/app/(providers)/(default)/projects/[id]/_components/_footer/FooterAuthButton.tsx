@@ -90,7 +90,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   const { data: applyUser, isLoading: applyUserIsLoading } = useQuery({
     enabled: user !== null,
     queryKey: ["applyUser", { projectId: project.id }],
-    queryFn: () => getApplicationUser(project.id, user?.id),
+    queryFn: () => getApplicationUser(project.id, user?.id as string),
   })
 
   // 신청자가 맞는지 확인하는 변수
@@ -108,7 +108,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
 
     const newMember: TablesInsert<"project_members"> = {
       project_id: project.id,
-      user_id: user.id,
+      user_id: user.id as string,
     }
     const newReCommentNoti = {
       project_id: project.id,
