@@ -1,6 +1,6 @@
 import { Tables, TablesInsert } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import React from "react"
+import React, { useState } from "react"
 import useUserStore from "@/store/user"
 import {
   closeProject,
@@ -110,11 +110,11 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
       user_id: user.id,
     }
 
-    const handler = () => {
-      addMemberMutate.mutate(newMember)
+    const handler = (message?: string) => {
+      addMemberMutate.mutate({ ...newMember, appeal_message: message })
     }
 
-    openCustomModalHandler("신청하시겠습니까?", "confirm", handler)
+    openCustomModalHandler("신청하시겠습니까?", "confirm", handler, true)
   }
 
   /**
