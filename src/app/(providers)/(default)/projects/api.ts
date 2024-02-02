@@ -186,7 +186,7 @@ export async function removeBookmarks({
   currentUser,
 }: {
   projectId: string
-  currentUser?: string | undefined
+  currentUser?: string | null
 }) {
   const { error } = await supabaseForClient
     .from("bookmarks")

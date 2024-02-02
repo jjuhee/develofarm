@@ -45,7 +45,7 @@ const BookmarkButton = ({ projectId, bookmarks }: Props) => {
       queryClient.invalidateQueries({ queryKey: ["bookmarks"] })
     } else if (currentUser) {
       /** 추가되어 있지 않을 경우 새로 추가 */
-      addMutate({ projectId, currentUser: currentUser.id })
+      addMutate({ projectId, currentUser: currentUser.id as string })
     }
   }
 
