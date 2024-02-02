@@ -7,6 +7,7 @@ import { getComments, removeComment, setComment } from "../../api"
 import ReComments from "./ReComments"
 import CommentRemoveButton from "./CommentRemoveButton"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import useAddNotiMutate from "@/hooks/useAddNotiMutate"
 
 type Props = {
   comment: Exclude<Awaited<ReturnType<typeof getComments>>, null>[number]
@@ -18,6 +19,7 @@ const ReCommentForm = ({ comment }: Props) => {
   const { user } = useUserStore((state) => state)
   const queryClient = useQueryClient()
   const { openCustomModalHandler } = useCustomModal()
+  const addNotiMutate = useAddNotiMutate()
 
   /**
    *@ funtion 대댓글 작성 폼 토글 기능 */
@@ -62,6 +64,15 @@ const ReCommentForm = ({ comment }: Props) => {
     }
 
     AddReCommentMutate.mutate(newComment)
+
+    const newReCommentNoti = {
+      project_id: comment.project_id,
+      receiver_id: comment.user_id,
+      type: "recomment",
+      sender_nickname: user?.nickName as string,
+    }
+
+    addNotiMutate(newReCommentNoti)
   }
 
   /**
