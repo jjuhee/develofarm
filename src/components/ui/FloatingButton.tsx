@@ -1,18 +1,18 @@
 "use client"
 
+import useLoginConfirmModal from "@/hooks/useLoginConfirmModal"
+import useUserStore from "@/store/user"
 import scrollToTop from "@/utils/scrollTop"
 import Image from "next/image"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
 
-interface Props {
-  mode?: string
-}
-
-const FloatingButton = ({ mode }: Props) => {
+const FloatingButton = () => {
   const pathname = usePathname()
+  const router = useRouter()
+  const userId = useUserStore((state) => state.user?.id)
   const [showButton, setShowButton] = useState(false)
+  const openLoginConfirmModal = useLoginConfirmModal()
 
   useEffect(() => {
     const handlerShowButton = () => {
@@ -30,6 +30,14 @@ const FloatingButton = ({ mode }: Props) => {
     }
   }, [])
 
+  const onClickWriteButton = () => {
+    if (userId) {
+      router.push("/write")
+    } else {
+      openLoginConfirmModal()
+    }
+  }
+
   return (
     <div className="fixed right-[50px] bottom-[50px] z-10">
       {showButton && (
@@ -44,15 +52,15 @@ const FloatingButton = ({ mode }: Props) => {
         />
       )}
 
-      {mode === "default" && pathname !== "/write" && (
-        <Link href={"/write"}>
-          <Image
-            src={"/images/writing_button.png"}
-            alt="top_button"
-            width={70}
-            height={70}
-          />
-        </Link>
+      {pathname !== "/write" && (
+        <Image
+          src={"/images/writing_button.png"}
+          alt="top_button"
+          width={70}
+          height={70}
+          onClick={onClickWriteButton}
+          className="cursor-pointer"
+        />
       )}
     </div>
   )

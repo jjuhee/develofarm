@@ -45,7 +45,7 @@ const MostBookmarked = ({ bookmarksCountProjects }: MostBookmarkedProps) => {
                 delay: 0,
                 pauseOnMouseEnter: true,
                 disableOnInteraction: false,
-                reverseDirection: false,
+                reverseDirection: arr.number == 1 ? false : true,
               }}
               slidesPerView={4}
               spaceBetween={20}

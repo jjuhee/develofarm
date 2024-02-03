@@ -1,23 +1,19 @@
 import { create } from "zustand"
 
-type TUserData = {
-  id: string
-  nickName: string
-  avatarUrl: string
-  email: string
-  createdAt: string
+export type TUserData = {
+  id: string | null
+  nickName: string | null
+  avatarUrl: string | null
+  email: string | null
+  createdAt: string | null
 }
 
 type TUserState = {
-  userId: string
-  setUserId: (userId: string) => void
   user: TUserData | null
   setUser: (user: TUserData | null) => void
 }
 
 const useUserStore = create<TUserState>((set) => ({
-  userId: "",
-  setUserId: (userId) => set({ userId }),
   user: null,
   setUser: (user) => set({ user: user }),
 }))

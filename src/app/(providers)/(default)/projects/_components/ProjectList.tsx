@@ -8,7 +8,7 @@ import EmptyState from "@/components/EmptyState"
 import Spacer from "@/components/ui/Spacer"
 import { getBookmarksByUserId, getProjects } from "../api"
 import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query"
-import useUserStore from "@/store/user"
+import useUserStore, { TUserData } from "@/store/user"
 import Pagination from "./Pagination"
 import useProjectsStore from "@/store/projects"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
@@ -20,38 +20,19 @@ interface Props {
   option?: TProjectsOptions
 }
 
-// TODO: SSR로 처음 데이터 가져오기
-export async function getServerSideProps() {
-  const queryClient = new QueryClient()
-
-  await queryClient.fetchQuery({
-    queryKey: ["projects"],
-    queryFn: () => getProjects,
-  })
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  }
-}
-
 const ProjectList = ({ option }: Props) => {
   const PAGE_SIZE = 5
-  const userId = useUserStore((state) => state.userId)
+  const { user } = useUserStore((state) => state)
   const [recruitStatus, setRecruitStatus] = useState(false)
   const [order, setOrder] = useState(1)
   const [isOpenOrder, setIsOpenOrder] = useState(false)
   const sortRef = useRef(null)
 
   const { page, setPage } = useProjectsStore((state) => state)
+  const currentUserId = typeof user?.id === "string" ? user.id : ""
 
   /** 전체 프로젝트 가져오기 */
-  const {
-    data: projects,
-    refetch: projectRefetch,
-    isLoading,
-  } = useQuery({
+  const { data: projects, isLoading } = useQuery({
     queryKey: ["projects", recruitStatus, { option: option }],
     queryFn: () =>
       getProjects({
@@ -62,12 +43,8 @@ const ProjectList = ({ option }: Props) => {
   })
 
   /** 현재 유저 북마크 데이터 가져오기 */
-  // const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
-  //   queryKey: ["bookmarks", userId],
-  //   queryFn: () => getBookmarksByUserId(userId as string),
-  //   enabled: !!userId,
-  // })
-  const bookmarks = useBookmarks(userId)
+
+  const bookmarks = useBookmarks(currentUserId)
   /** 프로젝트 리스트 정렬 */
   const sortedProjects = useMemo(() => {
     const draft = projects ? [...projects] : []
@@ -189,7 +166,7 @@ const ProjectList = ({ option }: Props) => {
                 key={item?.id}
                 project={item as TProjectsType}
                 bookmarks={bookmarks as Tables<"bookmarks">[]}
-                currentUser={userId as string}
+                // currentUser={user?.id as string}
                 page={page as number}
               />
             )

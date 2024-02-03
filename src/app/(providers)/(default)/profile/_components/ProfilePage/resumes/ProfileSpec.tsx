@@ -14,7 +14,7 @@ const ProfileSpec = ({ profileId }: { profileId: string }) => {
   })
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <div className="hidden">Loading...</div>
   }
 
   if (isError) {

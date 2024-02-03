@@ -1,6 +1,6 @@
-import { Tables, TablesInsert } from "@/types/supabase"
+import { TablesInsert } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import React from "react"
+import React, { useState } from "react"
 import useUserStore from "@/store/user"
 import {
   closeProject,
@@ -11,6 +11,7 @@ import {
 import { useCustomModal } from "@/hooks/useCustomModal"
 import Button from "@/components/ui/Button"
 import { getProject } from "../../../api"
+import useAddNotiMutate from "@/hooks/useAddNotiMutate"
 
 type Props = {
   project: Exclude<Awaited<ReturnType<typeof getProject>>, null>
@@ -19,9 +20,9 @@ type Props = {
 
 const FooterAuthButton = ({ project, isWriter }: Props) => {
   const queryClient = useQueryClient()
-  const { userId } = useUserStore()
+  const { user } = useUserStore((state) => state)
   const { openCustomModalHandler } = useCustomModal()
-
+  const addNotiMutate = useAddNotiMutate()
   /**
    *@ mutaion 게시물 마감 후 확인창 띄어주기
    TODO: 새로고침 후 반영되는 거 수정예정 */
@@ -87,29 +88,41 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   /**
    *@ query 해당 게시물 id를 구분해 댓글 목록 조회 */
   const { data: applyUser, isLoading: applyUserIsLoading } = useQuery({
+    enabled: user !== null,
     queryKey: ["applyUser", { projectId: project.id }],
-    queryFn: () => getApplicationUser(project.id, userId),
+    queryFn: () => getApplicationUser(project.id, user?.id as string),
   })
 
   // 신청자가 맞는지 확인하는 변수
   const isApplicantAuthenticated =
-    userId && applyUser?.user_id && userId === applyUser?.user_id
+    user?.id && applyUser?.user_id && user?.id === applyUser?.user_id
 
   if (applyUserIsLoading) return <div>is Loading...</div>
 
   /**
    *@ query 해당 유저 id를 구분해 프로젝트 신청하기 기능 */
   const applyForProjectButtonHandler = () => {
+    if (!user) {
+      return
+    }
+
     const newMember: TablesInsert<"project_members"> = {
       project_id: project.id,
-      user_id: userId,
+      user_id: user.id as string,
+    }
+    const newReCommentNoti = {
+      project_id: project.id,
+      receiver_id: project.user_id,
+      type: "application",
+      sender_nickname: user?.nickName as string,
     }
 
-    const handler = () => {
-      addMemberMutate.mutate(newMember)
+    const handler = (message?: string) => {
+      addMemberMutate.mutate({ ...newMember, appeal_message: message })
+      addNotiMutate(newReCommentNoti)
     }
 
-    openCustomModalHandler("신청하시겠습니까?", "confirm", handler)
+    openCustomModalHandler("신청하시겠습니까?", "confirm", handler, true)
   }
 
   /**
@@ -125,7 +138,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   return (
     // 프로젝트가 모집완료 상태가 아니고 로그인한 유저라면 보여주는 버튼
     project.recruit_status === false &&
-    userId && (
+    user?.id && (
       <>
         {/* 글 작성자 여부에 따른 버튼 */}
         {isWriter ? (

@@ -1,23 +1,33 @@
 import useMembersStore from "@/store/members"
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
-import { getProjectByUserId } from "../api"
+import { getInvitationByReceiverId, getProjectByUserId } from "../api"
 import { useRouter } from "next/navigation"
 import MemberInvitationCard from "./MemberInvitationCard"
-import { TProjectsByUserId, TProjectsType } from "@/types/extendedType"
+import { Tables } from "@/types/supabase"
+import { TProjectsByUserId } from "@/types/extendedType"
+import useUserStore from "@/store/user"
 
-interface Props {
-  currentUserId: string
-}
-
-const MemberProfile = ({ currentUserId }: Props) => {
+const MemberProfile = () => {
   const selectedMember = useMembersStore((state) => state.selectedMember)
   const router = useRouter()
+  const currentUserId = useUserStore((state) => state.user?.id) as string
 
   const { data: projects } = useQuery({
     queryKey: ["projects", currentUserId],
     queryFn: () => getProjectByUserId(currentUserId),
     enabled: !!currentUserId,
+  })
+
+  //TODO: receiverId가 같고 type이 invitation인 notifications 가져오기
+  const { data: invitationByReceiverId } = useQuery<
+    unknown,
+    Error,
+    Tables<"notifications">[]
+  >({
+    queryKey: ["invitations", selectedMember.id],
+    queryFn: () => getInvitationByReceiverId(selectedMember.id),
+    enabled: !!selectedMember.id,
   })
 
   const onClickToProfilePageHandler = () => {
@@ -43,8 +53,7 @@ const MemberProfile = ({ currentUserId }: Props) => {
           </div>
           <div className="flex flex-col gap-2">
             <h3 className="text-[30px] font-[700]">
-              {" "}
-              j{selectedMember.user_nickname}
+              {selectedMember.user_nickname}
             </h3>
             <p className="text-[20px] font-[600]">
               {selectedMember.position?.name || "포지션을 정해주세요."}
@@ -54,6 +63,7 @@ const MemberProfile = ({ currentUserId }: Props) => {
         <MemberInvitationCard
           projects={projects as TProjectsByUserId[]}
           receiverId={selectedMember.id}
+          invitations={invitationByReceiverId as Tables<"notifications">[]}
         />
       </div>
       <div className="flex flex-col w-full gap-3">

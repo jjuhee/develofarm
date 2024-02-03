@@ -33,7 +33,7 @@ const Attatchment = ({ setSelectedFile }: Props) => {
           </div>
         </div>
         <p className=" ml-1 leading-[37px] text-[#666666]">
-          {fileInfo ? fileInfo : "파일을 마우스로 끌어오세요."}
+          {fileInfo ? fileInfo : "파일을 선택해주세요."}
         </p>
         <input
           className="hidden"

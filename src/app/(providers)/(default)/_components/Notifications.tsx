@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import React, { MouseEvent, useEffect, useState } from "react"
 import { getNotifications, setNotification } from "../../api"
 import { BsArrowUpRight } from "react-icons/bs"
+import { VscBell } from "react-icons/vsc"
 //import useNotiStore from "@/store/notification"
 
 interface Props {
@@ -91,7 +92,15 @@ const Notifications = ({ showTooltip }: Props) => {
   }
 
   return (
-    <div>
+    <div className="flex">
+      <VscBell />
+      {notificationList.length > 0 && (
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-main-lime opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-main-lime"></span>
+        </span>
+      )}
+      {/* 드롭다운 */}
       <div className="relative text-[13px] *:bg-white">
         <ul
           className={`absolute flex flex-col mt-[3px] rounded-lg border-[1px] border-[#F2F4F7] shadow-md w-[243px] left-[-220px] top-[20px] z-10 ${

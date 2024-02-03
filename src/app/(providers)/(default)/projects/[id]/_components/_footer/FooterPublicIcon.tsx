@@ -1,5 +1,4 @@
 import BookmarkButton from "@/components/BookmarkButton"
-import useUserStore from "@/store/user"
 import { Tables } from "@/types/supabase"
 import React from "react"
 import { IoShareSocialOutline } from "react-icons/io5"
@@ -11,17 +10,11 @@ interface Props {
 }
 
 const FooterPublicIcon = ({ bookmarks, projectId, bookmarksCount }: Props) => {
-  const userId = useUserStore((state) => state.userId)
-
   return (
     <>
       <span className="flex ml-auto pr-5 items-center">
         <span className="pr-1">
-          <BookmarkButton
-            currentUser={userId}
-            bookmarks={bookmarks}
-            projectId={projectId}
-          />
+          <BookmarkButton bookmarks={bookmarks} projectId={projectId} />
         </span>
         {bookmarksCount}
       </span>

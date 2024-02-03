@@ -60,10 +60,9 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
     },
   })
   /** 현재 인증된 유저 데이터 가져오기 */
-  const { userId } = useUserStore()
+  const userId = useUserStore((state) => state.user?.id) as string
 
   /** 수정시 : 내용 가져오기 */
-  /** 이미지도 불러와야하나.. */
   useEffect(() => {
     if (!isEditMode) return
     if (!project) return
@@ -85,22 +84,25 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
   /** 제출하기 */
   const submitProjectHandler = (e: FormEvent) => {
     e.preventDefault()
-    if (
-      !title ||
-      !content ||
-      !categoryData.startDate ||
-      !categoryData.endDate ||
-      categoryData.numberOfMembers <= 0
-    ) {
-      alert("data를 모두 입력 해주세요~") // TODO P3:(jhee) 없는 것을 표시해 주면 좋겠다.
+    if (!title || !content) {
+      customModal("제목과 내용을 입력하셨나요?", "alert")
       return
     }
+    if (categoryData.numberOfMembers <= 0) {
+      customModal("구인 인원을 입력해주세요", "alert")
+      return
+    }
+    if (!categoryData.startDate || !categoryData.endDate) {
+      customModal("프로젝트 기간을 설정해주세요", "alert")
+      return
+    }
+
     if (categoryData.isOffline && !categoryData.region) {
-      alert("오프라인 프로젝트이면 지역을 입력하세요~")
+      customModal("오프라인 프로젝트이면 지역을 입력하세요", "alert")
       return
     }
     if (categoryData.techs.length <= 0) {
-      alert("원하는 포지션과 테크를 입력 하세요")
+      customModal("원하는 포지션과 테크를 입력하세요", "alert")
       return
     }
 
@@ -161,7 +163,6 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
         )}
       </div>
       <div>
-        {/* TODO P1: (jhee) 첨부파일 넣는 곳? */}
         <Attatchment setSelectedFile={setSelectedFile} />
       </div>
       <div className="buttonbox flex justify-between">

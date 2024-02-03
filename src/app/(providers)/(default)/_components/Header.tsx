@@ -5,7 +5,6 @@ import useMembersStore from "@/store/members"
 import Link from "next/link"
 import React, { useEffect, useRef, useState } from "react"
 import { IoMdSearch } from "react-icons/io"
-import { VscBell } from "react-icons/vsc"
 import { supabaseForClient } from "@/supabase/supabase.client"
 import useUserStore from "@/store/user"
 import Image from "next/image"
@@ -13,24 +12,34 @@ import { GoPerson } from "react-icons/go"
 import { LuFolder } from "react-icons/lu"
 import { IoLogOutOutline } from "react-icons/io5"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
+import { usePathname, useRouter } from "next/navigation"
 import useUrlStore from "@/store/url"
-import { usePathname } from "next/navigation"
 import Notifications from "./Notifications"
+import { useQuery } from "@tanstack/react-query"
+import { getUserByUserId } from "../../api"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 const Header = () => {
-  const [showTooltip, setShowTooltip] = useState(false)
-  const [isImageActive, setIsImageActive] = useState<boolean>(false)
-  const [isAlarmData, setIsAlarmData] = useState<{ [key: string]: any }>()
-  const [isAuthIntialized, setIsAuthIntialized] = useState<boolean>(false)
   const { setUrl } = useUrlStore()
   const { user, setUser } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
   const { setViewMemberModal, setMemberPosition } = useMembersStore(
     (state) => state,
   )
+  const [showTooltip, setShowTooltip] = useState(false)
+  const [isImageActive, setIsImageActive] = useState<boolean>(false)
+  const [isAuthInitialized, setIsAuthInitialized] = useState<boolean>(false)
+  const [sessionUserId, setSessionUserId] = useState<string>("")
   const dropdownRef = useRef<HTMLInputElement>(null)
-  const client = supabaseForClient
+  const router = useRouter()
   const pathname = usePathname()
+  const { openCustomModalHandler } = useCustomModal()
+
+  const { data: savedUserData, error } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUserByUserId(sessionUserId),
+    enabled: !!sessionUserId,
+  })
 
   const onClickMemberCategoryHandler = () => {
     selectCategory("전체보기")
@@ -51,64 +60,64 @@ const Header = () => {
 
   //로그아웃 함수
   const onLogoutHandler = () => {
-    //-- 이 부분은 주석이 있어야만 정상적으로 수행되는 코드 입니다.
-    // localStorage.removeItem('keywords');
-
     supabaseForClient.auth.signOut()
+
+    // 내프로젝트나 내프로필인 경우 홈화면으로 돌아가기
+    if (
+      pathname === `/profile/${user?.id}` ||
+      pathname === `/profile/${user?.id}/profileProject`
+    ) {
+      router.push("/")
+    }
   }
 
-  //public schema의 projects 테이블을 구독, unmount시 구독취소
-  useEffect(() => {
-    const channelA = client
-      .channel("schema-db-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "projects",
-        },
-        (payload) => setIsAlarmData(payload),
-      )
-      .subscribe()
-    return () => {
-      channelA.unsubscribe()
-    }
+  useOnClickOutSide({
+    ref: dropdownRef,
+    handler: () => setIsImageActive(false),
   })
 
   // 로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
   useEffect(() => {
     const subscription = supabaseForClient.auth.onAuthStateChange(
       (event, session) => {
+        session && setSessionUserId(session.user.id)
         if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
-          if (session?.user) {
-            const userData = {
-              id: session.user.id,
-              nickName: session.user.user_metadata?.name as string,
-              avatarUrl: session.user.user_metadata?.avatar_url,
-              email: session.user.email as string,
-              createdAt: session.user.email as string,
+          if (session && savedUserData) {
+            //TODO: 저장된 유저 데이터 가져오기
+            // 가져온 유저 데이터 전역 데이터로 관리
+            if (savedUserData) {
+              const userData = {
+                id: savedUserData.id,
+                nickName: savedUserData.user_nickname,
+                avatarUrl: savedUserData.avatar_url,
+                email: savedUserData.user_email,
+                createdAt: savedUserData.created_at,
+              }
+              setUser(userData)
+              setUrl(pathname)
+            } else {
+              openCustomModalHandler(
+                "유저 데이터를 불러오지 못했습니다.\n로그인을 다시 실행해주세요",
+                "alert",
+              )
             }
-            setUser(userData)
-            setUrl(pathname)
           }
         } else if (event === "SIGNED_OUT") {
           setUser(null)
         }
         // 로그인이나 로그아웃 상태를 가지고 있을 경우
-        setIsAuthIntialized(true)
+        setIsAuthInitialized(true)
       },
     )
     return () => {
       subscription.data.subscription.unsubscribe()
       console.log("unsubscribe!!")
     }
-  }, [])
+  }, [savedUserData])
 
-  useOnClickOutSide({
-    ref: dropdownRef,
-    handler: () => setIsImageActive(false),
-  })
+  useEffect(() => {
+    setUrl(pathname)
+  }, [pathname])
 
   //END
   return (
@@ -138,7 +147,7 @@ const Header = () => {
           </Link>
 
           {/* 유저가 로그인 중일 때 메뉴 숨기기 */}
-          {isAuthIntialized ? (
+          {isAuthInitialized ? (
             // user의 정보가 있을 때 프로필 메뉴 보여주기
             user ? (
               <>
@@ -146,7 +155,6 @@ const Header = () => {
                   className="text-md hover:cursor-pointer"
                   onClick={onClickAlarmHandler}
                 >
-                  <VscBell />
                   <Notifications showTooltip={showTooltip} />
                 </div>
 
@@ -158,7 +166,7 @@ const Header = () => {
                   <Image
                     className="rounded-full"
                     alt="이미지"
-                    src={user.avatarUrl ? user.avatarUrl : ""}
+                    src={user?.avatarUrl ? user?.avatarUrl : ""}
                     width={36}
                     height={36}
                   />
