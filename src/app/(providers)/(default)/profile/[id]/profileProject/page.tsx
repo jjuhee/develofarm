@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getProfileBookmarks, getProjects } from "../../api"
 import ProfileProjectCard from "../../_components/ProfilePage/projectLists/ProfileProjectCard"
 import { Tables } from "@/types/supabase"
+import Image from "next/image"
 
 const ProfileProjectPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -37,7 +38,11 @@ const ProfileProjectPage = () => {
   })
 
   if (projectLoading || bookmarksLoading) {
-    return <div className="hidden">...로딩중</div>
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+      </div>
+    )
   }
   if (projectError || bookmarksError) {
     return <div>프로젝트 데이터를 불러오는 중 오류가 발생했습니다.</div>
