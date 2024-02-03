@@ -21,7 +21,7 @@
 - 팀이름: **行くぞ！！！(이쿠조!!!)**
 
 |팀원|역할|맡은 페이지|MBTI|깃허브 주소|블로그 주소|
-|------|---|---|---|---|---|---|
+|------|---|---|---|---|---|
 |김은비|**리더**|프로젝트&인재풀 페이지, 헤더&푸터 레이아웃|ISTP|https://github.com/eunbime|https://velog.io/@eunbi/posts|
 |김주희|**부리더**|프로젝트 작성&수정 페이지|ISFP|https://github.com/jjuhee|https://developer.happymunzi.com|
 |진민용|팀원|로그인&메인 페이지, 검색 페이지, 헤더 레이아웃|ENFJ|https://github.com/boyaneck|https://velog.io/@boyaneck/posts|
