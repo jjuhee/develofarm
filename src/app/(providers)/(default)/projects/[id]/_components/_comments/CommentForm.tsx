@@ -56,13 +56,15 @@ const CommentForm = ({ projectId, projectUserId }: Props) => {
 
     AddCommentMutate.mutate(newComment)
 
-    const newCommentNoti = {
-      project_id: projectId,
-      receiver_id: projectUserId,
-      type: "comment",
-      sender_nickname: user?.nickName as string,
+    if (projectUserId !== user.id) {
+      const newCommentNoti = {
+        project_id: projectId,
+        receiver_id: projectUserId,
+        type: "comment",
+        sender_nickname: user?.nickName as string,
+      }
+      addNotiMutate(newCommentNoti)
     }
-    addNotiMutate(newCommentNoti)
   }
 
   return (

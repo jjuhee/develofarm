@@ -67,14 +67,15 @@ const ReCommentForm = ({ comment }: Props) => {
 
     AddReCommentMutate.mutate(newComment)
 
-    const newReCommentNoti = {
-      project_id: comment.project_id,
-      receiver_id: comment.user_id,
-      type: "recomment",
-      sender_nickname: user?.nickName as string,
+    if (comment.user_id !== user.id) {
+      const newReCommentNoti = {
+        project_id: comment.project_id,
+        receiver_id: comment.user_id,
+        type: "recomment",
+        sender_nickname: user?.nickName as string,
+      }
+      addNotiMutate(newReCommentNoti)
     }
-
-    addNotiMutate(newReCommentNoti)
   }
 
   /**
