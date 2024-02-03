@@ -4,7 +4,7 @@ interface Tdebouncing {
   enteredKeyword: string | undefined
 }
 // useDebounce 커스텀 훅
-export const useDebounce = ({ enteredKeyword }: Tdebouncing, delay = 500) => {
+export const useDebounce = ({ enteredKeyword }: Tdebouncing, delay = 200) => {
   const [debouncedValue, setDebouncedValue] = useState<string | undefined>(
     enteredKeyword,
   )

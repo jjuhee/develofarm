@@ -48,13 +48,7 @@ const SearchPage = () => {
   } = useKeywordsHooks()
   /** 현재 인증된 유저 데이터 가져오기 */
   //zustand로 user 가져오기
-  // useEffect(() => {
-  //   const getAuth = async () => {
-  //     const user = await supabaseForClient.auth.getUser()
-  //     setCurrentUserId(user.data.user?.id as string)
-  //   }
-  //   getAuth()
-  // }, [currentUserId])
+
   // const userId = useUserStore((state) => state.userId)
   // setCurrentUserId(userId)
   // console.log(
