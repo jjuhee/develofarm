@@ -6,8 +6,8 @@ import React, { useMemo, useRef, useState } from "react"
 import ProjectCard from "./ProjectCard"
 import EmptyState from "@/components/EmptyState"
 import Spacer from "@/components/ui/Spacer"
-import { getBookmarksByUserId, getProjects } from "../api"
-import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query"
+import { getProjects } from "../api"
+import { useQuery } from "@tanstack/react-query"
 import useUserStore, { TUserData } from "@/store/user"
 import Pagination from "./Pagination"
 import useProjectsStore from "@/store/projects"
@@ -29,7 +29,6 @@ const ProjectList = ({ option }: Props) => {
   const sortRef = useRef(null)
 
   const { page, setPage } = useProjectsStore((state) => state)
-  const currentUserId = typeof user?.id === "string" ? user.id : ""
 
   /** 전체 프로젝트 가져오기 */
   const { data: projects, isLoading } = useQuery({
@@ -44,6 +43,7 @@ const ProjectList = ({ option }: Props) => {
 
   /** 현재 유저 북마크 데이터 가져오기 */
 
+  const currentUserId = typeof user?.id === "string" ? user.id : ""
   const bookmarks = useBookmarks(currentUserId)
   /** 프로젝트 리스트 정렬 */
   const sortedProjects = useMemo(() => {

@@ -48,18 +48,14 @@ const SearchPage = () => {
   } = useKeywordsHooks()
   /** 현재 인증된 유저 데이터 가져오기 */
   //zustand로 user 가져오기
+  const { user } = useUserStore((state) => state)
+  console.log("검색페이지에서 유저정보 가져오기", user)
 
-  // const userId = useUserStore((state) => state.userId)
-  // setCurrentUserId(userId)
-  // console.log(
-  //   "현재유저의 아이디 검색페이지",
-  //   userId,
-  //   "스테이트값의 유저",
-  //   currentUserId,
-  // )
+  useEffect(() => {
+    setCurrentUserId(typeof user?.id === "string" ? user.id : "")
+  })
   const bookmarks = useBookmarks(currentUserId)
   const debounceVal = useDebounce({ enteredKeyword })
-
   const {
     data: searchedData,
     fetchNextPage,
@@ -75,7 +71,6 @@ const SearchPage = () => {
     initialPageParam: 0,
     getNextPageParam: (lastPage: any, allPages: any) => {
       if ((lastPage as number) < 4) {
-        console.log("lastPage!!!!!!!!", lastPage)
         return null
       }
       return allPages.length
@@ -88,7 +83,6 @@ const SearchPage = () => {
     enabled: !!debounceVal,
   })
 
-  console.log("dddd", debounceVal)
   const { ref } = useInView({
     threshold: 0,
     onChange: (inView) => {
