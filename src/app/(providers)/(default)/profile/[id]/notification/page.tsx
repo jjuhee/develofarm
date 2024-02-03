@@ -12,6 +12,7 @@ import { useParams, useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import Checkbox from "@/components/ui/Checkbox"
 import { useProfileStore } from "@/store/profile"
+import NotificationList from "../../_components/NotificationPage/NotificationList"
 //import useNotiStore from "@/store/notification"
 
 const NotificationPage = () => {
@@ -24,11 +25,10 @@ const NotificationPage = () => {
   const [checkState, setCheckState] = useState<boolean>(false)
   const userId = useUserStore((state) => state?.user?.id) as string
   // const { notiState } = useNotiStore((state) => state)
-  const router = useRouter()
-  const queryClient = useQueryClient()
 
   const { id } = useParams<{ id: string }>()
   const setId = useProfileStore((state) => state.setId)
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     setId(id)
@@ -43,15 +43,6 @@ const NotificationPage = () => {
     queryKey: ["notifications", { type: "page" }],
     queryFn: () => getNotifications(userId),
     enabled: !!userId,
-  })
-
-  const updateNotiMutate = useMutation({
-    mutationFn: setNotification,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["notifications"],
-      })
-    },
   })
 
   const deleteAllMuate = useMutation({
@@ -70,11 +61,6 @@ const NotificationPage = () => {
       setFilteredNotiList(notifications.filter((noti) => noti.status === false))
     }
   }, [notifications])
-
-  const onClickNotificationHandler = (noti: TablesUpdate<"notifications">) => {
-    router.push(`/projects/${noti.project_id}`)
-    updateNotiMutate.mutate({ id: noti.id, status: true })
-  }
 
   const onCheckFilterNotiHandler = () => {
     if (checkState) {
@@ -113,51 +99,8 @@ const NotificationPage = () => {
       </div>
       <div>
         <ul>
-          {/* Todo: 컴포넌트 분리?;; */}
-          {!checkState &&
-            notificationList?.map((noti, index) => {
-              return (
-                <li
-                  key={noti.id}
-                  className={`cursor-pointer p-[10px] leading-[38px] first:border-t-[1px] border-b-[1px]
-                ${noti.status ? "bg-white" : "bg-[#efefef]"}`}
-                  onClick={() => onClickNotificationHandler(noti)}
-                >
-                  <h2 className="font-[700]">
-                    {noti.status ? "알림" : "읽지 않은 알림"}
-                  </h2>
-                  <p className="">{getNotificationMessage(noti)}</p>
-                </li>
-              )
-            })}
-          {!checkState && notificationList.length === 0 && (
-            <li className="p-[10px] bg-white leading-[38px] border-t-[1px] border-b-[1px]">
-              <h2 className="font-[700]">새 알림이 없습니다.</h2>
-              <br />
-            </li>
-          )}
-          {checkState &&
-            filteredNotiList?.map((noti, index) => {
-              return (
-                <li
-                  key={noti.id}
-                  className={`cursor-pointer p-[10px] leading-[38px] first:border-t-[1px] border-b-[1px]
-                ${noti.status ? "bg-white" : "bg-[#efefef]"}`}
-                  onClick={() => onClickNotificationHandler(noti)}
-                >
-                  <h2 className="font-[700]">
-                    {noti.status ? "알림" : "읽지 않은 알림"}
-                  </h2>
-                  <p className="">{getNotificationMessage(noti)}</p>
-                </li>
-              )
-            })}
-          {checkState && filteredNotiList.length === 0 && (
-            <li className="p-[10px] bg-white leading-[38px] border-t-[1px] border-b-[1px]">
-              <h2 className="font-[700]">새 알림이 없습니다.</h2>
-              <br />
-            </li>
-          )}
+          {!checkState && <NotificationList notiList={notificationList} />}
+          {checkState && <NotificationList notiList={filteredNotiList} />}
         </ul>
       </div>
     </div>
@@ -165,21 +108,3 @@ const NotificationPage = () => {
 }
 
 export default NotificationPage
-
-const getNotificationMessage = (noti: Tables<"notifications">) => {
-  let sender = `${noti.sender_nickname} 님이`
-  switch (noti.type) {
-    case "comment":
-      return `${sender} 댓글을 남겼습니다.`
-    case "recomment":
-      return `${sender} 대댓글을 남겼습니다.`
-    case "invitation":
-      return `${sender} 프로젝트 초대요청을 보냈습니다.`
-    case "application":
-      return `${sender} 회원님의 프로젝트에 참여를 신청하였습니다.`
-    case "acception":
-      return `회원님이 신청하신 프로젝트에 참여 멤버가 되었습니다.`
-    case "rejection":
-      return `회원님이 신청하신 프로젝트에 함께하지 못하게 되었습니다.`
-  }
-}
