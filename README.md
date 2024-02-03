@@ -20,14 +20,14 @@
 ## 팀 소개
 - 팀이름: **行くぞ！！！(이쿠조!!!)**
 
-|팀원|역할|맡은 페이지|기능|MBTI|깃허브 주소|블로그 주소|
+|팀원|역할|맡은 페이지|MBTI|깃허브 주소|블로그 주소|
 |------|---|---|---|---|---|---|
-|김은비|**리더**|프로젝트&인재풀 페이지, 헤더&푸터 레이아웃|프로젝트 세팅, 게시물 필터, 게시물 정렬, 무한스크롤, 커스텀 모달창, 인재풀 유저 팝업창, 인재풀 카테고리, 북마크, 조회수|ISTP|https://github.com/eunbime|https://velog.io/@eunbi/posts|
-|김주희|**부리더**|프로젝트 작성&수정 페이지| 프로젝트 배포 및 git 레포지토리 생성, git 컨밴션, 에디터, 게시물 작성 및 수정, 캘린더, 작성 및 수정 유효성 검사|ISFP|https://github.com/jjuhee|https://developer.happymunzi.com|
-|진민용|팀원|로그인&메인 페이지, 검색 페이지, 헤더 레이아웃|swiper, 네비바 드롭다운, 로그인, 웹 크롤링, 북마크 많은 순으로 리스트 조회, 검색|ENFJ|https://github.com/boyaneck|https://velog.io/@boyaneck/posts|
-|정효창|팀원|마이 페이지|유저 정보 수정 및 유효성 검사,프로필 페이지 조회, 찜목록 게시물 조회, 내 프로젝트 조회, 알림 조회|E같은 ISFP|https://github.com/HyoChang5147|https://velog.io/@jhc729/posts|
-|강지향|팀원|상세 페이지|게시물 삭제, 작성자 마감하기 버튼, 신청자 신청하기&신청취소 버튼, 댓글 작성&수정&삭제, 대댓글 작성&수정&삭제, 공유하기, 프로젝트 상세조회, 댓글 유효성 검사|ISFJ|https://github.com/KANG0417|https://velog.io/@kanjang96/posts|
-|이승연|디자이너|전체 페이지|UI 디자인|ISFJ|||
+|김은비|**리더**|프로젝트&인재풀 페이지, 헤더&푸터 레이아웃|ISTP|https://github.com/eunbime|https://velog.io/@eunbi/posts|
+|김주희|**부리더**|프로젝트 작성&수정 페이지|ISFP|https://github.com/jjuhee|https://developer.happymunzi.com|
+|진민용|팀원|로그인&메인 페이지, 검색 페이지, 헤더 레이아웃|ENFJ|https://github.com/boyaneck|https://velog.io/@boyaneck/posts|
+|정효창|팀원|마이 페이지|E같은 ISFP|https://github.com/HyoChang5147|https://velog.io/@jhc729/posts|
+|강지향|팀원|상세 페이지|ISFJ|https://github.com/KANG0417|https://velog.io/@kanjang96/posts|
+|이승연|디자이너|전체 페이지 UI 디자인|ISFJ|||
 
 ## 사용 기술
 
