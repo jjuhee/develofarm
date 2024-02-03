@@ -31,9 +31,11 @@ const MostBookmarked = ({ bookmarksCountProjects }: MostBookmarkedProps) => {
   return (
     <div>
       {" "}
-      <Spacer y={100} />
-      <div className="mx-y mx-auto p-10 text-2xl font-bold">
-        어떤 프로젝트가 관심을 받고 있나요?
+      <Spacer y={80} />
+      <div className="flex justify-center items-center ">
+        <div className="p-10 text-2xl font-bold">
+          어떤 프로젝트가 관심을 받고 있나요?
+        </div>
       </div>
       <Swiper
         direction="horizontal"

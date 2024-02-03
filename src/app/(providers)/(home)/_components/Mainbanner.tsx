@@ -63,9 +63,10 @@ const Mainbanner = () => {
   return (
     <>
       <>
-        <div className={`box ${isHovered ? "box-hover" : ""}`}>
+        <div className="bg-main-lime group border border-gray-200 flex items-center justify-center h-[80px]"></div>
+        {/* <div className={`box ${isHovered ? "box-hover" : ""}`}>
           <span style={{ color: isHovered ? "red" : "initial" }}>Hover me</span>
-        </div>
+        </div> */}
       </>
       {bannerArray.map((list: any, index) => (
         <div key={index}>
@@ -123,12 +124,10 @@ const Mainbanner = () => {
           </div>
         </div>
       ))}
-      <div
-        className="group border border-gray-200 flex items-center justify-center h-[110px]"
-        style={{ backgroundColor: "#b8ff65" }}
-      >
+      <div className="bg-main-lime group border border-gray-200 flex items-center justify-center h-[110px]">
         <span className="text-[40px]">디벨로팜 입니다.</span>
       </div>
+      <div className="bg-main-lime group border border-gray-200 flex items-center justify-center h-[80px]"></div>
     </>
   )
 }
