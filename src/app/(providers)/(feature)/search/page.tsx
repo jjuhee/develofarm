@@ -17,6 +17,7 @@ import { useInView } from "react-intersection-observer"
 import useKeywordsHooks from "@/hooks/useSearchHooks"
 import useBookmarks from "@/hooks/useBookmarks"
 import useUserStore from "@/store/user"
+import { useDebounce } from "@/hooks/useDebounce"
 
 //해당 이용자의 localstorage 가져오기
 interface keywordsInterface {
@@ -42,53 +43,58 @@ const SearchPage = () => {
     onRemoveTextHandler,
     onSearchKeywordChangeHandler,
     onSubmitHandler,
+    onKeypressHandler,
+    enteredKeyword,
   } = useKeywordsHooks()
   /** 현재 인증된 유저 데이터 가져오기 */
   //zustand로 user 가져오기
-  useEffect(() => {
-    const getAuth = async () => {
-      const user = await supabaseForClient.auth.getUser()
-      setCurrentUserId(user.data.user?.id as string)
-    }
-    getAuth()
-  }, [currentUserId])
-  const userId = useUserStore((state) => state.userId)
-  setCurrentUserId(userId)
-  console.log(
-    "현재유저의 아이디 검색페이지",
-    userId,
-    "스테이트값의 유저",
-    currentUserId,
-  )
+  // useEffect(() => {
+  //   const getAuth = async () => {
+  //     const user = await supabaseForClient.auth.getUser()
+  //     setCurrentUserId(user.data.user?.id as string)
+  //   }
+  //   getAuth()
+  // }, [currentUserId])
+  // const userId = useUserStore((state) => state.userId)
+  // setCurrentUserId(userId)
+  // console.log(
+  //   "현재유저의 아이디 검색페이지",
+  //   userId,
+  //   "스테이트값의 유저",
+  //   currentUserId,
+  // )
   const bookmarks = useBookmarks(currentUserId)
+  const debounceVal = useDebounce({ enteredKeyword })
+
   const {
     data: searchedData,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["searchedProjects", text],
+    queryKey: ["searchedProjects", debounceVal],
     queryFn: ({ pageParam }: { pageParam: number }) => {
-      console.log("텍스트", text)
-      if (text) {
-        return getSearchedProject(text, pageParam)
+      if (debounceVal) {
+        return getSearchedProject(debounceVal, pageParam)
       }
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage: any, allPages: any) => {
-      if ((lastPage?.length as number) < 3) {
-        console.log("lastPage", lastPage)
+      if ((lastPage as number) < 4) {
+        console.log("lastPage!!!!!!!!", lastPage)
         return null
       }
-      return allPages.length * 3
+      return allPages.length
     },
     select: (data: any) => {
       return data.pages
         .flatMap((page: any) => page)
         .filter((project: any) => project && project.id !== undefined)
     },
+    enabled: !!debounceVal,
   })
 
+  console.log("dddd", debounceVal)
   const { ref } = useInView({
     threshold: 0,
     onChange: (inView) => {
@@ -96,8 +102,6 @@ const SearchPage = () => {
       fetchNextPage()
     },
   })
-
-  console.log("무한스크롤", searchedData)
 
   //1.들어오자마자 로컬 스토리지의 keywords의 값이 있는지 확인하고 , 있으면 keywods state에 값을 넣는다
   //2.keywords에 값이 있으면 map으로 돌려 ui에 보여준다
@@ -110,19 +114,14 @@ const SearchPage = () => {
       if (localStorage.getItem("keywords")) {
         const result1 = localStorage.getItem("keywords")
         const json = JSON.parse(result1 as string)
-        console.log("제이슨", json)
         // setKeywords([json, ...keywords])
         setKeywords(json)
-        console.log(
-          "새로고침하거나,새로들어오면 로컬스토리지에서 keywords를 state로 받아야한다?",
-          keywords,
-        )
+
         //여기서 setKeywords를 해야하는데, 왜 자꾸 무한 loop됨?
       }
     }
   }, [])
 
-  console.log("data", searchedData)
   return (
     <div className="">
       <SearchInput
@@ -130,6 +129,7 @@ const SearchPage = () => {
         text={text}
         onRemoveTextHandler={onRemoveTextHandler}
         setText={setText}
+        onKeypressHandler={onKeypressHandler}
       />
       <SearchedHistory
         onRemoveAllKeywordsHnalder={onRemoveAllKeywordsHandler}
@@ -137,7 +137,6 @@ const SearchPage = () => {
         onSearchKeywordChangeHandler={onSearchKeywordChangeHandler}
         onRemoveEachKeywordHandler={onRemoveEachKeywordHandler}
       />
-      <>어디감? `</>
       <Spacer y={70} />
       {/* -------프로젝트 리스트 들어오기 ---------- */}
       <SearchedProjectLists
@@ -145,9 +144,7 @@ const SearchPage = () => {
         bookmarks={bookmarks as Tables<"bookmarks">[]}
         currentUser={currentUserId}
       />
-      <div ref={ref} className="w-full h-[100px]">
-        무한스크롤바 스크롤바 어디감?
-      </div>
+      <div ref={ref} className="w-full h-[100px]"></div>
     </div>
   )
 }

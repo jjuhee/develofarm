@@ -7,7 +7,7 @@ interface keywordsInterface {
 const useSearchHooks = () => {
   const [keywords, setKeywords] = useState<keywordsInterface[]>([])
   const [text, setText] = useState<string>("")
-
+  const [enteredKeyword, setEnteredKeyword] = useState<string>("")
   const onRemoveEachKeywordHandler = (num: number) => {
     const nextKeyword = keywords.filter((keyword, index) => index !== num)
     setKeywords(nextKeyword)
@@ -18,7 +18,12 @@ const useSearchHooks = () => {
     setKeywords([])
     localStorage.setItem("keywords", JSON.stringify([]))
   }
-
+  const onKeypressHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key == "Enter") {
+      setEnteredKeyword(text)
+      console.log("엔터가 눌려졌습니다.")
+    }
+  }
   const onRemoveTextHandler = () => {
     setText("")
   }
@@ -63,6 +68,8 @@ const useSearchHooks = () => {
     onRemoveTextHandler,
     onSearchKeywordChangeHandler,
     onSubmitHandler,
+    onKeypressHandler,
+    enteredKeyword,
   }
 }
 

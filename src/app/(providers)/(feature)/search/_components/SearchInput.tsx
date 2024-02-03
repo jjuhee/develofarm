@@ -7,6 +7,7 @@ interface SearchInputProps {
   text: string | undefined
   onRemoveTextHandler: () => void
   setText: (value: string) => void
+  onKeypressHandler: (event: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 const SearchInput = ({
@@ -14,6 +15,7 @@ const SearchInput = ({
   text,
   onRemoveTextHandler,
   setText,
+  onKeypressHandler,
 }: SearchInputProps) => {
   return (
     <div>
@@ -32,6 +34,7 @@ const SearchInput = ({
               name="search"
               value={text}
               onChange={(e) => setText(e.target.value)}
+              onKeyPress={onKeypressHandler}
               placeholder="검색어를 입력해주세요"
             ></input>
             {text ? (
