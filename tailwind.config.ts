@@ -31,6 +31,9 @@ const config: Config = {
       colors: {
         "main-lime": "#b8ff65",
       },
+      fontFamily: {
+        pretendard: ["var(--font-pretendard)"],
+      },
     },
   },
   plugins: [
