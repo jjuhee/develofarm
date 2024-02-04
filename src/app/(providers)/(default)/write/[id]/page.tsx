@@ -1,6 +1,6 @@
 "use client"
-import { useParams } from "next/navigation"
-import React from "react"
+import { useParams, useRouter } from "next/navigation"
+import React, { useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import {
   getProject,
@@ -8,9 +8,11 @@ import {
   getProjectTechWithPosition,
 } from "../../projects/api"
 import Editor from "../_components/Editor"
+import useUserStore from "@/store/user"
 
 const EditPost = () => {
   const { id: projectId } = useParams<{ id: string }>()
+  const user = useUserStore((state) => state.user)
 
   /** 수정시1 : 프로젝트 가져오기 */
   const { data: project } = useQuery({
@@ -25,6 +27,15 @@ const EditPost = () => {
     queryFn: () => getProjectTechWithPosition(projectId),
     enabled: !!projectId,
   })
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/login") // 로그인 페이지로 리다이렉트
+    }
+  }, [])
+
   return (
     <>
       {project && techsWithPosition && (

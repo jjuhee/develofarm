@@ -69,7 +69,9 @@ const CustomModal = () => {
           {isInput && (
             <input
               type="text"
-              placeholder="한줄 소개를 입력해주세여"
+              placeholder="한줄 소개를 입력해주세요"
+              className="p-2 m-5"
+              maxLength={37}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               autoFocus

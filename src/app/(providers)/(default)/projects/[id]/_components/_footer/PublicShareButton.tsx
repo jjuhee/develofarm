@@ -10,16 +10,17 @@ import { getComments } from "../../api"
 
 type Props = {
   project: Exclude<Awaited<ReturnType<typeof getProject>>, null>
+  setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const PublicShareButton = ({ project }: Props) => {
+const PublicShareButton = ({ project, setIsOpenModal }: Props) => {
   const { openCustomModalHandler } = useCustomModal()
   const pathname = usePathname()
   const { Kakao } = window
   // 클립보드에 복사할 텍스트
   const copyUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${pathname}`
 
-  const { data: projectTeck, isLoading } = useQuery({
+  const { data: projectTeck, isLoading: projectTeckIsLoading } = useQuery({
     queryKey: ["projectTeck", { projectId: project.id }],
     queryFn: () => getProjectTech(project.id),
   })
@@ -56,24 +57,21 @@ const PublicShareButton = ({ project }: Props) => {
         imageUrl:
           "https://aksbymviolrkiainilpq.supabase.co/storage/v1/object/public/project_image/common/project_default.png",
         link: {
-          mobileWebUrl: "https://developers.kakao.com",
-          webUrl: "https://developers.kakao.com",
+          mobileWebUrl: copyUrl,
+          webUrl: copyUrl,
         },
       },
       itemContent: {
         profileText: "Developfarm",
         profileImageUrl:
-          "https://aksbymviolrkiainilpq.supabase.co/storage/v1/object/public/project_image/common/project_default.png",
-        titleImageUrl:
-          "https://aksbymviolrkiainilpq.supabase.co/storage/v1/object/public/project_image/common/project_default.png",
-        titleImageText: "프로젝트를 게시물을 확인해보세요!",
+          "https://aksbymviolrkiainilpq.supabase.co/storage/v1/object/public/project_image/common/developfarm-logo-no-title.png",
       },
       social: {
         commentCount: comments?.length,
       },
       buttons: [
         {
-          title: "웹으로 이동",
+          title: "게시물 보러 가기",
           link: {
             mobileWebUrl: copyUrl,
             webUrl: copyUrl,
@@ -83,15 +81,26 @@ const PublicShareButton = ({ project }: Props) => {
     })
   }
 
-  if (isLoading) return <div>is Loading</div>
+  if (projectTeckIsLoading) return <div>기술 받아오는 중</div>
 
   return (
-    <section className="absolute ml-[900px] mb-[330px] w-[300px] h-[250px] p-5 border-2 rounded-lg">
-      <h4 className="mb-5 pb-2 font-semibold text-lg">공유하기</h4>
+    <section className="absolute ml-[900px] mb-[380px] w-[300px] h-[250px] p-5 rounded-lg bg-[#B8FF65]">
+      <article className="flex mb-5">
+        <h4 className="font-semibold text-lg">공유하기</h4>
+        <button className="ml-auto" onClick={() => setIsOpenModal(false)}>
+          <Image
+            height={20}
+            width={20}
+            src="/icons/closeIcon.png"
+            alt="닫기 버튼"
+            className="inline-block rounded-full mb-2"
+          />
+        </button>
+      </article>
       <article className="flex">
         <div className="flex flex-col justify-center items-center mr-4">
           <button
-            className="border-2 w-20 h-20 rounded-full flex justify-center items-center mb-2"
+            className="bg-[#fff] w-20 h-20 rounded-full flex justify-center items-center mb-2"
             onClick={() => copyClipBoardHandler()}
           >
             <LuLink size={30} />

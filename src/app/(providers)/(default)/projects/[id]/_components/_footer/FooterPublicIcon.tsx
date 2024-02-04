@@ -42,7 +42,9 @@ const FooterPublicIcon = ({ bookmarks, project, bookmarksCount }: Props) => {
           className="float-left mt-1 mr-2"
         />
       </span>
-      {isOpenModal && <PublicShareButton project={project} />}
+      {isOpenModal && (
+        <PublicShareButton project={project} setIsOpenModal={setIsOpenModal} />
+      )}
     </>
   )
 }
