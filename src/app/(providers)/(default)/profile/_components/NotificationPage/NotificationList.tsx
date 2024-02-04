@@ -22,13 +22,13 @@ const NotificationList = ({ notiList }: Props) => {
   })
 
   const onClickNotificationHandler = (noti: TablesUpdate<"notifications">) => {
-    router.push(`/projects/${noti.project_id}`)
     updateNotiMutate.mutate({ id: noti.id, status: true })
+    router.push(`/projects/${noti.project_id}`)
   }
 
   return (
     <>
-      {notiList.map((noti, index) => {
+      {notiList.map((noti) => {
         return (
           <li
             key={noti.id}

@@ -34,12 +34,7 @@ const NotificationPage = () => {
     setId(id)
   }, [id, setId])
 
-  const {
-    data: notifications,
-    isSuccess,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: notifications } = useQuery({
     queryKey: ["notifications", { type: "page" }],
     queryFn: () => getNotifications(userId),
     enabled: !!userId,
@@ -51,6 +46,9 @@ const NotificationPage = () => {
       await queryClient.invalidateQueries({
         queryKey: ["notifications"],
       })
+    },
+    onError: (error) => {
+      console.log("delete : onError", error)
     },
   })
 
@@ -73,7 +71,6 @@ const NotificationPage = () => {
 
   const onClickRemoveAllNotiHandler = () => {
     deleteAllMuate.mutate(userId)
-    setNotificationList([])
   }
 
   return (
