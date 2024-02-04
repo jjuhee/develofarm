@@ -120,7 +120,7 @@ const AuthorizeActionButtons = ({
   return (
     <div className="absolute flex flex-row-reverse ml-[1030px] w-36 mt-[-90px]">
       <button
-        className="mr-5 hover:scale-110 transition-all duration-200"
+        className="mr-5"
         onClick={() => {
           onApplyButtonHandler()
         }}
@@ -133,10 +133,7 @@ const AuthorizeActionButtons = ({
           className="w-11 h-11 p-2 bg-[#000000] object-none rounded-full"
         />
       </button>
-      <button
-        className="mr-3 hover:scale-110 transition-all duration-200"
-        onClick={onRejectButtonHandler}
-      >
+      <button className="mr-3" onClick={onRejectButtonHandler}>
         <Image
           width={12}
           height={12}

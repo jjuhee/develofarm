@@ -75,7 +75,8 @@ const ApplyingMembers = ({
             <p className="my-1 mx-16 whitespace-normal w-[700px]">
               {applying.appeal_message}
             </p>
-            <ul className="flex text-sm">
+            {/* 기술스택 추가 예정 */}
+            {/* <ul className="flex text-sm">
               {applying.users?.user_tech?.slice(0, 3).map((tech) => {
                 return (
                   <li
@@ -86,7 +87,7 @@ const ApplyingMembers = ({
                   </li>
                 )
               })}
-            </ul>
+            </ul> */}
             {isWriter && (
               <AuthorizeActionButtons
                 applying={applying}
