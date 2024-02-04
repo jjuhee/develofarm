@@ -91,7 +91,6 @@ const ApplyingMembers = ({
             {isWriter && (
               <AuthorizeActionButtons
                 applying={applying}
-                applyingApplications={applyingApplications}
                 participatingApplications={participatingApplications}
               />
             )}

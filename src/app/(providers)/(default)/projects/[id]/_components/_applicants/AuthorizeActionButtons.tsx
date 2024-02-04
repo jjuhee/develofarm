@@ -9,11 +9,9 @@ import Image from "next/image"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import useUserStore from "@/store/user"
 import useAddNotiMutate from "@/hooks/useAddNotiMutate"
-import { getProject } from "../../../api"
 
 type Props = {
   applying: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
-  applyingApplications: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
   participatingApplications: Exclude<
     Awaited<ReturnType<typeof getMembers>>,
     null
@@ -22,7 +20,6 @@ type Props = {
 
 const AuthorizeActionButtons = ({
   applying,
-  applyingApplications,
   participatingApplications,
 }: Props) => {
   const { user } = useUserStore((state) => state)
