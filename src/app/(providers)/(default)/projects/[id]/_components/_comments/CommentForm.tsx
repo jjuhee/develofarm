@@ -57,7 +57,7 @@ const CommentForm = ({
     if (type === "comment") {
       const newComment: TablesInsert<"comments"> = {
         project_id: projectId,
-        user_id: user.id,
+        user_id: user.id as string,
         content,
       }
       AddCommentMutate.mutate(newComment)
@@ -72,7 +72,7 @@ const CommentForm = ({
     } else if (type === "recomment") {
       const newComment: TablesInsert<"comments"> = {
         project_id: projectId,
-        user_id: user.id,
+        user_id: user.id as string,
         content,
         comment_id: recommentId,
       }

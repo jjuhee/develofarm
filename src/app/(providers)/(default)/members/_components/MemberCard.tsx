@@ -1,38 +1,25 @@
 import Image from "next/image"
 import React from "react"
 import useMembersStore from "@/store/members"
-import { useCustomModal } from "@/hooks/useCustomModal"
-import { useRouter } from "next/navigation"
 import { UsersType } from "@/types/extendedType"
 import useUserStore from "@/store/user"
+import useLoginConfirmModal from "@/hooks/useLoginConfirmModal"
 
 interface Props {
   user: UsersType
 }
 
 const MemberCard = ({ user }: Props) => {
-  const router = useRouter()
   const currentUserId = useUserStore((state) => state.user?.id)
-
-  const { openCustomModalHandler } = useCustomModal()
-
+  const openLoginConfirmModal = useLoginConfirmModal()
   const { setViewMemberModal, setSelectedMember } = useMembersStore(
     (state) => state,
   )
 
   const { user_nickname, position, user_comment, user_tech } = user
   const onClickMemberCardHandler = () => {
-    const handler = () => {
-      router.push("/signin")
-    }
-
     if (!currentUserId) {
-      openCustomModalHandler(
-        `로그인이 필요합니다.
-        로그인 페이지로 이동하시겠습니까?`,
-        "confirm",
-        handler,
-      )
+      openLoginConfirmModal()
     } else {
       setSelectedMember(user as UsersType)
       setViewMemberModal(true)
