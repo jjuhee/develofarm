@@ -14,12 +14,14 @@ import Checkbox from "@/components/ui/Checkbox"
 
 import type { Tables } from "@/types/supabase"
 import type { TProjectsType } from "@/types/extendedType"
+import Image from "next/image"
 
 interface Props {
   option?: TProjectsOptions
+  setIsShownCategory: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProjectList = ({ option }: Props) => {
+const ProjectList = ({ option, setIsShownCategory }: Props) => {
   const PAGE_SIZE = 5
 
   const [order, setOrder] = useState(1)
@@ -97,7 +99,7 @@ const ProjectList = ({ option }: Props) => {
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col-reverse md:justify-between md:flex-row">
         <p className="text-[#363940]">
           {projects && projects.length > 0 ? (
             <>{projects.length}건의 검색 결과를 찾았어요.</>
@@ -105,18 +107,28 @@ const ProjectList = ({ option }: Props) => {
             <>검색 결과를 찾지 못했습니다.</>
           )}
         </p>
-        <div className="flex items-center gap-[30px]">
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="recruit"
-              value={recruitStatus}
-              handler={onChangeRecruitHandler}
-            />
-            <label htmlFor="recruit" className="cursor-pointer font-semibold">
-              모집 중인 공고만 보기
-            </label>
+        <div className="flex items-center justify-between mb-10 md:justify-normal md:mb-0">
+          <Image
+            src={"/icons/filter.png"}
+            alt="filter icon"
+            width={30}
+            height={30}
+            className="block cursor-pointer md:hidden"
+            onClick={() => setIsShownCategory((prev) => !prev)}
+          />
+          <div className="flex gap-[30px]">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="recruit"
+                value={recruitStatus}
+                handler={onChangeRecruitHandler}
+              />
+              <label htmlFor="recruit" className="cursor-pointer font-semibold">
+                모집 중인 공고만 보기
+              </label>
+            </div>
+            <SortButton order={order} setOrder={setOrder} setPage={setPage} />
           </div>
-          <SortButton order={order} setOrder={setOrder} setPage={setPage} />
         </div>
       </div>
 

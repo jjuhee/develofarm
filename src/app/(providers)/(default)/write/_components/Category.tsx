@@ -17,6 +17,8 @@ interface Props {
   setCategoryData: React.Dispatch<React.SetStateAction<TCategoryData>>
   isWritePage: boolean
   setOption?: Dispatch<React.SetStateAction<TProjectsOptions>>
+  isShownCategory?: boolean
+  setIsShownCategory: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Category = ({
@@ -24,6 +26,8 @@ const Category = ({
   setCategoryData,
   isWritePage,
   setOption,
+  isShownCategory,
+  setIsShownCategory,
 }: Props) => {
   const { openCustomModalHandler } = useCustomModal()
   const dropdownRef = useRef<HTMLInputElement>(null)
@@ -57,6 +61,7 @@ const Category = ({
       })
     openCustomModalHandler("검색되었습니다.", "alert")
     setPage(1)
+    setIsShownCategory(false)
   }
 
   /** 검색 초기화 */
@@ -87,9 +92,25 @@ const Category = ({
   })
 
   return (
-    <section className="flex flex-col gap-4">
-      {!isWritePage && <h1>필터링 검색</h1>}
-      <div className="flex relative justify-between gap-[39px] border-y-[1px] py-5 px-1 border-slate-800">
+    <section
+      className={`flex-col gap-4 bg-white ${
+        isShownCategory
+          ? "block fixed top-0 left-0 w-full h-full z-10 overflow-scroll"
+          : "hidden"
+      }  md:block`}
+    >
+      {!isWritePage && (
+        <div className="flex justify-between items-center">
+          <h1>필터링 검색</h1>
+          <span
+            className="block mr-5 cursor-pointer md:hidden"
+            onClick={() => setIsShownCategory((prev) => !prev)}
+          >
+            X
+          </span>
+        </div>
+      )}
+      <div className="flex flex-col md:flex-row relative justify-between gap-[39px] border-t md:border-y py-5 px-1 border-slate-800">
         <div>
           <div className="flex flex-col gap-[16px] py-[15px]">
             <h3>프로젝트 방식</h3>
@@ -192,8 +213,8 @@ const Category = ({
         )}
 
         <div className="flex flex-col gap-[16px] py-[15px]">
-          <h3>프로젝트 기간</h3>
-          <ul className="flex flex-col gap-4 items-center">
+          <ul className="flex flex-col gap-4">
+            <h3>프로젝트 기간</h3>
             <li className="flex items-center gap-4">
               <label className="w-[50px] text-[16px]">시작일</label>
               <input
@@ -261,9 +282,9 @@ const Category = ({
             </li>
           </ul>
         </div>
-        <div className="flex flex-col gap-[16px] py-[15px]">
+        <div className="flex flex-col gap-[16px] py-[15px] items-start">
           <h3>기술 스택</h3>
-          <ul className="flex gap-3 items-center">
+          <ul className="flex flex-col md:flex-row gap-3 ">
             <SelectStackButton
               allTechs={allTechs as Tables<"techs">[][]}
               categoryData={categoryData}
@@ -273,7 +294,10 @@ const Category = ({
         </div>
         {/* 메인page */}
         {!isWritePage && (
-          <div className="absolute bottom-6 right-[1px] flex gap-3 align-items *:px-[16px] *:py-[0px] *:w-[100px] *:h-[40px]">
+          <div
+            className="flex fixed bottom-0 w-full justify-around bg-white p-10 border  md:justify-normal  md:absolute md:bottom-6 md:right-[1px] md:gap-3 md:p-0 md:w-auto *:w-[100px] md:*:h-[40px] md:border-none
+          "
+          >
             <Button
               type="border"
               text="초기화"

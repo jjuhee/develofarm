@@ -46,10 +46,10 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
 
   return (
     <div
-      className="flex cursor-pointer border-b border-[#666666] py-[40px] last:border-none first:pt-0 "
+      className="flex cursor-pointer border-b border-[#D2D2D2] py-[40px] last:border-none first:pt-0 "
       onClick={onClickToDetailPage}
     >
-      <section className="relative overflow-hidden rounded-xl min-w-[416px] h-[251px] transition-all bg-slate-200 mr-10 hidden md:block">
+      <section className="relative overflow-hidden rounded-xl min-w-[115px] h-[80px] transition-all bg-slate-200 mr-10 md:min-w-[416px] md:h-[251px] ">
         <Image
           src={picture_url!}
           alt="project"
@@ -59,8 +59,8 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
         />
       </section>
       <section className="relative flex flex-col w-full lg:w-[60%] py-2 justify-between">
-        <div className="flex flex-col gap-4">
-          <div className="flex gap-3 items-center">
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-3 items-start md:flex-row md:items-center">
             <h4
               className={`${
                 recruit_status
@@ -70,7 +70,9 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
             >
               {recruit_status ? "모집 완료" : "모집 중"}{" "}
             </h4>
-            <h2 className="mr-10 w-full lg:w-[600px] truncate">{title}</h2>
+            <h2 className="mr-10 w-full text-[15px] truncate md:w-[600px] md:text-[18px]">
+              {title}
+            </h2>
           </div>
           <span className="flex items-center gap-2 text-base font-medium text-[#666666]">
             <Image
@@ -82,7 +84,7 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
             {formatDate(project_start_date)} - {formatDate(project_end_date)}
           </span>
           <p
-            className="line-clamp-3 text-xs font-normal leading-[18px]"
+            className="line-clamp-5  leading-[18px] pt-2 text-[#363940] hidden md:block"
             dangerouslySetInnerHTML={{
               __html: sanitizeHtml(content, {
                 allowedTags: [],
@@ -90,7 +92,7 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
             }}
           ></p>
         </div>
-        <div className="flex justify-between items-center mt-10 lg:mt-0">
+        <div className="justify-between items-center mt-10 hidden md:block">
           <ul className="flex gap-3 relative">
             <ProjectCardTechs project={project} />
           </ul>
