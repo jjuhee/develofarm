@@ -18,7 +18,7 @@ const Checkbox = ({ id, value, handler, name }: Props) => {
       checked={value}
       onChange={handler}
       className="
-      peer relative appearance-none shrink-0 w-4 h-4 border-2 border-[#666666] rounded-sm bg-white
+      peer relative appearance-none shrink-0 w-4 h-4 border-2 border-[#666666] rounded-[3px] bg-white
       focus:outline-none focus:ring-offset-0 focus:ring-1 focus:ring-main-lime
       checked:bg-black checked:border-0
       disabled:border-steel-400 disabled:bg-steel-400

@@ -1,36 +1,47 @@
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
-import { TProjectsByUserId } from "@/types/extendedType"
+import { TProjectsByUserId, TUsersType } from "@/types/extendedType"
 import { useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import React, { useRef, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import useUserStore from "@/store/user"
-import { Tables } from "@/types/supabase"
 import useAddNotiMutate from "@/hooks/useAddNotiMutate"
+
+import type { Tables } from "@/types/supabase"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 interface Props {
   projects: TProjectsByUserId[]
-  receiverId: string
+  selectedMember: TUsersType
   invitations: Tables<"notifications">[]
 }
 
-const MemberInvitationCard = ({ projects, receiverId, invitations }: Props) => {
-  const queryClient = useQueryClient()
+const MemberInvitationCard = ({
+  projects,
+  selectedMember,
+  invitations,
+}: Props) => {
   const [isActive, setIsActive] = useState(false)
   const dropdownRef = useRef<HTMLInputElement>(null)
   const { user } = useUserStore((state) => state)
   const addNotiMutate = useAddNotiMutate()
+  const { openCustomModalHandler } = useCustomModal()
 
   /** 프로젝트에 초대하기 */
   const onClickInviteUserHandler = (project: TProjectsByUserId) => {
     const newInvitation = {
       project_id: project.id,
-      receiver_id: receiverId,
+      receiver_id: selectedMember.id,
       type: "invitation",
       sender_nickname: user?.nickName as string,
     }
 
     addNotiMutate(newInvitation)
+
+    openCustomModalHandler(
+      `<${project.title}>에 ${selectedMember.user_nickname}님을 초대했습니다.`,
+      "alert",
+    )
   }
 
   /** 이미 초대한 프로젝트 색깔 변경 및 disable 처리 */
@@ -47,44 +58,43 @@ const MemberInvitationCard = ({ projects, receiverId, invitations }: Props) => {
   return (
     <div className="flex h-full mb-8" ref={dropdownRef}>
       <div className="relative">
-        {user?.id !== receiverId && (
-          <p
-            className=" flex items-center gap-2 bg-main-lime py-2 pl-6 pr-4 rounded-lg text-black font-[600] cursor-pointer"
+        {user?.id !== selectedMember.id && (
+          <button
+            className=" flex items-center justify-between w-[208px] bg-main-lime py-2 pl-6 pr-4 rounded-lg text-black font-[600] cursor-pointer"
             onClick={() => setIsActive(!isActive)}
           >
             내 프로젝트에 초대하기
             <span>
               {isActive ? (
-                <IoIosArrowUp className="text-[20px]" />
+                <IoIosArrowUp size={20} />
               ) : (
-                <IoIosArrowDown className="text-[20px]" />
+                <IoIosArrowDown size={20} />
               )}
             </span>
-          </p>
+          </button>
         )}
 
         <ul
-          className={`flex flex-col gap-3 absolute h-[200px] overflow-scroll scroll-smooth scrollbar-hide bg-white text-black py-[15px] px-[20px] border-[1px] w-full mt-2 rounded-lg border-black transition-all ${
+          className={`flex flex-col absolute h-[215px] overflow-scroll scroll-smooth scrollbar-hide bg-white text-black py-1 border-[0.5px] w-full mt-2 rounded-lg border-black transition-all ${
             isActive ? "opacity-100" : "opacity-0"
           }`}
         >
-          {(projects?.length as number) > 0 ? (
+          {projects && projects?.length > 0 ? (
             <>
               {projects?.map((project: TProjectsByUserId) => (
                 <li
-                  className="flex items-center justify-between "
+                  className="flex items-center leading-[18px] py-[10px] px-3 justify-between "
                   key={project.id}
                 >
-                  <p className="text-[15px] font-[500] w-full">
-                    {project.title?.length > 11
-                      ? project.title.slice(0, 11) + "..."
-                      : project.title}
-                  </p>
+                  <p className="w-[70%] truncate">{project.title}</p>
                   <button
                     onClick={() => onClickInviteUserHandler(project)}
                     disabled={isInvited(project.id)}
-                    className={`flex items-center justify-center text-[10px] font-[700] w-[50px] h-[23px] rounded-md text-center text-black bg-white border-[1px] border-black cursor-pointer hover:bg-[#CCCCCC] hover:text-black hover:border-black transition-all duration-300
-                      disabled:bg-main-lime disabled:cursor-default disabled:border-none
+                    className={`flex items-center justify-center text-[12px] font-[600] w-[34px] h-[22px]  rounded-md text-center text-black bg-main-lime cursor-pointer ${
+                      !isInvited(project.id) &&
+                      "hover:bg-[#CCCCCC] hover:text-black hover:border-black"
+                    }  transition-all duration-300
+                      disabled:text-[#A6A6A6] disabled:cursor-not-allowed disabled:border-[0.8px] disabled:border-[#A6A6A6] disabled:bg-white
                     `}
                   >
                     초대

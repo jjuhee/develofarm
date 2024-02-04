@@ -27,16 +27,9 @@ const Category = ({
 }: Props) => {
   const { openCustomModalHandler } = useCustomModal()
   const dropdownRef = useRef<HTMLInputElement>(null)
-  const { page, setPage } = useProjectsStore((state) => state)
-  const {
-    startDate,
-    endDate,
-    isOffline,
-    region,
-    numberOfMembers,
-    techs,
-    positions,
-  } = categoryData
+  const { setPage } = useProjectsStore((state) => state)
+  const { startDate, endDate, isOffline, region, numberOfMembers, techs } =
+    categoryData
 
   const [isRegionActive, setIsRegionActive] = useState(false)
 
@@ -94,18 +87,18 @@ const Category = ({
   })
 
   return (
-    <section className="flex flex-col gap-3">
-      {!isWritePage && <h3 className="text-[26px] font-[700]">필터링 검색</h3>}
-      <div className="flex relative justify-between gap-[60px] border-y-[1.5px] py-5 px-1 border-slate-800">
+    <section className="flex flex-col gap-4">
+      {!isWritePage && <h1>필터링 검색</h1>}
+      <div className="flex relative justify-between gap-[39px] border-y-[1px] py-5 px-1 border-slate-800">
         <div>
           <div className="flex flex-col gap-[16px] py-[15px]">
-            <h5 className="text-[20px] font-[600]">프로젝트 방식</h5>
-            <ul className="flex gap-[8px] items-center *:w-[90px] *:text-center">
+            <h3>프로젝트 방식</h3>
+            <ul className="flex gap-[8px] items-center *:w-[90px] *:text-center ">
               <li
                 onClick={() =>
                   setCategoryData({ ...categoryData, isOffline: true })
                 }
-                className={`category ${
+                className={`category justify-center ${
                   !!isOffline
                     ? "bg-[#D2D2D2] border-[#D2D2D2] text-black font-semibold"
                     : "border-[#A6A6A6] text-[#2D2D2D] font-medium"
@@ -117,7 +110,7 @@ const Category = ({
                 onClick={() =>
                   setCategoryData({ ...categoryData, isOffline: false })
                 }
-                className={` category ${
+                className={`category justify-center ${
                   isOffline === false
                     ? "bg-[#D2D2D2] border-[#D2D2D2] text-black font-semibold"
                     : "border-[#A6A6A6] text-[#2D2D2D] font-medium"
@@ -129,7 +122,7 @@ const Category = ({
           </div>
           {isOffline && (
             <div className="flex flex-col gap-[16px] py-[15px]">
-              <h5 className="text-[20px] font-[600]">활동 지역</h5>
+              <h3>활동 지역</h3>
               <div ref={dropdownRef} className="relative">
                 <div
                   className={`category flex items-center justify-between px-[20px] py-[5px] rounded-lg w-[200px] h-[40px] ${
@@ -171,7 +164,7 @@ const Category = ({
 
         {isWritePage && (
           <div className="flex flex-col gap-[16px] py-[15px] w-[99px]">
-            <h5 className="text-[20px] font-[600]">구인 인원</h5>
+            <h3>구인 인원</h3>
             <div className="flex gap-[8px] items-center">
               <input
                 className={`category w-[70px] text-center
@@ -199,12 +192,12 @@ const Category = ({
         )}
 
         <div className="flex flex-col gap-[16px] py-[15px]">
-          <h5 className="text-[20px] font-[600]">프로젝트 기간</h5>
+          <h3>프로젝트 기간</h3>
           <ul className="flex flex-col gap-4 items-center">
             <li className="flex items-center gap-4">
               <label className="w-[50px] text-[16px]">시작일</label>
               <input
-                className={`category w-[184px] px-[20px] py-[5px] cursor-pointer
+                className={`category w-[170px] px-[20px] py-[5px] cursor-pointer
                 ${
                   startDate
                     ? "border-black text-black font-semibold"
@@ -233,7 +226,7 @@ const Category = ({
             <li className="flex items-center gap-4">
               <label className="w-[50px] text-[16px]">종료일</label>
               <input
-                className={`category w-[184px] px-[20px] py-[5px] cursor-pointer
+                className={`category w-[170px] px-[20px] py-[5px] cursor-pointer
                 ${
                   endDate
                     ? "border-black text-black font-semibold"
@@ -269,7 +262,7 @@ const Category = ({
           </ul>
         </div>
         <div className="flex flex-col gap-[16px] py-[15px]">
-          <h5 className="text-[20px] font-[600]">기술 스택</h5>
+          <h3>기술 스택</h3>
           <ul className="flex gap-3 items-center">
             <SelectStackButton
               allTechs={allTechs as Tables<"techs">[][]}

@@ -1,21 +1,21 @@
 "use client"
 
 import React, { useEffect, useRef } from "react"
-import Spacer from "@/components/ui/Spacer"
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
+import Spacer from "@/components/ui/Spacer"
 import { useInView } from "react-intersection-observer"
-import { Tables } from "@/types/supabase"
 import useCategoryStore from "@/store/category"
 import useMembersStore from "@/store/members"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import EmptyState from "@/components/EmptyState"
-import useUserStore from "@/store/user"
-import { UsersType } from "@/types/extendedType"
 import Image from "next/image"
 import { getPositions, getUsers } from "../api"
 import MemberCategory from "./MemberCategory"
 import MemberCard from "./MemberCard"
 import MemberProfile from "./MemberProfile"
+
+import type { TUsersType } from "@/types/extendedType"
+import type { Tables } from "@/types/supabase"
 
 const MembersComponent = () => {
   const category = useCategoryStore((state) => state.category)
@@ -60,16 +60,17 @@ const MembersComponent = () => {
       return allPages.length * 4
     },
     select: (data) => {
-      return data.pages.flatMap((page) => page as UsersType[])
+      return data.pages.flatMap((page) => page as TUsersType[])
     },
     enabled: !!category,
   })
 
-  const { data: positions } = useQuery({
+  const { data: positions } = useQuery<unknown, Error, Tables<"positions">[]>({
     queryKey: ["positions"],
     queryFn: getPositions,
   })
 
+  /** 무한 스크롤 기준 박스 속성 */
   const { ref } = useInView({
     threshold: 0,
     onChange: (inView) => {
@@ -89,25 +90,23 @@ const MembersComponent = () => {
 
   return (
     <div>
-      <Spacer y={90} />
+      <Spacer y={30} />
       <div className="flex flex-col w-full">
         <section className="flex flex-col py-5 gap-[20px] w-full ">
-          <span className="text-[16px] text-[#80E500] font-[600]">
-            Our members
-          </span>
-          <h3 className="text-[40px] font-[700]">{category}</h3>
-          <p className="text-[16px] font-[400] text-[#606060] mt-3">
+          <h3 className="text-[#80E500]">Our members</h3>
+          <h1>{category === "전체보기" ? "디벨롭팜의 인재풀" : category}</h1>
+          <p className="text-[#606060] mt-3 whitespace-pre-line">
             {category === "전체보기"
-              ? "멤버 전체보기 페이지입니다."
-              : `${category} 멤버 페이지입니다.`}
+              ? "디벨롭팜에서 현재 프로젝트에 지원 중인 멤버들을 확인할 수 있습니다\n원하는 멤버를 자신의 프로젝트에 초대해보세요"
+              : `${category} 멤버를 자신의 프로젝트에 초대해보세요`}
           </p>
 
-          <MemberCategory positions={positions as Tables<"positions">[]} />
+          <MemberCategory positions={positions!} />
           <div className="w-full mt-7">
             <ul className="grid grid-cols-2 gap-12 md:grid-cols-3 lg:grid-cols-4">
-              {(infinityUsers?.length as number) > 0 ? (
+              {infinityUsers && infinityUsers.length > 0 ? (
                 <>
-                  {infinityUsers?.map((user: UsersType, index) => (
+                  {infinityUsers.map((user: TUsersType, index: number) => (
                     <MemberCard key={user?.id + index} user={user} />
                   ))}
                 </>
@@ -117,10 +116,9 @@ const MembersComponent = () => {
             </ul>
           </div>
         </section>
+        {/* 무한 스크롤 기준 박스 */}
         <div ref={ref} className="w-full h-[100px]" />
       </div>
-
-      {/* 무한 스크롤 기준 박스 */}
 
       {/* 멤버 프로필 모달 */}
       {viewMemberModal && (

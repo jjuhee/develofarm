@@ -23,7 +23,7 @@ export type ExtendedUserTechType = Tables<"user_tech"> & {
   techs: Tables<"techs">
 }
 
-export type UsersType = Exclude<
+export type TUsersType = Exclude<
   Awaited<ReturnType<typeof getUsers>>,
   void
 >[number]

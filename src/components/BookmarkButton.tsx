@@ -5,9 +5,10 @@ import {
 } from "@/app/(providers)/(default)/projects/api"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { MdBookmarkBorder, MdOutlineBookmark } from "react-icons/md"
-import type { Tables } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import useLoginConfirmModal from "@/hooks/useLoginConfirmModal"
+
+import type { Tables } from "@/types/supabase"
 
 interface Props {
   projectId: string
@@ -52,9 +53,9 @@ const BookmarkButton = ({ projectId, bookmarks }: Props) => {
   return (
     <div className="cursor-pointer text-gray-400" onClick={onClickHandler}>
       {isBookmarked ? (
-        <MdOutlineBookmark size={35} />
+        <MdOutlineBookmark size={30} />
       ) : (
-        <MdBookmarkBorder size={35} />
+        <MdBookmarkBorder size={30} />
       )}
     </div>
   )

@@ -1,10 +1,10 @@
-import { UsersType } from "@/types/extendedType"
+import { TUsersType } from "@/types/extendedType"
 import { Tables } from "@/types/supabase"
 import { create } from "zustand"
 
 interface TMembersState {
-  selectedMember: UsersType
-  setSelectedMember: (user: UsersType) => void
+  selectedMember: TUsersType
+  setSelectedMember: (user: TUsersType) => void
   viewMemberModal: boolean
   setViewMemberModal: (value: boolean) => void
   memberPosition: Tables<"positions"> | null
@@ -12,8 +12,8 @@ interface TMembersState {
 }
 
 const useMembersStore = create<TMembersState>()((set) => ({
-  selectedMember: {} as UsersType,
-  setSelectedMember: (user: UsersType) => set({ selectedMember: user }),
+  selectedMember: {} as TUsersType,
+  setSelectedMember: (user: TUsersType) => set({ selectedMember: user }),
   viewMemberModal: false,
   setViewMemberModal: (value: boolean) => set({ viewMemberModal: value }),
   memberPosition: {} as Tables<"positions"> | null,

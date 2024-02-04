@@ -11,6 +11,7 @@
     "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@supabase/auth-helpers-nextjs": "^0.9.0",
     "@tailwindcss/typography": "^0.5.10",
     "@tanstack/react-query": "^5.17.9",
     "@tanstack/react-query-devtools": "^5.17.9",
@@ -22,10 +23,12 @@
     "@tiptap/starter-kit": "^2.1.15",
     "@types/dompurify": "^3.0.5",
     "@types/sanitize-html": "^2.9.5",
+    "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
     "dompurify": "^3.0.8",
     "framer-motion": "^10.17.9",
     "next": "14.0.4",
+    "next-auth": "^4.24.5",
     "prettier": "^3.1.1",
     "puppeteer": "^21.9.0",
     "react": "^18",
@@ -39,6 +42,7 @@
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.39.3",
+    "@types/crypto-js": "^4.2.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
