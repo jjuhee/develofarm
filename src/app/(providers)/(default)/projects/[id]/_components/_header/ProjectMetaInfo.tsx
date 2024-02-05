@@ -14,8 +14,8 @@ const ProjectMetaInfo = ({ project }: Props) => {
 
   return (
     <section>
-      <article className="flex items-center justify-between border-t-2 border-b-2 border-zinc-600">
-        <div className="mt-7 mb-12 min-w-[220px] min-h-[85px]">
+      <article className="flex items-center justify-between border-t-2 border-b-2 border-zinc-600 px-5">
+        <div className="mt-7 mb-12 min-w-[150px] min-h-[85px]">
           <span>
             <Image
               width={16}
@@ -26,9 +26,11 @@ const ProjectMetaInfo = ({ project }: Props) => {
             />
           </span>
           <h3 className="font-semibold mb-3 text-lg">프로젝트 방식</h3>
-          <p>{project.is_offline ? "오프라인" : "온라인"}</p>
+          <p className="text-xl">
+            {project.is_offline ? "오프라인" : "온라인"}
+          </p>
         </div>
-        <div className="mt-7 mb-12 min-w-[190px] min-h-[85px]">
+        <div className="mt-7 mb-12 min-w-[150px] min-h-[85px]">
           <span>
             <Image
               width={16}
@@ -39,7 +41,7 @@ const ProjectMetaInfo = ({ project }: Props) => {
             />
           </span>
           <h3 className="font-semibold mb-3 text-lg">활동 지역</h3>
-          <p>
+          <p className="text-xl">
             {project.is_offline
               ? project.region
                 ? project.region.region
@@ -58,7 +60,7 @@ const ProjectMetaInfo = ({ project }: Props) => {
             />
           </span>
           <h3 className="font-semibold mb-3 text-lg">모집 인원</h3>
-          <h3>{project.number_of_people} 명</h3>
+          <p className="text-xl">{project.number_of_people} 명</p>
         </div>
         <div className="mt-7 mb-12 min-w-[250px] min-h-[85px]">
           <span>
@@ -71,7 +73,7 @@ const ProjectMetaInfo = ({ project }: Props) => {
             />
           </span>
           <h3 className="font-semibold mb-3 text-lg">프로젝트 기간</h3>
-          <p className="min-w-[250px]">
+          <p className="min-w-[160px] text-xl">
             {STARED_DATE} - {END_DATE}
           </p>
         </div>
