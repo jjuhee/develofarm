@@ -1,26 +1,11 @@
 import React from "react"
-import { useQuery } from "@tanstack/react-query"
-import { getAcademy } from "../../../api"
+import { Tables } from "@/types/supabase"
 
-const ProfileAcademy = ({ profileId }: { profileId: string }) => {
-  const {
-    data: academies,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["academies", profileId],
-    queryFn: () => getAcademy({ userId: profileId }),
-    enabled: !!profileId,
-  })
-
-  if (isLoading) {
-    return <div className="hidden">Loading...</div>
-  }
-
-  if (isError) {
-    return <div>교육/활동 데이터를 불러오는 중 오류가 발생했습니다</div>
-  }
-
+const ProfileAcademy = ({
+  academies,
+}: {
+  academies: Tables<"academies">[]
+}) => {
   return (
     <div className="flex justify-between items-center">
       <div>
@@ -32,12 +17,14 @@ const ProfileAcademy = ({ profileId }: { profileId: string }) => {
           academies.map((academy) => (
             <div
               key={academy.id}
-              className="flex justify-between items-start pt-[30px]"
+              className="flex justify-between items-center pt-[30px]"
             >
-              <div className="flex">
-                <p>
-                  {academy.period_from} ~ {academy.period_to}
-                </p>
+              <div>
+                <div className="flex">
+                  <p>
+                    {academy.period_from} ~ {academy.period_to}
+                  </p>
+                </div>
               </div>
 
               <div className="pl-[100px]">
@@ -53,7 +40,7 @@ const ProfileAcademy = ({ profileId }: { profileId: string }) => {
             </div>
           ))
         ) : (
-          <p className="pt-[30px] pl-[160px] px-[160px]">
+          <p className="pt-[30px] pl-[180px] px-[180px]">
             교육/활동 내용이 없습니다.
           </p>
         )}
