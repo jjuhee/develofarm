@@ -129,7 +129,9 @@ const Header = () => {
           <Link
             href={"/projects"}
             className={`text-black text-[18px] ${
-              pathname === "/projects" ? "font-bold" : "font-medium"
+              pathname === "/projects"
+                ? "font-bold border-2 border-b-main-lime"
+                : "font-medium"
             }`}
           >
             프로젝트 구인
@@ -137,7 +139,9 @@ const Header = () => {
           <Link
             href={"/members"}
             className={`text-black text-[18px] ${
-              pathname === "/members" ? "font-bold" : "font-medium"
+              pathname === "/members"
+                ? "font-bold border-2 border-b-main-lime"
+                : "font-medium"
             }`}
             onClick={onClickMemberCategoryHandler}
           >
