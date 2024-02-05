@@ -46,7 +46,7 @@ const ProjectList = ({ option, setIsShownCategory }: Props) => {
     Error,
     Tables<"bookmarks">[]
   >({
-    queryKey: ["userBookmarks", user?.id],
+    queryKey: ["bookmarks", user?.id],
     queryFn: () => getBookmarksByUserId(user?.id as string),
     enabled: !!user,
   })

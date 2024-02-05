@@ -35,8 +35,6 @@ const Header = () => {
   const pathname = usePathname()
   const { openCustomModalHandler } = useCustomModal()
 
-  console.log("11", pathname)
-
   const { data: savedUserData, error } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserByUserId(sessionUserId),
@@ -113,7 +111,6 @@ const Header = () => {
     )
     return () => {
       subscription.data.subscription.unsubscribe()
-      console.log("unsubscribe!!")
     }
   }, [savedUserData])
 

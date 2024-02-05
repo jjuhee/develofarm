@@ -23,6 +23,8 @@ interface Props {
 }
 
 const Editor = ({ projectId, project, techsWithPositions }: Props) => {
+  const [isShownCategory, setIsShownCategory] = useState(false)
+
   const isEditMode = !!projectId
   const initialCategoryData: TCategoryData = {
     startDate: "",
@@ -149,6 +151,7 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
         categoryData={categoryData}
         setCategoryData={setCategoryData}
         isWritePage={true}
+        setIsShownCategory={setIsShownCategory}
       />
       {/* Tiptap editor box */}
       <div className=" border-y border-black">

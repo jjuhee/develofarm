@@ -58,7 +58,7 @@ const MemberInvitationCard = ({
   return (
     <div className="flex h-full mb-8" ref={dropdownRef}>
       <div className="relative">
-        {user?.id !== selectedMember.id && (
+        {user?.id !== selectedMember?.id && (
           <button
             className=" flex items-center justify-between w-[208px] bg-main-lime py-2 pl-6 pr-4 rounded-lg text-black font-[600] cursor-pointer"
             onClick={() => setIsActive(!isActive)}

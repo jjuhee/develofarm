@@ -70,7 +70,7 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
             >
               {recruit_status ? "모집 완료" : "모집 중"}{" "}
             </h4>
-            <h2 className="mr-10 w-full text-[15px] truncate md:w-[600px] md:text-[18px]">
+            <h2 className="mr-10 w-[200px] text-[15px] truncate md:w-[600px] md:text-[18px]">
               {title}
             </h2>
           </div>
@@ -98,7 +98,7 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
           </ul>
         </div>
 
-        <div className="absolute top-[12px] right-2">
+        <div className="absolute top-0 md:top-[12px] right-2">
           <BookmarkButton projectId={id} bookmarks={bookmarks} />
         </div>
       </section>

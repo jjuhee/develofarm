@@ -27,11 +27,11 @@ const ProjectCardTechs = ({ project }: Props) => {
         </li>
       ))}
       {techs.length > 5 && (
-        <li className="group text-xs font-normal ">
+        <li className="group relative text-xs font-normal ">
           <div className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl">
             ...
           </div>
-          <div className=" hidden group-hover:block">
+          <div className="hidden group-hover:block">
             <ul className="absolute right-0 top-[30px] flex items-center gap-3 h-[35px] py-2 px-3 bg-[#E6E6E6] text-[#636366] rounded-lg z-10 ">
               {techs?.slice(5).map((tech, i) => (
                 <li

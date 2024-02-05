@@ -94,10 +94,13 @@ const Category = ({
   return (
     <section
       className={`flex-col gap-4 bg-white ${
-        isShownCategory
-          ? "block fixed top-0 left-0 w-full h-full z-10 overflow-scroll"
+        isShownCategory || isWritePage
+          ? `block ${
+              isShownCategory &&
+              "fixed top-0 left-0 w-full h-full z-10 overflow-scroll"
+            }`
           : "hidden"
-      }  md:block`}
+      } md:block`}
     >
       {!isWritePage && (
         <div className="flex justify-between items-center">

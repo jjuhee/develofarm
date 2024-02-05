@@ -1,12 +1,12 @@
 import Image from "next/image"
 import React from "react"
 import useMembersStore from "@/store/members"
-import { UsersType } from "@/types/extendedType"
+import { TUsersType } from "@/types/extendedType"
 import useUserStore from "@/store/user"
 import useLoginConfirmModal from "@/hooks/useLoginConfirmModal"
 
 interface Props {
-  user: UsersType
+  user: TUsersType
 }
 
 const MemberCard = ({ user }: Props) => {
