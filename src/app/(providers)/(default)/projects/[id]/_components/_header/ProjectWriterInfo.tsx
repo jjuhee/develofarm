@@ -1,9 +1,8 @@
 import { Tables } from "@/types/supabase"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import Image from "next/image"
 import React from "react"
-import { updateProjectViews } from "../../api"
+import Link from "next/link"
 
 type Props = {
   project: Tables<"projects">
@@ -21,13 +20,18 @@ const ProjectWriterInfo = ({ project, user }: Props) => {
   return (
     <>
       <li>
-        <Image
-          width={48}
-          height={48}
-          src={`${user.avatar_url}`}
-          alt="프로필이미지"
-          className="w-12 h-12 rounded-full object-cover"
-        />
+        <Link
+          href={`/profile/${project.user_id}`}
+          className="hover:brightness-50 duration-300"
+        >
+          <Image
+            width={48}
+            height={48}
+            src={`${user.avatar_url}`}
+            alt="프로필이미지"
+            className="rounded-full object-cover"
+          />
+        </Link>
       </li>
       <li>
         <span className="pr-2">작성자</span>

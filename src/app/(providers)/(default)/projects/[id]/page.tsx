@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react"
 import Spacer from "@/components/ui/Spacer"
-import { useParams, useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { getProject } from "../api"
 import WriterEditRemoveButtons from "./_components/_header/WriterEditRemoveButtons"
@@ -11,13 +11,13 @@ import useUserStore from "@/store/user"
 import ProjectMetaInfo from "./_components/_header/ProjectMetaInfo"
 import TechStackTag from "./_components/_header/TechStackTag"
 import ProjectWriterInfo from "./_components/_header/ProjectWriterInfo"
-import FooterList from "./_components/_footer/FooterList"
 import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
+import Image from "next/image"
+import FooterList from "./_components/_footer/FooterList"
 
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
-  const router = useRouter()
 
   const { data: project, isLoading } = useQuery({
     queryKey: ["project", { projectId: id }],
@@ -48,21 +48,20 @@ const DetailPage = () => {
   const { user } = useUserStore((state) => state)
   const isWriter = user?.id === project?.user_id
 
-  if (isLoading || !project) return <div>is Loading...</div>
+  if (isLoading || !project)
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+      </div>
+    )
 
   return (
     <div className="flex flex-col w-full my-0 mx-auto">
       <Spacer y={30} />
       <header>
-        <button
-          className="mt-8 border border-slate-950 px-5 py-1 rounded-lg transition delay-75 ease-in-out hover:text-white hover:bg-slate-900"
-          onClick={() => router.replace("/projects")}
-        >
-          목록
-        </button>
         <Spacer y={50} />
         <div className="flex items-center">
-          {/* TODO: 목록으로 돌아가면 현재 있는 게시물이 있는 리스트로 돌아가게 구현해야함 */}
+          {/* TODO: 목록으로 돌아가면 현재 있는 게시물이 있는 리스트로 돌아가게 구현예정 */}
           <span
             className={`${
               project.recruit_status
@@ -91,9 +90,9 @@ const DetailPage = () => {
           <EditorContent editor={editor} />
         </section>
         <FooterMenus project={project} />
-        <Spacer y={50} />
-        <FooterList />
+        <Spacer y={20} />
       </main>
+      <FooterList />
     </div>
   )
 }

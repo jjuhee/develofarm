@@ -19,7 +19,7 @@ const SignIn = () => {
             access_type: "offline",
             prompt: "consent",
           },
-          redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/${url}`,
+          redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}${url}`,
         },
       })
     } catch (error) {
@@ -32,7 +32,7 @@ const SignIn = () => {
       await supabaseForClient.auth.signInWithOAuth({
         provider: "kakao",
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/${url}`,
+          redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}${url}`,
         },
       })
     } catch (error) {
@@ -45,7 +45,7 @@ const SignIn = () => {
       await supabaseForClient.auth.signInWithOAuth({
         provider: "github",
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/${url}`,
+          redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}${url}`,
         },
       })
     } catch (error) {
