@@ -60,8 +60,6 @@ const GetSurfitArticles = async () => {
       return result
     }),
   )
-  console.log("어디있나 언디파인", surfitArticles)
-  console.log("revalidate 확인", formattedDate)
   return surfitArticles
 }
 

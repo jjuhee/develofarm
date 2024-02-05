@@ -28,26 +28,19 @@ const FourRightColumns = ({
                 className="w-full h-full flex flex-col"
                 onClick={() => setSelectedImageNumber(index)}
               >
-                <div className="p-2">
-                  <div className="flex-grow relative w-full h-3/4">
-                    {" "}
-                    <Image
-                      alt={"대체이미지"}
-                      src={surfitArticle.imgSrc ? surfitArticle.imgSrc : ""}
-                      width={300}
-                      height={300}
-                      objectFit="cover"
-                      className="rounded-xl"
-                    />
-                  </div>
-                </div>
-                <div className="flex-shrink-0 ">
-                  <div className="font-bold text-[10px] p-3">
+                <div className="flex-grow relative w-full h-3/4"> </div>
+                <div className="flex-shrink-0  ">
+                  <div className="font-bold text-[14px] p-5">
                     {surfitArticle.title
                       ? surfitArticle.title
                       : "제목이 없습니다."}
                   </div>
-                  <span className="text-[12px] ml-2 hover hover:border-b hover:border-b-black my-3 ">
+                  <div className=" text-[12px]  h-[110px] p-3">
+                    {surfitArticle.description
+                      ? surfitArticle.description
+                      : "제목이 없습니다."}
+                  </div>
+                  <span className="text-[12px] font-bold m-3 hover hover:border-b hover:border-b-black ">
                     <Link href={surfitArticle?.href ? surfitArticle.href : ""}>
                       보러가기
                     </Link>

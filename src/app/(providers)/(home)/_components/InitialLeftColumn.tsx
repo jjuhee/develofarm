@@ -32,21 +32,20 @@ const InitialLeftColumn = ({
             className="rounded-xl"
           />
         </div>
-        <div className="flex-shrink-0 font-bold text-[16px] w-[450px] p-3">
+        <div className="flex-shrink-0 font-bold text-[17px] w-[410px] p-3 mt-3">
           {surfitArticlesBundle
             ? surfitArticlesBundle[0].title
             : "제목이 없는 기사 입니다."}
 
-          <div className="text-[13px] p-3">
+          <div className="text-[14px] p-3">
             {
               surfitArticlesBundle
-                ? surfitArticlesBundle[0]?.description.substring(0, 150) +
-                    "..." || ""
+                ? surfitArticlesBundle[0]?.description || ""
                 : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
             }
           </div>
           <Link href={surfitArticles[0]?.href}>
-            <span className="text-[10px] hover:border-b hover:border-b-black m-3">
+            <span className="m-5 text-[13px] hover:border-b hover:border-b-black m-3">
               보러가기
             </span>
           </Link>

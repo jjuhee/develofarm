@@ -29,7 +29,6 @@ export default function Main({ children }: { children: React.ReactNode }) {
     const getFetchProject = async () => {
       const mostBookmarkedCountProject = await getBookmarksCountEachProject()
       setMostbookmarkedProjectsCounted(mostBookmarkedCountProject)
-      console.log("북마크 gorup화 한 project", mostBookmarkedCountProject)
     }
     getFetchProject()
   }, [])
