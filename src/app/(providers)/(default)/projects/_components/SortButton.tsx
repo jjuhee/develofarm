@@ -31,7 +31,7 @@ const SortButton = ({ setPage, setOrder, order }: Props) => {
         {isOpenOrder ? <IoIosArrowUp /> : <IoIosArrowDown />}
       </button>
       {isOpenOrder && (
-        <ul className="absolute z-10 bg-white shadow-md w-full cursor-pointer rounded-lg">
+        <ul className="absolute z-10 bg-white shadow-md w-full cursor-pointer rounded-lg overflow-hidden">
           <li
             className="pl-5 py-1 hover:bg-[#D2D2D2]"
             onClick={() => onChangeOrder(1)}
