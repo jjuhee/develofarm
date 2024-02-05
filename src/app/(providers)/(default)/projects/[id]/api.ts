@@ -1,5 +1,5 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
-import { TablesInsert, TablesUpdate } from "@/types/supabase"
+import { TablesInsert } from "@/types/supabase"
 
 /** 신청하기: 신청자 목록에 멤버 추가 */
 export async function setMember(newMember: TablesInsert<"project_members">) {
@@ -56,6 +56,15 @@ export async function setProjectInMember(projectId: string, userId: string) {
   if (error) console.log("error", error)
 }
 
+/** 참여중인 멤버 신청자 목록으로 전환 */
+export async function updateApplyingMember(projectId: string, userId: string) {
+  const { error } = await supabaseForClient
+    .from("project_members")
+    .update({ application_status: false })
+    .match({ project_id: projectId, user_id: userId })
+  if (error) console.log("error", error)
+}
+
 /** 신청자 멤버 삭제 */
 export async function removeProjectInMember(id: string) {
   const { data, error } = await supabaseForClient
@@ -76,7 +85,7 @@ export async function closeProject(projectId: string) {
   if (error) console.log("error", error)
 }
 
-/** projectId와 일치하는 댓글 목록 가져오기 */
+/** projectId와 일치하는 댓글&대댓글 목록 가져오기 */
 export async function getComments(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("comments")
@@ -92,19 +101,27 @@ export async function getComments(projectId: string) {
   return data
 }
 
-/** commentId와 일치하는 대댓글 목록 가져오기 */
-export async function getReComments(commentId: string) {
-  const { data, error } = await supabaseForClient
-    .from("comments")
-    .select("*, user:users(*)")
-    .eq("comment_id", commentId)
-  if (error) console.log("error", error)
-  return data
-}
-
 /** 프로젝트 게시물에 댓글 추가 */
 export async function setComment(comment: TablesInsert<"comments">) {
   const { error } = await supabaseForClient.from("comments").insert(comment)
+
+  if (error) console.log("error", error)
+}
+
+/** 프로젝트 게시물에 댓글 수정 */
+export async function editComment({
+  id,
+  content,
+  updated_at,
+}: {
+  id: string
+  content: string
+  updated_at: string
+}) {
+  const { error } = await supabaseForClient
+    .from("comments")
+    .update({ content, updated_at })
+    .eq("id", id)
 
   if (error) console.log("error", error)
 }

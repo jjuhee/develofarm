@@ -2,6 +2,7 @@ import React from "react"
 import { useQuery } from "@tanstack/react-query"
 import { getUser } from "../../api"
 import { TbPointFilled } from "react-icons/tb"
+import Image from "next/image"
 
 const ProfileUserData = ({ profileId }: { profileId: string }) => {
   const {
@@ -15,7 +16,11 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
   })
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+      </div>
+    )
   }
 
   if (isError) {

@@ -27,6 +27,18 @@ export async function updateUser(profileId: string, updatedUserData: any) {
   return data
 }
 
+/* User Resumes */
+export async function getUserResumes(profileId: string) {
+  const { data: userData, error: userError } = await supabaseForClient
+    .from("users")
+    .select("*, careers(*), education(*), academies(*), specs(*)")
+    .eq("id", profileId)
+    .single()
+  if (userError) console.log("error", userError)
+
+  return userData || null
+}
+
 /* Career */
 export async function getCareers({ userId }: { userId: string }) {
   const { data, error } = await supabaseForClient

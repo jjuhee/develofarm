@@ -11,20 +11,21 @@ import useUserStore from "@/store/user"
 import useAddNotiMutate from "@/hooks/useAddNotiMutate"
 
 type Props = {
-  applicants: Exclude<Awaited<ReturnType<typeof getMembers>>, null>
-  applicant: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
+  applying: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
+  participatingApplications: Exclude<
+    Awaited<ReturnType<typeof getMembers>>,
+    null
+  >
 }
 
-const ApplyButtons = ({ applicant, applicants }: Props) => {
+const AuthorizeActionButtons = ({
+  applying,
+  participatingApplications,
+}: Props) => {
   const { user } = useUserStore((state) => state)
   const queryClient = useQueryClient()
   const { openCustomModalHandler } = useCustomModal()
   const addNotiMutate = useAddNotiMutate()
-
-  /*@ param 참여 중인 멤버 인원 수 */
-  const applyApplications = applicants?.filter(
-    (applicant) => applicant.application_status === true,
-  )
 
   /**
    *@ mutaion 참여중인 멤버에 신청자 등록 후 확인창 띄워주기*/
@@ -40,7 +41,7 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["applicants", { projectId: applicant.project_id }],
+        queryKey: ["applicants", { projectId: applying.project_id }],
       })
     },
     onError: (error) => {
@@ -54,7 +55,7 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
     mutationFn: removeProjectInMember,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["applicants", { projectId: applicant.project_id }],
+        queryKey: ["applicants", { projectId: applying.project_id }],
       })
 
       openCustomModalHandler("거절되었습니다", "alert")
@@ -70,20 +71,20 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
   const onApplyButtonHandler = () => {
     const handler = () => {
       if (
-        applicant.projects?.number_of_people &&
-        applyApplications.length >= applicant.projects.number_of_people
+        applying.projects?.number_of_people &&
+        participatingApplications.length >= applying.projects?.number_of_people
       ) {
         return openCustomModalHandler("모집인원이 가득찼습니다!", "alert")
       } else {
         const newAcceptionNoti = {
-          project_id: applicant.project_id,
-          receiver_id: applicant.user_id,
+          project_id: applying.project_id,
+          receiver_id: applying.user_id,
           type: "acception",
           sender_nickname: user?.nickName as string,
         }
         updateMemberMutate.mutate({
-          projectId: applicant.project_id,
-          userId: applicant.user_id,
+          projectId: applying.project_id,
+          userId: applying.user_id,
         })
         addNotiMutate(newAcceptionNoti)
       }
@@ -97,17 +98,16 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
   }
 
   /**
-   *@ function 신청자 목록에서 거절하기
-   TODO: 신청자 삭제 기능 수정 중 */
+   *@ function 신청자 목록에서 거절하기 */
   const onRejectButtonHandler = () => {
     const handler = () => {
       const newRejectionNoti = {
-        project_id: applicant.project_id,
-        receiver_id: applicant.user_id,
+        project_id: applying.project_id,
+        receiver_id: applying.user_id,
         type: "rejection",
         sender_nickname: user?.nickName as string,
       }
-      removeMemberMutate.mutate(applicant.id)
+      removeMemberMutate.mutate(applying.id)
       addNotiMutate(newRejectionNoti)
     }
 
@@ -115,9 +115,9 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
   }
 
   return (
-    <div className="flex flex-row-reverse w-36 ml-auto mt-[-80px]">
+    <div className="absolute flex flex-row-reverse ml-[1030px] w-36 mt-[-90px]">
       <button
-        className="mr-5 hover:scale-110 transition-all duration-200"
+        className="mr-5"
         onClick={() => {
           onApplyButtonHandler()
         }}
@@ -130,10 +130,7 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
           className="w-11 h-11 p-2 bg-[#000000] object-none rounded-full"
         />
       </button>
-      <button
-        className="mr-3 hover:scale-110 transition-all duration-200"
-        onClick={onRejectButtonHandler}
-      >
+      <button className="mr-3" onClick={onRejectButtonHandler}>
         <Image
           width={12}
           height={12}
@@ -146,4 +143,4 @@ const ApplyButtons = ({ applicant, applicants }: Props) => {
   )
 }
 
-export default ApplyButtons
+export default AuthorizeActionButtons

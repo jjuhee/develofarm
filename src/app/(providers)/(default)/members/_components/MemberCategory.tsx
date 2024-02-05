@@ -3,6 +3,7 @@
 import useCategoryStore from "@/store/category"
 import useMembersStore from "@/store/members"
 import React from "react"
+
 import type { Tables } from "@/types/supabase"
 
 interface Props {
@@ -35,13 +36,13 @@ const MemberCategory = ({ positions }: Props) => {
   }
 
   return (
-    <ul className="flex py-[20px] gap-[20px] text-[17px] text-[#777E90] font-[700]">
+    <ul className="flex py-[20px] gap-[20px] text-sm font-semibold text-[#777E90]">
       <li
         onClick={() => onClickCategoryHandler({ title: "전체보기" })}
-        className={`cursor-pointer py-2 px-4 ${
+        className={`cursor-pointer py-[10px] px-[14px] rounded-md  ${
           category === "전체보기"
             ? "font-bold text-black bg-main-lime"
-            : "font-[400] border-[1.5px] border-[#EAEAEA] text-[#666666]"
+            : "font-[400] border border-[#EAEAEA] text-[#666666] hover:bg-[#eeeeee]"
         }`}
       >
         전체보기
@@ -50,10 +51,10 @@ const MemberCategory = ({ positions }: Props) => {
         <li
           key={position.id}
           onClick={() => onClickCategoryHandler({ position })}
-          className={`cursor-pointer py-2 px-4 ${
+          className={`cursor-pointer py-[10px] px-[14px] rounded-md ${
             category === position.name
               ? "font-bold text-black bg-main-lime"
-              : "font-[400] border-[1.5px] border-[#EAEAEA] text-[#666666]"
+              : "font-[400] border border-[#EAEAEA] text-[#666666] hover:bg-[#eeeeee]"
           }`}
         >
           {position.name}
