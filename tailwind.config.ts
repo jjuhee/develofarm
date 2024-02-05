@@ -30,6 +30,10 @@ const config: Config = {
       },
       colors: {
         "main-lime": "#b8ff65",
+        "sub-lime": "#DBFFB2",
+      },
+      fontFamily: {
+        pretendard: ["var(--font-pretendard)"],
       },
     },
   },

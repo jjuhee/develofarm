@@ -45,7 +45,7 @@ const ProfileActions = ({ profileId }: { profileId: string }) => {
         <button>
           <MemberInvitationCard
             projects={projects as TProjectsByUserId[]}
-            receiverId={selectedMember.id}
+            selectedMember={selectedMember}
             invitations={invitationByReceiverId as Tables<"notifications">[]}
           />
         </button>

@@ -85,8 +85,6 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     )
   }
 
-  /**
-   *@ query 해당 게시물 id를 구분해 댓글 목록 조회 */
   const { data: applyUser, isLoading: applyUserIsLoading } = useQuery({
     enabled: user !== null,
     queryKey: ["applyUser", { projectId: project.id }],
@@ -153,11 +151,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
             handler={() => cancelForProjectButtonHandler(applyUser.id)}
           />
         ) : (
-          <Button
-            color={"main-lime"}
-            text="신청하기"
-            handler={applyForProjectButtonHandler}
-          />
+          <Button text="신청하기" handler={applyForProjectButtonHandler} />
         )}
       </>
     )

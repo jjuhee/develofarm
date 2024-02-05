@@ -47,7 +47,5 @@ export async function deleteNotification(receiverId: string) {
     .from("notifications")
     .delete()
     .eq("receiver_id", receiverId)
-
   if (error) console.log(error)
-  throw error
 }

@@ -37,74 +37,54 @@ const TeckStackMenuBar = ({ children, project, job }: Props) => {
     )
   }
 
-  /**
-   *@ useEffect 버튼 외부 클릭 시 div태그 닫힘 */
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        menuRef.current &&
-        event.target instanceof HTMLElement &&
-        !menuRef.current.contains(event.target)
-      ) {
-        setIsShow(undefined)
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [menuRef])
-
   if (isLoading) return <div>isLoading...</div>
   return (
-    <div className="flex relative">
+    <div className="flex relative group">
       <button
-        onClick={() => toggleMenuHandler(job)}
-        ref={menuRef}
-        className={`border-[#000000] rounded-lg px-4 py-1 ml-2 min-w-[130px] min-h-[45px] disabled:bg-[#e6e6e6] disabled:border-none ${
-          isShow === job ? "border-[2.5px] font-semibold" : "border"
-        }`}
+        onMouseOver={() => toggleMenuHandler(job)}
+        onMouseLeave={() => toggleMenuHandler(undefined)}
+        className={
+          "group cursor-default border-[2.5px] border-[#A6A6A6] rounded-lg px-4 py-1 ml-2 min-w-[130px] min-h-[45px] text-[#666666] font-semibold hover:border-[#000000] hover:text-[#000000] disabled:text-[#D2D2D2] disabled:border-[#D2D2D2]"
+        }
         disabled={
-          (job === "프론트엔드" && !prontEndTeck?.length) ||
-          (job === "백엔드" && !backEndTeck?.length) ||
-          (job === "디자인" && !designTeck?.length)
+          (children === "프론트엔드" && !prontEndTeck?.length) ||
+          (children === "백엔드" && !backEndTeck?.length) ||
+          (children === "디자인" && !designTeck?.length)
         }
       >
         {children}
       </button>
-      {isShow === job && (
-        <div
-          className={`absolute bg-[#B8FF65] text-[#000000] font-bold rounded-xl min-w-36 p-2 z-10  ml-2 shadow-lg after:content-[''] after:absolute after:top-[-8px] after:right-[75px] after:border-l-transparent after:border-l-[10px] after:border-r-[10px] after:border-r-transparent after:border-b-[10px] after:border-b-[#B8FF65] text-center mt-[65px] ${
-            isShow === "프론트엔드" && "left-[-15px]"
-          } ${isShow === "백엔드" && "left-[-10px]"} ${
-            isShow === "디자인" && "left-[-5px]"
-          }`}
-        >
-          {isShow === "프론트엔드" && (
-            <>
-              {prontEndTeck?.map((data) => (
-                <div key={data.tech_id}>{data.tech_name}</div>
-              ))}
-            </>
-          )}
-          {isShow === "백엔드" && (
-            <>
-              {backEndTeck?.map((data) => (
-                <div key={data.tech_id}>{data.tech_name}</div>
-              ))}
-            </>
-          )}
-          {isShow === "디자인" && (
-            <>
-              {designTeck?.map((data) => (
-                <div key={data.tech_id}>{data.tech_name}</div>
-              ))}
-            </>
-          )}
-        </div>
-      )}
+      {(children === "프론트엔드" && !prontEndTeck?.length) ||
+        (children === "백엔드" && !backEndTeck?.length) ||
+        (children === "디자인" && !designTeck?.length) || (
+          <div
+            className={
+              "absolute hidden group-hover:block bg-[#B8FF65] text-[#000000] font-bold rounded-xl min-w-36 p-2 z-10  ml-2 shadow-lg after:content-[''] after:absolute after:top-[-8px] after:right-[55px] after:border-l-transparent after:border-l-[10px] after:border-r-[10px] after:border-r-transparent after:border-b-[10px] after:border-b-[#B8FF65] text-center mt-[65px] left-[5px]"
+            }
+          >
+            {job === "프론트엔드" && (
+              <>
+                {prontEndTeck?.map((data) => (
+                  <div key={data.tech_id}>{data.tech_name}</div>
+                ))}
+              </>
+            )}
+            {job === "백엔드" && (
+              <>
+                {backEndTeck?.map((data) => (
+                  <div key={data.tech_id}>{data.tech_name}</div>
+                ))}
+              </>
+            )}
+            {job === "디자인" && (
+              <>
+                {designTeck?.map((data) => (
+                  <div key={data.tech_id}>{data.tech_name}</div>
+                ))}
+              </>
+            )}
+          </div>
+        )}
     </div>
   )
 }

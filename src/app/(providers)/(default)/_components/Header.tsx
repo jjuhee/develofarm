@@ -18,9 +18,10 @@ import Notifications from "./Notifications"
 import { useQuery } from "@tanstack/react-query"
 import { getUserByUserId } from "../../api"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import { useSelectedLayoutSegment } from "next/navigation"
 
 const Header = () => {
-  const { setUrl } = useUrlStore()
+  const { setUrl } = useUrlStore((state) => state)
   const { user, setUser } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
   const { setViewMemberModal, setMemberPosition } = useMembersStore(
@@ -31,9 +32,11 @@ const Header = () => {
   const [isAuthInitialized, setIsAuthInitialized] = useState<boolean>(false)
   const [sessionUserId, setSessionUserId] = useState<string>("")
   const dropdownRef = useRef<HTMLInputElement>(null)
+  const alarmDropdownRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
   const pathname = usePathname()
   const { openCustomModalHandler } = useCustomModal()
+  const segment = useSelectedLayoutSegment()
 
   const { data: savedUserData, error } = useQuery({
     queryKey: ["user"],
@@ -76,6 +79,11 @@ const Header = () => {
     handler: () => setIsImageActive(false),
   })
 
+  useOnClickOutSide({
+    ref: alarmDropdownRef,
+    handler: () => setShowTooltip(false),
+  })
+
   // 로그아웃, 및 로그인/로그아웃 체크 및  관련 로직
   useEffect(() => {
     const subscription = supabaseForClient.auth.onAuthStateChange(
@@ -111,7 +119,6 @@ const Header = () => {
     )
     return () => {
       subscription.data.subscription.unsubscribe()
-      console.log("unsubscribe!!")
     }
   }, [savedUserData])
 
@@ -121,7 +128,7 @@ const Header = () => {
 
   //END
   return (
-    <div className="flex w-full bg-white shadow-lg shadow-gray-200">
+    <div className="flex w-full bg-white shadow-lg shadow-gray-100">
       <div className="flex justify-between items-center w-[1250px] h-[96px] my-0 mx-auto px-2 ">
         <Link href={"/"}>
           <Image src={"/images/logo.png"} alt="logo" width={200} height={30} />
@@ -129,13 +136,21 @@ const Header = () => {
         <nav className="flex items-center gap-5">
           <Link
             href={"/projects"}
-            className="text-black text-[18px] font-[500]"
+            className={`text-black text-[18px] ${
+              segment === "projects"
+                ? "font-bold border-b-2 border-b-main-lime"
+                : "font-medium"
+            }`}
           >
             프로젝트 구인
           </Link>
           <Link
             href={"/members"}
-            className="text-black text-[18px] font-[500]"
+            className={`text-black text-[18px] ${
+              segment === "members"
+                ? "font-bold border-b-2 border-b-main-lime"
+                : "font-medium"
+            }`}
             onClick={onClickMemberCategoryHandler}
           >
             인재풀
@@ -154,6 +169,7 @@ const Header = () => {
                 <div
                   className="text-md hover:cursor-pointer"
                   onClick={onClickAlarmHandler}
+                  ref={alarmDropdownRef}
                 >
                   <Notifications showTooltip={showTooltip} />
                 </div>
@@ -172,28 +188,30 @@ const Header = () => {
                   />
 
                   {isImageActive && (
-                    <div className="relative flex">
-                      <div className="left-[-100px] flex-row w-[200px] rounded-lg tooltip bg-white border border-gray-300 shadow-lg  p-4 absolute top-2 z-50 ">
+                    <div className="relative flex *:bg-white">
+                      <div className="left-[-100px] flex-row w-[150px] rounded-lg border-[1px] border-[#F2F4F7] shadow-md  absolute top-2 z-50 ">
                         <>
-                          <div>유저 이메일</div>
-                          <div className="text-xs text-gray-400">
+                          <div className="font-[600] h-[38px] leading-[38px] px-[16px]">
+                            유저 이메일
+                          </div>
+                          <div className="px-[16px] text-xs text-gray-400">
                             {user.email}
                           </div>
                           <Link href={`/profile/${user.id}`}>
-                            <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
+                            <span className="flex items-center px-[16px] leading-[38px] h-[38px] hover:bg-[#DBFFB2]">
                               <GoPerson />
                               <span className="ml-2">내 프로필</span>
                             </span>
                           </Link>
                           <Link href={`/profile/${user.id}/profileProject`}>
-                            <span className="flex items-center hover hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold">
+                            <span className="flex items-center px-[16px] leading-[38px] h-[38px] hover:bg-[#DBFFB2]">
                               <LuFolder />
                               <span className="ml-2">내 프로젝트</span>
                             </span>
                           </Link>
                           <button
                             onClick={onLogoutHandler}
-                            className="flex items-center w-full over hover:cursor-pointer hover:border-gray-300 hover:shadow-lg rounded-xl p-2 hover:font-bold"
+                            className="flex items-center w-[150px] px-[16px] leading-[38px] h-[38px] first:rounded-t-lg last:rounded-b-lg hover:bg-[#DBFFB2]"
                           >
                             <IoLogOutOutline />
                             <span className="ml-2">로그아웃</span>

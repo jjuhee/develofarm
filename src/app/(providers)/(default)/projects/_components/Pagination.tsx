@@ -34,7 +34,7 @@ const Pagination = ({ pageCount, currentPage, onPageChange }: Props) => {
           className={`${
             currentPage === 1
               ? "cursor-not-allowed"
-              : "hover:bg-blue-200 cursor-pointer"
+              : "hover:bg-gray-200 cursor-pointer"
           } px-2 py-2 rounded`}
           onClick={(e) => currentPage > 1 && onPageChange(e, 1)}
         >
@@ -46,7 +46,7 @@ const Pagination = ({ pageCount, currentPage, onPageChange }: Props) => {
           className={`${
             currentPage === 1
               ? "cursor-not-allowed"
-              : "hover:bg-blue-200 cursor-pointer"
+              : "hover:bg-gray-200 cursor-pointer"
           } px-2 py-2 rounded`}
           onClick={(e) => currentPage > 1 && onPageChange(e, currentPage - 1)}
         >
@@ -61,8 +61,10 @@ const Pagination = ({ pageCount, currentPage, onPageChange }: Props) => {
           <li
             key={page}
             className={`${
-              currentPage === page ? " text-black" : " text-[#777777]"
-            } cursor-pointer px-3 py-2 rounded hover:text-main-lime`}
+              currentPage === page
+                ? " text-black bg-main-lime"
+                : " text-[#777777] hover:bg-gray-200"
+            } cursor-pointer px-3 py-1 rounded `}
             onClick={(e) => onPageChange(e, page)}
           >
             {page}
@@ -78,7 +80,7 @@ const Pagination = ({ pageCount, currentPage, onPageChange }: Props) => {
           className={`${
             currentPage === pageCount
               ? "cursor-not-allowed"
-              : "hover:bg-blue-200 cursor-pointer"
+              : "hover:bg-gray-200 cursor-pointer"
           } px-2 py-2 rounded`}
           onClick={(e) =>
             currentPage < pageCount && onPageChange(e, currentPage + 1)
@@ -92,7 +94,7 @@ const Pagination = ({ pageCount, currentPage, onPageChange }: Props) => {
           className={`${
             currentPage === pageCount
               ? "cursor-not-allowed"
-              : "hover:bg-blue-200 cursor-pointer"
+              : "hover:bg-gray-200 cursor-pointer"
           } px-2 py-2 rounded`}
           onClick={(e) => currentPage < pageCount && onPageChange(e, pageCount)}
         >
