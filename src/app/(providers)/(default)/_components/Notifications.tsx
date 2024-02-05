@@ -100,7 +100,7 @@ const Notifications = ({ showTooltip }: Props) => {
             showTooltip ? "visible" : "invisible"
           }`}
         >
-          <h3 className="text-[17px] font-[600] h-[38px] leading-[38px] px-[16px]">
+          <h3 className="text-[14px] font-[600] h-[38px] leading-[38px] px-[16px]">
             알림
           </h3>
           {notificationList?.map((noti, index) => {
