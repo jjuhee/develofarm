@@ -1,5 +1,4 @@
-"use client"
-import { PropsWithChildren, useEffect, useState } from "react"
+import { PropsWithChildren } from "react"
 import Header from "@/app/(providers)/(default)/_components/Header"
 import Footer from "@/app/(providers)/(default)/_components/Footer"
 import Navigation from "./_components/Navigation"
