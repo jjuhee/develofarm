@@ -1,26 +1,50 @@
-import BookmarkButton from "@/components/BookmarkButton"
+"use client"
+
+import React, { useState } from "react"
 import { Tables } from "@/types/supabase"
-import React from "react"
-import { IoShareSocialOutline } from "react-icons/io5"
+import useUserStore from "@/store/user"
+import { getProject } from "../../../api"
+import PublicShareButton from "./PublicShareButton"
+import BookmarkButton from "@/components/BookmarkButton"
+import Image from "next/image"
 
 interface Props {
   bookmarks: Tables<"bookmarks">[]
-  projectId: string
+  project: Exclude<Awaited<ReturnType<typeof getProject>>, null>
   bookmarksCount: number
 }
 
-const FooterPublicIcon = ({ bookmarks, projectId, bookmarksCount }: Props) => {
+const FooterPublicIcon = ({ bookmarks, project, bookmarksCount }: Props) => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
+  const userId = useUserStore((state) => state.user?.id)
+
+  const openModalClickHandler = () => {
+    setIsOpenModal(!isOpenModal)
+  }
+
   return (
     <>
       <span className="flex ml-auto pr-5 items-center">
         <span className="pr-1">
-          <BookmarkButton bookmarks={bookmarks} projectId={projectId} />
+          <BookmarkButton bookmarks={bookmarks} projectId={project.id} />
         </span>
         {bookmarksCount}
       </span>
-      <span className="pr-5">
-        <IoShareSocialOutline size={30} />
+      <span
+        className="relative pr-5 cursor-pointer"
+        onClick={openModalClickHandler}
+      >
+        <Image
+          width={24}
+          height={24}
+          src="/icons/shareIcon.png"
+          alt="공유 아이콘"
+          className="float-left mt-1 mr-2"
+        />
       </span>
+      {isOpenModal && (
+        <PublicShareButton project={project} setIsOpenModal={setIsOpenModal} />
+      )}
     </>
   )
 }

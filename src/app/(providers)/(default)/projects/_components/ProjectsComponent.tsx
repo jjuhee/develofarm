@@ -6,6 +6,7 @@ import Category from "../../write/_components/Category"
 import ProjectList from "./ProjectList"
 
 const ProjectsComponent = () => {
+  const [isShownCategory, setIsShownCategory] = useState(false)
   /** 필터링 검색 옵션 */
   const [option, setOption] = useState<TProjectsOptions>({
     isOffline: null,
@@ -38,10 +39,15 @@ const ProjectsComponent = () => {
         isWritePage={false}
         setCategoryData={setCategoryData}
         setOption={setOption}
+        isShownCategory={isShownCategory}
+        setIsShownCategory={setIsShownCategory}
       />
 
       <Spacer y={30} />
-      <ProjectList option={option as TProjectsOptions} />
+      <ProjectList
+        option={option as TProjectsOptions}
+        setIsShownCategory={setIsShownCategory}
+      />
     </div>
   )
 }

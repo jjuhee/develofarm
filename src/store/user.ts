@@ -1,11 +1,11 @@
 import { create } from "zustand"
 
 export type TUserData = {
-  id: string
-  nickName: string
-  avatarUrl: string
-  email: string
-  createdAt: string
+  id: string | null
+  nickName: string | null
+  avatarUrl: string | null
+  email: string | null
+  createdAt: string | null
 }
 
 type TUserState = {

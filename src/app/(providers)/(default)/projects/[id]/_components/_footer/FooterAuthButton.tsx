@@ -1,6 +1,6 @@
 import { TablesInsert } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import React from "react"
+import React, { useState } from "react"
 import useUserStore from "@/store/user"
 import {
   closeProject,
@@ -85,12 +85,10 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     )
   }
 
-  /**
-   *@ query 해당 게시물 id를 구분해 댓글 목록 조회 */
   const { data: applyUser, isLoading: applyUserIsLoading } = useQuery({
     enabled: user !== null,
     queryKey: ["applyUser", { projectId: project.id }],
-    queryFn: () => getApplicationUser(project.id, user?.id),
+    queryFn: () => getApplicationUser(project.id, user?.id as string),
   })
 
   // 신청자가 맞는지 확인하는 변수
@@ -108,7 +106,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
 
     const newMember: TablesInsert<"project_members"> = {
       project_id: project.id,
-      user_id: user.id,
+      user_id: user.id as string,
     }
     const newReCommentNoti = {
       project_id: project.id,
@@ -117,12 +115,12 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
       sender_nickname: user?.nickName as string,
     }
 
-    const handler = () => {
-      addMemberMutate.mutate(newMember)
+    const handler = (message?: string) => {
+      addMemberMutate.mutate({ ...newMember, appeal_message: message })
       addNotiMutate(newReCommentNoti)
     }
 
-    openCustomModalHandler("신청하시겠습니까?", "confirm", handler)
+    openCustomModalHandler("신청하시겠습니까?", "confirm", handler, true)
   }
 
   /**
@@ -153,11 +151,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
             handler={() => cancelForProjectButtonHandler(applyUser.id)}
           />
         ) : (
-          <Button
-            color={"main-lime"}
-            text="신청하기"
-            handler={applyForProjectButtonHandler}
-          />
+          <Button text="신청하기" handler={applyForProjectButtonHandler} />
         )}
       </>
     )

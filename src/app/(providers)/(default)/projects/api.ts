@@ -103,26 +103,6 @@ export async function getProject(projectId: string) {
 
 /** projectId 값과 일치하는 해당 프로젝트 및 연관 data 삭제 */
 export async function removeProject(projectId: string) {
-  const { error: projectTechError } = await supabaseForClient
-    .from("project_tech")
-    .delete()
-    .eq("project_id", projectId)
-  if (projectTechError) console.log("project_tech 삭제 error", projectTechError)
-
-  const { error: projectMembersError } = await supabaseForClient
-    .from("project_members")
-    .delete()
-    .eq("project_id", projectId)
-  if (projectMembersError)
-    console.log("project_members 삭제 error", projectMembersError)
-
-  const { error: projectBookmarkError } = await supabaseForClient
-    .from("bookmarks")
-    .delete()
-    .eq("project_id", projectId)
-  if (projectBookmarkError)
-    console.log("project의 bookmarks 삭제 error", projectBookmarkError)
-
   const { error: projectError } = await supabaseForClient
     .from("projects")
     .delete()
@@ -186,7 +166,7 @@ export async function removeBookmarks({
   currentUser,
 }: {
   projectId: string
-  currentUser?: string | undefined
+  currentUser?: string | null
 }) {
   const { error } = await supabaseForClient
     .from("bookmarks")
@@ -321,20 +301,6 @@ export async function getRegions() {
   if (error) console.log("error", error)
 
   return data
-}
-
-// 검색어와 일치하는 프로젝트 가져오기
-export async function getSearchedProject(title: string) {
-  const { data: projectData, error: projectError } = await supabaseForClient
-    .from("projects")
-    .select(
-      "*, user:users(id, user_nickname, avatar_url), region:project_regions(*)",
-    )
-    .ilike("title", `%${title}%`)
-
-  if (projectError) console.log("error", projectError)
-
-  return projectData || null
 }
 
 export async function getProjectsWithServer() {

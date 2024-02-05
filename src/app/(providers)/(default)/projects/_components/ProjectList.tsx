@@ -1,32 +1,32 @@
 "use client"
 
-import { TProjectsType } from "@/types/extendedType"
-import { Tables } from "@/types/supabase"
-import React, { useMemo, useRef, useState } from "react"
+import React, { useMemo, useState } from "react"
+import { getProjects } from "../api"
+import { useQuery } from "@tanstack/react-query"
+import useUserStore from "@/store/user"
+import useProjectsStore from "@/store/projects"
 import ProjectCard from "./ProjectCard"
+import SortButton from "./SortButton"
 import EmptyState from "@/components/EmptyState"
 import Spacer from "@/components/ui/Spacer"
-import { getBookmarksByUserId, getProjects } from "../api"
-import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query"
-import useUserStore from "@/store/user"
 import Pagination from "./Pagination"
-import useProjectsStore from "@/store/projects"
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
-import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import Checkbox from "@/components/ui/Checkbox"
+import useBookmarks from "@/hooks/useBookmarks"
+import Image from "next/image"
+
+import type { TProjectsType } from "@/types/extendedType"
 
 interface Props {
   option?: TProjectsOptions
+  setIsShownCategory: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProjectList = ({ option }: Props) => {
+const ProjectList = ({ option, setIsShownCategory }: Props) => {
   const PAGE_SIZE = 5
-  const { user } = useUserStore((state) => state)
-  const [recruitStatus, setRecruitStatus] = useState(false)
-  const [order, setOrder] = useState(1)
-  const [isOpenOrder, setIsOpenOrder] = useState(false)
-  const sortRef = useRef(null)
 
+  const [order, setOrder] = useState(1)
+  const [recruitStatus, setRecruitStatus] = useState(false)
+  const { user } = useUserStore((state) => state)
   const { page, setPage } = useProjectsStore((state) => state)
 
   /** 전체 프로젝트 가져오기 */
@@ -40,12 +40,8 @@ const ProjectList = ({ option }: Props) => {
     enabled: !!page,
   })
 
-  /** 현재 유저 북마크 데이터 가져오기 */
-  const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
-    queryKey: ["bookmarks", user?.id],
-    queryFn: () => getBookmarksByUserId(user?.id as string),
-    enabled: !!user?.id,
-  })
+  const currentUserId = typeof user?.id === "string" ? user.id : ""
+  const bookmarks = useBookmarks(currentUserId)
 
   /** 프로젝트 리스트 정렬 */
   const sortedProjects = useMemo(() => {
@@ -64,6 +60,7 @@ const ProjectList = ({ option }: Props) => {
     return draft
   }, [projects, order])
 
+  /** 페이지네이션 리스트 */
   const paginatedSortedProjects = useMemo(() => {
     const result = []
     const chunkSize = PAGE_SIZE
@@ -82,12 +79,7 @@ const ProjectList = ({ option }: Props) => {
     setPage(1)
   }
 
-  const onChangeOrder = (order: number) => {
-    setOrder(order)
-    setPage(1)
-    setIsOpenOrder(false)
-  }
-
+  /** 페이지 변경 핸들러 */
   const onPageChange = (e: React.ChangeEvent<unknown>, value: number) => {
     setPage(value)
     window.scroll({
@@ -95,81 +87,53 @@ const ProjectList = ({ option }: Props) => {
     })
   }
 
-  useOnClickOutSide({ ref: sortRef, handler: () => setIsOpenOrder(false) })
-
   if (isLoading) return <div>로딩중...</div>
 
   return (
     <>
-      <div className="flex justify-between items-center">
-        <p className="text-[20px] text-[#363940]">
-          {projects?.length}건의 검색 결과를 찾았어요.
+      <div className="flex flex-col-reverse md:justify-between md:flex-row">
+        <p className="text-[#363940]">
+          {projects && projects.length > 0 ? (
+            <>{projects.length}건의 검색 결과를 찾았어요.</>
+          ) : (
+            <>검색 결과를 찾지 못했습니다.</>
+          )}
         </p>
-        <div className="flex items-center gap-[30px]">
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="recruit"
-              value={recruitStatus}
-              handler={onChangeRecruitHandler}
-            />
-            <label htmlFor="recruit" className="cursor-pointer">
-              모집 중인 공고만 보기
-            </label>
-          </div>
-          {/* <SortButton
-            onChangeRecruitHandler={onChangeRecruitHandler}
-            setIsOpenOrder={setIsOpenOrder}
-            onChangeOrder={onChangeOrder}
-          /> */}
-          <div
-            className="relative w-[120px] text-[14px] font-[400]"
-            ref={sortRef}
-          >
-            <button
-              onClick={() => setIsOpenOrder(!isOpenOrder)}
-              className="flex justify-between items-center pl-5 pr-2 w-full h-[30px] rounded-2xl bg-[#D2D2D2] "
-            >
-              {order === 1 ? "최신순" : order === 2 ? "오래된순" : "찜한순"}
-              {isOpenOrder ? <IoIosArrowUp /> : <IoIosArrowDown />}
-            </button>
-            {isOpenOrder && (
-              <ul className="absolute z-10 bg-white shadow-md w-full cursor-pointer rounded-lg">
-                <li
-                  className="pl-5 py-1 hover:bg-[#D2D2D2]"
-                  onClick={() => onChangeOrder(1)}
-                >
-                  최신순
-                </li>
-                <li
-                  className="pl-5 py-1 hover:bg-[#D2D2D2]"
-                  onClick={() => onChangeOrder(2)}
-                >
-                  오래된순
-                </li>
-                <li
-                  className="pl-5 py-1 hover:bg-[#D2D2D2]"
-                  onClick={() => onChangeOrder(3)}
-                >
-                  찜한순
-                </li>
-              </ul>
-            )}
+        <div className="flex items-center justify-between mb-10 md:justify-normal md:mb-0">
+          <Image
+            src={"/icons/filter.png"}
+            alt="filter icon"
+            width={30}
+            height={30}
+            className="block cursor-pointer md:hidden"
+            onClick={() => setIsShownCategory((prev) => !prev)}
+          />
+          <div className="flex gap-[30px]">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="recruit"
+                value={recruitStatus}
+                handler={onChangeRecruitHandler}
+              />
+              <label htmlFor="recruit" className="cursor-pointer font-semibold">
+                모집 중인 공고만 보기
+              </label>
+            </div>
+            <SortButton order={order} setOrder={setOrder} setPage={setPage} />
           </div>
         </div>
       </div>
 
       <Spacer y={50} />
 
-      {(projects?.length as number) > 0 ? (
+      {projects && projects.length > 0 ? (
         <ul className="flex flex-col ">
-          {paginatedSortedProjects[(page as number) - 1]?.map((item) => {
+          {paginatedSortedProjects[page - 1]?.map((item: TProjectsType) => {
             return (
               <ProjectCard
                 key={item?.id}
-                project={item as TProjectsType}
-                bookmarks={bookmarks as Tables<"bookmarks">[]}
-                // currentUser={user?.id as string}
-                page={page as number}
+                project={item}
+                bookmarks={bookmarks!}
               />
             )
           })}
@@ -181,7 +145,7 @@ const ProjectList = ({ option }: Props) => {
       <Spacer y={40} />
 
       <Pagination
-        pageCount={Math.ceil(((projects?.length as number) || 0) / PAGE_SIZE)}
+        pageCount={Math.ceil(((projects && projects.length) || 0) / PAGE_SIZE)}
         currentPage={page}
         onPageChange={onPageChange}
       />

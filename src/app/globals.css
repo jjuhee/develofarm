@@ -18,12 +18,18 @@ body {
     Droid Sans,
     Helvetica Neue,
     sans-serif;
+
   line-height: 1.6;
-  font-size: 18px;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 * {
   box-sizing: border-box;
+}
+
+.root {
+  --main-color: #b8ff65;
 }
 
 a {
@@ -35,14 +41,35 @@ button {
   cursor: pointer;
 }
 
+h1 {
+  font-size: 21px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+h4 {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+p {
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .category {
-  @apply border-[1.5px] rounded-[8px] h-[40px] leading-[40px] text-[15px] cursor-pointer outline-none hover:border-[#2d2d2d] hover:bg-[#eeeeee];
+  @apply flex items-center border-[1.5px] rounded-[8px] h-[40px] px-5 leading-[40px] text-[14px] cursor-pointer outline-none hover:border-[#2d2d2d] hover:bg-[#eeeeee];
 }
 
 .edit-menu {
   @apply p-[3px] rounded-[3px] cursor-pointer border-[1px] border-white hover:rounded-[3px] hover:border-[#E6E6E6] hover:border-[1px];
-}
-
-.root {
-  --main-color: #b8ff65;
 }

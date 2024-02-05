@@ -10,6 +10,7 @@ import MembersComponent from "./_components/MemberComponent"
 const MembersPage = async () => {
   const queryClient = new QueryClient()
 
+  /** 멤버 리스트 프리패치 */
   await queryClient.prefetchInfiniteQuery({
     queryKey: ["users", "전체보기"],
     queryFn: () => getUsers({ pageParam: 0, positionId: "" }),
@@ -20,7 +21,7 @@ const MembersPage = async () => {
       }
       return allPages.length * 4
     },
-    pages: 2, // prefetch the first 3 pages
+    pages: 1,
   })
 
   await queryClient.prefetchQuery({
