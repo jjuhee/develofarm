@@ -18,6 +18,7 @@ import Notifications from "./Notifications"
 import { useQuery } from "@tanstack/react-query"
 import { getUserByUserId } from "../../api"
 import { useCustomModal } from "@/hooks/useCustomModal"
+import { useSelectedLayoutSegment } from "next/navigation"
 
 const Header = () => {
   const { setUrl } = useUrlStore((state) => state)
@@ -35,6 +36,7 @@ const Header = () => {
   const router = useRouter()
   const pathname = usePathname()
   const { openCustomModalHandler } = useCustomModal()
+  const segment = useSelectedLayoutSegment()
 
   const { data: savedUserData, error } = useQuery({
     queryKey: ["user"],
@@ -135,7 +137,9 @@ const Header = () => {
           <Link
             href={"/projects"}
             className={`text-black text-[18px] ${
-              pathname === "/projects" ? "font-bold" : "font-medium"
+              segment === "projects"
+                ? "font-bold border-b-2 border-b-main-lime"
+                : "font-medium"
             }`}
           >
             프로젝트 구인
@@ -143,7 +147,9 @@ const Header = () => {
           <Link
             href={"/members"}
             className={`text-black text-[18px] ${
-              pathname === "/members" ? "font-bold" : "font-medium"
+              segment === "members"
+                ? "font-bold border-b-2 border-b-main-lime"
+                : "font-medium"
             }`}
             onClick={onClickMemberCategoryHandler}
           >
