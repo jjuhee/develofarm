@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useMemo, useState } from "react"
-import { getBookmarksByUserId, getProjects } from "../api"
+import { getProjects } from "../api"
 import { useQuery } from "@tanstack/react-query"
 import useUserStore from "@/store/user"
 import useProjectsStore from "@/store/projects"
@@ -11,10 +11,10 @@ import EmptyState from "@/components/EmptyState"
 import Spacer from "@/components/ui/Spacer"
 import Pagination from "./Pagination"
 import Checkbox from "@/components/ui/Checkbox"
-
-import type { Tables } from "@/types/supabase"
-import type { TProjectsType } from "@/types/extendedType"
+import useBookmarks from "@/hooks/useBookmarks"
 import Image from "next/image"
+
+import type { TProjectsType } from "@/types/extendedType"
 
 interface Props {
   option?: TProjectsOptions
@@ -40,16 +40,8 @@ const ProjectList = ({ option, setIsShownCategory }: Props) => {
     enabled: !!page,
   })
 
-  /** 현재 유저 북마크 가져오기 */
-  const { data: userBookmarks } = useQuery<
-    unknown,
-    Error,
-    Tables<"bookmarks">[]
-  >({
-    queryKey: ["bookmarks", user?.id],
-    queryFn: () => getBookmarksByUserId(user?.id as string),
-    enabled: !!user,
-  })
+  const currentUserId = typeof user?.id === "string" ? user.id : ""
+  const bookmarks = useBookmarks(currentUserId)
 
   /** 프로젝트 리스트 정렬 */
   const sortedProjects = useMemo(() => {
@@ -141,7 +133,7 @@ const ProjectList = ({ option, setIsShownCategory }: Props) => {
               <ProjectCard
                 key={item?.id}
                 project={item}
-                bookmarks={userBookmarks ?? []}
+                bookmarks={bookmarks!}
               />
             )
           })}

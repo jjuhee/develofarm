@@ -84,7 +84,7 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
             {formatDate(project_start_date)} - {formatDate(project_end_date)}
           </span>
           <p
-            className="line-clamp-5  leading-[18px] pt-2 text-[#363940] hidden md:block"
+            className="line-clamp-4 leading-[18px] pt-2 h-[100px] text-[#363940] hidden md:block"
             dangerouslySetInnerHTML={{
               __html: sanitizeHtml(content, {
                 allowedTags: [],

@@ -20,7 +20,7 @@ import { getUserByUserId } from "../../api"
 import { useCustomModal } from "@/hooks/useCustomModal"
 
 const Header = () => {
-  const { setUrl } = useUrlStore()
+  const { setUrl } = useUrlStore((state) => state)
   const { user, setUser } = useUserStore((state) => state)
   const { selectCategory } = useCategoryStore((state) => state)
   const { setViewMemberModal, setMemberPosition } = useMembersStore(

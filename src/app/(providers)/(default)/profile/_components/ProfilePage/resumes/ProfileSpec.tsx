@@ -1,26 +1,7 @@
 import React from "react"
-import { useQuery } from "@tanstack/react-query"
-import { getSpecs } from "../../../api"
+import { Tables } from "@/types/supabase"
 
-const ProfileSpec = ({ profileId }: { profileId: string }) => {
-  const {
-    data: specs,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["specs", profileId],
-    queryFn: () => getSpecs({ userId: profileId }),
-    enabled: !!profileId,
-  })
-
-  if (isLoading) {
-    return <div className="hidden">Loading...</div>
-  }
-
-  if (isError) {
-    return <div>자격/어학/수상 데이터를 불러오는 중 오류가 발생했습니다</div>
-  }
-
+const ProfileSpec = ({ specs }: { specs: Tables<"specs">[] }) => {
   return (
     <div className="flex justify-between items-center ">
       <div>
