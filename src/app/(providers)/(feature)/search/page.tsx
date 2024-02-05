@@ -1,7 +1,11 @@
 "use client"
-import React, { useEffect, useState } from "react"
-import { getSearchedProject } from "../../(default)/projects/api"
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
+import React, { useEffect, useState, useRef } from "react"
+import { getSearchedProject } from "../../(feature)/search/api"
+import {
+  InitialPageParam,
+  useInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query"
 import { getBookmarksByUserId } from "../../(default)/projects/api"
 import { Tables } from "@/types/supabase"
 import { supabaseForClient } from "@/supabase/supabase.client"
@@ -9,6 +13,11 @@ import Spacer from "@/components/ui/Spacer"
 import SearchedProjectLists from "./_components/SearchedProjectLists"
 import SearchInput from "./_components/SearchInput"
 import SearchedHistory from "./_components/SearchedHistory"
+import { useInView } from "react-intersection-observer"
+import useKeywordsHooks from "@/hooks/useSearchHooks"
+import useBookmarks from "@/hooks/useBookmarks"
+import useUserStore from "@/store/user"
+import { useDebounce } from "@/hooks/useDebounce"
 
 //해당 이용자의 localstorage 가져오기
 interface keywordsInterface {
@@ -22,47 +31,65 @@ interface Props {
 }
 //
 
-const PAGE_SIZE = 5
 const SearchPage = () => {
-  const [currentUser, setCurrentUser] = useState("")
-
+  const [currentUserId, setCurrentUserId] = useState("")
+  const {
+    setText,
+    setKeywords,
+    keywords,
+    text,
+    onRemoveEachKeywordHandler,
+    onRemoveAllKeywordsHandler,
+    onRemoveTextHandler,
+    onSearchKeywordChangeHandler,
+    onSubmitHandler,
+    onKeypressHandler,
+    enteredKeyword,
+  } = useKeywordsHooks()
   /** 현재 인증된 유저 데이터 가져오기 */
+  //zustand로 user 가져오기
+  const { user } = useUserStore((state) => state)
+  console.log("검색페이지에서 유저정보 가져오기", user)
+
   useEffect(() => {
-    const getAuth = async () => {
-      const user = await supabaseForClient.auth.getUser()
-      setCurrentUser(user.data.user?.id as string)
-    }
-    getAuth()
-  }, [currentUser])
-
-  const [keywords, setKeywords] = useState<keywordsInterface[]>([])
-
-  const [text, setText] = useState<string>()
-
-  //북마크
-  //currentUserId 와 같이 더 명확하게
-  const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
-    queryKey: ["bookmarks", currentUser],
-    queryFn: () => getBookmarksByUserId(currentUser),
-    enabled: !!currentUser,
+    setCurrentUserId(typeof user?.id === "string" ? user.id : "")
   })
-  const { data: searchedData, refetch } = useQuery({
-    queryKey: ["searchedProjects", text],
-    queryFn: () => {
-      if (text) {
-        return getSearchedProject(text)
+  const bookmarks = useBookmarks(currentUserId)
+  const debounceVal = useDebounce({ enteredKeyword })
+  const {
+    data: searchedData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["searchedProjects", debounceVal],
+    queryFn: ({ pageParam }: { pageParam: number }) => {
+      if (debounceVal) {
+        return getSearchedProject(debounceVal, pageParam)
       }
     },
-    enabled: false,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage: any, allPages: any) => {
+      if ((lastPage as number) < 4) {
+        return null
+      }
+      return allPages.length
+    },
+    select: (data: any) => {
+      return data.pages
+        .flatMap((page: any) => page)
+        .filter((project: any) => project && project.id !== undefined)
+    },
+    enabled: !!debounceVal,
   })
-  // const {data} =useInfiniteQuery({
 
-  // })
-  console.log("searchedData", searchedData)
-
-  // ------PageCard--------------
-
-  // ------PageCard--------------
+  const { ref } = useInView({
+    threshold: 0,
+    onChange: (inView) => {
+      if (!inView || !hasNextPage || isFetchingNextPage) return
+      fetchNextPage()
+    },
+  })
 
   //1.들어오자마자 로컬 스토리지의 keywords의 값이 있는지 확인하고 , 있으면 keywods state에 값을 넣는다
   //2.keywords에 값이 있으면 map으로 돌려 ui에 보여준다
@@ -73,80 +100,16 @@ const SearchPage = () => {
     if (typeof window !== "undefined") {
       //--만약 로컬스토리지에 keywords가 있다면 keywords state에 넣는다.
       if (localStorage.getItem("keywords")) {
-        const result1: any = localStorage.getItem("keywords")
-        const json = JSON.parse(result1)
-        console.log("제이슨", json)
+        const result1 = localStorage.getItem("keywords")
+        const json = JSON.parse(result1 as string)
         // setKeywords([json, ...keywords])
         setKeywords(json)
-        console.log(
-          "새로고침하거나,새로들어오면 로컬스토리지에서 keywords를 state로 받아야한다?",
-          keywords,
-        )
+
         //여기서 setKeywords를 해야하는데, 왜 자꾸 무한 loop됨?
       }
     }
   }, [])
 
-  //검색버튼 클릭하여 데이터(아이디,num,검색어) 추가
-  const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("엔터시 여기로 들어오기", text)
-    event.preventDefault()
-
-    const searchInput: string = event.currentTarget.search.value
-    if (searchInput === "") {
-      alert("검색어를 입력해주세요")
-      return
-    }
-
-    const newKeyword: keywordsInterface = {
-      num: keywords.length,
-      text: searchInput,
-    }
-
-    //화면에 보여지는 0~7중에 같은 검색어가 들어오면 검색 기록에 등재되지 않는다.
-    const isKeywordExist = keywords
-      .slice(0, 7)
-      .some((keyword) => keyword.text === newKeyword.text)
-    if (isKeywordExist) {
-      setText(searchInput)
-      refetch()
-    } else {
-      setKeywords([newKeyword, ...keywords])
-      localStorage.setItem(
-        "keywords",
-        JSON.stringify([newKeyword, ...keywords]),
-      )
-      refetch()
-    }
-  }
-  //검색어 추가
-
-  // 단일 검색어 삭제
-  const onRemoveEachKeywordHandler = (num: number) => {
-    const nextKeyword = keywords?.filter((keyword) => {
-      return keyword.num !== num
-    })
-
-    setKeywords(nextKeyword)
-    localStorage.setItem("keywords", JSON.stringify(nextKeyword))
-  }
-  //검색어 기록  전체 삭제
-  const onRemoveAllKeywordsHandler = () => {
-    setKeywords([])
-    localStorage.setItem("keywords", JSON.stringify([]))
-  }
-
-  // 검색어 삭제
-  const onRemoveTextHandler = () => {
-    setText("")
-  }
-
-  //검색기록 클릭시 해당 검색기록으로 검색창 텍스트 변환
-  const onSearchKeywordChangeHandler = (text: string) => {
-    setText(text)
-  }
-
-  console.log("data", searchedData)
   return (
     <div className="">
       <SearchInput
@@ -154,6 +117,7 @@ const SearchPage = () => {
         text={text}
         onRemoveTextHandler={onRemoveTextHandler}
         setText={setText}
+        onKeypressHandler={onKeypressHandler}
       />
       <SearchedHistory
         onRemoveAllKeywordsHnalder={onRemoveAllKeywordsHandler}
@@ -161,14 +125,14 @@ const SearchPage = () => {
         onSearchKeywordChangeHandler={onSearchKeywordChangeHandler}
         onRemoveEachKeywordHandler={onRemoveEachKeywordHandler}
       />
-
       <Spacer y={70} />
       {/* -------프로젝트 리스트 들어오기 ---------- */}
       <SearchedProjectLists
         searchedProjects={searchedData as Tables<"projects">[]}
         bookmarks={bookmarks as Tables<"bookmarks">[]}
-        currentUser={currentUser}
+        currentUser={currentUserId}
       />
+      <div ref={ref} className="w-full h-[100px]"></div>
     </div>
   )
 }
