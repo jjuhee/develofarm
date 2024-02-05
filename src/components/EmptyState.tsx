@@ -1,10 +1,5 @@
 import React from "react"
 
-interface Props {
-  title?: string
-  subtitle?: string
-}
-
 const EmptyState = () => {
   return (
     <div className="flex justify-center items-center p-20">

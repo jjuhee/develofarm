@@ -6,14 +6,15 @@ import React, { useMemo, useRef, useState } from "react"
 import ProjectCard from "./ProjectCard"
 import EmptyState from "@/components/EmptyState"
 import Spacer from "@/components/ui/Spacer"
-import { getBookmarksByUserId, getProjects } from "../api"
-import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query"
-import useUserStore from "@/store/user"
+import { getProjects } from "../api"
+import { useQuery } from "@tanstack/react-query"
+import useUserStore, { TUserData } from "@/store/user"
 import Pagination from "./Pagination"
 import useProjectsStore from "@/store/projects"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import Checkbox from "@/components/ui/Checkbox"
+import useBookmarks from "@/hooks/useBookmarks"
 
 interface Props {
   option?: TProjectsOptions
@@ -41,12 +42,9 @@ const ProjectList = ({ option }: Props) => {
   })
 
   /** 현재 유저 북마크 데이터 가져오기 */
-  const { data: bookmarks } = useQuery<Tables<"bookmarks">[]>({
-    queryKey: ["bookmarks", user?.id],
-    queryFn: () => getBookmarksByUserId(user?.id as string),
-    enabled: !!user?.id,
-  })
 
+  const currentUserId = typeof user?.id === "string" ? user.id : ""
+  const bookmarks = useBookmarks(currentUserId)
   /** 프로젝트 리스트 정렬 */
   const sortedProjects = useMemo(() => {
     const draft = projects ? [...projects] : []
