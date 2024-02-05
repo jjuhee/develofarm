@@ -37,26 +37,6 @@ const TeckStackMenuBar = ({ children, project, job }: Props) => {
     )
   }
 
-  /**
-   *@ useEffect 버튼 외부 클릭 시 div태그 닫힘 */
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     if (
-  //       menuRef.current &&
-  //       event.target instanceof HTMLElement &&
-  //       !menuRef.current.contains(event.target)
-  //     ) {
-  //       setIsShow(undefined)
-  //     }
-  //   }
-
-  //   document.addEventListener("mousedown", handleClickOutside)
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside)
-  //   }
-  // }, [menuRef])
-
   if (isLoading) return <div>isLoading...</div>
   return (
     <div className="flex relative group">
@@ -78,11 +58,9 @@ const TeckStackMenuBar = ({ children, project, job }: Props) => {
         (children === "백엔드" && !backEndTeck?.length) ||
         (children === "디자인" && !designTeck?.length) || (
           <div
-            className={`absolute hidden group-hover:block bg-[#B8FF65] text-[#000000] font-bold rounded-xl min-w-36 p-2 z-10  ml-2 shadow-lg after:content-[''] after:absolute after:top-[-8px] after:right-[75px] after:border-l-transparent after:border-l-[10px] after:border-r-[10px] after:border-r-transparent after:border-b-[10px] after:border-b-[#B8FF65] text-center mt-[65px] ${
-              job === "프론트엔드" && "left-[-15px]"
-            } ${job === "백엔드" && "left-[-10px]"} ${
-              job === "디자인" && "left-[-5px]"
-            }`}
+            className={
+              "absolute hidden group-hover:block bg-[#B8FF65] text-[#000000] font-bold rounded-xl min-w-36 p-2 z-10  ml-2 shadow-lg after:content-[''] after:absolute after:top-[-8px] after:right-[55px] after:border-l-transparent after:border-l-[10px] after:border-r-[10px] after:border-r-transparent after:border-b-[10px] after:border-b-[#B8FF65] text-center mt-[65px] left-[5px]"
+            }
           >
             {job === "프론트엔드" && (
               <>
