@@ -71,7 +71,11 @@ const SelectStackButton = ({
     <>
       {positions?.map((position, index) => {
         return (
-          <li className="relative" onMouseLeave={() => setIsActive("")}>
+          <li
+            key={position.id}
+            className="relative"
+            onMouseLeave={() => setIsActive("")}
+          >
             <div
               className={`category justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] transition-all
           ${
