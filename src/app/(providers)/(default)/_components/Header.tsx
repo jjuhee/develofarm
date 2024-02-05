@@ -111,7 +111,6 @@ const Header = () => {
     )
     return () => {
       subscription.data.subscription.unsubscribe()
-      console.log("unsubscribe!!")
     }
   }, [savedUserData])
 
@@ -121,7 +120,7 @@ const Header = () => {
 
   //END
   return (
-    <div className="flex w-full bg-white shadow-lg shadow-gray-200">
+    <div className="flex w-full bg-white shadow-lg shadow-gray-100">
       <div className="flex justify-between items-center w-[1250px] h-[96px] my-0 mx-auto px-2 ">
         <Link href={"/"}>
           <Image src={"/images/logo.png"} alt="logo" width={200} height={30} />
@@ -129,13 +128,17 @@ const Header = () => {
         <nav className="flex items-center gap-5">
           <Link
             href={"/projects"}
-            className="text-black text-[18px] font-[500]"
+            className={`text-black text-[18px] ${
+              pathname === "/projects" ? "font-bold" : "font-medium"
+            }`}
           >
             프로젝트 구인
           </Link>
           <Link
             href={"/members"}
-            className="text-black text-[18px] font-[500]"
+            className={`text-black text-[18px] ${
+              pathname === "/members" ? "font-bold" : "font-medium"
+            }`}
             onClick={onClickMemberCategoryHandler}
           >
             인재풀

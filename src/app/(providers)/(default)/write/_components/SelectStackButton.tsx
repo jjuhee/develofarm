@@ -22,8 +22,8 @@ const SelectStackButton = ({
   categoryData,
   setCategoryData,
 }: Props) => {
-  const [isActive, setIsActive] =
-    useState("") /* 기술 stack 드롭다운 열렸는지 닫혔는지 */
+  /* 기술 stack 드롭다운 열렸는지 닫혔는지 */
+  const [isActive, setIsActive] = useState("")
 
   const onClickTechStackHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget.innerText) {
@@ -69,11 +69,10 @@ const SelectStackButton = ({
     <>
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
-          className={`category flex items-center justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] px-[20px] transition-all
+          className={`category justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] transition-all
           ${
-            isActive === "프론트엔드"
-              ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold"
-              : ""
+            isActive === "프론트엔드" &&
+            "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold "
           }
           ${
             isPositionChecked(POSITION_ID.front)
@@ -87,7 +86,7 @@ const SelectStackButton = ({
         </div>
 
         <ul
-          className={`absolute flex flex-col bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] text-[15px] transition-all duration-300 z-10 ${
+          className={`absolute flex flex-col gap-[10px] bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] transition-all duration-300 z-10 ${
             isActive === "프론트엔드" ? "visible" : "invisible"
           }`}
         >
@@ -95,7 +94,7 @@ const SelectStackButton = ({
             <li key={i} className="">
               <label
                 htmlFor={tech?.id}
-                className="flex items-center gap-1 cursor-pointer text-[16px] text-black "
+                className="flex items-center gap-1 cursor-pointer font-normal"
               >
                 <Checkbox
                   id={tech?.id}
@@ -119,11 +118,10 @@ const SelectStackButton = ({
       </li>
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
-          className={`category flex items-center justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] px-[20px] transition-all
+          className={`category items-center justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] transition-all
           ${
-            isActive === "백엔드"
-              ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold"
-              : ""
+            isActive === "백엔드" &&
+            "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold"
           }
           ${
             isPositionChecked(POSITION_ID.back)
@@ -137,7 +135,7 @@ const SelectStackButton = ({
           {isActive === "백엔드" ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] text-[15px] transition-all duration-300 z-10 ${
+          className={`absolute flex flex-col gap-[10px] bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] transition-all duration-300 z-10 ${
             isActive === "백엔드" ? "visible" : "invisible"
           }`}
         >
@@ -145,7 +143,7 @@ const SelectStackButton = ({
             <li key={i}>
               <label
                 htmlFor={tech?.id}
-                className="flex items-center gap-1 cursor-pointer text-[16px] text-black"
+                className="flex items-center gap-1 cursor-pointer font-normal"
               >
                 <Checkbox
                   id={tech?.id}
@@ -169,7 +167,7 @@ const SelectStackButton = ({
       </li>
       <li className="relative" onMouseLeave={() => setIsActive("")}>
         <div
-          className={`category flex items-center justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] px-[20px] transition-all
+          className={`category flex items-center justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] transition-all
           ${
             isActive === "디자인"
               ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold"
@@ -187,7 +185,7 @@ const SelectStackButton = ({
           {isActive === "디자인" ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] text-[15px] transition-all duration-300 z-20 ${
+          className={`absolute flex flex-col gap-[10px] bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] transition-all duration-300 z-20 ${
             isActive === "디자인" ? "visible" : "invisible"
           }`}
         >
@@ -195,7 +193,7 @@ const SelectStackButton = ({
             <li key={i}>
               <label
                 htmlFor={tech?.id}
-                className="flex items-center gap-1 cursor-pointer text-[16px] text-black"
+                className="flex items-center gap-1 cursor-pointer font-normal"
               >
                 <Checkbox
                   id={tech?.id}

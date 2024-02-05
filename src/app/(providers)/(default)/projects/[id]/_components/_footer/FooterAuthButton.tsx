@@ -151,11 +151,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
             handler={() => cancelForProjectButtonHandler(applyUser.id)}
           />
         ) : (
-          <Button
-            color={"main-lime"}
-            text="신청하기"
-            handler={applyForProjectButtonHandler}
-          />
+          <Button text="신청하기" handler={applyForProjectButtonHandler} />
         )}
       </>
     )

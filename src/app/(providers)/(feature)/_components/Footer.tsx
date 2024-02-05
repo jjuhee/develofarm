@@ -1,15 +1,19 @@
+import Image from "next/image"
 import React from "react"
 
 const Footer = () => {
   return (
     <div className="w-full bg-black text-white">
-      <div className="w-[1250px] mx-auto flex justify-between h-[100px] items-center">
-        <div>
-          <p>개발하는 사람들의 공간</p>
-        </div>
-        <div className="flex gap-10">
-          <h4>이용약관</h4>
-          <h4>개인정보처리방침</h4>
+      <div className="flex items-center justify-between max-w-[1200px] mx-auto py-[48px]">
+        <Image
+          src={"/images/logo2.png"}
+          alt="footer logo"
+          width={120}
+          height={20}
+        />
+        <div className="flex gap-10 text-xs font-bold">
+          <span>이용약관</span>
+          <span>개인정보처리방침</span>
         </div>
       </div>
     </div>
