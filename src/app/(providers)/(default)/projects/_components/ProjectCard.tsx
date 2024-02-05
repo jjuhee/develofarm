@@ -49,6 +49,7 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
       className="flex w-full cursor-pointer border-b border-[#D2D2D2] py-[40px] last:border-none first:pt-0 "
       onClick={onClickToDetailPage}
     >
+      {/* 프로젝트 이미지 */}
       <section className="relative rounded-xl min-w-[115px] h-[80px] transition-all overflow-hidden mr-10 lg:min-w-[431px] lg:min-h-[251px] ">
         <Image
           src={picture_url!}
@@ -58,8 +59,10 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
           className="object-cover"
         />
       </section>
+
+      {/* 프로젝트 내용 */}
       <section className="relative flex flex-col justify-between w-full py-0 lg:py-2">
-        <div className="flex flex-col gap-3 lg:gap-5">
+        <div className="flex flex-col max-w-full gap-3 lg:gap-5">
           <div className="flex flex-col gap-1 lg:gap-3 items-start lg:flex-row lg:items-center">
             <h4
               className={`${
@@ -70,7 +73,7 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
             >
               {recruit_status ? "모집 완료" : "모집 중"}{" "}
             </h4>
-            <h2 className="mr-10 text-[15px] truncate lg:w-[600px] lg:text-[18px]">
+            <h2 className="mr-10 text-[15px] w-[200px] truncate lg:w-full lg:text-[18px] lg:mr-10">
               {title}
             </h2>
           </div>
@@ -83,22 +86,25 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
             />
             {formatDate(project_start_date)} - {formatDate(project_end_date)}
           </span>
-          <p
-            className="line-clamp-4 hidden lg:block"
-            dangerouslySetInnerHTML={{
-              __html: sanitizeHtml(content, {
-                allowedTags: [],
-              }),
-            }}
-          ></p>
+          <div className="hidden lg:block">
+            <p
+              className="line-clamp-4"
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(content, {
+                  allowedTags: [],
+                }),
+              }}
+            ></p>
+          </div>
         </div>
+
         <div className="justify-between items-center mt-10 hidden lg:block">
           <ul className="flex gap-3 relative">
             <ProjectCardTechs project={project} />
           </ul>
         </div>
 
-        <div className="absolute top-0 right-2 lg:top-[12px]">
+        <div className="absolute top-5 right-2 lg:top-[12px]">
           <BookmarkButton projectId={id} bookmarks={bookmarks} />
         </div>
       </section>

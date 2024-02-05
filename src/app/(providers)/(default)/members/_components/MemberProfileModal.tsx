@@ -9,10 +9,12 @@ import Link from "next/link"
 import type { TProjectsByUserId } from "@/types/extendedType"
 import type { Tables } from "@/types/supabase"
 
-const MemberProfile = () => {
+/** 멤버 프로필 모달 */
+const MemberProfileModal = () => {
   const selectedMember = useMembersStore((state) => state.selectedMember)
-  const currentUserId = useUserStore((state) => state.user?.id) as string
+  const currentUserId = useUserStore((state) => state.user?.id as string)
 
+  /** 현재 유저의 프로젝트 리스트 가져오기 */
   const { data: projects } = useQuery<unknown, Error, TProjectsByUserId[]>({
     queryKey: ["projects", currentUserId],
     queryFn: () => getProjectByUserId(currentUserId),
@@ -49,6 +51,7 @@ const MemberProfile = () => {
             <h3>{selectedMember.position?.name || "포지션이 없습니다"}</h3>
           </div>
         </div>
+        {/* 멤버를 초대할 프로젝트 리스트 카드 */}
         <MemberInvitationCard
           projects={projects!}
           selectedMember={selectedMember}
@@ -127,4 +130,4 @@ const MemberProfile = () => {
   )
 }
 
-export default MemberProfile
+export default MemberProfileModal
