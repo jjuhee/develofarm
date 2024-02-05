@@ -1,7 +1,7 @@
 "use client"
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 interface Props {
@@ -9,7 +9,8 @@ interface Props {
 }
 
 const Provider = ({ children }: Props) => {
-  const queryClient = new QueryClient()
+  const [queryClient] = useState(() => new QueryClient())
+
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
       // Kakao SDK 초기화

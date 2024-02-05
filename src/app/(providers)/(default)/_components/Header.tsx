@@ -120,7 +120,7 @@ const Header = () => {
 
   //END
   return (
-    <div className="flex w-full bg-white shadow-lg shadow-gray-100">
+    <div className="w-full bg-white shadow-lg shadow-gray-100 hidden lg:block">
       <div className="flex justify-between items-center w-[1250px] h-[96px] my-0 mx-auto px-2 ">
         <Link href={"/"}>
           <Image src={"/images/logo.png"} alt="logo" width={200} height={30} />
