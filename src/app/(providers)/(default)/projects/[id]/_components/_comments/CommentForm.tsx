@@ -62,13 +62,15 @@ const CommentForm = ({
       }
       AddCommentMutate.mutate(newComment)
 
-      const newCommentNoti = {
-        project_id: projectId,
-        receiver_id: commentUserId,
-        type: "comment",
-        sender_nickname: user?.nickName as string,
+      if (commentUserId != user.id) {
+        const newCommentNoti = {
+          project_id: projectId,
+          receiver_id: commentUserId,
+          type: "comment",
+          sender_nickname: user?.nickName as string,
+        }
+        addNotiMutate(newCommentNoti)
       }
-      addNotiMutate(newCommentNoti)
     } else if (type === "recomment") {
       const newComment: TablesInsert<"comments"> = {
         project_id: projectId,
@@ -78,14 +80,15 @@ const CommentForm = ({
       }
       AddCommentMutate.mutate(newComment)
 
-      const newReCommentNoti = {
-        project_id: projectId,
-        receiver_id: commentUserId,
-        type: "recomment",
-        sender_nickname: user?.nickName as string,
+      if (commentUserId != user.id) {
+        const newReCommentNoti = {
+          project_id: projectId,
+          receiver_id: commentUserId,
+          type: "recomment",
+          sender_nickname: user?.nickName as string,
+        }
+        addNotiMutate(newReCommentNoti)
       }
-
-      addNotiMutate(newReCommentNoti)
     }
   }
 

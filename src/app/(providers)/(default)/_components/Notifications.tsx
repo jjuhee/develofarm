@@ -9,7 +9,6 @@ import React, { MouseEvent, useEffect, useState } from "react"
 import { getNotifications, setNotification } from "../../api"
 import { BsArrowUpRight } from "react-icons/bs"
 import { VscBell } from "react-icons/vsc"
-//import useNotiStore from "@/store/notification"
 
 interface Props {
   showTooltip: boolean
@@ -22,15 +21,9 @@ const Notifications = ({ showTooltip }: Props) => {
   const userId = useUserStore((state) => state?.user?.id) as string
   const router = useRouter()
   const queryClient = useQueryClient()
-  // const { setNotiState } = useNotiStore((state) => state)
 
-  const {
-    data: notifications,
-    isSuccess,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["notifications"],
+  const { data: notifications } = useQuery({
+    queryKey: ["notifications", { type: "header" }],
     queryFn: () => getNotifications(userId, false),
     enabled: !!userId,
   })
@@ -42,13 +35,15 @@ const Notifications = ({ showTooltip }: Props) => {
         queryKey: ["notifications"],
       })
     },
+    onError: (error) => {
+      console.log("update : onError", error)
+    },
   })
 
   /* 이미 있는것 유즈 쿼리로 불러오기 */
   useEffect(() => {
     if (notifications) {
       setNotificationList(() => [...notifications])
-      // setNotiState(false)
     }
   }, [notifications])
 
@@ -67,8 +62,6 @@ const Notifications = ({ showTooltip }: Props) => {
         (payload: RealtimePostgresInsertPayload<Tables<"notifications">>) => {
           const newItem = payload.new
           if (newItem.receiver_id === userId && newItem.status === false) {
-            //setNotificationList((oldList) => [newItem, ...oldList])
-            console.log("noti가 욌음", payload.new)
             queryClient.invalidateQueries({
               queryKey: ["notifications"],
             })
@@ -83,8 +76,8 @@ const Notifications = ({ showTooltip }: Props) => {
   }, [])
 
   const onClickNotificationHandler = (noti: TablesUpdate<"notifications">) => {
-    router.push(`/projects/${noti.project_id}`)
     updateNotification.mutate({ id: noti.id, status: true })
+    router.push(`/projects/${noti.project_id}`)
   }
 
   const onClickNotificationPageHandler = () => {
