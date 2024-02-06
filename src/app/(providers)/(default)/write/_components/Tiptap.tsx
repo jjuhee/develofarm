@@ -36,7 +36,7 @@ const TipTap = ({ content, setContent }: Props) => {
 
   return (
     <>
-      <div className="flex items-center relative border-b border-black h-[60px]">
+      <div className="flex items-center border-b border-black bg-white h-[60px] sticky top-0 z-10">
         <EditorMenu editor={editor} />
       </div>
       <div className="py-10 px-5 min-h-[50vh]" onClick={onClickFocusHandler}>
