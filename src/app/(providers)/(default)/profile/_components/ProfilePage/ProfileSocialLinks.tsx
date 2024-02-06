@@ -39,10 +39,10 @@ const ProfileSocialLinks = ({ profileId }: { profileId: string }) => {
               </a>
             </p>
           ) : (
-            <p className="text-[14px] font-bold">블로그 주소가 없습니다</p>
+            <p className="text-[14px] font-bold">Blog Link가 없습니다.</p>
           )
         ) : (
-          <p className="text-[14px] font-bold">블로그 주소가 없습니다</p>
+          <p className="text-[14px] font-bold">Blog Link가 없습니다.</p>
         )}
       </div>
 
@@ -60,10 +60,10 @@ const ProfileSocialLinks = ({ profileId }: { profileId: string }) => {
               </a>
             </p>
           ) : (
-            <p className="text-[14px] font-bold">GitHub 주소가 없습니다</p>
+            <p className="text-[14px] font-bold">GitHub Link가 없습니다.</p>
           )
         ) : (
-          <p className="text-[14px] font-bold">GitHub 주소가 없습니다</p>
+          <p className="text-[14px] font-bold">GitHub Link가 없습니다.</p>
         )}
       </div>
     </div>

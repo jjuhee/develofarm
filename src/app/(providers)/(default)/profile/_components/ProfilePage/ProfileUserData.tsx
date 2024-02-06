@@ -31,14 +31,14 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
     <div className="pt-3">
       {/* 유저 데이터 */}
       <div className="flex items-center">
-        <img
-          width={64}
-          height={64}
-          src={`${users?.avatar_url}`}
-          alt="User Avatar"
-          className="w-64 h-64 rounded-full"
+        <Image
+          src={users?.avatar_url as string}
+          alt="userAvatar"
+          width={50}
+          height={50}
+          objectFit="cover"
+          className="rounded-full w-64 h-64"
         />
-
         <div className="text-left pl-[40px]">
           <h2 className="text-[30px] pl-[10px] font-bold">
             {users?.user_nickname}

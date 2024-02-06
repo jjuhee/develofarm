@@ -45,7 +45,7 @@ const ProfileProjectCard = ({
             <p
               dangerouslySetInnerHTML={{ __html: project.content as string }}
             />
-            <div className="absolute top-[240px] right-2">
+            <div className="absolute top-[245px] right-2">
               <BookmarkButton projectId={project.id} bookmarks={bookmarks} />
             </div>
           </div>
