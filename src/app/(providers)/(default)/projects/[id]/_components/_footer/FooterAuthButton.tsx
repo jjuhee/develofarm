@@ -13,7 +13,6 @@ import Button from "@/components/ui/Button"
 import useAddNotiMutate from "@/hooks/useAddNotiMutate"
 import useLoginConfirmModal from "@/hooks/useLoginConfirmModal"
 import { TProjectType } from "@/types/extendedType"
-import ResponsiveButton from "@/components/ui/ResponsiveButton"
 
 type Props = {
   project: TProjectType
