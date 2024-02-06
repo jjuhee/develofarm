@@ -13,7 +13,6 @@ const Provider = ({ children }: Props) => {
 
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      // Kakao SDK 초기화
       window.Kakao.init("f0f7e9022ec743430c375f76e7dc9d47")
     }
   }, [])
