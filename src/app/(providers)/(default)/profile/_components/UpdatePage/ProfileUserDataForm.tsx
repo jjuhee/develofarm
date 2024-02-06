@@ -80,9 +80,9 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
 
   // 유저 기술 초기화
   useEffect(() => {
-    const techs = users?.user_tech.map((tech) => tech.tech_id)
-    setSelectedTechs([...(techs as string[])])
-  }, [])
+    const techs = users?.user_tech?.map((tech) => tech.tech_id)
+    if (techs) setSelectedTechs([...techs])
+  }, [users])
 
   // 기술 체크박스 변경 처리
   const handleTechCheckboxChange = async (
@@ -151,12 +151,13 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
         await handleAddUserTech()
 
         modalStore.setViewCustomModal(true)
-        modalStore.setModalType("success")
+        modalStore.setModalType("confirm")
         modalStore.setModalMessage(
-          "사용자 프로필이 성공적으로 업데이트되었습니다!",
+          "사용자 프로필이 성공적으로 업데이트되었습니다! 확인을 누르면 프로필 페이지로 이동합니다.",
         )
         modalStore.setHandler(() => {
           modalStore.setViewCustomModal(false)
+          window.location.href = `/profile/${userId}`
         })
       } catch (error) {
         console.error("사용자 프로필 업데이트 중 오류가 발생했습니다:", error)

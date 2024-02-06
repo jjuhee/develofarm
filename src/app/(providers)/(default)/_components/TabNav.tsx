@@ -3,14 +3,13 @@
 import useUserStore from "@/store/user"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname, useSelectedLayoutSegment } from "next/navigation"
+import { usePathname } from "next/navigation"
 import React from "react"
 
 const TabNav = () => {
   const { user } = useUserStore((state) => state)
 
   const pathname = usePathname()
-  const segment = useSelectedLayoutSegment()
 
   if (pathname === "/write") return null
 

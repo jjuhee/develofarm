@@ -28,7 +28,7 @@
 |진민용|팀원|로그인&메인 페이지, 검색 페이지, 헤더 레이아웃|ENFJ|https://github.com/boyaneck|https://velog.io/@boyaneck/posts|
 |정효창|팀원|마이 페이지|E같은 ISFP|https://github.com/HyoChang5147|https://velog.io/@jhc729/posts|
 |강지향|팀원|상세 페이지|ISFJ|https://github.com/KANG0417|https://velog.io/@kanjang96/posts|
-|이승연|디자이너|전체 페이지 UI 디자인|ISFJ|||
+|이승연|디자이너|전체 페이지 UI/UX 디자인|ISFJ|||
 
 ## 사용 기술
 

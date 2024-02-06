@@ -1,5 +1,5 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
-import { Tables, TablesInsert, TablesUpdate } from "@/types/supabase"
+import { TablesInsert } from "@/types/supabase"
 
 export const getUsers = async ({
   pageParam,
