@@ -1,24 +1,20 @@
 "use client"
-import React, { useEffect } from "react"
+import React from "react"
 import { usePathname } from "next/navigation"
 import { useCustomModal } from "@/hooks/useCustomModal"
-import { LuLink } from "react-icons/lu"
 import { getProject, getProjectTech } from "../../../api"
 import Image from "next/image"
 import { useQuery } from "@tanstack/react-query"
 import { getComments } from "../../api"
-import Button from "@/components/ui/Button"
 
 type Props = {
   project: Exclude<Awaited<ReturnType<typeof getProject>>, null>
-  setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const PublicShareButton = ({ project, setIsOpenModal }: Props) => {
+const PublicShareButton = ({ project }: Props) => {
   const { openCustomModalHandler } = useCustomModal()
   const pathname = usePathname()
   const { Kakao } = window
-  // 클립보드에 복사할 텍스트
   const copyUrl = `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`
 
   const { data: projectTeck, isLoading: projectTeckIsLoading } = useQuery({
@@ -26,26 +22,21 @@ const PublicShareButton = ({ project, setIsOpenModal }: Props) => {
     queryFn: () => getProjectTech(project.id),
   })
 
-  /**
-   *@ query 해당 게시물 id를 구분하고 삭제된 댓글 제외한 목록 조회
-   TODO: 글 삭제시 새로고침시에 전체갯수 업데이트 */
   const { data, isLoading: commentsIsLoading } = useQuery({
     queryKey: ["comments", { projectId: project.id }],
     queryFn: () => getComments(project.id),
   })
 
   const comments = data?.filter((comment) => comment.del_yn === false)
-
   const tech = projectTeck?.map((tech) => tech)
 
   const copyClipBoardHandler = async () => {
     try {
-      // 클립보드에 텍스트 복사
       await navigator.clipboard.writeText(copyUrl)
 
       openCustomModalHandler("주소가 클립보드에 복사되었습니다!", "alert")
     } catch (error) {
-      console.error("클립보드 복사에 실패했습니다:", error)
+      openCustomModalHandler(`클립보드 복사에 실패했습니다: ${error}`, "alert")
     }
   }
 
@@ -97,7 +88,7 @@ const PublicShareButton = ({ project, setIsOpenModal }: Props) => {
     )
 
   return (
-    <section className="absolute ml-[900px] mt-[210px] w-[300px] h-[164px] p-5 rounded-3xl shadow-md">
+    <section className="absolute ml-[900px] mt-[210px] w-[300px] h-[164px] p-5 rounded-3xl shadow-md bg-[#fff]">
       <article className="flex flex-col justify-center items-center mb-5 mt-5">
         <article className="flex flex-row mr-4">
           <button

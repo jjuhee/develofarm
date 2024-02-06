@@ -13,7 +13,6 @@ export async function getSearchedProject(
     .ilike("title", `%${title}%`)
     .range(pageParam! * 3, (pageParam! + 1) * 3 - 1)
 
-  console.log("디바운스가 완료가 되었나요?!!!!", projectData, pageParam)
   if (projectError) console.log("error", projectError)
 
   return projectData || null

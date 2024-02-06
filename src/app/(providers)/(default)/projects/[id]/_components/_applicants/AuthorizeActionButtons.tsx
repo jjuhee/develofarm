@@ -1,21 +1,15 @@
 import React from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import {
-  getMembers,
-  removeProjectInMember,
-  setProjectInMember,
-} from "../../api"
+import { removeProjectInMember, setProjectInMember } from "../../api"
 import Image from "next/image"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import useUserStore from "@/store/user"
 import useAddNotiMutate from "@/hooks/useAddNotiMutate"
+import { TProjectMemberType, TProjectMembersType } from "@/types/extendedType"
 
 type Props = {
-  applying: Exclude<Awaited<ReturnType<typeof getMembers>>, null>[number]
-  participatingApplications: Exclude<
-    Awaited<ReturnType<typeof getMembers>>,
-    null
-  >
+  applying: TProjectMemberType
+  participatingApplications: TProjectMembersType
 }
 
 const AuthorizeActionButtons = ({
@@ -27,8 +21,6 @@ const AuthorizeActionButtons = ({
   const { openCustomModalHandler } = useCustomModal()
   const addNotiMutate = useAddNotiMutate()
 
-  /**
-   *@ mutaion 참여중인 멤버에 신청자 등록 후 확인창 띄워주기*/
   const updateMemberMutate = useMutation({
     mutationFn: async ({
       projectId,
@@ -45,12 +37,10 @@ const AuthorizeActionButtons = ({
       })
     },
     onError: (error) => {
-      console.log(error)
+      openCustomModalHandler(`Error: ${error}`, "alert")
     },
   })
 
-  /**
-   *@ mutaion 신청자 목록에서 멤버 삭제하고 확인창 띄워주기*/
   const removeMemberMutate = useMutation({
     mutationFn: removeProjectInMember,
     onSuccess: async () => {
@@ -61,13 +51,10 @@ const AuthorizeActionButtons = ({
       openCustomModalHandler("거절되었습니다", "alert")
     },
     onError: (error) => {
-      console.log(error)
+      openCustomModalHandler(`Error: ${error}`, "alert")
     },
   })
 
-  /**
-   *@ function 참여중인 멤버 등록
-   TODO: 참여 멤버 등록 버튼 구현중 */
   const onApplyButtonHandler = () => {
     const handler = () => {
       if (
@@ -97,8 +84,6 @@ const AuthorizeActionButtons = ({
     )
   }
 
-  /**
-   *@ function 신청자 목록에서 거절하기 */
   const onRejectButtonHandler = () => {
     const handler = () => {
       const newRejectionNoti = {
@@ -115,7 +100,7 @@ const AuthorizeActionButtons = ({
   }
 
   return (
-    <div className="absolute flex flex-row-reverse ml-[1030px] w-36 mt-[-90px]">
+    <div className="absolute flex flex-row-reverse ml-[390px] lg:ml-[1000px] w-48 mt-[-130px]">
       <button
         className="mr-5"
         onClick={() => {
@@ -127,16 +112,16 @@ const AuthorizeActionButtons = ({
           height={20}
           src="/icons/checkIcon.png"
           alt="수락 아이콘"
-          className="w-11 h-11 p-2 bg-[#000000] object-none rounded-full"
+          className="w-12 h-12 lg:w-16 lg:h-16 p-2 bg-[#000000] object-none rounded-full"
         />
       </button>
-      <button className="mr-3" onClick={onRejectButtonHandler}>
+      <button onClick={onRejectButtonHandler}>
         <Image
           width={12}
           height={12}
           src="/icons/rejectIcon.png"
           alt="거절 아이콘"
-          className="w-11 h-11 p-2 rounded-full bg-slate-300 object-none"
+          className="w-12 h-12 lg:w-16 lg:h-16 mr-5 bg-[#CDCDCD] bg-opacity-35 p-2 rounded-full object-none"
         />
       </button>
     </div>

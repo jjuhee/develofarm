@@ -11,13 +11,12 @@ interface TSurfitArticles {
   title: string
 }
 
-export const revalidate = 60
 const current = new Date()
 const formattedDate = current.toLocaleString()
 const GetSurfitArticles = async () => {
   if (!browser) {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: "new",
       args: ["--no-sandbox", "--disabled-setupid-sandbox"],
     })
   }
@@ -60,8 +59,6 @@ const GetSurfitArticles = async () => {
       return result
     }),
   )
-  console.log("어디있나 언디파인", surfitArticles)
-  console.log("revalidate 확인", formattedDate)
   return surfitArticles
 }
 

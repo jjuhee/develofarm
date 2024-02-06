@@ -39,9 +39,7 @@ const ProfileCareer = ({ careers }: { careers: Tables<"careers">[] }) => {
             </div>
           ))
         ) : (
-          <p className="pt-[30px] pl-[180px] px-[180px]">
-            경력 내용이 없습니다.
-          </p>
+          <p className="pt-[20px] px-[225px]">경력 내용이 없습니다.</p>
         )}
         <hr className="my-8 border-t-2 border-gray-300" />
       </div>

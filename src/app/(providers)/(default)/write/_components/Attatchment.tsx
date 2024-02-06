@@ -26,13 +26,13 @@ const Attatchment = ({ setSelectedFile }: Props) => {
 
   return (
     <>
-      <label className="flex items-center border-[1px] border-black rounded-md h-[60px] pl-[9px]">
-        <div className="flex justify-center gap-5">
-          <div className="border-[1px] border-slate-800 rounded-md h-[37px] w-[151px] text-center leading-[37px]">
+      <label className="flex items-center gap-2 border-[1px] border-black rounded-md h-[40px] pl-[9px] mx-[20px] lg:h-[60px] lg:mx-0">
+        <div className="flex justify-center">
+          <div className="border-[1px] border-slate-800 rounded-md h-[28px] w-[103px] text-center leading-[28px] lg:leading-[37px] lg:h-[37px] lg:w-[151px]">
             사진 및 파일 첨부
           </div>
         </div>
-        <p className=" ml-1 leading-[37px] text-[#666666]">
+        <p className=" ml-1 leading-[28px] text-[#666666] lg:leading-[37px]">
           {fileInfo ? fileInfo : "파일을 선택해주세요."}
         </p>
         <input

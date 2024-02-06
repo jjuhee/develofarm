@@ -2,7 +2,6 @@
 
 import React, { useState } from "react"
 import { Tables } from "@/types/supabase"
-import useUserStore from "@/store/user"
 import { getProject } from "../../../api"
 import PublicShareButton from "./PublicShareButton"
 import BookmarkButton from "@/components/BookmarkButton"
@@ -16,7 +15,6 @@ interface Props {
 
 const FooterPublicIcon = ({ bookmarks, project, bookmarksCount }: Props) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
-  const userId = useUserStore((state) => state.user?.id)
 
   const openModalClickHandler = () => {
     setIsOpenModal(!isOpenModal)
@@ -42,9 +40,7 @@ const FooterPublicIcon = ({ bookmarks, project, bookmarksCount }: Props) => {
           className="float-left mt-1 mr-2"
         />
       </span>
-      {isOpenModal && (
-        <PublicShareButton project={project} setIsOpenModal={setIsOpenModal} />
-      )}
+      {isOpenModal && <PublicShareButton project={project} />}
     </>
   )
 }

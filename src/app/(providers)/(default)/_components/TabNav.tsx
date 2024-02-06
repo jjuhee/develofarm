@@ -3,15 +3,22 @@
 import useUserStore from "@/store/user"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname, useSelectedLayoutSegment } from "next/navigation"
 import React from "react"
 
-const Navigation = () => {
+const TabNav = () => {
   const { user } = useUserStore((state) => state)
 
+  const pathname = usePathname()
+  const segment = useSelectedLayoutSegment()
+
+  if (pathname === "/write") return null
+
   return (
-    <div className="fixed items-center bottom-0 w-full h-[55px] shadow-md shadow-gray-300 bg-white block lg:hidden">
+    <div className="fixed z-10 items-center bottom-0 w-full h-[55px] shadow-md shadow-gray-300 bg-white block lg:hidden">
       <ul className="flex w-full h-full justify-around items-center">
         <Link href={"/"} className="flex flex-col items-center justify-center">
+          <Image src={"/icons/home.png"} alt="home" width={20} height={17} />
           <p className="text-[10px] font-semibold">홈</p>
         </Link>
         <Link
@@ -55,4 +62,4 @@ const Navigation = () => {
   )
 }
 
-export default Navigation
+export default TabNav

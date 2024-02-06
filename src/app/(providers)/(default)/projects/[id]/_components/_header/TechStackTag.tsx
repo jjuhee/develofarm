@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
 import React from "react"
 import { getProjectTech } from "../../../api"
-import { Tables } from "@/types/supabase"
+import Image from "next/image"
+import { TProjectType } from "@/types/extendedType"
 
 type Props = {
-  project: Tables<"projects">
+  project: TProjectType
 }
 
 const TechStackTag = ({ project }: Props) => {
@@ -13,7 +14,12 @@ const TechStackTag = ({ project }: Props) => {
     queryFn: () => getProjectTech(project.id),
   })
 
-  if (isLoading) return <div>is Loading</div>
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+      </div>
+    )
 
   return (
     <ul className="flex text-sm">

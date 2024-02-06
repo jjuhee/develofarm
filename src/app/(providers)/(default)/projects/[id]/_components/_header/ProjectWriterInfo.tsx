@@ -3,18 +3,15 @@ import dayjs from "dayjs"
 import Image from "next/image"
 import React from "react"
 import Link from "next/link"
+import { TProjectType } from "@/types/extendedType"
 
 type Props = {
-  project: Tables<"projects">
-  user: Tables<"users">
+  project: TProjectType
 }
-const ProjectWriterInfo = ({ project, user }: Props) => {
-  // 타임스탬프로 들어간 날짜 포맷
-  // ex) 2024-01-12T14:29:25.362227 -> 2024.01.12 14:29:25
+const ProjectWriterInfo = ({ project }: Props) => {
   const FORMATTED_DATE = dayjs(project?.created_at).format(
     "YYYY.MM.DD HH:mm:ss",
   )
-
   const updateDate = dayjs(project?.updated_at).format("YYYY.MM.DD HH:mm:ss")
 
   return (
@@ -27,7 +24,7 @@ const ProjectWriterInfo = ({ project, user }: Props) => {
           <Image
             width={48}
             height={48}
-            src={`${user.avatar_url}`}
+            src={`${project.user?.avatar_url}`}
             alt="프로필이미지"
             className="rounded-full object-cover"
           />
@@ -35,7 +32,7 @@ const ProjectWriterInfo = ({ project, user }: Props) => {
       </li>
       <li>
         <span className="pr-2">작성자</span>
-        {user.user_nickname}
+        {project.user?.user_nickname}
       </li>
       <li>
         {project.updated_at === null

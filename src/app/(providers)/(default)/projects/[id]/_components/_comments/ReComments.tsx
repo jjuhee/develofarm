@@ -1,15 +1,12 @@
 import React from "react"
 import Spacer from "@/components/ui/Spacer"
-import { getComments } from "../../api"
 import ReComment from "./ReComment"
 import CommentForm from "./CommentForm"
+import { TCommentsType, TReCommentsType } from "@/types/extendedType"
 
 type Props = {
-  recomments: Exclude<
-    Awaited<ReturnType<typeof getComments>>,
-    null
-  >[number]["comments"]
-  comment: Exclude<Awaited<ReturnType<typeof getComments>>, null>[number]
+  recomments: TReCommentsType
+  comment: TCommentsType
 }
 
 const ReComments = ({ recomments, comment }: Props) => {
@@ -23,6 +20,7 @@ const ReComments = ({ recomments, comment }: Props) => {
           )
         })}
       </article>
+      <Spacer y={10} />
       <CommentForm
         projectId={comment.project_id}
         commentUserId={comment.user_id}

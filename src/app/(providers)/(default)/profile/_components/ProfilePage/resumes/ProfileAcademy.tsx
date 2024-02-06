@@ -40,9 +40,7 @@ const ProfileAcademy = ({
             </div>
           ))
         ) : (
-          <p className="pt-[30px] pl-[180px] px-[180px]">
-            교육/활동 내용이 없습니다.
-          </p>
+          <p className="pt-[20px] px-[210px]">교육/활동 내용이 없습니다.</p>
         )}
         <hr className="my-8 border-t-2 border-gray-300" />
       </div>

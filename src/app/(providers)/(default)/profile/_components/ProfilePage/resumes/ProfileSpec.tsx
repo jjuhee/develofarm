@@ -27,7 +27,7 @@ const ProfileSpec = ({ specs }: { specs: Tables<"specs">[] }) => {
             </div>
           ))
         ) : (
-          <p className="pt-[30px] pl-[135px] px-[135px]">
+          <p className="pt-[20px] px-[190px]">
             자격/어학/수상 내용이 없습니다.
           </p>
         )}

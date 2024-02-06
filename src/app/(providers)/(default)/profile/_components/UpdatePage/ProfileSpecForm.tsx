@@ -95,7 +95,7 @@ const ProfileSpecForm = ({
 
   return (
     <form>
-      <div className="flex justify-between items-start w-[600px]">
+      <div className="flex justify-between items-start w-[570px]">
         <h2 className="text-[26px] font-bold">자격/어학/수상</h2>
         <button
           type="button"
