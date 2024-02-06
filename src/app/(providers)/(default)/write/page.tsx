@@ -9,25 +9,19 @@ const WritePage = () => {
   const router = useRouter()
   const [isLogin, setIsLogin] = useState(false)
 
-  // useEffect(() => {
-  //   const accessToken = localStorage.getItem(
-  //     process.env.NEXT_PUBLIC_AUTH_TOKEN as string,
-  //   )
-  //   if (accessToken === null) {
-  //     openLoginConfirmModal()
-  //     router.replace("/")
-  //   } else {
-  //     setIsLogin(true)
-  //   }
-  // }, [])
+  useEffect(() => {
+    const accessToken = localStorage.getItem(
+      process.env.NEXT_PUBLIC_AUTH_TOKEN as string,
+    )
+    if (accessToken === null) {
+      openLoginConfirmModal()
+      router.replace("/")
+    } else {
+      setIsLogin(true)
+    }
+  }, [])
 
-  return (
-    <>
-      {/* {isLogin &&  */}
-      <Editor />
-      {/* } */}
-    </>
-  )
+  return <>{isLogin && <Editor />}</>
 }
 
 export default WritePage

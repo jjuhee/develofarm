@@ -3,7 +3,7 @@ import React from "react"
 
 const Footer = () => {
   return (
-    <div className="w-full bg-black text-white">
+    <div className="w-full bg-black text-white hidden lg:block">
       <div className="flex items-center justify-between max-w-[1200px] mx-auto py-[48px]">
         <Image
           src={"/images/logo2.png"}

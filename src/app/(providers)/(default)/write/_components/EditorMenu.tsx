@@ -47,12 +47,12 @@ const EditorMenu = ({ editor }: Props) => {
     <div className="flex items-center gap-2">
       <div className="selectBox relative" ref={dropdownRef}>
         <div
-          className={`flex items-center justify-between my-auto border-[1px] border-white hover:border-[1px] hover:border-[#E6E6E6] rounded-[3px] w-[81px] h-[33px] leading-[33px] px-[7px] py-[8px] text-[14px] cursor-pointer transition-all
+          className={`flex items-center justify-center gap-2 my-auto border-[1px] border-white hover:border-[1px] hover:border-[#E6E6E6] rounded-[3px] w-[65px] h-[26px] leading-[26px] px-2 text-[12px] lg:w-[81px] lg:h-[33px] lg:leading-[33px] lg:text-[14px] cursor-pointer transition-all
           ${isActive ? "bg-[#E6E6E6]" : "bg-white"}`}
           onClick={() => setIsActive(!isActive)}
         >
           {
-            <div className="h-[33px]">
+            <div className="h-[26px] lg:h-[33px]">
               {editor.isActive("heading", { level: 1 })
                 ? "제목 1"
                 : editor.isActive("heading", { level: 2 })
@@ -67,7 +67,7 @@ const EditorMenu = ({ editor }: Props) => {
           {isActive ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <ul
-          className={`absolute flex flex-col mt-[3px] rounded-lg border-[0.5px] *:w-[81px] *:h-[29px] *:leading-[29px] *:px-[7px] *:bg-white text-[14px] z-10 ${
+          className={`absolute flex flex-col mt-[3px] rounded-lg border-[0.5px] *:w-[65px] *:h-[26px] *:leading-[26px] text-[12px] lg:*:w-[81px] lg:*:h-[29px] lg:*:leading-[29px] *:px-2 *:bg-white lg:text-[14px] z-10 ${
             isActive ? "visible" : "invisible"
           }`}
         >

@@ -1,6 +1,7 @@
 "use client"
 
 import useLoginConfirmModal from "@/hooks/useLoginConfirmModal"
+import useScrollEvent from "@/hooks/useScrollEvent"
 import useUserStore from "@/store/user"
 import scrollToTop from "@/utils/scrollTop"
 import Image from "next/image"
@@ -14,21 +15,7 @@ const FloatingButton = () => {
   const [showButton, setShowButton] = useState(false)
   const openLoginConfirmModal = useLoginConfirmModal()
 
-  useEffect(() => {
-    const handlerShowButton = () => {
-      if (window.scrollY > 500) {
-        setShowButton(true)
-      } else {
-        setShowButton(false)
-      }
-    }
-
-    window.addEventListener("scroll", handlerShowButton)
-
-    return () => {
-      window.removeEventListener("scroll", handlerShowButton)
-    }
-  }, [])
+  useScrollEvent({ scrollYSize: 500, handler: setShowButton })
 
   const onClickWriteButton = () => {
     if (userId) {
@@ -39,7 +26,7 @@ const FloatingButton = () => {
   }
 
   return (
-    <div className="fixed right-[50px] bottom-[50px] z-10">
+    <div className="fixed right-[50px] bottom-[50px] z-10 hidden lg:block">
       {showButton && (
         <Image
           src={"/images/top_button.png"}
