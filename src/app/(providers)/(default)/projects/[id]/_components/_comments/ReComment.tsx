@@ -3,13 +3,14 @@
 import React, { useState } from "react"
 import Image from "next/image"
 import dayjs from "dayjs"
-import { getComments, removeReComment } from "../../api"
+import { removeReComment } from "../../api"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import CommentEditForm from "./CommentEditForm"
+import { TCommentsType } from "@/types/extendedType"
 
 type Props = {
-  recomment: Exclude<Awaited<ReturnType<typeof getComments>>, null>[number]
+  recomment: TCommentsType
 }
 
 const ReComment = ({ recomment }: Props) => {
@@ -17,9 +18,6 @@ const ReComment = ({ recomment }: Props) => {
   const queryClient = useQueryClient()
   const { openCustomModalHandler } = useCustomModal()
 
-  /**
-   *@ mutaion 댓글 삭제 후 확인창 띄워주고 삭제
-   TODO: 목록으로 돌아갈때 캐시가 남아 지워주는 작업 필요 */
   const removeReCommentMutate = useMutation({
     mutationFn: removeReComment,
     onSuccess: async () => {
@@ -29,12 +27,10 @@ const ReComment = ({ recomment }: Props) => {
       openCustomModalHandler("댓글이 삭제되었습니다", "alert")
     },
     onError: (error) => {
-      console.log(error)
+      openCustomModalHandler(`Error: ${error}`, "alert")
     },
   })
 
-  /**
-   *@ function 받아온 id를 삭제 함수에 넣어서 확인창으로 검사 후 삭제 처리 */
   const isDeleteClickHandler = (id: string) => {
     const handler = () => {
       removeReCommentMutate.mutate(id)
@@ -47,7 +43,7 @@ const ReComment = ({ recomment }: Props) => {
     <>
       <article
         key={recomment.id}
-        className="mb-3 bg-[#666666] bg-opacity-5 rounded-xl py-5 px-10 min-h-[205px]"
+        className="mb-3 bg-[#666666] bg-opacity-5 rounded-xl py-8 px-10 w-[550px] lg:w-[1130px] min-h-[122px] text-xl"
       >
         <Image
           width={48}
@@ -60,15 +56,15 @@ const ReComment = ({ recomment }: Props) => {
           {recomment.user?.user_nickname}
         </span>
         {recomment.created_at === recomment.updated_at ? (
-          <span className="text-xs">
+          <span className="text-base">
             {dayjs(recomment.created_at).format("YYYY-MM-DD HH:mm:ss")}
           </span>
         ) : (
           <>
-            <span className="text-xs">
+            <span className="text-base">
               {dayjs(recomment.updated_at).format("YYYY-MM-DD HH:mm:ss")}
             </span>
-            <span className="ml-2 text-xs">(수정됨)</span>
+            <span className="ml-2 text-base">(수정됨)</span>
           </>
         )}
         {isEditMode ? (
@@ -80,20 +76,20 @@ const ReComment = ({ recomment }: Props) => {
             type="recomment"
           />
         ) : (
-          <p className="ml-[62px] w-auto min-h-12 h-auto font-semibold whitespace-pre">
+          <p className="w-[420px] lg:w-[1000px] ml-[62px] min-h-12 h-auto font-semibold text-xl whitespace-pre-line">
             {recomment.content}
           </p>
         )}
         {isEditMode === false && (
-          <article className="ml-[53px]">
+          <article className="ml-[63px] text-lg">
             <button
-              className="text-sm text-[#666666]"
+              className="text-[#666666]"
               onClick={() => setIsEditMode(true)}
             >
               수정
             </button>
             <button
-              className="ml-2 text-sm text-[#666666]"
+              className="ml-2 text-[#666666]"
               onClick={() => isDeleteClickHandler(recomment.id)}
             >
               삭제

@@ -32,6 +32,9 @@ const CommentEditForm = ({
 
       setIsEditMode(false)
     },
+    onError: (error) => {
+      openCustomModalHandler(`Error: ${error}`, "alert")
+    },
   })
 
   const editCommentClickHandler = (id: string) => {
@@ -50,7 +53,6 @@ const CommentEditForm = ({
         type === "recomment" ? "ml-[60px]" : "relative flex flex-col mb-3"
       }`}
     >
-      {/* 수정 폼 */}
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
