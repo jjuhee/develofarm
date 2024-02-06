@@ -19,9 +19,9 @@ import ProfileAcademyForm from "./ProfileAcademyForm"
 import ProfileSpecForm from "./ProfileSpecForm"
 import ProfileSocialForm from "./ProfileSocialForm"
 import { Tables } from "@/types/supabase"
+import useCustomModalStore from "@/store/customModal" // Importing the custom modal store
 
 const ProfileUpdateButton = ({ userId }: { userId: string }) => {
-  // 여러 유형의 데이터를 관리하는 state 변수들을 선언
   const [updatedCareerData, setUpdatedCareerData] = useState<
     Tables<"careers">[]
   >([])
@@ -42,73 +42,30 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
   const [newSpecData, setNewSpecData] = useState<Tables<"specs">[]>([])
   const [newLinkData, setNewLinkData] = useState<Tables<"social_links">[]>([])
 
-  // 업데이트 버튼 클릭 시 실행되는 함수
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    try {
-      // 각 유형의 데이터를 업데이트하는 API 호출
-      const careersResult = await updateCareers(userId, updatedCareerData)
-      console.log("Careers Update Result:", careersResult)
+    const modalStore = useCustomModalStore.getState()
+    modalStore.setViewCustomModal(true)
+    modalStore.setModalType("confirm")
+    modalStore.setModalMessage("저장하시겠습니까?")
+    modalStore.setHandler(async () => {
+      modalStore.setViewCustomModal(false)
 
-      const educationResult = await updateEducation(
-        userId,
-        updatedEducationData,
-      )
-      console.log("Education Update Result:", educationResult)
+      try {
+        await updateCareers(userId, updatedCareerData)
+        await updateEducation(userId, updatedEducationData)
+        await updateAcademies(userId, updatedAcademyData)
+        await updateSpecs(userId, updatedSpecData)
 
-      const academyResult = await updateAcademies(userId, updatedAcademyData)
-      console.log("Academy Update Result:", academyResult)
+        newCareerData.map((careerData) => addCareer(userId, careerData))
+        newEducationData.map((educationData) =>
+          addEducation(userId, educationData),
+        )
+        newAcademyData.map((academyData) => addAcademy(userId, academyData))
+        newSpecData.map((specData) => addSpec(userId, specData))
+        newLinkData.map((linkData) => addSocialLinks(userId, linkData))
 
-      const specResult = await updateSpecs(userId, updatedSpecData)
-      console.log("Spec Update Result:", specResult)
-
-      // 새로운 데이터를 추가하는 API 호출
-      const addCareerPromises = newCareerData.map((careerData) =>
-        addCareer(userId, careerData),
-      )
-      const addEducationPromises = newEducationData.map((educationData) =>
-        addEducation(userId, educationData),
-      )
-      const addAcademyPromises = newAcademyData.map((academyData) =>
-        addAcademy(userId, academyData),
-      )
-      const addSpecPromises = newSpecData.map((specData) =>
-        addSpec(userId, specData),
-      )
-      const addLinkPromises = newLinkData.map((linkData) =>
-        addSocialLinks(userId, linkData),
-      )
-
-      // 모든 Promise를 기다리고 결과를 확인하여 상태 초기화 또는 오류 처리
-      const addCareerResults = await Promise.all(addCareerPromises)
-      console.log("Add Career Results:", addCareerResults)
-
-      const addEducationrResults = await Promise.all(addEducationPromises)
-      console.log("Add Education Results:", addEducationrResults)
-
-      const addAcademyResults = await Promise.all(addAcademyPromises)
-      console.log("Add Academy Results:", addAcademyResults)
-
-      const addSpecResults = await Promise.all(addSpecPromises)
-      console.log("Add Spec Results:", addSpecResults)
-
-      const addLinkResults = await Promise.all(addLinkPromises)
-      console.log("Add Link Results:", addLinkResults)
-
-      // 모든 결과를 확인하여 상태 초기화 또는 에러 처리
-      if (
-        careersResult &&
-        educationResult &&
-        academyResult &&
-        specResult &&
-        addCareerResults.every(Boolean) &&
-        addEducationrResults.every(Boolean) &&
-        addAcademyResults.every(Boolean) &&
-        addSpecResults.every(Boolean) &&
-        addLinkResults.every(Boolean)
-      ) {
-        // 모든 업데이트 및 추가가 성공하면 상태 초기화
         setUpdatedCareerData([])
         setUpdatedEducationData([])
         setUpdatedAcademyData([])
@@ -118,19 +75,26 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
         setNewAcademyData([])
         setNewSpecData([])
         setNewLinkData([])
-      } else {
-        // 하나라도 실패하면 에러 메시지 출력
-        console.error("Update failed")
+
+        modalStore.setViewCustomModal(true)
+        modalStore.setModalType("confirm")
+        modalStore.setModalMessage(
+          "성공적으로 업데이트되었습니다! 확인을 누르면 프로필 페이지로 이동합니다.",
+        )
+        modalStore.setHandler(() => {
+          window.location.href = `/profile/${userId}`
+        })
+      } catch (error) {
+        console.error("Update error:", error)
+        alert("데이터 처리 중 오류가 발생했습니다.")
       }
-    } catch (error) {
-      console.error("Error during update:", error)
-    }
+    })
   }
 
   return (
     <div>
+      <ProfileUserDataForm userId={userId} />
       <form onSubmit={handleUpdate}>
-        <ProfileUserDataForm userId={userId} />
         <div className="flex justify-between items-start">
           <ProfileCareerForm
             userId={userId}
