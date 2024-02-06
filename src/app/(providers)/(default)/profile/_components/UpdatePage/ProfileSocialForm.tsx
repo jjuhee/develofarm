@@ -71,7 +71,7 @@ const ProfileSocialForm = ({
                     onChange={(e) =>
                       handleInputChange(index, "blog_url", e.target.value)
                     }
-                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[590px] h-[48px]"
+                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[570px] h-[48px]"
                     placeholder="블로그 주소를 입력하세요..."
                   />
                   <button
@@ -99,7 +99,7 @@ const ProfileSocialForm = ({
                     onChange={(e) =>
                       handleInputChange(index, "github_url", e.target.value)
                     }
-                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[590px] h-[48px]"
+                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[570px] h-[48px]"
                     placeholder="깃허브 주소를 입력하세요..."
                   />
                   <button
@@ -135,7 +135,7 @@ const ProfileSocialForm = ({
                         e.target.value.trim(),
                       )
                     }
-                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[590px] h-[48px]"
+                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[570px] h-[48px]"
                     placeholder="블로그 주소를 입력하세요..."
                   />
                   <button
@@ -166,7 +166,7 @@ const ProfileSocialForm = ({
                         e.target.value.trim(),
                       )
                     }
-                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[590px] h-[48px]"
+                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[570px] h-[48px]"
                     placeholder="깃허브 주소를 입력하세요..."
                   />
                   <button
