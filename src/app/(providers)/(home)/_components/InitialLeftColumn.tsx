@@ -44,7 +44,7 @@ const InitialLeftColumn = ({
                 : "Loading..." // 또는 빈 문자열 또는 다른 로딩 처리 방식
             }
           </div>
-          <Link href={surfitArticles[0]?.href}>
+          <Link href={surfitArticles ? surfitArticles[0]?.href : "None"}>
             <span className="m-5 text-[13px] hover:border-b hover:border-b-black mt-7">
               보러가기
             </span>
