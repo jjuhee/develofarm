@@ -67,9 +67,9 @@ p {
 }
 
 .category {
-  @apply flex items-center border-[1.5px] rounded-[8px] h-[36px]  leading-[40px] text-[12px] cursor-pointer outline-none hover:border-[#2d2d2d] hover:bg-[#eeeeee] lg:text-[14px];
+  @apply flex items-center border-[1.5px] rounded-[8px] h-[36px] leading-[40px] text-[12px] cursor-pointer outline-none hover:border-[#2d2d2d] hover:bg-[#eeeeee] lg:text-[14px];
 }
 
 .edit-menu {
-  @apply p-[3px] rounded-[3px] cursor-pointer border-[1px] border-white hover:rounded-[3px] hover:border-[#E6E6E6] hover:border-[1px];
+  @apply p-[3px] rounded-[3px] cursor-pointer border-[1px] border-white hover:rounded-[3px] hover:border-[#E6E6E6] hover:border-[1px] h-[26px] w-[26px] lg:h-[3xpx] lg:w-[33px];
 }
