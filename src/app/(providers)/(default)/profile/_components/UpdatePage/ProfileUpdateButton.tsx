@@ -19,7 +19,7 @@ import ProfileAcademyForm from "./ProfileAcademyForm"
 import ProfileSpecForm from "./ProfileSpecForm"
 import ProfileSocialForm from "./ProfileSocialForm"
 import { Tables } from "@/types/supabase"
-import useCustomModalStore from "@/store/customModal" // Importing the custom modal store
+import useCustomModalStore from "@/store/customModal"
 
 const ProfileUpdateButton = ({ userId }: { userId: string }) => {
   const [updatedCareerData, setUpdatedCareerData] = useState<
