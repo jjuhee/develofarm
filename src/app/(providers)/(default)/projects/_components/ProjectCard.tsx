@@ -45,11 +45,12 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
   }
 
   return (
-    <div
-      className="flex cursor-pointer border-b border-[#D2D2D2] py-[40px] last:border-none first:pt-0 "
+    <li
+      className="flex w-full cursor-pointer border-b border-[#D2D2D2] py-[40px] last:border-none first:pt-0 "
       onClick={onClickToDetailPage}
     >
-      <section className="relative overflow-hidden rounded-xl min-w-[115px] h-[80px] transition-all bg-slate-200 mr-10 md:min-w-[416px] md:h-[251px] ">
+      {/* 프로젝트 이미지 */}
+      <section className="relative rounded-xl min-w-[115px] h-[80px] transition-all overflow-hidden mr-10 lg:min-w-[431px] lg:min-h-[251px] ">
         <Image
           src={picture_url!}
           alt="project"
@@ -58,23 +59,25 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
           className="object-cover"
         />
       </section>
-      <section className="relative flex flex-col w-full lg:w-[60%] py-2 justify-between">
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-3 items-start md:flex-row md:items-center">
+
+      {/* 프로젝트 내용 */}
+      <section className="relative flex flex-col justify-between w-full py-0 lg:py-2">
+        <div className="flex flex-col max-w-full gap-3 lg:gap-5">
+          <div className="flex flex-col gap-1 lg:gap-3 items-start lg:flex-row lg:items-center">
             <h4
               className={`${
                 recruit_status
                   ? "bg-[#666666] border-[#666666] text-white"
                   : "bg-white  border-black text-black"
-              } flex items-center justify-center min-w-[60px] h-[25px] border rounded-2xl `}
+              } flex items-center justify-center min-w-[50px] h-[18px] text-[10px] lg:text-[12px] lg:min-w-[63px] lg:h-[25px] border rounded-2xl `}
             >
               {recruit_status ? "모집 완료" : "모집 중"}{" "}
             </h4>
-            <h2 className="mr-10 w-[200px] text-[15px] truncate md:w-[600px] md:text-[18px]">
+            <h2 className="text-[15px] w-[200px] sm:w-[400px] md:w-[500px] truncate lg:w-full lg:text-[18px] lg:mr-10">
               {title}
             </h2>
           </div>
-          <span className="flex items-center gap-2 text-base font-medium text-[#666666]">
+          <span className="flex items-center gap-2 text-xs lg:text-base font-medium text-[#666666]">
             <Image
               src={"/icons/calendar.png"}
               alt="calendar"
@@ -83,26 +86,29 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
             />
             {formatDate(project_start_date)} - {formatDate(project_end_date)}
           </span>
-          <p
-            className="line-clamp-4 leading-[18px] pt-2 h-[100px] text-[#363940] hidden md:block"
-            dangerouslySetInnerHTML={{
-              __html: sanitizeHtml(content, {
-                allowedTags: [],
-              }),
-            }}
-          ></p>
+          <div className="hidden lg:block">
+            <p
+              className="line-clamp-4"
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(content, {
+                  allowedTags: [],
+                }),
+              }}
+            ></p>
+          </div>
         </div>
-        <div className="justify-between items-center mt-10 hidden md:block">
+
+        <div className="justify-between items-center mt-10 hidden lg:block">
           <ul className="flex gap-3 relative">
             <ProjectCardTechs project={project} />
           </ul>
         </div>
 
-        <div className="absolute top-0 md:top-[12px] right-2">
+        <div className="absolute top-5 right-2 lg:top-[12px]">
           <BookmarkButton projectId={id} bookmarks={bookmarks} />
         </div>
       </section>
-    </div>
+    </li>
   )
 }
 

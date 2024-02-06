@@ -69,7 +69,6 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
     if (!isEditMode) return
     if (!project) return
 
-    console.log("useEffect", project)
     setTitle(project.title)
     setContent(project.content)
     setCategoryData((prev) => ({
@@ -137,13 +136,16 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
   }
 
   return (
-    <form className="flex flex-col gap-[30px]" onSubmit={submitProjectHandler}>
+    <form
+      className="flex flex-col gap-[20px] lg:gap-[30px]"
+      onSubmit={submitProjectHandler}
+    >
       <div className="flex">
         <input
           placeholder="제목을 작성하세요"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="grow border-[1px] border-black rounded-md h-[60px] text-[23px] px-[26px] py-[9px]" //TODO : 얇게 어떻게
+          className="grow border-[1px] border-black rounded-md h-[35px] text-[15px] px-[15px] py-[9px] mx-[20px] lg:h-[50px] lg:text-[18px] lg:px-[26px] lg:mx-0"
         />
       </div>
       {/*  카테고리 선택 box  */}
@@ -165,10 +167,10 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
           <Tiptap content={content} setContent={setContent} />
         )}
       </div>
-      <div>
+      <div className="mb-[70px] lg:mb-0">
         <Attatchment setSelectedFile={setSelectedFile} />
       </div>
-      <div className="buttonbox flex justify-between">
+      <div className="buttonbox flex justify-around border-[#d2d2d2] border-t bg-white fixed bottom-0 right-0 w-full *:min-w-[150px] *:h-[36px] py-[10px] px-[20px] z-20 lg:border-0 lg:relative lg:z-0 lg:px-0 lg:*:min-w-[100px]">
         <Button buttonType="button" type="border" text="취소하기" />
         <Button
           buttonType="submit"

@@ -32,7 +32,9 @@ const ProjectsComponent = () => {
 
   return (
     <div>
-      <Spacer y={60} />
+      <div className="hidden lg:block">
+        <Spacer y={60} />
+      </div>
 
       <Category
         categoryData={categoryData}
@@ -48,6 +50,9 @@ const ProjectsComponent = () => {
         option={option as TProjectsOptions}
         setIsShownCategory={setIsShownCategory}
       />
+      <div className="block lg:hidden">
+        <Spacer y={70} />
+      </div>
     </div>
   )
 }
