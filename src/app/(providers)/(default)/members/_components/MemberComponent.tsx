@@ -1,18 +1,18 @@
 "use client"
 
-import React, { useEffect, useRef } from "react"
+import React, { useRef } from "react"
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import Spacer from "@/components/ui/Spacer"
 import { useInView } from "react-intersection-observer"
 import useCategoryStore from "@/store/category"
 import useMembersStore from "@/store/members"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
-import EmptyState from "@/components/EmptyState"
 import Image from "next/image"
 import { getPositions, getUsers } from "../api"
 import MemberCategory from "./MemberCategory"
-import MemberCard from "./MemberCard"
-import MemberProfile from "./MemberProfile"
+import MemberProfileModal from "./MemberProfileModal"
+import MemberList from "./MemberList"
+import useScrollLock from "@/hooks/useScrollLock"
 
 import type { TUsersType } from "@/types/extendedType"
 import type { Tables } from "@/types/supabase"
@@ -25,21 +25,9 @@ const MembersComponent = () => {
 
   const modalRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    if (viewMemberModal) {
-      document.body.style.cssText = `
-        position: fixed; 
-        top: -${window.scrollY}px;
-        overflow-y: scroll;
-        width: 100%;`
-      return () => {
-        const scrollY = document.body.style.top
-        document.body.style.cssText = ""
-        window.scrollTo(0, parseInt(scrollY || "0", 10) * -1)
-      }
-    }
-  }, [viewMemberModal])
+  useScrollLock(viewMemberModal)
 
+  /** 무한 스크롤 데이터 가져오기 */
   const {
     data: infinityUsers,
     error,
@@ -93,6 +81,7 @@ const MembersComponent = () => {
       <Spacer y={30} />
       <div className="flex flex-col w-full">
         <section className="flex flex-col py-5 gap-[20px] w-full ">
+          {/* 인재풀 타이틀 및 설명 */}
           <h3 className="text-[#80E500]">Our members</h3>
           <h1>{category === "전체보기" ? "디벨롭팜의 인재풀" : category}</h1>
           <p className="text-[#606060] mt-3 whitespace-pre-line">
@@ -101,20 +90,11 @@ const MembersComponent = () => {
               : `${category} 멤버를 자신의 프로젝트에 초대해보세요`}
           </p>
 
+          {/* 멤버 포지션 카테고리 */}
           <MemberCategory positions={positions!} />
-          <div className="w-full mt-7">
-            <ul className="grid grid-cols-2 gap-12 md:grid-cols-3 lg:grid-cols-4">
-              {infinityUsers && infinityUsers.length > 0 ? (
-                <>
-                  {infinityUsers.map((user: TUsersType, index: number) => (
-                    <MemberCard key={user?.id + index} user={user} />
-                  ))}
-                </>
-              ) : (
-                <EmptyState />
-              )}
-            </ul>
-          </div>
+
+          {/* 멤버 리스트 */}
+          <MemberList infinityUsers={infinityUsers!} />
         </section>
         {/* 무한 스크롤 기준 박스 */}
         <div ref={ref} className="w-full h-[100px]" />
@@ -127,7 +107,7 @@ const MembersComponent = () => {
             className="flex flex-col bg-white w-[732px] h-auto py-10 px-[50px] gap-[30px] rounded-3xl"
             ref={modalRef}
           >
-            <MemberProfile />
+            <MemberProfileModal />
           </div>
         </div>
       )}

@@ -32,7 +32,9 @@ const ProjectsComponent = () => {
 
   return (
     <div>
-      <Spacer y={60} />
+      <div className="hidden lg:block">
+        <Spacer y={60} />
+      </div>
 
       <Category
         categoryData={categoryData}

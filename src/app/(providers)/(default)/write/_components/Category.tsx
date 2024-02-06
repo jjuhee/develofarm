@@ -9,6 +9,7 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import useProjectsStore from "@/store/projects"
+import useScrollLock from "@/hooks/useScrollLock"
 
 import type { Tables } from "@/types/supabase"
 
@@ -36,6 +37,8 @@ const Category = ({
     categoryData
 
   const [isRegionActive, setIsRegionActive] = useState(false)
+
+  useScrollLock(isShownCategory!)
 
   /** 모든 position에 연결된 tech를 position_tech table에서 불러온다 */
   const { data: allTechs } = useQuery({
