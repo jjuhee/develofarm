@@ -64,7 +64,6 @@ const GetSurfitArticles = async () => {
 
 const Column = async () => {
   const surfitArticles = await GetSurfitArticles()
-  console.log("surfit", surfitArticles, formattedDate)
   return (
     <>
       <Columns surfitArticles={surfitArticles as TSurfitArticles[]} />
