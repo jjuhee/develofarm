@@ -96,9 +96,9 @@ const HeaderNav = ({ isAuthInitialized, user }: Props) => {
 
               {isImageActive && (
                 <div className="relative flex *:bg-white">
-                  <div className="left-[-100px] flex-row w-[150px] rounded-lg border-[1px] border-[#F2F4F7] shadow-md  absolute top-2 z-50 ">
+                  <div className="left-[-100px] flex-row w-[160px] rounded-lg border-[1px] border-[#F2F4F7] shadow-md  absolute top-2 z-50 ">
                     <>
-                      <div className="font-[600] h-[38px] leading-[38px] px-[16px]">
+                      <div className="font-[600] px-[16px] py-[7px]">
                         {user.nickName}님의 이메일
                       </div>
                       <div className="px-[16px] text-xs text-gray-400">

@@ -80,9 +80,9 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
 
   // 유저 기술 초기화
   useEffect(() => {
-    const techs = users?.user_tech.map((tech) => tech.tech_id)
-    setSelectedTechs([...(techs as string[])])
-  }, [])
+    const techs = users?.user_tech?.map((tech) => tech.tech_id)
+    if (techs) setSelectedTechs([...techs])
+  }, [users])
 
   // 기술 체크박스 변경 처리
   const handleTechCheckboxChange = async (
