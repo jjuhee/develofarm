@@ -41,8 +41,8 @@ const FourRightColumns = ({
                 <div className="flex-shrink-0 ml-5 ">
                   <div className="font-bold text-[14px] m-3">
                     {surfitArticle.title
-                      ? surfitArticle.title.length > 18
-                        ? surfitArticle.title.substring(0, 18) + "..."
+                      ? surfitArticle.title.length > 19
+                        ? surfitArticle.title.substring(0, 19) + "..."
                         : surfitArticle.title
                       : "제목이 없습니다."}
                   </div>

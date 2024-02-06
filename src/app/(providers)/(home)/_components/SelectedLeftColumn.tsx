@@ -33,7 +33,7 @@ const SelectedLeftColumn = ({
             className="rounded-xl"
           />
         </div>
-        <div className="flex-shrink-0 font-bold text-[17px] w-[410px] p-3 mt-3">
+        <div className="flex-shrink-0 font-bold text-[17px] w-[410px] p-3 mt-9">
           {
             surfitArticlesBundle
               ? surfitArticlesBundle[selectedImageNumber + 1]?.title.length > 30
