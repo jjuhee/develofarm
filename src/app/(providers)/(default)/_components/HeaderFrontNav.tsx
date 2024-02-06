@@ -24,8 +24,8 @@ const HeaderFrontNav = () => {
         href={"/projects"}
         className={`text-black text-[18px] ${
           segment === "projects"
-            ? "font-bold border-b-2 border-b-main-lime"
-            : "font-medium"
+            ? "font-bold pt-5 pb-2 border-b-8 border-b-main-lime"
+            : "font-medium pt-5 pb-2"
         }`}
       >
         프로젝트 구인
@@ -34,8 +34,8 @@ const HeaderFrontNav = () => {
         href={"/members"}
         className={`text-black text-[18px] ${
           segment === "members"
-            ? "font-bold border-b-2 border-b-main-lime"
-            : "font-medium"
+            ? "font-bold pt-5 pb-2 border-b-8 border-b-main-lime"
+            : "font-medium pt-5 pb-2"
         }`}
         onClick={onClickMemberCategoryHandler}
       >
