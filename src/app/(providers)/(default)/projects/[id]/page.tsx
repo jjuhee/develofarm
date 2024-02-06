@@ -42,9 +42,6 @@ const DetailPage = () => {
     editor.commands.setContent(project?.content!)
   }, [project?.content])
 
-  /**
-   *@ param1 현재 로그인한 유저 정보를 담은 변수
-   *@ param2 글 작성자가 현재 로그인한 유저랑 같은지 판별하는 변수*/
   const { user } = useUserStore((state) => state)
   const isWriter = user?.id === project?.user_id
 
@@ -61,7 +58,6 @@ const DetailPage = () => {
       <header>
         <Spacer y={50} />
         <div className="flex items-center">
-          {/* TODO: 목록으로 돌아가면 현재 있는 게시물이 있는 리스트로 돌아가게 구현예정 */}
           <span
             className={`${
               project.recruit_status
@@ -76,10 +72,8 @@ const DetailPage = () => {
         <Spacer y={30} />
         <TechStackTag project={project} />
         <Spacer y={25} />
-        <ul className="flex gap-x-5 pl-2 text-zinc-400 mb-5 items-center">
-          {project.user && (
-            <ProjectWriterInfo project={project} user={project.user} />
-          )}
+        <ul className="flex gap-x-5 pl-2 text-zinc-400 mb-5 items-center text-lg">
+          {project.user && <ProjectWriterInfo project={project} />}
           <WriterEditRemoveButtons project={project} isWriter={isWriter} />
         </ul>
       </header>

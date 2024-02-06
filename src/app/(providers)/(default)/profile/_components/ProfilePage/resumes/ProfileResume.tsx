@@ -34,7 +34,7 @@ const ProfileResume = ({ profileId }: { profileId: string }) => {
           educations={userResumes?.education as Tables<"education">[]}
         />
       </div>
-      <div className="flex justify-between items-start w-[1230px]">
+      <div className="flex justify-between items-start">
         <ProfileAcademy
           academies={userResumes?.academies as Tables<"academies">[]}
         />

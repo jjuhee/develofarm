@@ -16,9 +16,6 @@ const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
   const router = useRouter()
   const { openCustomModalHandler } = useCustomModal()
 
-  /**
-   *@ mutaion 게시물 삭제 후 확인창 띄워주고 목록으로 이동
-   TODO: 목록으로 돌아갈때 캐시가 남아 지워주는 작업 필요 */
   const removeProjectMutate = useMutation({
     mutationFn: removeProject,
     onSuccess: async () => {
@@ -29,12 +26,10 @@ const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
       router.replace("/projects")
     },
     onError: (error) => {
-      console.log(error)
+      openCustomModalHandler(`Error: ${error}`, "alert")
     },
   })
 
-  /**
-   *@ function 받아온 id를 삭제 함수에 넣어서 확인창으로 검사 후 삭제 처리 */
   const isDeleteClickHandler = (id: string) => {
     const handler = () => {
       removeProjectMutate.mutate(id)
@@ -44,13 +39,12 @@ const WriterEditRemoveButtons = ({ project, isWriter }: Props) => {
   }
 
   return (
-    // 작성자가 맞다면 수정/삭제 버튼 보여주기
     isWriter && (
       <>
         {project.recruit_status === true ? (
           ""
         ) : (
-          <li className="ml-auto">
+          <li className="ml-8 lg:ml-auto">
             <Link className="text-zinc-400" href={`/write/${project.id}`}>
               수정
             </Link>

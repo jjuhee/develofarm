@@ -1,19 +1,17 @@
-import { Tables } from "@/types/supabase"
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
-import React, { useState } from "react"
+import React from "react"
 import Spacer from "@/components/ui/Spacer"
 import CommentForm from "./CommentForm"
 import { getComments } from "../../api"
 import Comment from "./Comment"
+import { TProjectType } from "@/types/extendedType"
 
 type Props = {
-  project: Tables<"projects">
+  project: TProjectType
 }
 
 const Comments = ({ project }: Props) => {
-  /**
-   *@ query 해당 게시물 id를 구분해 댓글 목록 조회 */
   const { data: comments, isLoading: commentsIsLoading } = useQuery({
     queryKey: ["comments", { projectId: project.id }],
     queryFn: () => getComments(project.id),
@@ -32,7 +30,7 @@ const Comments = ({ project }: Props) => {
         {comments?.map((comment) => {
           return <Comment key={comment.id} comment={comment} />
         })}
-        <Spacer y={30} />
+        <Spacer y={20} />
         <CommentForm
           projectId={project.id}
           commentUserId={project.user_id}

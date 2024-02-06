@@ -14,6 +14,8 @@ const initialOption = {
   techs: [],
 }
 
+export const revalidate = 0
+
 export default async function Page() {
   const queryClient = new QueryClient()
 
@@ -24,6 +26,7 @@ export default async function Page() {
         ...initialOption,
         recruitStatus: false,
       }),
+    // gcTime: 0,
   })
 
   return (
