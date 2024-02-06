@@ -34,6 +34,16 @@ export async function getMembers(projectId: string) {
   return data
 }
 
+export async function getUserInProgress(currnetUserId: string) {
+  const { data, error } = await supabaseForClient
+    .from("users")
+    .select("user_status")
+    .eq("id", currnetUserId)
+    .single()
+  if (error) console.log("error", error)
+  return data
+}
+
 export async function getMembersInProject(projectId: string) {
   const { data, error } = await supabaseForClient
     .from("project_members")
