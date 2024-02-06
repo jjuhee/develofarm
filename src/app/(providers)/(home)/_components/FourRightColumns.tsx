@@ -18,7 +18,7 @@ const FourRightColumns = ({
   return (
     <div>
       <div className="grid grid-cols-2 gap-3" key={2}>
-        {surfitArticles?.slice(14, 18).map((surfitArticle, index) => (
+        {surfitArticles?.slice(1, 5).map((surfitArticle, index) => (
           <>
             <div
               key={index}
@@ -26,19 +26,31 @@ const FourRightColumns = ({
             >
               <div
                 className="w-full h-full flex flex-col"
-                onClick={() => setSelectedImageNumber(index + 13)}
+                onClick={() => setSelectedImageNumber(index)}
               >
-                <div className="flex-shrink-0  ">
-                  <div className="font-bold text-[14px] p-5">
+                <div className="flex items-center justify-center mt-3">
+                  <Image
+                    alt="이미지 없음"
+                    src={surfitArticle.imgSrc}
+                    objectFit="cover"
+                    className="rounded-xl"
+                    height={150}
+                    width={170}
+                  />
+                </div>
+                <div className="flex-shrink-0 ml-5 ">
+                  <div className="font-bold text-[14px] m-3">
                     {surfitArticle.title
-                      ? surfitArticle.title.substring(0, 18) + "..."
+                      ? surfitArticle.title.length > 18
+                        ? surfitArticle.title.substring(0, 18) + "..."
+                        : surfitArticle.title
                       : "제목이 없습니다."}
                   </div>
-                  <div className=" text-[12px] text-bold  h-[130px] p-3">
+                  <div className=" text-[12px] text-bold  h-[40px] ">
                     <div className="ml-3">
                       {surfitArticle.description
-                        ? surfitArticle.description?.length > 130
-                          ? surfitArticle.description.substring(0, 130) + "..."
+                        ? surfitArticle.description?.length > 75
+                          ? surfitArticle.description.substring(0, 75) + "..."
                           : surfitArticle.description
                         : "제목이 없습니다."}
                     </div>
