@@ -131,20 +131,38 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   return (
     project.recruit_status === false && (
       <>
-        {isWriter ? (
-          <Button
-            type="border"
-            text="마감하기"
-            handler={() => closeProjectButtonHandler(project.id)}
-          />
-        ) : isApplicantAuthenticated && isApplicantAuthenticated ? (
-          <Button
-            text="신청취소"
-            handler={() => cancelForProjectButtonHandler(applyUser.id)}
-          />
-        ) : (
-          <Button text="신청하기" handler={applyForProjectButtonHandler} />
-        )}
+        <article className="hidden md:block lg:block">
+          {isWriter ? (
+            <Button
+              type="border"
+              text="마감하기"
+              handler={() => closeProjectButtonHandler(project.id)}
+            />
+          ) : isApplicantAuthenticated && isApplicantAuthenticated ? (
+            <Button
+              text="신청취소"
+              handler={() => cancelForProjectButtonHandler(applyUser.id)}
+            />
+          ) : (
+            <Button text="신청하기" handler={applyForProjectButtonHandler} />
+          )}
+        </article>
+        <article className="z-10 bottom-0 fixed md:hidden lg:hidden">
+          {isWriter ? (
+            <Button
+              type="border"
+              text="마감하기"
+              handler={() => closeProjectButtonHandler(project.id)}
+            />
+          ) : isApplicantAuthenticated && isApplicantAuthenticated ? (
+            <Button
+              text="신청취소"
+              handler={() => cancelForProjectButtonHandler(applyUser.id)}
+            />
+          ) : (
+            <Button text="신청하기" handler={applyForProjectButtonHandler} />
+          )}
+        </article>
       </>
     )
   )

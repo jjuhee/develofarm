@@ -79,7 +79,7 @@ const FooterMenus = ({ project }: Props) => {
       <section className="flex items-center">
         <>
           <Link
-            className={`flex items-center pr-12 pb-3 border-b-2 ${
+            className={`flex items-center pr-8 lg:pr-12 pb-3 border-b-2 ${
               tab === "comments" && " border-slate-600"
             }`}
             scroll={false}
@@ -94,12 +94,17 @@ const FooterMenus = ({ project }: Props) => {
                   : "/icons/commentIcon.png"
               }`}
               alt="댓글 아이콘"
-              className="inline-block ml-10 mr-3"
+              className="inline-block ml-6 lg:ml-10 mr-3"
             />
-            {comments?.length}
+            <span className="lg:hidden">
+              {comments && comments.length >= 999
+                ? comments.length + "+"
+                : comments?.length}
+            </span>
+            <span className="hidden lg:block">{comments?.length}</span>
           </Link>
           <Link
-            className={`pr-8 pb-1 border-b-2 ${
+            className={`pr-3 lg:pr-8 pb-1 border-b-2 ${
               tab === "applicants" && " border-slate-600"
             }`}
             scroll={false}
@@ -114,7 +119,7 @@ const FooterMenus = ({ project }: Props) => {
                   : "/icons/applicantsIcon.png"
               }`}
               alt="신청자 아이콘"
-              className="inline-block ml-10 mr-3 pb-3"
+              className="inline-block ml-5 lg:ml-10 mr-3 pb-3"
             />
             {participatingApplications.length} / {applyingApplications.length}
           </Link>

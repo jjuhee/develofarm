@@ -88,7 +88,7 @@ const PublicShareButton = ({ project }: Props) => {
     )
 
   return (
-    <section className="absolute ml-[900px] mt-[210px] w-[300px] h-[164px] p-5 rounded-3xl shadow-md bg-[#fff]">
+    <section className="absolute ml-[90px] mt-[200px] lg:ml-[900px] lg:mt-[210px] w-[300px] h-[164px] p-5 rounded-3xl shadow-md bg-[#fff]">
       <article className="flex flex-col justify-center items-center mb-5 mt-5">
         <article className="flex flex-row mr-4">
           <button
