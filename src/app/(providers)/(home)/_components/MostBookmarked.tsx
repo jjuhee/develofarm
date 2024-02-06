@@ -73,12 +73,12 @@ const MostBookmarked = ({ bookmarksCountProjects }: MostBookmarkedProps) => {
               </div>
               <div className="absolute bottom-0 left-0 text-black h-[30%] w-full">
                 <div className="mb-2">
-                  <h2 className="text-[17px] font-bold pt-2 pl-2">
+                  <h2 className="text-[17px] font-bold pt-5 pl-5">
                     {list.title.length > 23
                       ? list.title.slice(0, 23) + "..."
                       : list.title}
                   </h2>
-                  <p className="text-[12px] pt-2 pl-2">
+                  <p className="text-[12px] pt-2 pl-5">
                     {list.content.replaceAll("<p>", "").replaceAll("</p>", "")
                       .length > 27
                       ? list.content
@@ -134,12 +134,12 @@ const MostBookmarked = ({ bookmarksCountProjects }: MostBookmarkedProps) => {
               </div>
               <div className="absolute bottom-0 left-0 text-black h-[30%] w-full">
                 <div className="mb-2">
-                  <h2 className="text-[17px] font-bold pt-2 pl-2">
+                  <h2 className="text-[17px] font-bold pt-5 pl-5">
                     {list.title.length > 23
                       ? list.title.slice(0, 23) + "..."
                       : list.title}
                   </h2>
-                  <p className="text-[12px] pt-2 pl-2">
+                  <p className="text-[12px] pt-2 pl-5">
                     {list.content.replaceAll("<p>", "").replaceAll("</p>", "")
                       .length > 27
                       ? list.content

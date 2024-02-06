@@ -29,7 +29,7 @@ const SearchInput = ({
               />
             </button>
             <input
-              className="p-3 pl-[60px] rounded-3xl border border-gray w-[800px] focus:border-transparent focus:ring-2 focus:ring-green-300 transition-all duration-300"
+              className="p-3 pl-[60px] rounded-3xl border border-gray w-[800px] focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300"
               type="text"
               name="search"
               value={text}
