@@ -46,8 +46,20 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     mutationFn: setMember,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["applyUser", { projectId: project.id }],
-        exact: true,
+        queryKey: [
+          "applyUser",
+          {
+            projectId: project.id,
+          },
+        ],
+      })
+      await queryClient.invalidateQueries({
+        queryKey: [
+          "applicants",
+          {
+            projectId: project.id,
+          },
+        ],
       })
       openCustomModalHandler("신청이 완료되었습니다!", "alert")
     },
@@ -61,6 +73,14 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["applyUser", { projectId: project.id }],
+      })
+      await queryClient.invalidateQueries({
+        queryKey: [
+          "applicants",
+          {
+            projectId: project.id,
+          },
+        ],
       })
       openCustomModalHandler("신청이 취소되었습니다!", "alert")
     },
