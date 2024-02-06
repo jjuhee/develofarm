@@ -1,7 +1,6 @@
 import { PropsWithChildren } from "react"
 import Header from "@/app/(providers)/(default)/_components/Header"
 import Footer from "@/app/(providers)/(default)/_components/Footer"
-import Navigation from "./_components/Navigation"
 
 function ProvidersLayout({ children }: PropsWithChildren<{}>) {
   return (
@@ -14,7 +13,6 @@ function ProvidersLayout({ children }: PropsWithChildren<{}>) {
           </div>
           <Footer />
         </div>
-        <Navigation />
       </div>
     </>
   )

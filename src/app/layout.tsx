@@ -5,6 +5,7 @@ import FloatingButton from "@/components/ui/FloatingButton"
 import CustomModal from "@/components/CustomModal"
 import localFont from "next/font/local"
 import ScrollToTop from "@/components/ScrollToTop"
+import TabNav from "./(providers)/(default)/_components/TabNav"
 
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.woff2",
@@ -38,6 +39,7 @@ export default function RootLayout({
             <div id="portal" className="relative z-50"></div>
             <FloatingButton />
             <CustomModal />
+            <TabNav />
           </ScrollToTop>
         </Provider>
       </body>
