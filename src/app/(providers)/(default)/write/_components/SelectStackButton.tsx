@@ -77,7 +77,7 @@ const SelectStackButton = ({
             onMouseLeave={() => setIsActive("")}
           >
             <div
-              className={`category justify-between mb-2 w-[140px] border-[1.5px] rounded-[8px] transition-all
+              className={`category justify-between mb-2 w-[100px] border-[1.5px] rounded-[8px] px-[10px] lg:px-[16px] lg:w-[140px] transition-all
           ${
             isActive === position.name &&
             "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold "
@@ -98,7 +98,7 @@ const SelectStackButton = ({
             </div>
 
             <ul
-              className={`absolute flex flex-col gap-[10px] bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[16px] w-[140px] transition-all duration-300 z-10 ${
+              className={`absolute flex flex-col gap-[10px] bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[4px] lg:px-[16px] w-[100px] lg:w-[140px] transition-all duration-300 z-20 ${
                 isActive === position.name ? "visible" : "invisible"
               }`}
             >
