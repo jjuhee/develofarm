@@ -1,5 +1,5 @@
 import Image from "next/image"
-import formatDate from "@/utils/formatDate"
+import { formatDate } from "@/utils/formatDate"
 import BookmarkButton from "@/components/BookmarkButton"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateProjectViews } from "../[id]/api"
