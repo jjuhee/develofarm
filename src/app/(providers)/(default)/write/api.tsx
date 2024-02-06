@@ -10,68 +10,93 @@ interface TParam {
   techs: TTechs[]
   file: File | null
 }
-export async function setProject({ isEditMode, project, techs, file }: TParam) {
-  const { data: projectData, error: projectError } = await supabaseForClient
+
+const upsertProject = async (project: TablesInsert<"projects">) => {
+  const { data: projectData, error } = await supabaseForClient
     .from("projects")
     .upsert(project)
     .select()
 
-  if (projectError) {
-    console.log("error", projectError)
-    throw projectError
+  if (error) {
+    console.log("error", error)
+    throw error
   }
+  return projectData
+}
+
+const deleteProjectTech = async (projectId: string) => {
+  const { error } = await supabaseForClient
+    .from("project_tech")
+    .delete()
+    .eq("project_id", projectId)
+  if (error) console.log("error", error)
+}
+
+const upsertProjectTech = async (projectId: string, techs: TTechs[]) => {
+  const { error } = await supabaseForClient
+    .from("project_tech")
+    .upsert(techs.map(({ tech_id }) => ({ tech_id, project_id: projectId })))
+
+  if (error) {
+    console.log("error", error)
+    throw error
+  }
+}
+
+const uploadProjectImage = async (projectId: string, file: File | null) => {
+  const BASE_URL = `https://aksbymviolrkiainilpq.supabase.co/storage/v1/object/public/project_image/`
+  let imagePath = ""
+
+  if (file) {
+    const fileExt = file.name.split(".").pop()
+    const fileName = `${Math.random()}.${fileExt}`
+    const subUrl = `${projectId}/${fileName}`
+    const { data: image, error: imageError } = await supabaseForClient.storage
+      .from("project_image")
+      .upload(`${subUrl}`, file)
+
+    imagePath = BASE_URL + image?.path
+
+    if (imageError) {
+      console.log("이미지 저장 error", imageError)
+      throw imageError
+    }
+  }
+  return imagePath
+}
+
+const updateProjectImage = async (projectId: string, imagePath: string) => {
+  const { error } = await supabaseForClient
+    .from("projects")
+    .update({ picture_url: imagePath })
+    .eq("id", projectId)
+  if (error) {
+    console.log("error", error)
+  }
+}
+
+export async function setProject({ isEditMode, project, techs, file }: TParam) {
+  const projectData = await upsertProject(project)
 
   /* insert 시 방금 생성된 project id 필요 */
   if (projectData && projectData.length > 0) {
-    console.log("insertedProjectData", projectData)
     const projectId = projectData[0].id
 
     /* edit 모드에서 프로젝트-테크 테이블 삭제 */
     if (isEditMode) {
-      const { error: EditError } = await supabaseForClient
-        .from("project_tech")
-        .delete()
-        .eq("project_id", projectId)
-      if (EditError) console.log("프로젝트-테크 테이블 삭제 error", EditError)
+      await deleteProjectTech(projectId)
     }
     /* 테크 데이터 넣기 */
-    const { error: techError } = await supabaseForClient
-      .from("project_tech")
-      .upsert(techs.map(({ tech_id }) => ({ tech_id, project_id: projectId })))
-
-    if (techError) {
-      console.log("error", techError)
-      throw techError
-    }
+    await upsertProjectTech(projectId, techs)
 
     /** 이미지를 storage에 저장 */
-    const BASE_URL = `https://aksbymviolrkiainilpq.supabase.co/storage/v1/object/public/project_image/`
-    let imagePath = ""
+    const imagePath = await uploadProjectImage(projectId, file)
 
-    if (file) {
-      const fileExt = file.name.split(".").pop()
-      const fileName = `${Math.random()}.${fileExt}`
-      const subUrl = `${projectId}/${fileName}`
-      const { data: image, error: imageError } = await supabaseForClient.storage
-        .from("project_image")
-        .upload(`${subUrl}`, file)
-
-      imagePath = BASE_URL + image?.path
-
-      if (imageError) {
-        console.log("이미지 저장 error", imageError)
-        throw imageError
-      }
-
-      /** 프로젝트 DB에 이미지 url 저장 */
-      const { error } = await supabaseForClient
-        .from("projects")
-        .update({ picture_url: imagePath })
-        .eq("id", projectId)
-    }
-
-    return projectData
+    /** 프로젝트 DB에 이미지 url 저장 */
+    await updateProjectImage(projectId, imagePath)
   }
+
+  return projectData
 }
 
 export async function setProjectPositionsAndTechs(
