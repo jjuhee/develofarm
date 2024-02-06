@@ -1,8 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
-import { IoMdSearch } from "react-icons/io"
-import { VscBell } from "react-icons/vsc"
 
 const Header = () => {
   return (
