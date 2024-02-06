@@ -29,11 +29,11 @@ const SelectedLeftColumn = ({
             }
             width={400}
             height={400}
-            objectFit="cover"
+            objectFit="contain"
             className="rounded-xl"
           />
         </div>
-        <div className="flex-shrink-0 font-bold text-[17px] w-[410px] p-3">
+        <div className="flex-shrink-0 font-bold text-[17px] w-[410px] p-3 mt-3">
           {
             surfitArticlesBundle
               ? surfitArticlesBundle[selectedImageNumber + 1]?.title.length > 30
@@ -44,16 +44,20 @@ const SelectedLeftColumn = ({
                 : surfitArticlesBundle[selectedImageNumber + 1].title
               : "" // 또는 빈 문자열 또는 다른 로딩 처리 방식
           }
-          <div className="text-[14px] p-3">
+          <div className="text-[14px] p-3 ">
             {
               surfitArticlesBundle
-                ? surfitArticlesBundle[selectedImageNumber + 1]?.description ||
-                  ""
-                : "" // 또는 빈 문자열 또는 다른 로딩 처리 방식
+                ? surfitArticlesBundle[selectedImageNumber + 1].description
+                    .length > 80
+                  ? surfitArticlesBundle[
+                      selectedImageNumber + 1
+                    ].description.substring(0, 80) + "..."
+                  : surfitArticlesBundle[selectedImageNumber + 1].description
+                : "해당 기사의 내용이 존재하지 않습니다." // 또는 빈 문자열 또는 다른 로딩 처리 방식
             }
           </div>
           <Link href={""}>
-            <span className="text-[13px] hover:border-b hover:border-b-black ">
+            <span className="text-[13px] hover:border-b hover:border-b-black mt-7">
               보러가기
             </span>
           </Link>

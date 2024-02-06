@@ -37,7 +37,7 @@ const InitialLeftColumn = ({
             ? surfitArticlesBundle[0].title
             : "제목이 없는 기사 입니다."}
 
-          <div className="text-[14px] p-3">
+          <div className="text-[14px] p-3 ">
             {
               surfitArticlesBundle
                 ? surfitArticlesBundle[0]?.description || ""
@@ -45,7 +45,7 @@ const InitialLeftColumn = ({
             }
           </div>
           <Link href={surfitArticles[0]?.href}>
-            <span className="m-5 text-[13px] hover:border-b hover:border-b-black m-3">
+            <span className="m-5 text-[13px] hover:border-b hover:border-b-black mt-7">
               보러가기
             </span>
           </Link>

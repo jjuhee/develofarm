@@ -26,7 +26,7 @@ const ProjectCardTechs = ({ project }: Props) => {
           {tech?.techs?.tech_name}
         </li>
       ))}
-      {techs.length > 5 && (
+      {techs?.length > 5 && (
         <li className="group relative text-xs font-normal ">
           <div className="flex justify-center items-center bg-[#E6E6E6] text-[#636366] px-3 py-1 rounded-3xl">
             ...

@@ -11,13 +11,12 @@ interface TSurfitArticles {
   title: string
 }
 
-export const revalidate = 60
 const current = new Date()
 const formattedDate = current.toLocaleString()
 const GetSurfitArticles = async () => {
   if (!browser) {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: "new",
       args: ["--no-sandbox", "--disabled-setupid-sandbox"],
     })
   }
@@ -65,6 +64,7 @@ const GetSurfitArticles = async () => {
 
 const Column = async () => {
   const surfitArticles = await GetSurfitArticles()
+  console.log("surfit", surfitArticles, formattedDate)
   return (
     <>
       <Columns surfitArticles={surfitArticles as TSurfitArticles[]} />

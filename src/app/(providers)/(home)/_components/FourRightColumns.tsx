@@ -18,29 +18,32 @@ const FourRightColumns = ({
   return (
     <div>
       <div className="grid grid-cols-2 gap-3" key={2}>
-        {surfitArticles?.slice(1, 5).map((surfitArticle, index) => (
+        {surfitArticles?.slice(14, 18).map((surfitArticle, index) => (
           <>
             <div
               key={index}
-              className="hover hover:cursor-pointer relative overflow-hidden hover:transform hover:scale-90 transition-transform duration-300 border border-#ccc col-span-1 row-span-2 rounded-xl shadow-lg"
+              className="h-[245px] hover hover:cursor-pointer relative overflow-hidden hover:transform hover:scale-90 transition-transform duration-300 border border-#ccc col-span-1 row-span-2 rounded-xl shadow-lg"
             >
               <div
                 className="w-full h-full flex flex-col"
-                onClick={() => setSelectedImageNumber(index)}
+                onClick={() => setSelectedImageNumber(index + 13)}
               >
-                <div className="flex-grow relative w-full h-3/4"> </div>
                 <div className="flex-shrink-0  ">
                   <div className="font-bold text-[14px] p-5">
                     {surfitArticle.title
-                      ? surfitArticle.title
+                      ? surfitArticle.title.substring(0, 18) + "..."
                       : "제목이 없습니다."}
                   </div>
-                  <div className=" text-[12px]  h-[110px] p-3">
-                    {surfitArticle.description
-                      ? surfitArticle.description
-                      : "제목이 없습니다."}
+                  <div className=" text-[12px] text-bold  h-[130px] p-3">
+                    <div className="ml-3">
+                      {surfitArticle.description
+                        ? surfitArticle.description?.length > 130
+                          ? surfitArticle.description.substring(0, 130) + "..."
+                          : surfitArticle.description
+                        : "제목이 없습니다."}
+                    </div>
                   </div>
-                  <span className="text-[12px] font-bold m-3 hover hover:border-b hover:border-b-black ">
+                  <span className="text-[12px] font-bold ml-5 hover hover:border-b hover:border-b-black ">
                     <Link href={surfitArticle?.href ? surfitArticle.href : ""}>
                       보러가기
                     </Link>
