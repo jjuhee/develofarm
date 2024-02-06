@@ -5,6 +5,7 @@ import useUserStore from "@/store/user"
 import {
   closeProject,
   getApplicationUser,
+  getUserInProgress,
   removeProjectInMember,
   setMember,
 } from "../../api"
@@ -25,14 +26,20 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   const { openCustomModalHandler } = useCustomModal()
   const openLoginConfirmModal = useLoginConfirmModal()
   const addNotiMutate = useAddNotiMutate()
+  const currnetUserId = user?.id as string
 
-  const applyUserId = project.user?.project_members.map((member) => member.id)
+  const { data: currentUserStatus } = useQuery({
+    queryKey: ["users", currnetUserId],
+    queryFn: () => getUserInProgress(currnetUserId),
+  })
+
+  console.log(currentUserStatus)
 
   const closeProjectMutate = useMutation({
     mutationFn: closeProject,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["project", { applyUserId }],
+        queryKey: ["project", { projectId: project.id }],
       })
 
       openCustomModalHandler("마감되었습니다!", "alert")
@@ -46,7 +53,12 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     mutationFn: setMember,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["applyUser", { projectId: project.id }],
+        queryKey: [
+          "applyUser",
+          {
+            projectId: project.id,
+          },
+        ],
         exact: true,
       })
       openCustomModalHandler("신청이 완료되었습니다!", "alert")
@@ -60,7 +72,12 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     mutationFn: removeProjectInMember,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["applyUser", { projectId: project.id }],
+        queryKey: [
+          "applyUser",
+          {
+            projectId: project.id,
+          },
+        ],
       })
       openCustomModalHandler("신청이 취소되었습니다!", "alert")
     },
@@ -95,7 +112,7 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   const applyForProjectButtonHandler = () => {
     if (!user) return openLoginConfirmModal()
 
-    if (applyUser?.user?.user_status !== "지원 중")
+    if (currentUserStatus?.user_status !== "지원 중")
       return openCustomModalHandler(
         "지원 중인 유저만 신청이 가능합니다.\n내 프로필에서 상태를 확인해주세요.",
         "alert",
