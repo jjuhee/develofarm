@@ -34,10 +34,10 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
         <Image
           src={users?.avatar_url as string}
           alt="userAvatar"
-          width={50}
-          height={50}
+          width={273}
+          height={273}
           objectFit="cover"
-          className="rounded-full w-64 h-64"
+          className="rounded-full"
         />
         <div className="text-left pl-[40px]">
           <h2 className="text-[30px] pl-[10px] font-bold">

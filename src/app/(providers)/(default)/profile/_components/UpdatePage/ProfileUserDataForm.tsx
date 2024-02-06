@@ -215,10 +215,10 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
         <Image
           src={users?.avatar_url as string}
           alt="userAvatar"
-          width={50}
-          height={50}
+          width={273}
+          height={273}
           objectFit="cover"
-          className="rounded-full w-64 h-64"
+          className="rounded-full"
         />
         <div className="text-left pl-[40px]">
           <div className="h-[100px] pl-[10px] relative">
