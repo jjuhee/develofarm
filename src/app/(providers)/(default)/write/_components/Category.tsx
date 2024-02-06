@@ -298,7 +298,7 @@ const Category = ({
             </li>
           </ul>
         </div>
-        <div className="flex flex-col gap-[15px] items-start">
+        <div className="flex flex-col gap-[15px] items-start lg:w-[441px]">
           <h3>기술 스택</h3>
           <ul className="flex gap-3 ">
             <SelectStackButton
