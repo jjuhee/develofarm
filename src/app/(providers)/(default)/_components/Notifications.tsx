@@ -97,7 +97,7 @@ const Notifications = ({ showTooltip }: Props) => {
       {/* 드롭다운 */}
       <div className="relative text-[13px] *:bg-white">
         <ul
-          className={`absolute flex flex-col mt-[3px] rounded-lg border-[1px] border-[#F2F4F7] shadow-md w-[243px] left-[-220px] top-[20px] z-10 ${
+          className={`absolute flex flex-col mt-[3px] rounded-lg border-[1px] border-[#F2F4F7] shadow-md w-[243px] left-[-230px] top-[33px] z-10 ${
             showTooltip ? "visible" : "invisible"
           }`}
         >
