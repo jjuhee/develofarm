@@ -11,6 +11,7 @@ import useUrlStore from "@/store/url"
 import { useSelectedLayoutSegment } from "next/navigation"
 import HeaderNav from "./HeaderNav"
 import useSignInAndSignOut from "@/hooks/useSignInAndSignOut"
+import HeaderFrontNav from "./HeaderFrontNav"
 
 const Header = () => {
   const { user } = useUserStore((state) => state)
@@ -45,33 +46,12 @@ const Header = () => {
         pathname === "/" ? "block" : "hidden"
       } lg:block`}
     >
-      <div className="flex justify-between items-center max-w-[1250px] h-[96px] my-0 mx-auto px-2 ">
+      <div className="flex justify-between items-center max-w-[1250px] h-[60px] my-0 mx-auto px-2 ">
         <Link href={"/"}>
-          <Image src={"/images/logo.png"} alt="logo" width={200} height={30} />
+          <Image src={"/images/logo.png"} alt="logo" width={168} height={20} />
         </Link>
-        <nav className="flex items-center gap-5">
-          <Link
-            href={"/projects"}
-            className={`text-black text-[18px] ${
-              segment === "projects"
-                ? "font-bold border-b-2 border-b-main-lime"
-                : "font-medium"
-            }`}
-          >
-            프로젝트 구인
-          </Link>
-          <Link
-            href={"/members"}
-            className={`text-black text-[18px] ${
-              segment === "members"
-                ? "font-bold border-b-2 border-b-main-lime"
-                : "font-medium"
-            }`}
-            onClick={onClickMemberCategoryHandler}
-          >
-            인재풀
-          </Link>
-        </nav>
+
+        <HeaderFrontNav />
 
         <HeaderNav user={user!} isAuthInitialized={isAuthInitialized} />
       </div>

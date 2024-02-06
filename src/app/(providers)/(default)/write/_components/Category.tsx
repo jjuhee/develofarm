@@ -1,6 +1,6 @@
 "use client"
 
-import React, { Dispatch, useRef, useState } from "react"
+import React, { Dispatch, useEffect, useRef, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { getRegions, getTechsByPositions } from "../../projects/api"
 import SelectStackButton from "./SelectStackButton"
@@ -12,6 +12,8 @@ import useProjectsStore from "@/store/projects"
 import useScrollLock from "@/hooks/useScrollLock"
 
 import type { Tables } from "@/types/supabase"
+import useResizeDebounce from "@/hooks/useResizeDebounce"
+import Image from "next/image"
 
 interface Props {
   categoryData: TCategoryData
@@ -38,7 +40,15 @@ const Category = ({
 
   const [isRegionActive, setIsRegionActive] = useState(false)
 
+  const windowSize = useResizeDebounce()
+
   useScrollLock(isShownCategory!)
+
+  useEffect(() => {
+    if (windowSize.width >= 1024) {
+      setIsShownCategory(false)
+    }
+  }, [windowSize.width])
 
   /** 모든 position에 연결된 tech를 position_tech table에서 불러온다 */
   const { data: allTechs } = useQuery({
@@ -98,22 +108,22 @@ const Category = ({
     <section
       className={`flex-col gap-4 bg-white ${
         isShownCategory || isWritePage
-          ? `block py-[15px] px-[25px] ${
+          ? `block  py-[15px] px-[25px] ${
               isShownCategory &&
-              "fixed top-0 left-0 w-full h-full z-10 overflow-scroll"
+              "fixed z-20 top-0 left-0 w-full h-full z-10 overflow-scroll"
             }`
           : "hidden"
       } lg:block`}
     >
       {!isWritePage && (
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center py-3 lg:py-0">
           <h1>필터링 검색</h1>
-          <span
-            className="block mr-5 cursor-pointer lg:hidden"
+          <div
+            className={`cursor-pointer ${isShownCategory ? "block" : "hidden"}`}
             onClick={() => setIsShownCategory((prev) => !prev)}
           >
-            X
-          </span>
+            <Image src="/icons/close.png" alt="close" width={20} height={20} />
+          </div>
         </div>
       )}
       <div className="flex flex-col lg:flex-row relative justify-between gap-[39px] lg:border-y py-5 px-1 border-slate-800">
@@ -301,7 +311,7 @@ const Category = ({
         {/* 메인page */}
         {!isWritePage && (
           <div
-            className="flex fixed bottom-0 w-full justify-around bg-white py-10 border-t lg:justify-normal lg:absolute lg:bottom-6 lg:right-[1px] lg:gap-3 lg:p-0 lg:w-auto *:w-[100px] lg:*:h-[40px] lg:border-none
+            className="flex fixed z-20 bottom-0 right-0 w-full *:min-w-[150px]  justify-around bg-white py-5 border-t lg:justify-normal lg:absolute lg:bottom-6 lg:right-[1px] lg:gap-3 lg:p-0 lg:w-auto lg:*:min-w-[100px] lg:*:h-[40px] lg:border-none
           "
           >
             <Button

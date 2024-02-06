@@ -73,7 +73,7 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
             >
               {recruit_status ? "모집 완료" : "모집 중"}{" "}
             </h4>
-            <h2 className="mr-10 text-[15px] w-[200px] truncate lg:w-full lg:text-[18px] lg:mr-10">
+            <h2 className="text-[15px] w-[200px] sm:w-[400px] md:w-[500px] truncate lg:w-full lg:text-[18px] lg:mr-10">
               {title}
             </h2>
           </div>

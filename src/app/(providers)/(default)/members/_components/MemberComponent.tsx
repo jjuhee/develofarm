@@ -78,7 +78,9 @@ const MembersComponent = () => {
 
   return (
     <div>
-      <Spacer y={30} />
+      <div className="hidden lg:block">
+        <Spacer y={30} />
+      </div>
       <div className="flex flex-col w-full">
         <section className="flex flex-col py-5 gap-[20px] w-full ">
           {/* 인재풀 타이틀 및 설명 */}
