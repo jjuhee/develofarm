@@ -16,7 +16,7 @@ const formattedDate = current.toLocaleString()
 const GetSurfitArticles = async () => {
   if (!browser) {
     browser = await puppeteer.launch({
-      headless: "new",
+      headless: "old",
       args: ["--no-sandbox", "--disabled-setupid-sandbox"],
     })
   }
