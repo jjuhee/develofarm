@@ -1,11 +1,11 @@
 "use client"
 
-import { Dispatch, SetStateAction, useState } from "react"
+import React, { Dispatch, SetStateAction, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { deleteSpecs, getSpecs } from "../../api"
 import { Tables } from "@/types/supabase"
 import { GoPlus } from "react-icons/go"
-import { HiOutlineXMark } from "react-icons/hi2"
+import SpecFormInputs from "./UpdateInputs/SpecFormInputs "
 
 const ProfileSpecForm = ({
   userId,
@@ -53,7 +53,7 @@ const ProfileSpecForm = ({
     })
   }
 
-  const handleAddNewAcademyForm = () => {
+  const handleAddNewSpecForm = () => {
     setNewSpecForms([...newSpecForms, {} as Tables<"specs">])
     setNewSpecData([...newSpecData, {} as Tables<"specs">])
   }
@@ -81,7 +81,7 @@ const ProfileSpecForm = ({
         return newHiddenInputs
       })
     } catch (error) {
-      console.error("Error deleting academies data:", error)
+      console.error("Error deleting specs data:", error)
     }
   }
 
@@ -99,7 +99,7 @@ const ProfileSpecForm = ({
         <h2 className="text-[26px] font-bold">자격/어학/수상</h2>
         <button
           type="button"
-          onClick={handleAddNewAcademyForm}
+          onClick={handleAddNewSpecForm}
           className="flex ml-auto border-[1.5px] border-[#A6A6A6] bg-[#ffffff] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#EEEEEE] hover:border-[#000000] transition-all duration-300"
         >
           <GoPlus className="text-[25px] mx-[3px]" />
@@ -108,87 +108,24 @@ const ProfileSpecForm = ({
       </div>
       <div>
         {specs?.map((spec: Tables<"specs">, index: number) => (
-          <div key={spec.id}>
-            {!hiddenInputs[index] && (
-              <>
-                <div className="flex justify-between items-start pt-[30px] pb-[58px]">
-                  <input
-                    type="date"
-                    value={spec.spec_date as string}
-                    onChange={(e) =>
-                      handleInputChange(index, "spec_date", e.target.value)
-                    }
-                    className="pt-[5px] cursor-pointer"
-                  />
-
-                  <div className="relative flex items-center">
-                    <input
-                      type="text"
-                      value={spec.spec_name as string}
-                      onChange={(e) =>
-                        handleInputChange(index, "spec_name", e.target.value)
-                      }
-                      className="w-[250px] text-xl font-bold p-1"
-                      placeholder="활동명"
-                      maxLength={10}
-                    />
-
-                    <button
-                      type="button"
-                      onClick={() => hideInputsAndDelete(index, spec.id)}
-                      className="text-[#AAAAAA] text-[30px] hover:text-red-500"
-                    >
-                      <HiOutlineXMark />
-                    </button>
-                  </div>
-                </div>
-                <hr className="my-8 border-t-2 border-gray-300" />
-              </>
-            )}
-          </div>
+          <SpecFormInputs
+            key={spec.id}
+            specData={specs}
+            formIndex={index}
+            isHidden={hiddenInputs[index]}
+            handleInputChange={handleInputChange}
+            handleDeleteForm={() => hideInputsAndDelete(index, spec.id)}
+          />
         ))}
         {newSpecForms.map((form, formIndex) => (
-          <div key={formIndex}>
-            <div className="flex justify-between items-start pt-[30px] pb-[58px]">
-              <input
-                type="date"
-                placeholder="From"
-                value={newSpecData[formIndex]?.spec_date || ""}
-                onChange={(e) =>
-                  handleNewSpecInputChange(
-                    formIndex,
-                    "spec_date",
-                    e.target.value,
-                  )
-                }
-                className="pt-[5px] cursor-pointer"
-              />
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  value={newSpecData[formIndex]?.spec_name || ""}
-                  onChange={(e) =>
-                    handleNewSpecInputChange(
-                      formIndex,
-                      "spec_name",
-                      e.target.value,
-                    )
-                  }
-                  className="w-[250px] text-xl font-bold p-1"
-                  placeholder="활동명"
-                  maxLength={10}
-                />
-                <button
-                  type="button"
-                  onClick={() => handleDeleteNewSpecForm(formIndex)}
-                  className="text-[#AAAAAA] text-[30px] hover:text-red-500"
-                >
-                  <HiOutlineXMark />
-                </button>
-              </div>
-            </div>
-            <hr className="my-8 border-t-2 border-gray-300" />
-          </div>
+          <SpecFormInputs
+            key={formIndex}
+            specData={newSpecData}
+            formIndex={formIndex}
+            isHidden={false}
+            handleInputChange={handleNewSpecInputChange}
+            handleDeleteForm={() => handleDeleteNewSpecForm(formIndex)}
+          />
         ))}
       </div>
     </form>
