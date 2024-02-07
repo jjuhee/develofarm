@@ -38,7 +38,7 @@ const SocialLinkInput = ({
           value={inputValue}
           onChange={handleChange}
           className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[570px] h-[48px]"
-          placeholder={`Enter ${label.toLowerCase()} URL...`}
+          placeholder={`${label.toLowerCase()} 주소를 입력해 주세요.`}
         />
         <button
           type="button"

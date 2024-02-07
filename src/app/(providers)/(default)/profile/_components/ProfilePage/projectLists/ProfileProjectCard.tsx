@@ -2,6 +2,7 @@ import React from "react"
 import Link from "next/link"
 import BookmarkButton from "@/components/BookmarkButton"
 import { Tables } from "@/types/supabase"
+import Image from "next/image"
 
 const ProfileProjectCard = ({
   project,
@@ -14,10 +15,13 @@ const ProfileProjectCard = ({
     <div className="border border-gray-300 h-[356px] w-[371px] bg-white rounded-[20px] shadow-md mt-4 mb-4 transition-transform transform hover:scale-105">
       <div className="flex flex-col items-left">
         <Link href={`/projects/${project.id}`}>
-          <img
-            className="h-[222.98px] w-full object-cover rounded-t-[20px]"
-            src={`${project.picture_url}`}
+          <Image
+            className="object-cover rounded-t-[20px]"
+            src={project.picture_url as string}
             alt={`Image for ${project.title}`}
+            width={370}
+            height={222.98}
+            objectFit="cover"
           />
         </Link>
         <div className="p-[20px]">
