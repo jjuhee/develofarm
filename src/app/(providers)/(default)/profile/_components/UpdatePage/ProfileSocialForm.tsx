@@ -47,7 +47,7 @@ const ProfileSocialForm = ({
   }
 
   if (isError) {
-    return <div>There was an error while loading the social link data.</div>
+    return <div>소셜 링크 데이터를 불러오는 중 오류가 발생했습니다</div>
   }
 
   return (
