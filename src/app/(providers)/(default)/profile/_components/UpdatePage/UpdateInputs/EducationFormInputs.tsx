@@ -38,7 +38,7 @@ const EducationFormInputs: React.FC<EducationFormInputsProps> = ({
             onChange={(e) =>
               handleInputChange(formIndex, "period_from", e.target.value)
             }
-            className="cursor-pointer"
+            className="text-[16px] font-bold cursor-pointer"
           />
           <span> ~ </span>
           <input
@@ -47,16 +47,19 @@ const EducationFormInputs: React.FC<EducationFormInputsProps> = ({
             onChange={(e) =>
               handleInputChange(formIndex, "period_to", e.target.value)
             }
-            className="cursor-pointer"
+            className="text-[16px] font-bold cursor-pointer"
           />
-          <div className="flex gap-[10px] pt-[30px]">
+          <div className="flex">
             {[
               { id: "inProgress", label: "재학중", value: "1" },
               { id: "graduated", label: "졸업", value: "2" },
               { id: "withdrawn", label: "중퇴", value: "3" },
               { id: "onLeave", label: "휴학", value: "4" },
             ].map(({ id, label, value }) => (
-              <div key={id}>
+              <div
+                key={id}
+                className="pt-[30px] gap-[5px] pl-[10px] flex justify-between items-center "
+              >
                 <Checkbox
                   id={`eduCheckbox_${formIndex}_${id}`}
                   name="graduated"
@@ -67,7 +70,7 @@ const EducationFormInputs: React.FC<EducationFormInputsProps> = ({
                 />
                 <label
                   htmlFor={`eduCheckbox_${formIndex}_${id}`}
-                  className="cursor-pointer"
+                  className="cursor-pointer text-[14px]"
                 >
                   {label}
                 </label>
@@ -84,7 +87,7 @@ const EducationFormInputs: React.FC<EducationFormInputsProps> = ({
               onChange={(e) =>
                 handleInputChange(formIndex, "school_name", e.target.value)
               }
-              className="w-[250px] text-xl font-bold p-1"
+              className="w-[220px] text-[16px] font-bold p-1"
               placeholder="학교명"
               maxLength={10}
             />
@@ -103,7 +106,7 @@ const EducationFormInputs: React.FC<EducationFormInputsProps> = ({
               onChange={(e) =>
                 handleInputChange(formIndex, "school_major", e.target.value)
               }
-              className="p-1"
+              className="w-[220px] text-[14px] p-1"
               placeholder="전공 및 학위"
               maxLength={10}
             />
