@@ -1,11 +1,11 @@
 import { supabaseForClient } from "@/supabase/supabase.client"
 
 interface TSurfitArticles {
-  description: string | null
-  href: string | null
-  imgSrc: string | null
-  title: string | null
-  now: string | null
+  description: string
+  href: string
+  imgSrc: string
+  title: string
+  now: string
 }
 
 export async function getSurfitCrawlingData() {

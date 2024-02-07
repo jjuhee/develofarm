@@ -45,7 +45,7 @@ const InitialLeftColumn = ({
             }
           </div>
           <Link href={surfitArticles ? surfitArticles[0]?.href : "None"}>
-            <span className=" text-[13px] hover:border-b hover:border-b-black mt-7">
+            <span className="m-5 text-[13px] hover:border-b hover:border-b-black mt-7">
               보러가기
             </span>
           </Link>

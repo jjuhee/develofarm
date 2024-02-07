@@ -12,7 +12,7 @@ interface TSurfitArticles {
 }
 
 interface Props {
-  surfitArticles: TSurfitArticles[] | null
+  surfitArticles: TSurfitArticles[]
 }
 
 const Column = ({ surfitArticles }: Props) => {
