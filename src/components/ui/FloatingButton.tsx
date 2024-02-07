@@ -1,11 +1,12 @@
 "use client"
 
 import useLoginConfirmModal from "@/hooks/useLoginConfirmModal"
+import useScrollEvent from "@/hooks/useScrollEvent"
 import useUserStore from "@/store/user"
 import scrollToTop from "@/utils/scrollTop"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
 const FloatingButton = () => {
   const pathname = usePathname()
@@ -14,21 +15,7 @@ const FloatingButton = () => {
   const [showButton, setShowButton] = useState(false)
   const openLoginConfirmModal = useLoginConfirmModal()
 
-  useEffect(() => {
-    const handlerShowButton = () => {
-      if (window.scrollY > 500) {
-        setShowButton(true)
-      } else {
-        setShowButton(false)
-      }
-    }
-
-    window.addEventListener("scroll", handlerShowButton)
-
-    return () => {
-      window.removeEventListener("scroll", handlerShowButton)
-    }
-  }, [])
+  useScrollEvent({ scrollYSize: 500, handler: setShowButton })
 
   const onClickWriteButton = () => {
     if (userId) {
@@ -39,16 +26,17 @@ const FloatingButton = () => {
   }
 
   return (
-    <div className="fixed right-[50px] bottom-[50px] z-10">
+    <div className="fixed right-[30px] bottom-[110px] lg:right-[50px] lg:bottom-[50px] z-10">
       {showButton && (
         <Image
           src={"/images/top_button.png"}
           alt="top_button"
-          width={70}
-          height={70}
+          width={65}
+          height={65}
           onClick={scrollToTop}
-          className={`cursor-pointer transition-all ease-in-out  
-        }`}
+          className={
+            "w-[35px] h-[35px] lg:w-[65px] lg:h-[65px] cursor-pointer transition-all ease-in-out"
+          }
         />
       )}
 
@@ -56,10 +44,10 @@ const FloatingButton = () => {
         <Image
           src={"/images/writing_button.png"}
           alt="top_button"
-          width={70}
-          height={70}
+          width={65}
+          height={65}
           onClick={onClickWriteButton}
-          className="cursor-pointer"
+          className="w-[35px] h-[35px] lg:w-[65px] lg:h-[65px] cursor-pointer"
         />
       )}
     </div>

@@ -1,20 +1,22 @@
 import { TablesInsert } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import React, { useState } from "react"
+import React from "react"
 import useUserStore from "@/store/user"
 import {
   closeProject,
   getApplicationUser,
+  getUserInProgress,
   removeProjectInMember,
   setMember,
 } from "../../api"
 import { useCustomModal } from "@/hooks/useCustomModal"
 import Button from "@/components/ui/Button"
-import { getProject } from "../../../api"
 import useAddNotiMutate from "@/hooks/useAddNotiMutate"
+import useLoginConfirmModal from "@/hooks/useLoginConfirmModal"
+import { TProjectType } from "@/types/extendedType"
 
 type Props = {
-  project: Exclude<Awaited<ReturnType<typeof getProject>>, null>
+  project: TProjectType
   isWriter: boolean
 }
 
@@ -22,10 +24,15 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   const queryClient = useQueryClient()
   const { user } = useUserStore((state) => state)
   const { openCustomModalHandler } = useCustomModal()
+  const openLoginConfirmModal = useLoginConfirmModal()
   const addNotiMutate = useAddNotiMutate()
-  /**
-   *@ mutaion 게시물 마감 후 확인창 띄어주기
-   TODO: 새로고침 후 반영되는 거 수정예정 */
+  const currnetUserId = user?.id as string
+
+  const { data: currentUserStatus } = useQuery({
+    queryKey: ["users", currnetUserId],
+    queryFn: () => getUserInProgress(currnetUserId),
+  })
+
   const closeProjectMutate = useMutation({
     mutationFn: closeProject,
     onSuccess: async () => {
@@ -36,43 +43,62 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
       openCustomModalHandler("마감되었습니다!", "alert")
     },
     onError: (error) => {
-      console.log(error)
+      openCustomModalHandler(`Error: ${error}`, "alert")
     },
   })
 
-  /**
-   *@ mutation 프로젝트 신청 후 해당 게시물Id로 최신 신청자 목록 불러오기 */
   const addMemberMutate = useMutation({
     mutationFn: setMember,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["applyUser", { projectId: project.id }],
-        exact: true,
+        queryKey: [
+          "applyUser",
+          {
+            projectId: project.id,
+          },
+        ],
+      })
+      await queryClient.invalidateQueries({
+        queryKey: [
+          "applicants",
+          {
+            projectId: project.id,
+          },
+        ],
       })
       openCustomModalHandler("신청이 완료되었습니다!", "alert")
     },
     onError: (error) => {
-      console.log(error)
+      openCustomModalHandler(`Error: ${error}`, "alert")
     },
   })
 
-  /**
-   *@ mutation 프로젝트 신청취소 후 해당 게시물Id로 최신 신청자 목록 불러오기 */
   const removeMemberMutate = useMutation({
     mutationFn: removeProjectInMember,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["applyUser", { projectId: project.id }],
+        queryKey: [
+          "applyUser",
+          {
+            projectId: project.id,
+          },
+        ],
+      })
+      await queryClient.invalidateQueries({
+        queryKey: [
+          "applicants",
+          {
+            projectId: project.id,
+          },
+        ],
       })
       openCustomModalHandler("신청이 취소되었습니다!", "alert")
     },
     onError: (error) => {
-      console.log(error)
+      openCustomModalHandler(`Error: ${error}`, "alert")
     },
   })
 
-  /**
-   *@ function 작성자가 게시물 모집완료 처리 */
   const closeProjectButtonHandler = (id: string) => {
     const handler = () => {
       closeProjectMutate.mutate(id)
@@ -91,18 +117,19 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     queryFn: () => getApplicationUser(project.id, user?.id as string),
   })
 
-  // 신청자가 맞는지 확인하는 변수
   const isApplicantAuthenticated =
     user?.id && applyUser?.user_id && user?.id === applyUser?.user_id
 
   if (applyUserIsLoading) return <div>is Loading...</div>
 
-  /**
-   *@ query 해당 유저 id를 구분해 프로젝트 신청하기 기능 */
   const applyForProjectButtonHandler = () => {
-    if (!user) {
-      return
-    }
+    if (!user) return openLoginConfirmModal()
+
+    if (currentUserStatus?.user_status !== "지원 중")
+      return openCustomModalHandler(
+        "지원 중인 유저만 신청이 가능합니다.\n내 프로필에서 상태를 확인해주세요.",
+        "alert",
+      )
 
     const newMember: TablesInsert<"project_members"> = {
       project_id: project.id,
@@ -123,8 +150,6 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
     openCustomModalHandler("신청하시겠습니까?", "confirm", handler, true)
   }
 
-  /**
-   *@ query 신청자 목록 id를 프로젝트 신청취소 기능 */
   const cancelForProjectButtonHandler = (id: string) => {
     const handler = () => {
       removeMemberMutate.mutate(id)
@@ -134,11 +159,8 @@ const FooterAuthButton = ({ project, isWriter }: Props) => {
   }
 
   return (
-    // 프로젝트가 모집완료 상태가 아니고 로그인한 유저라면 보여주는 버튼
-    project.recruit_status === false &&
-    user?.id && (
+    project.recruit_status === false && (
       <>
-        {/* 글 작성자 여부에 따른 버튼 */}
         {isWriter ? (
           <Button
             type="border"

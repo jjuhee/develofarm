@@ -1,12 +1,5 @@
+import { TUserData } from "@/types/users"
 import { create } from "zustand"
-
-export type TUserData = {
-  id: string | null
-  nickName: string | null
-  avatarUrl: string | null
-  email: string | null
-  createdAt: string | null
-}
 
 type TUserState = {
   user: TUserData | null

@@ -5,10 +5,10 @@ import { Tables, TablesUpdate } from "@/types/supabase"
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
-import React, { MouseEvent, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { getNotifications, setNotification } from "../../api"
 import { BsArrowUpRight } from "react-icons/bs"
-import { VscBell } from "react-icons/vsc"
+import Image from "next/image"
 
 interface Props {
   showTooltip: boolean
@@ -18,7 +18,7 @@ const Notifications = ({ showTooltip }: Props) => {
   const [notificationList, setNotificationList] = useState<
     Tables<"notifications">[]
   >([])
-  const userId = useUserStore((state) => state?.user?.id) as string
+  const userId = useUserStore((state) => state.user?.id!)
   const router = useRouter()
   const queryClient = useQueryClient()
 
@@ -86,7 +86,8 @@ const Notifications = ({ showTooltip }: Props) => {
 
   return (
     <div className="flex">
-      <VscBell />
+      <Image src="/icons/alert.png" alt="alert" width={20} height={20} />
+
       {notificationList.length > 0 && (
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-main-lime opacity-75"></span>
@@ -96,7 +97,7 @@ const Notifications = ({ showTooltip }: Props) => {
       {/* 드롭다운 */}
       <div className="relative text-[13px] *:bg-white">
         <ul
-          className={`absolute flex flex-col mt-[3px] rounded-lg border-[1px] border-[#F2F4F7] shadow-md w-[243px] left-[-220px] top-[20px] z-10 ${
+          className={`absolute flex flex-col mt-[3px] rounded-lg border-[1px] border-[#F2F4F7] shadow-md w-[243px] left-[-230px] top-[33px] z-10 ${
             showTooltip ? "visible" : "invisible"
           }`}
         >

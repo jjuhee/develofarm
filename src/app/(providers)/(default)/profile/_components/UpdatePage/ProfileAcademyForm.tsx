@@ -6,6 +6,7 @@ import { deleteAcademies, getAcademy } from "../../api"
 import { Tables } from "@/types/supabase"
 import { GoPlus } from "react-icons/go"
 import { HiOutlineXMark } from "react-icons/hi2"
+import AcademyFormInputs from "./UpdateInputs/AcademyFormInputs "
 
 const ProfileAcademyForm = ({
   userId,
@@ -43,7 +44,7 @@ const ProfileAcademyForm = ({
     setUpdatedAcademyData(updatedAcademies)
   }
 
-  const handleNewCareerInputChange = (
+  const handleNewAcademyInputChange = (
     formIndex: number,
     field: keyof Tables<"academies">,
     value: string | boolean,
@@ -97,7 +98,7 @@ const ProfileAcademyForm = ({
 
   return (
     <form>
-      <div className="flex justify-between items-start w-[600px]">
+      <div className="flex justify-between items-start w-[570px]">
         <h2 className="text-[26px] font-bold">교육/활동</h2>
         <button
           type="button"
@@ -110,154 +111,25 @@ const ProfileAcademyForm = ({
       </div>
       <div>
         {academies?.map((academy: Tables<"academies">, index: number) => (
-          <div key={academy.id}>
-            {!hiddenInputs[index] && (
-              <>
-                <div className="flex justify-between items-start pt-[30px]">
-                  <div className="pt-[5px]">
-                    <input
-                      type="date"
-                      value={academy.period_from as string}
-                      onChange={(e) =>
-                        handleInputChange(index, "period_from", e.target.value)
-                      }
-                      className="cursor-pointer"
-                    />
-                    <span> ~ </span>
-                    <input
-                      type="date"
-                      value={academy.period_to as string}
-                      onChange={(e) =>
-                        handleInputChange(index, "period_to", e.target.value)
-                      }
-                      className="cursor-pointer"
-                    />
-                  </div>
-                  <div>
-                    <div className="relative flex items-center">
-                      <input
-                        type="text"
-                        value={academy.academy_name as string}
-                        onChange={(e) =>
-                          handleInputChange(
-                            index,
-                            "academy_name",
-                            e.target.value,
-                          )
-                        }
-                        className="w-[250px] text-xl font-bold p-1"
-                        placeholder="활동명"
-                        maxLength={10}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => hideInputsAndDelete(index, academy.id)}
-                        className="text-[#AAAAAA] text-[30px] hover:text-red-500"
-                      >
-                        <HiOutlineXMark />
-                      </button>
-                    </div>
-                    <div className="pt-[20px]">
-                      <input
-                        type="text"
-                        value={academy.academy_major as string}
-                        onChange={(e) =>
-                          handleInputChange(
-                            index,
-                            "academy_major",
-                            e.target.value,
-                          )
-                        }
-                        className="p-1"
-                        placeholder="활동내용"
-                        maxLength={10}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <hr className="my-8 border-t-2 border-gray-300" />
-              </>
-            )}
-          </div>
+          <AcademyFormInputs
+            key={academy.id}
+            academyData={academies}
+            formIndex={index}
+            isHidden={hiddenInputs[index]}
+            handleInputChange={handleInputChange}
+            handleDeleteForm={() => hideInputsAndDelete(index, academy.id)}
+          />
         ))}
         {/* 새로운 교육/활동 데이터 추가 */}
         {newAcademyForms.map((form, formIndex) => (
-          <div key={formIndex}>
-            <div className="flex justify-between items-start pt-[30px]">
-              <div className="pt-[5px]">
-                <input
-                  type="date"
-                  placeholder="From"
-                  value={newAcademyData[formIndex]?.period_from || ""}
-                  onChange={(e) =>
-                    handleNewCareerInputChange(
-                      formIndex,
-                      "period_from",
-                      e.target.value,
-                    )
-                  }
-                  className="cursor-pointer"
-                />
-                <span> ~ </span>
-                <input
-                  type="date"
-                  placeholder="To"
-                  value={newAcademyData[formIndex]?.period_to || ""}
-                  onChange={(e) =>
-                    handleNewCareerInputChange(
-                      formIndex,
-                      "period_to",
-                      e.target.value,
-                    )
-                  }
-                  className="cursor-pointer"
-                />
-              </div>
-
-              <div>
-                <div className="relative flex items-center">
-                  <input
-                    type="text"
-                    value={newAcademyData[formIndex]?.academy_name || ""}
-                    onChange={(e) =>
-                      handleNewCareerInputChange(
-                        formIndex,
-                        "academy_name",
-                        e.target.value,
-                      )
-                    }
-                    className="w-[250px] text-xl font-bold p-1"
-                    placeholder="활동명"
-                    maxLength={10}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteNewAcademyForm(formIndex)}
-                    className="text-[#AAAAAA] text-[30px] hover:text-red-500"
-                  >
-                    <HiOutlineXMark />
-                  </button>
-                </div>
-                <div className="pt-[20px]">
-                  <input
-                    type="text"
-                    value={newAcademyData[formIndex]?.academy_major || ""}
-                    onChange={(e) =>
-                      handleNewCareerInputChange(
-                        formIndex,
-                        "academy_major",
-                        e.target.value,
-                      )
-                    }
-                    className="p-1"
-                    placeholder="활동내용"
-                    maxLength={10}
-                  />
-                </div>
-              </div>
-            </div>
-            <hr className="my-8 border-t-2 border-gray-300" />
-          </div>
+          <AcademyFormInputs
+            key={formIndex}
+            academyData={newAcademyData}
+            formIndex={formIndex}
+            isHidden={false}
+            handleInputChange={handleNewAcademyInputChange}
+            handleDeleteForm={() => handleDeleteNewAcademyForm(formIndex)}
+          />
         ))}
       </div>
     </form>

@@ -52,7 +52,7 @@ const RemoveParticipatingMemberButton = ({ participating }: Props) => {
 
   return (
     <button
-      className="absolute ml-[200px] mt-[-20px]"
+      className="absolute ml-[220px] mt-[-10px]"
       onClick={onRejectButtonHandler}
     >
       <Image

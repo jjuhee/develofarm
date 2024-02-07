@@ -14,6 +14,7 @@ import { HiOutlineXMark } from "react-icons/hi2"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"
 import useCustomModalStore from "@/store/customModal"
 import Checkbox from "@/components/ui/Checkbox"
+import Image from "next/image"
 
 const ProfileUserDataForm = ({ userId }: { userId: string }) => {
   // 유저 정보 및 데이터 상태 관리
@@ -79,9 +80,9 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
 
   // 유저 기술 초기화
   useEffect(() => {
-    const techs = users?.user_tech.map((tech) => tech.tech_id)
-    setSelectedTechs([...(techs as string[])])
-  }, [])
+    const techs = users?.user_tech?.map((tech) => tech.tech_id)
+    if (techs) setSelectedTechs([...techs])
+  }, [users])
 
   // 기술 체크박스 변경 처리
   const handleTechCheckboxChange = async (
@@ -150,12 +151,13 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
         await handleAddUserTech()
 
         modalStore.setViewCustomModal(true)
-        modalStore.setModalType("success")
+        modalStore.setModalType("confirm")
         modalStore.setModalMessage(
-          "사용자 프로필이 성공적으로 업데이트되었습니다!",
+          "사용자 프로필이 성공적으로 업데이트되었습니다! 확인을 누르면 프로필 페이지로 이동합니다.",
         )
         modalStore.setHandler(() => {
           modalStore.setViewCustomModal(false)
+          window.location.href = `/profile/${userId}`
         })
       } catch (error) {
         console.error("사용자 프로필 업데이트 중 오류가 발생했습니다:", error)
@@ -211,14 +213,14 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
   return (
     <div className="pt-3">
       <div className="flex items-center">
-        <img
-          width={64}
-          height={64}
-          src={`${users?.avatar_url}`}
-          alt="User Avatar"
-          className="w-64 h-64 rounded-full"
+        <Image
+          src={users?.avatar_url as string}
+          alt="userAvatar"
+          width={273}
+          height={273}
+          objectFit="cover"
+          className="rounded-full"
         />
-
         <div className="text-left pl-[40px]">
           <div className="h-[100px] pl-[10px] relative">
             <p className="text-[18px] pb-[10px] font-semibold">닉네임</p>
@@ -432,7 +434,7 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
             name="user_comment"
             value={user.user_comment}
             onChange={(e) => handleChange(e, "user_comment")}
-            className="border border-[#CCCCCC] rounded-[5px] p-2 text-[16px] w-[1230px] h-[120px]"
+            className="border border-[#CCCCCC] rounded-[5px] p-2 text-[16px] w-[1180px] h-[120px]"
             placeholder="간단한 소개글을 입력하세요..."
             maxLength={200}
           />
@@ -445,7 +447,7 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
         </div>
       </div>
       <button
-        className="text-[15px] ml-[1135px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
+        className="text-[15px] ml-[1100px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
         onClick={handleCombinedAction}
       >
         저장하기

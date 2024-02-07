@@ -54,27 +54,26 @@ export async function getCareers({ userId }: { userId: string }) {
 export async function updateCareers(userId: string, updatedCareerData: any) {
   const updateQuery = updatedCareerData.map(
     async (career: Tables<"careers">) => {
-      const { data } = await supabaseForClient
+      const { error } = await supabaseForClient
         .from("careers")
         .update({ ...career })
         .eq("user_id", userId)
         .eq("id", career.id)
         .select("*")
 
-      return data
+      if (error) {
+        console.error("Error adding career:", error)
+        throw error
+      }
     },
   )
-
-  const result = await Promise.all(updateQuery)
-
-  return result
 }
 
 export async function addCareer(
   userId: string,
   newCareerData: any,
 ): Promise<any | null> {
-  const { data, error } = await supabaseForClient.from("careers").insert([
+  const { error } = await supabaseForClient.from("careers").insert([
     {
       user_id: userId,
       ...newCareerData,
@@ -83,10 +82,8 @@ export async function addCareer(
 
   if (error) {
     console.error("Error adding career:", error)
-    return null
+    throw error
   }
-
-  return data
 }
 
 export async function deleteCareers(userId: string, careerIds: string[]) {
@@ -98,7 +95,7 @@ export async function deleteCareers(userId: string, careerIds: string[]) {
 
   if (error) {
     console.error("Error deleting careers:", error)
-    return null
+    throw error
   }
 
   return data
@@ -120,17 +117,21 @@ export async function updateEducation(
   userId: string,
   updatedEducationData: any,
 ) {
-  const { data, error } = await supabaseForClient
-    .from("education")
-    .update(updatedEducationData)
-    .eq("user_id", userId)
+  const updateQuery = updatedEducationData.map(
+    async (education: Tables<"education">) => {
+      const { error } = await supabaseForClient
+        .from("education")
+        .update({ ...education })
+        .eq("user_id", userId)
+        .eq("id", education.id)
+        .select("*")
 
-  if (error) {
-    console.error("Error updating education:", error)
-    return null
-  }
-
-  return data
+      if (error) {
+        console.error("Error adding education:", error)
+        throw error
+      }
+    },
+  )
 }
 
 export async function addEducation(
@@ -145,8 +146,8 @@ export async function addEducation(
   ])
 
   if (error) {
-    console.error("Error adding education:", error)
-    return null
+    console.error("Error deleting education:", error)
+    throw error
   }
 
   return data
@@ -182,27 +183,26 @@ export async function getAcademy({ userId }: { userId: string }) {
 export async function updateAcademies(userId: string, updatedAcademyData: any) {
   const updateQuery = updatedAcademyData.map(
     async (academy: Tables<"academies">) => {
-      const { data } = await supabaseForClient
+      const { error } = await supabaseForClient
         .from("academies")
         .update({ ...academy })
         .eq("user_id", userId)
         .eq("id", academy.id)
         .select("*")
 
-      return data
+      if (error) {
+        console.error("Error adding academies:", error)
+        throw error
+      }
     },
   )
-
-  const result = await Promise.all(updateQuery)
-
-  return result
 }
 
 export async function addAcademy(
   userId: string,
   newAcademyData: any,
 ): Promise<any | null> {
-  const { data, error } = await supabaseForClient.from("academies").insert([
+  const { error } = await supabaseForClient.from("academies").insert([
     {
       user_id: userId,
       ...newAcademyData,
@@ -210,11 +210,9 @@ export async function addAcademy(
   ])
 
   if (error) {
-    console.error("Error adding academy:", error)
-    return null
+    console.error("Error adding academies:", error)
+    throw error
   }
-
-  return data
 }
 
 export async function deleteAcademies(userId: string, academyIds: string[]) {
@@ -246,26 +244,25 @@ export async function getSpecs({ userId }: { userId: string }) {
 
 export async function updateSpecs(userId: string, updatedSpecsData: any) {
   const updateQuery = updatedSpecsData.map(async (spec: Tables<"specs">) => {
-    const { data } = await supabaseForClient
+    const { error } = await supabaseForClient
       .from("specs")
       .update({ ...spec })
       .eq("user_id", userId)
       .eq("id", spec.id)
       .select("*")
 
-    return data
+    if (error) {
+      console.error("Error adding specs:", error)
+      throw error
+    }
   })
-
-  const result = await Promise.all(updateQuery)
-
-  return result
 }
 
 export async function addSpec(
   userId: string,
   newSpecData: any,
 ): Promise<any | null> {
-  const { data, error } = await supabaseForClient.from("specs").insert([
+  const { error } = await supabaseForClient.from("specs").insert([
     {
       user_id: userId,
       ...newSpecData,
@@ -273,11 +270,9 @@ export async function addSpec(
   ])
 
   if (error) {
-    console.error("Error adding spec:", error)
-    return null
+    console.error("Error adding specs:", error)
+    throw error
   }
-
-  return data
 }
 
 export async function deleteSpecs(userId: string, specIds: string[]) {
@@ -321,17 +316,16 @@ export async function addSocialLinks(
     return null
   }
 
-  const { data, error } = await supabaseForClient.from("social_links").insert([
+  const { error } = await supabaseForClient.from("social_links").insert([
     {
       user_id: userId,
       ...newSocialLinksData,
     },
   ])
   if (error) {
-    console.error("Error adding user tech data:", error)
-    return null
+    console.error("Error adding social_links:", error)
+    throw error
   }
-  return data
 }
 
 /* Project */

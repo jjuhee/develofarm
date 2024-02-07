@@ -1,19 +1,14 @@
 "use client"
 import Button from "@/components/ui/Button"
-import {
-  deleteNotification,
-  getNotifications,
-  setNotification,
-} from "@/app/(providers)/api"
+import { deleteNotification, getNotifications } from "@/app/(providers)/api"
 import useUserStore from "@/store/user"
-import { Tables, TablesUpdate } from "@/types/supabase"
+import { Tables } from "@/types/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useParams, useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import Checkbox from "@/components/ui/Checkbox"
 import { useProfileStore } from "@/store/profile"
 import NotificationList from "../../_components/NotificationPage/NotificationList"
-//import useNotiStore from "@/store/notification"
 
 const NotificationPage = () => {
   const [notificationList, setNotificationList] = useState<
@@ -24,7 +19,6 @@ const NotificationPage = () => {
   >([])
   const [checkState, setCheckState] = useState<boolean>(false)
   const userId = useUserStore((state) => state?.user?.id) as string
-  // const { notiState } = useNotiStore((state) => state)
 
   const { id } = useParams<{ id: string }>()
   const setId = useProfileStore((state) => state.setId)

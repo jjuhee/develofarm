@@ -3,8 +3,9 @@ import React, { useState } from "react"
 import { TablesInsert } from "@/types/supabase"
 import useUserStore from "@/store/user"
 import { setComment } from "../../api"
-import { useCustomModal } from "@/hooks/useCustomModal"
 import useAddNotiMutate from "@/hooks/useAddNotiMutate"
+import useLoginConfirmModal from "@/hooks/useLoginConfirmModal"
+import { useCustomModal } from "@/hooks/useCustomModal"
 
 type Props = {
   projectId: string
@@ -23,11 +24,10 @@ const CommentForm = ({
 
   const queryClient = useQueryClient()
   const { user } = useUserStore((state) => state)
-  const { openCustomModalHandler } = useCustomModal()
   const addNotiMutate = useAddNotiMutate()
+  const openLoginConfirmModal = useLoginConfirmModal()
+  const { openCustomModalHandler } = useCustomModal()
 
-  /**
-   *@ mutation 댓글 등록 후 해당 게시물Id로 댓글 최신 목록 불러오기 */
   const AddCommentMutate = useMutation({
     mutationFn: setComment,
     onSuccess: async () => {
@@ -37,17 +37,14 @@ const CommentForm = ({
       setContent("")
     },
     onError: (error) => {
-      console.log(error)
+      openCustomModalHandler(`Error: ${error}`, "alert")
     },
   })
 
-  /**
-   *@ function 버튼 누르면 입력한 폼 인자로 넣어서 댓글 추가하는 함수 실행 */
   const onSubmitHandler: React.FormEventHandler = (e) => {
     e.preventDefault()
 
-    if (!user)
-      return openCustomModalHandler("로그인 후에 작성 가능 합니다!", "alert")
+    if (!user) return openLoginConfirmModal()
 
     if (content.trim() === "") {
       alert("댓글을 입력해주세요!")
@@ -94,7 +91,7 @@ const CommentForm = ({
 
   return (
     <form
-      className="flex flex-col border border-[#2D2D2D] rounded-2xl p-5 mb-5"
+      className="flex flex-col border border-[#2D2D2D] rounded-2xl p-5 mb-5 text-xl"
       onSubmit={onSubmitHandler}
     >
       <textarea
