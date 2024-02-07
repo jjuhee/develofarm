@@ -26,7 +26,7 @@ const ProfileSocialLinks = ({ profileId }: { profileId: string }) => {
   return (
     <div className="flex justify-between items-center w-[800px]">
       <div>
-        <h2 className="flex text-[20px] font-bold h-[40px]">Blog</h2>
+        <h2 className="flex text-[16px] font-bold h-[40px]">Blog</h2>
         {socialLink?.blog_url !== undefined ? (
           socialLink.blog_url ? (
             <p className="text-[14px] font-bold">
@@ -47,7 +47,7 @@ const ProfileSocialLinks = ({ profileId }: { profileId: string }) => {
       </div>
 
       <div>
-        <h2 className="flex text-[20px] font-bold h-[40px]">GitHub</h2>
+        <h2 className="flex text-[16px] font-bold h-[40px]">GitHub</h2>
         {socialLink?.github_url !== undefined ? (
           socialLink.github_url ? (
             <p className="text-[14px] font-bold">

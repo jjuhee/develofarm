@@ -99,11 +99,11 @@ const ProfileAcademyForm = ({
   return (
     <form>
       <div className="flex justify-between items-start w-[570px]">
-        <h2 className="text-[26px] font-bold">교육/활동</h2>
+        <h2 className="text-[18px] font-bold pt-[5px]">교육/활동</h2>
         <button
           type="button"
           onClick={handleAddNewAcademyForm}
-          className="flex ml-auto border-[1.5px] border-[#A6A6A6] bg-[#ffffff] text-[16px] font-[700] py-2 px-6 rounded-3xl hover:bg-[#EEEEEE] hover:border-[#000000] transition-all duration-300"
+          className="flex border-[1.5px] border-[#A6A6A6] bg-[#ffffff] text-[15px] font-[700] pl-[10px] py-[5px] px-[15px] rounded-3xl hover:bg-[#EEEEEE] hover:border-[#000000] transition-all duration-300"
         >
           <GoPlus className="text-[25px] mx-[3px]" />
           추가하기

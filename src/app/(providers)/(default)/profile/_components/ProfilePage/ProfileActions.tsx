@@ -36,7 +36,7 @@ const ProfileActions = ({ profileId }: { profileId: string }) => {
       {userId === profileId && (
         <Link
           href={`/profile/${userId}/update`}
-          className="bottom-0 right-2 border-2 bg-[#B8FF65] text-[#000000] text-[16px] font-[700] py-2 px-6 rounded-[8px] hover:bg-[#666666] hover:text-[#B8FF65] transition-all duration-300"
+          className="bottom-0 right-2 border-2 border-[#A6A6A6] bg-[#fffff] text-[#000000] text-[18px] font-[700] py-2 px-6 rounded-[8px] hover:bg-[#A6A6A6] hover:text-[#0000000] transition-all duration-300"
         >
           수정하기
         </Link>

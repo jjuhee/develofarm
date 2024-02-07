@@ -8,8 +8,8 @@ const Footer = () => {
         <Image
           src={"/images/logo2.png"}
           alt="footer logo"
-          width={120}
-          height={20}
+          width={171}
+          height={42}
         />
         <span className="text-base font-normal text-main-lime">
           © 2024 DeveloFarm. All rights reserved.

@@ -40,20 +40,20 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
           className="rounded-full"
         />
         <div className="text-left pl-[40px]">
-          <h2 className="text-[30px] pl-[10px] font-bold">
+          <h2 className="text-[21px] pl-[10px] font-bold">
             {users?.user_nickname}
           </h2>
 
           <div className="flex justify-between items-center w-[700px]">
             <div className="p-[10px]">
               <div className="h-[100px]">
-                <p className="text-[18px] pb-[10px] font-semibold">연락처</p>
+                <p className="text-[16px] pb-[10px] font-semibold">연락처</p>
                 {users?.user_phone_number ? (
-                  <p className="text-[20px] font-bold">
+                  <p className="text-[16px] font-bold">
                     {users.user_phone_number}
                   </p>
                 ) : (
-                  <p className="text-[20px] font-semibold">
+                  <p className="text-[16px] font-semibold">
                     연락처 정보가 없습니다.
                   </p>
                 )}
@@ -62,11 +62,11 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
               <div>
                 <p className="text-[18px] pb-[10px] font-semibold">직무</p>
                 {users?.positions?.name ? (
-                  <p className="text-[20px] font-bold">
+                  <p className="text-[16px] font-bold">
                     {users.positions.name}
                   </p>
                 ) : (
-                  <p className="text-[20px] font-semibold">
+                  <p className="text-[16px] font-semibold">
                     직무 정보가 없습니다.
                   </p>
                 )}
@@ -75,20 +75,20 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
 
             <div>
               <div className="h-[100px]">
-                <p className="text-[18px] pb-[10px] font-semibold">이메일</p>
-                <p className="text-[20px] font-bold">{users?.user_email}</p>
+                <p className="text-[16px] pb-[10px] font-semibold">이메일</p>
+                <p className="text-[16px] font-bold">{users?.user_email}</p>
               </div>
               <div>
-                <p className="text-[18px] pb-[10px] font-semibold">유저 상태</p>
-                <p className="flex text-[20px] font-bold">
+                <p className="text-[16px] pb-[10px] font-semibold">유저 상태</p>
+                <p className="flex text-[16px] font-bold">
                   {users?.user_status === "휴식 중" && (
-                    <TbPointFilled className="text-[30px] text-[#AAAAAA]" />
+                    <TbPointFilled className="text-[25px] text-[#AAAAAA]" />
                   )}
                   {users?.user_status === "지원 중" && (
-                    <TbPointFilled className="text-[30px] text-[#80E500]" />
+                    <TbPointFilled className="text-[25px] text-[#80E500]" />
                   )}
                   {users?.user_status === "참여 중" && (
-                    <TbPointFilled className="text-[30px] text-[#000000]" />
+                    <TbPointFilled className="text-[25px] text-[#000000]" />
                   )}
                   {users?.user_status}
                 </p>
@@ -101,7 +101,7 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
 
       {/* 기술 스텍 보여주기 */}
       <div>
-        <h2 className="text-[26px] font-bold">보유기술</h2>
+        <h2 className="text-[18px] font-bold">보유기술</h2>
         {users?.user_tech && users.user_tech.length > 0 ? (
           <span className="flex gap-3 pt-3">
             {users.user_tech.map((tech) => (
@@ -114,18 +114,18 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
             ))}
           </span>
         ) : (
-          <p className="pt-[30px]">보유 기술이 없습니다.</p>
+          <p className="pt-[14px]">보유 기술이 없습니다.</p>
         )}
         <hr className="my-8 border-t-2 border-gray-300" />
       </div>
 
       {/* 간단 소개글 */}
       <div>
-        <h2 className="text-[26px] font-bold pb-[40px]">간단 소개글</h2>
+        <h2 className="text-[18px] font-bold pb-[18px]">간단 소개글</h2>
         {users?.user_comment ? (
           <p>{users.user_comment}</p>
         ) : (
-          <p>소개글이 없습니다.</p>
+          <p className="text-[14px]">소개글이 없습니다.</p>
         )}
         <hr className="my-8 border-t-2 border-gray-300" />
       </div>

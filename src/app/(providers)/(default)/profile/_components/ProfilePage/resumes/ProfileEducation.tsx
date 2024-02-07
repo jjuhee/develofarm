@@ -10,7 +10,7 @@ const ProfileEducation = ({
     <div className="flex justify-between items-center">
       <div>
         <div className="flex justify-between items-center">
-          <h2 className="text-[26px] font-bold">학력</h2>
+          <h2 className="text-[18px] font-bold">학력</h2>
         </div>
 
         {educations && educations.length > 0 ? (
@@ -21,11 +21,11 @@ const ProfileEducation = ({
             >
               <div>
                 <div className="flex">
-                  <p>
+                  <p className="text-[16px] font-bold">
                     {education.period_from} ~ {education.period_to}
                   </p>
                 </div>
-                <div className="pt-[10px]">
+                <div className="pt-[10px] text-[12px]">
                   <p>
                     {(() => {
                       const school = education
@@ -48,18 +48,20 @@ const ProfileEducation = ({
 
               <div className="pl-[100px]">
                 <div className="flex">
-                  <h2 className="w-[250px] text-xl font-bold">
+                  <h2 className="w-[250px] text-[16px] font-bold">
                     {education.school_name}
                   </h2>
                 </div>
-                <div className="pt-[10px]">
+                <div className="pt-[10px] text-[14px]">
                   <p>{education.school_major}</p>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <p className="pt-[20px] px-[220px]">학력 내용이 없습니다.</p>
+          <p className="pt-[20px] px-[220px] text-[14px]">
+            학력 내용이 없습니다.
+          </p>
         )}
         <hr className="my-8 border-t-2 border-gray-300" />
       </div>

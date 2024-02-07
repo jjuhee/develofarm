@@ -28,7 +28,7 @@ const SocialLinkInput = ({
 
   return (
     <div className="flex flex-col">
-      <label htmlFor={id} className="text-[20px] font-bold mb-2">
+      <label htmlFor={id} className="text-[16px] font-bold mb-2">
         {label}
       </label>
       <div className="relative">
@@ -37,7 +37,7 @@ const SocialLinkInput = ({
           id={id}
           value={inputValue}
           onChange={handleChange}
-          className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[570px] h-[48px]"
+          className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[585px] h-[48px]"
           placeholder={`${label.toLowerCase()} 주소를 입력해 주세요.`}
         />
         <button
