@@ -118,7 +118,7 @@ const HeaderNav = ({ isAuthInitialized, user }: Props) => {
                       </Link>
                       <button
                         onClick={onLogoutHandler}
-                        className="flex items-center w-[150px] px-[16px] leading-[38px] h-[38px] first:rounded-t-lg last:rounded-b-lg hover:bg-[#DBFFB2]"
+                        className="flex items-center w-[180px] px-[16px] leading-[38px] h-[38px] first:rounded-t-lg last:rounded-b-lg hover:bg-[#DBFFB2]"
                       >
                         <IoLogOutOutline />
                         <span className="ml-2">로그아웃</span>
