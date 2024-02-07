@@ -130,7 +130,7 @@ const ProfileUpdateButton = ({ userId }: { userId: string }) => {
         />
         <button
           type="submit"
-          className="text-[15px] ml-[1100px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
+          className="text-[15px] w-[100px] h-[36px] font-bold ml-[1080px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
         >
           저장하기
         </button>

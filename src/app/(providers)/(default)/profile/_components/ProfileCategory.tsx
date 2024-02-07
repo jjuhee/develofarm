@@ -42,7 +42,7 @@ const ProfileCategory = () => {
   )
 
   return (
-    <div className="flex gap-[50px] text-[36px] font-bold pt-[30px]">
+    <div className="flex gap-[50px] text-[21px] font-bold py-[30px]">
       {renderLink(`/profile/${userId}`, "내 프로필")}
       {renderLink(`/profile/${userId}/profileProject`, "내 프로젝트")}
       {renderLink(`/profile/${userId}/notification`, "알림")}

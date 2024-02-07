@@ -34,7 +34,7 @@ const bannerArray = [
       },
       { name: "MARIADB", img: "/images/language/9_Mariadb.png" },
       { name: "ORACLE", img: "/images/language/6_oracle.png" },
-      { name: "MONGODB", img: "/images/language/10_mongodb.png" },
+      { name: "MONGODB", img: "/images/language/10_Mongodb.png" },
     ],
   },
   {

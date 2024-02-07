@@ -32,12 +32,12 @@ const ProfileProjectList = ({ profileId }: { profileId: string }) => {
   if (!projectMembers || projectMembers.length === 0) {
     return (
       <div>
-        <h2 className="text-[36px] font-bold pt-5">참여중인 프로젝트</h2>
-        <div className="pt-[50px]">참여중인 프로젝트가 없습니다.</div>
+        <h2 className="text-[18px] font-bold pt-5">참여중인 프로젝트</h2>
+        <div className="pt-[16px]">참여중인 프로젝트가 없습니다.</div>
         <hr className="my-[70px] border-t-2 border-gray-300 " />
 
-        <h2 className="text-[36px] font-bold">참여했던 프로젝트</h2>
-        <div className="pt-[50px]">참여했던 프로젝트가 없습니다.</div>
+        <h2 className="text-[18px] font-bold">참여했던 프로젝트</h2>
+        <div className="pt-[16px]">참여했던 프로젝트가 없습니다.</div>
         <hr className="my-[70px] border-t-2 border-gray-300 " />
       </div>
     )
@@ -58,7 +58,7 @@ const ProfileProjectList = ({ profileId }: { profileId: string }) => {
     <div>
       {ongoingProjects.length > 0 ? (
         <>
-          <h2 className="text-[36px] font-bold pt-5">참여 중인 프로젝트</h2>
+          <h2 className="text-[18px] font-bold pt-5">참여 중인 프로젝트</h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 mt-5">
             {ongoingProjects.map((project) => (
               <ProfileProjectCard
@@ -72,15 +72,15 @@ const ProfileProjectList = ({ profileId }: { profileId: string }) => {
         </>
       ) : (
         <div>
-          <h2 className="text-[36px] font-bold pt-5">참여중인 프로젝트</h2>
-          <div className="pt-[50px]">참여중인 프로젝트가 없습니다.</div>
+          <h2 className="text-[18px] font-bold pt-5">참여중인 프로젝트</h2>
+          <div className="pt-[16px]">참여중인 프로젝트가 없습니다.</div>
           <hr className="my-[70px] border-t-2 border-gray-300 " />
         </div>
       )}
 
       {expiredProjects.length > 0 ? (
         <>
-          <h2 className="text-[36px] font-bold">참여했던 프로젝트</h2>
+          <h2 className="text-[18px] font-bold">참여했던 프로젝트</h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 mt-5">
             {expiredProjects.map((project) => (
               <ProfileProjectCard
@@ -94,8 +94,8 @@ const ProfileProjectList = ({ profileId }: { profileId: string }) => {
         </>
       ) : (
         <div>
-          <h2 className="text-[36px] font-bold">참여했던 프로젝트</h2>
-          <div className="pt-[50px]">참여했던 프로젝트가 없습니다.</div>
+          <h2 className="text-[18px] font-bold">참여했던 프로젝트</h2>
+          <div className="pt-[16px]">참여했던 프로젝트가 없습니다.</div>
           <hr className="my-[70px] border-t-2 border-gray-300 " />
         </div>
       )}

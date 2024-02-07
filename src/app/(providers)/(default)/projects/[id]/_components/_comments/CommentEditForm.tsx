@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react"
 import { editComment, getComments } from "../../api"
 import { useMutation, useQueryClient } from "@tanstack/react-query"

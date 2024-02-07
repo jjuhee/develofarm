@@ -15,6 +15,7 @@ import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Image from "next/image"
 import FooterList from "./_components/_footer/FooterList"
+import ThumbnailImageInfo from "./_components/_header/ThumbnailImageInfo"
 
 const DetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -63,11 +64,14 @@ const DetailPage = () => {
               project.recruit_status
                 ? "bg-[#666666] border-[#666666] text-white"
                 : "bg-white  border-black text-black"
-            } min-w-[90px] px-3 py-1 border-2 text-center rounded-2xl text-[16px] font-[700]`}
+            } min-w-[90px] px-3 py-1 border text-center rounded-3xl text-[16px] font-[600]`}
           >
             {project.recruit_status ? "모집 완료" : "모집 중"}
           </span>
-          <h1 className="ml-3 text-3xl font-semibold">{project.title}</h1>
+          <h1 className="relative inline-flex items-center ml-3 w-[300px] sm:w-[500px] md:w-[700px] lg:w-[1030px] text-3xl font-semibold whitespace-pre-line break-words">
+            {project.title}
+            <ThumbnailImageInfo project={project} />
+          </h1>
         </div>
         <Spacer y={30} />
         <TechStackTag project={project} />

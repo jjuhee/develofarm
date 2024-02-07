@@ -1,6 +1,5 @@
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import { TProjectsByUserId, TUsersType } from "@/types/extendedType"
-import { useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import React, { useRef, useState } from "react"
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io"

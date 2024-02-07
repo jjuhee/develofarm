@@ -33,8 +33,15 @@ const MemberCard = ({ user }: Props) => {
       className="flex flex-col justify-start w-[165px] h-auto sm:w-[280px] sm:h-[500px] rounded-3xl transition-all duration-200 cursor-pointer hover:scale-105"
       onClick={onClickMemberCardHandler}
     >
-      <div className="mb-4 w-[165px] h-[165px] overflow-hidden sm:w-[280px] sm:h-[280px]">
-        <Image src={user.avatar_url!} alt="user" width={280} height={280} />
+      <div className="bg-black mb-4 w-[165px] h-[165px] overflow-hidden sm:w-[280px] sm:h-[280px] transition-all duration-200 ease-in-out">
+        {/* TODO: 유저 사진 없는 경우 default image */}
+        <Image
+          src={user.avatar_url! || "/images/default_avatar.png"}
+          alt="user"
+          width={300}
+          height={300}
+          objectFit="cover"
+        />
       </div>
       <section className="flex flex-col z-1 p-[12px] gap-[7px] pb-5 ">
         <h3 className="text-[20px] font-[700] leading-[24px]">
