@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react"
 import { getProjectTechWithPosition } from "../../api"
 import { useQuery } from "@tanstack/react-query"
