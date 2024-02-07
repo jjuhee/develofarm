@@ -174,14 +174,14 @@ const Category = ({
                   {isRegionActive ? <IoIosArrowUp /> : <IoIosArrowDown />}
                 </div>
                 <ul
-                  className={`absolute flex flex-col mt-[3px] rounded-lg border-[1px] border-black  ${
+                  className={`absolute flex flex-col mt-[3px] rounded-lg border-[1px] border-black z-20  ${
                     isRegionActive ? "visible" : "invisible"
                   }`}
                 >
                   {regions?.map((region) => (
                     <li
                       key={region.id}
-                      className="cursor-pointer px-[18px] bg-white text-[12px] leading-[38px] w-[188px] h-[36px] first:rounded-t-lg last:rounded-b-lg z-10 hover:bg-[#DBFFB2] lg:text-[14px]"
+                      className="cursor-pointer px-[18px] bg-white text-[12px] leading-[38px] w-[188px] h-[36px] first:rounded-t-lg last:rounded-b-lg z-20 hover:bg-[#DBFFB2] lg:text-[14px]"
                       onClick={(e) => {
                         setCategoryData({
                           ...categoryData,
@@ -298,7 +298,7 @@ const Category = ({
             </li>
           </ul>
         </div>
-        <div className="flex flex-col gap-[15px] items-start">
+        <div className="flex flex-col gap-[15px] items-start lg:w-[441px]">
           <h3>기술 스택</h3>
           <ul className="flex gap-3 ">
             <SelectStackButton

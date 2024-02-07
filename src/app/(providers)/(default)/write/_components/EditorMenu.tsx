@@ -47,7 +47,7 @@ const EditorMenu = ({ editor }: Props) => {
     <div className="flex items-center gap-2">
       <div className="selectBox relative" ref={dropdownRef}>
         <div
-          className={`flex items-center justify-center gap-2 my-auto border-[1px] border-white hover:border-[1px] hover:border-[#E6E6E6] rounded-[3px] w-[65px] h-[26px] leading-[26px] px-2 text-[12px] lg:w-[81px] lg:h-[33px] lg:leading-[33px] lg:text-[14px] cursor-pointer transition-all
+          className={`flex items-center justify-center gap-2 my-auto border-[1px] border-white hover:border-[1px] hover:border-[#E6E6E6] rounded-[3px] w-[65px] h-[26px] leading-[26px] px-1 text-[12px] lg:w-[81px] lg:h-[33px] lg:leading-[33px] lg:text-[14px] cursor-pointer transition-all
           ${isActive ? "bg-[#E6E6E6]" : "bg-white"}`}
           onClick={() => setIsActive(!isActive)}
         >

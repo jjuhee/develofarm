@@ -98,7 +98,7 @@ const SelectStackButton = ({
             </div>
 
             <ul
-              className={`absolute flex flex-col gap-[10px] bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[4px] lg:px-[16px] w-[100px] lg:w-[140px] transition-all duration-300 z-20 ${
+              className={`absolute flex flex-col gap-[10px] bg-white border-[1.5px] border-black rounded-[8px] py-[10px] px-[4px] lg:px-[16px] w-[100px] lg:w-[140px] transition-all duration-300 z-30 ${
                 isActive === position.name ? "visible" : "invisible"
               }`}
             >
