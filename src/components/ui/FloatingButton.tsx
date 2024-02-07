@@ -43,7 +43,7 @@ const FloatingButton = () => {
       {pathname !== "/write" && (
         <Image
           src={"/images/writing_button.png"}
-          alt="top_button"
+          alt="write_button"
           width={65}
           height={65}
           onClick={onClickWriteButton}

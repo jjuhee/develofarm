@@ -110,7 +110,7 @@ const Category = ({
         isShownCategory || isWritePage
           ? `block py-[15px] px-[25px] lg:px-0 ${
               isShownCategory &&
-              "fixed z-20 top-0 left-0 w-full h-full overflow-scroll"
+              "fixed top-0 left-0 w-full h-full z-10 overflow-scroll scrollbar-hide"
             }`
           : "hidden"
       } lg:block`}

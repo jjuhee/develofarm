@@ -16,15 +16,10 @@ import HeaderFrontNav from "./HeaderFrontNav"
 const Header = () => {
   const { user } = useUserStore((state) => state)
   const { setUrl } = useUrlStore((state) => state)
-  const { selectCategory } = useCategoryStore((state) => state)
-  const { setViewMemberModal, setMemberPosition } = useMembersStore(
-    (state) => state,
-  )
 
   const [isAuthInitialized, setIsAuthInitialized] = useState<boolean>(false)
 
   const pathname = usePathname()
-  const segment = useSelectedLayoutSegment()
 
   /** 로그인 및 로그아웃 커스텀 훅 */
   useSignInAndSignOut({ setIsAuthInitialized })
@@ -32,13 +27,6 @@ const Header = () => {
   useEffect(() => {
     setUrl(pathname)
   }, [pathname])
-
-  /** 인재풀 카테고리 선택 시 초기화 핸들러 */
-  const onClickMemberCategoryHandler = () => {
-    selectCategory("전체보기")
-    setViewMemberModal(false)
-    setMemberPosition(null)
-  }
 
   return (
     <div
