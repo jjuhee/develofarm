@@ -33,7 +33,7 @@ const SelectedLeftColumn = ({
             className="rounded-xl"
           />
         </div>
-        <div className="flex-shrink-0 font-bold text-[17px] w-[410px] p-3 mt-9">
+        <div className="flex-shrink-0 font-bold text-[17px] w-[410px] p-3 mt-4">
           {
             surfitArticlesBundle
               ? surfitArticlesBundle[selectedImageNumber + 1]?.title.length > 30
@@ -44,7 +44,7 @@ const SelectedLeftColumn = ({
                 : surfitArticlesBundle[selectedImageNumber + 1].title
               : "" // 또는 빈 문자열 또는 다른 로딩 처리 방식
           }
-          <div className="text-[14px] p-3 ">
+          <div className="text-[14px] p-3 h-[90px] mt-3">
             {
               surfitArticlesBundle
                 ? surfitArticlesBundle[selectedImageNumber + 1].description
