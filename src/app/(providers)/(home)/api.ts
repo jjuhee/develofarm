@@ -8,17 +8,12 @@ interface TSurfitArticles {
   now: string | null
 }
 
-export async function setSurfitCrawlingData({
-  surfitArticles,
-}: {
-  surfitArticles: TSurfitArticles[]
-}) {
-  console.log("api에서 크롤링한 데이터 확인", surfitArticles)
+export async function getSurfitCrawlingData() {
   const { data, error } = await supabaseForClient
     .from("column_crawling")
-    .insert(surfitArticles)
+    .select("*")
 
-  if (error) console.log("에러는 무엇인가요", error)
-
-  return
+  console.log("supbase 데이터!!!!!!!!!!!!", data)
+  if (error) console.log("에러메세지", error)
+  return data
 }
