@@ -13,7 +13,6 @@ export async function getSurfitCrawlingData() {
     .from("column_crawling")
     .select("*")
 
-  console.log("supbase 데이터!!!!!!!!!!!!", data)
   if (error) console.log("에러메세지", error)
   return data
 }
