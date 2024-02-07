@@ -16,7 +16,7 @@ interface TBookmarksCountEachProject {
 ;[]
 
 interface MostBookmarkedProps {
-  bookmarksCountProjects: TBookmarksCountEachProject[]
+  bookmarksCountProjects: TBookmarksCountEachProject[] | null
 }
 const MostBookmarked = ({ bookmarksCountProjects }: MostBookmarkedProps) => {
   const router = useRouter()
