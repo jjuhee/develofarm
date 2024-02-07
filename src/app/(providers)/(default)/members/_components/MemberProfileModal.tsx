@@ -36,14 +36,13 @@ const MemberProfileModal = () => {
     <>
       <div className="flex w-full items-center justify-between">
         <div className="flex  items-center">
-          <div className="w-[123px] h-[123px] bg-gray-300 overflow-hidden rounded-full mr-10">
-            <Image
-              src={selectedMember.avatar_url!}
-              alt="member"
-              width={123}
-              height={123}
-            />
-          </div>
+          <Image
+            src={selectedMember.avatar_url! || "/images/default_avatar.png"}
+            alt="member"
+            width={123}
+            height={123}
+            className="w-[123px] h-[123px] object-cover rounded-full mr-10"
+          />
           <div className="flex flex-col gap-2">
             <h3 className="text-[21px] font-[800]">
               {selectedMember.user_nickname}
