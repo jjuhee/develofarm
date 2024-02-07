@@ -87,7 +87,12 @@ const ProjectList = ({ option, setIsShownCategory }: Props) => {
     })
   }
 
-  if (isLoading) return <div>로딩중...</div>
+  if (isLoading)
+    return (
+      <div className="flex z-10 justify-center items-start pt-[70px] h-[100vh]">
+        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+      </div>
+    )
 
   return (
     <>
