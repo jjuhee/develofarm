@@ -170,8 +170,15 @@ const Editor = ({ projectId, project, techsWithPositions }: Props) => {
       <div className="mb-[70px] lg:mb-0">
         <Attatchment setSelectedFile={setSelectedFile} />
       </div>
-      <div className="buttonbox flex justify-around border-[#d2d2d2] border-t bg-white fixed bottom-0 right-0 w-full *:min-w-[150px] *:h-[36px] py-[10px] px-[20px] z-20 lg:border-0 lg:relative lg:z-0 lg:px-0 lg:*:min-w-[100px]">
-        <Button buttonType="button" type="border" text="취소하기" />
+      <div className="buttonbox flex justify-around border-[#d2d2d2] border-t bg-white fixed bottom-0 right-0 w-full *:min-w-[150px] *:h-[36px] py-[10px] px-[20px] z-20 lg:border-0 lg:relative lg:z-0 lg:px-0 lg:justify-between">
+        <Button
+          buttonType="button"
+          type="border"
+          text="취소하기"
+          handler={() => {
+            router.back()
+          }}
+        />
         <Button
           buttonType="submit"
           text="게시하기"
