@@ -6,28 +6,28 @@ const ProfileSpec = ({ specs }: { specs: Tables<"specs">[] }) => {
     <div className="flex justify-between items-center ">
       <div>
         <div className="flex justify-between items-center">
-          <h2 className="text-[26px] font-bold">자격/어학/수상</h2>
+          <h2 className="text-[18px] font-bold">자격/어학/수상</h2>
         </div>
 
         {specs && specs.length > 0 ? (
           specs.map((spec) => (
             <div
               key={spec.id}
-              className="flex justify-between items-start h-[60px] w-[580px] pt-[30px] pb-[70px]"
+              className="flex justify-between items-start h-[60px] w-[550px] pt-[30px] pb-[35px]"
             >
               <div className="flex">
-                <p>{spec.spec_date}</p>
+                <p className="text-[16px] font-bold">{spec.spec_date}</p>
               </div>
 
               <div className="flex pl-[100px]">
-                <h2 className="w-[250px] text-xl font-bold">
+                <h2 className="w-[250px] text-[16px] font-bold">
                   {spec.spec_name}
                 </h2>
               </div>
             </div>
           ))
         ) : (
-          <p className="pt-[20px] px-[190px]">
+          <p className="pt-[20px] px-[190px] text-[14px]">
             자격/어학/수상 내용이 없습니다.
           </p>
         )}

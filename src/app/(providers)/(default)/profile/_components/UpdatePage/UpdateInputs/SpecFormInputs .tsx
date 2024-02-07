@@ -25,14 +25,14 @@ const SpecFormInputs = ({
     <div key={spec.id}>
       {!isHidden && (
         <>
-          <div className="flex justify-between items-start pt-[30px] pb-[58px]">
+          <div className="flex justify-between items-start pt-[30px] pb-[49px]">
             <input
               type="date"
               value={spec.spec_date as string}
               onChange={(e) =>
                 handleInputChange(formIndex, "spec_date", e.target.value)
               }
-              className="pt-[5px] cursor-pointer"
+              className="pt-[5px] text-[16px] font-bold cursor-pointer"
             />
 
             <div className="relative flex items-center">
@@ -42,7 +42,7 @@ const SpecFormInputs = ({
                 onChange={(e) =>
                   handleInputChange(formIndex, "spec_name", e.target.value)
                 }
-                className="w-[250px] text-xl font-bold p-1"
+                className="w-[220px] text-[16px] font-bold p-1"
                 placeholder="활동명"
                 maxLength={10}
               />

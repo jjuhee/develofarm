@@ -12,7 +12,7 @@ const ProfileProjectCard = ({
   bookmarks: Tables<"bookmarks">[]
 }) => {
   return (
-    <div className="border border-gray-300 h-[356px] w-[371px] bg-white rounded-[20px] shadow-md mt-4 mb-4 transition-transform transform hover:scale-105">
+    <div className="border border-gray-300 w-[371px] h-[356px] bg-white rounded-[20px] shadow-md mt-4 mb-4 transition-transform transform hover:scale-105">
       <div className="flex flex-col items-left">
         <Link href={`/projects/${project.id}`}>
           <Image
@@ -28,7 +28,7 @@ const ProfileProjectCard = ({
           <div className="flex font-bold">
             <div>
               <p
-                className={`p-[5px] px-[10px] mr-3 border border-solid border-[#666666] rounded-full ${
+                className={`text-[14px] py-[2px] px-[10px] mr-3 border border-solid border-[#666666] rounded-full ${
                   project.recruit_status
                     ? "bg-[#666666] text-white"
                     : "bg-[#ffffff] font-bold"
@@ -38,7 +38,7 @@ const ProfileProjectCard = ({
               </p>
             </div>
             <div>
-              <h2 className="text-[20px]">
+              <h2 className="text-[16px]">
                 {project.title && project.title.length > 10
                   ? `${project.title.slice(0, 10)}...`
                   : project.title}

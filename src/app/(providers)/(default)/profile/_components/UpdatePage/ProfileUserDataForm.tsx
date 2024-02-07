@@ -223,15 +223,15 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
         />
         <div className="text-left pl-[40px]">
           <div className="h-[100px] pl-[10px] relative">
-            <p className="text-[18px] pb-[10px] font-semibold">닉네임</p>
+            <p className="text-[16px] pb-[10px] font-semibold">닉네임</p>
             <div className="relative">
               <input
                 type="text"
                 name="userNickname"
                 value={user.user_nickname}
                 onChange={(e) => handleChange(e, "user_nickname")}
-                className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[20px] w-[872px] h-[48px] hover:border-[#000000]"
-                placeholder="닉네임을 입력하세요..."
+                className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[16px] w-[847px] h-[48px] hover:border-[#000000]"
+                placeholder="닉네임을 입력하세요."
                 maxLength={10}
               />
               <button
@@ -243,22 +243,22 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
             </div>
           </div>
 
-          <div className="flex justify-between items-center w-[700px]">
+          <div className="flex justify-between items-center">
             <div className="p-[10px]">
               <div className="h-[100px] relative">
-                <p className="text-[18px] pb-[10px] font-semibold">연락처</p>
+                <p className="text-[16px] pb-[10px] font-semibold">연락처</p>
                 <div className="relative">
                   <input
                     type="text"
                     name="userPhoneNumber"
                     value={user.user_phone_number}
                     onChange={(e) => handleChange(e, "user_phone_number")}
-                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[20px] w-[431px] h-[48px] hover:border-[#000000]"
+                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[16px] w-[413.5px] h-[48px] hover:border-[#000000]"
                     placeholder="- 를 넣어서 입력하세요."
                     maxLength={13}
                   />
                   <button
-                    className="absolute right-[15px] top-[10px] text-[#AAAAAA] text-[30px] hover:text-red-500"
+                    className="absolute right-[5px] top-[10px] text-[#AAAAAA] text-[30px] hover:text-red-500"
                     onClick={() => handleClear("user_phone_number")}
                   >
                     <HiOutlineXMark />
@@ -267,14 +267,14 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
               </div>
 
               <div className="h-[100px] relative">
-                <p className="text-[18px] pb-[10px] font-semibold">
+                <p className="text-[16px] pb-[10px] font-semibold">
                   직무 및 기술
                 </p>
                 <ul className="flex gap-[13px] pb-[13px]">
                   {positions?.map((position) => (
                     <li
                       key={position.id}
-                      className={`border border-[#CCCCCC] rounded-[8px] gap-[15px] font-bold text-[16px] w-[135px] h-[48px] flex items-center justify-center cursor-pointer hover:border-[#000000] ${
+                      className={`border border-[#CCCCCC] rounded-[8px] gap-[15px] font-bold text-[14px] w-[128px] h-[37px] flex items-center justify-center cursor-pointer hover:border-[#000000] ${
                         selectedPositionId === position.id
                           ? "bg-[#B8FF65] text-[#000000] hover:bg-[#B8FF65] hover:text-[#000000]  transition-all duration-300 border-none"
                           : ""
@@ -286,13 +286,13 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
                     >
                       {position.name}
                       {isPositionDropdownOpen ? (
-                        <IoIosArrowUp className="text-[25px]" />
+                        <IoIosArrowUp className="text-[20px]" />
                       ) : (
-                        <IoIosArrowDown className="text-[25px]" />
+                        <IoIosArrowDown className="text-[20px]" />
                       )}
                       {selectedPositionId === position.id &&
                         isPositionDropdownOpen && (
-                          <div className="absolute top-[92px] left-0 w-[431px] font-bold text-[18px] bg-white border border-[#CCCCCC] rounded-[20px] overflow-hidden">
+                          <div className="absolute top-[77px] left-0 w-[410px] font-bold text-[18px] bg-white border border-[#CCCCCC] rounded-[12px] overflow-hidden">
                             <ul>
                               {positionTechs
                                 ?.filter(
@@ -317,7 +317,7 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
                                     />
                                     <label
                                       htmlFor={tech.techs?.id}
-                                      className="ml-2 text-[16px]"
+                                      className="ml-2 text-[14px]"
                                     >
                                       {tech.techs?.tech_name}
                                     </label>
@@ -333,16 +333,16 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
             </div>
 
             <div>
-              <div className="h-[100px] relative">
-                <p className="text-[18px] pb-[10px] font-semibold">이메일</p>
+              <div className=" pl-[10px] h-[100px] relative">
+                <p className="text-[16px] pb-[10px] font-semibold">이메일</p>
                 <div className="relative">
                   <input
                     type="text"
                     name="user_email"
                     value={user.user_email}
                     onChange={(e) => handleChange(e, "user_email")}
-                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[20px] w-[431px] h-[48px] hover:border-[#000000]"
-                    placeholder="이메일을 입력하세요..."
+                    className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[16px] w-[413.5px] h-[48px] hover:border-[#000000]"
+                    placeholder="이메일을 입력하세요."
                   />
                   <button
                     className="absolute right-[15px] top-[10px] text-[#AAAAAA] text-[30px] hover:text-red-500"
@@ -353,13 +353,13 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
                 </div>
               </div>
               <div>
-                <div className="h-[100px]">
-                  <p className="text-[18px] pb-[10px] font-semibold">
-                    유저 상태
+                <div className="pl-[10px] h-[100px]">
+                  <p className="text-[16px] pb-[10px] font-semibold">
+                    상태 업데이트
                   </p>
                   <div className="relative">
                     <div
-                      className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[20px] w-[431px] h-[48px] flex items-center justify-beteewn cursor-pointer hover:border-[#000000]"
+                      className="border border-[#CCCCCC] rounded-[12px] pl-[25px] font-bold text-[14px] w-[417px] h-[37px] flex items-center justify-beteewn cursor-pointer hover:border-[#000000]"
                       onClick={toggleStatusDropdown}
                     >
                       {
@@ -369,14 +369,14 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
                       }
                       <span className="ml-2">{user.user_status}</span>
                       {isStatusDropdownOpen ? (
-                        <IoIosArrowUp className="ml-[260px]" />
+                        <IoIosArrowUp className="ml-[280px] text-[20px]" />
                       ) : (
-                        <IoIosArrowDown className="ml-[260px]" />
+                        <IoIosArrowDown className="ml-[280px] text-[20px]" />
                       )}
                     </div>
 
                     {isStatusDropdownOpen && (
-                      <div className="absolute top-full left-0 mt-1 w-[431px] font-bold text-[18px] bg-white border border-[#CCCCCC] rounded-[20px] overflow-hidden">
+                      <div className="absolute top-full left-0 mt-1 w-[417px] font-bold text-[14px] bg-white border border-[#CCCCCC] rounded-[12px] overflow-hidden">
                         <ul>
                           {userStatusOptions.map((option) => (
                             <li
@@ -407,7 +407,7 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
       <hr className="my-8 border-t-2 border-gray-300" />
 
       <div>
-        <h2 className="text-[26px] font-bold">보유기술</h2>
+        <h2 className="text-[18px] font-bold">보유기술</h2>
         {positions?.map((position) => (
           <div className="flex gap-3 pt-3" key={position.id}>
             {positionTechs
@@ -428,14 +428,14 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
       </div>
 
       <div className="relative">
-        <h2 className="text-[26px] font-bold pb-[10px]">간단 소개글</h2>
+        <h2 className="text-[18px] font-bold pb-[10px]">간단 소개글</h2>
         <div className="relative">
           <textarea
             name="user_comment"
             value={user.user_comment}
             onChange={(e) => handleChange(e, "user_comment")}
-            className="border border-[#CCCCCC] rounded-[5px] p-2 text-[16px] w-[1180px] h-[120px]"
-            placeholder="간단한 소개글을 입력하세요..."
+            className="border border-[#CCCCCC] rounded-[5px] p-2 text-[16px] w-[1180px] h-[134px]"
+            placeholder="간단한 소개글을 입력하세요."
             maxLength={200}
           />
           <button
@@ -447,7 +447,7 @@ const ProfileUserDataForm = ({ userId }: { userId: string }) => {
         </div>
       </div>
       <button
-        className="text-[15px] ml-[1100px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
+        className="text-[15px] w-[100px] h-[36px] font-bold ml-[1080px] mt-[30px] px-4 py-2 rounded-[6px] bg-[#B8FF65] hover:bg-[#666666] hover:text-[#B8FF65]"
         onClick={handleCombinedAction}
       >
         저장하기
