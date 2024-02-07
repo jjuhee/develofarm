@@ -69,12 +69,12 @@ const MembersComponent = () => {
 
   useOnClickOutSide({ ref: modalRef, handler: () => setViewMemberModal(false) })
 
-  if (isLoading)
-    return (
-      <div className="flex justify-center items-center h-[100vh]">
-        <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
-      </div>
-    )
+  // if (isLoading)
+  //   return (
+  //     <div className="flex justify-center items-center h-[100vh]">
+  //       <Image src={"/images/load.gif"} alt="load" width={200} height={200} />
+  //     </div>
+  //   )
 
   return (
     <div>
@@ -96,7 +96,18 @@ const MembersComponent = () => {
           <MemberCategory positions={positions!} />
 
           {/* 멤버 리스트 */}
-          <MemberList infinityUsers={infinityUsers!} />
+          {isLoading ? (
+            <div className="flex justify-center items-start pt-[50px] h-[100vh]">
+              <Image
+                src={"/images/load.gif"}
+                alt="load"
+                width={200}
+                height={200}
+              />
+            </div>
+          ) : (
+            <MemberList infinityUsers={infinityUsers!} />
+          )}
         </section>
         {/* 무한 스크롤 기준 박스 */}
         <div ref={ref} className="w-full h-[100px]" />

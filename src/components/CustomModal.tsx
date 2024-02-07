@@ -46,6 +46,7 @@ const CustomModal = () => {
   const cancelHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.target === e.currentTarget) {
       setViewCustomModal(false)
+      input && setInput("")
     }
   }
 
@@ -56,15 +57,15 @@ const CustomModal = () => {
   return ReactDOM.createPortal(
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 flex bg-black bg-opacity-50 z-100" />
-      <div className="fixed top-[50%] left-[50%] flex transform: translate-x-[-50%] translate-y-[-50%] p-[50px] w-[450px] h-[260px] bg-white z-200 rounded-3xl">
-        <div className="w-full h-full flex flex-col justify-around items-center">
-          <h3 className="text-[20px] font-[600] whitespace-pre-line text-center">
+      <div className="fixed top-[50%] left-[50%] flex translate-x-[-50%] translate-y-[-50%] p-[20px] w-[400px] h-[230px] bg-white z-200 rounded-3xl">
+        <div className="w-full h-full flex flex-col justify-center items-center">
+          <h3 className="text-[20px] font-[700] whitespace-pre-line text-center">
             {modalMessage}
           </h3>
           {isInput && (
             <input
               type="text"
-              className="p-3"
+              className="py-2 px-4 mt-[20px] w-[70%]"
               placeholder="한줄 소개를 입력해주세요."
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -72,7 +73,7 @@ const CustomModal = () => {
             />
           )}
 
-          <section className="w-full flex justify-around px-8">
+          <section className="w-full flex pt-[30px] justify-around px-8 *:w-[115px] *:h-[36px]">
             {modalType === "confirm" && (
               <Button handler={cancelHandler} text="취소" type="border" />
             )}

@@ -15,7 +15,7 @@ const FloatingButton = () => {
   const [showButton, setShowButton] = useState(false)
   const openLoginConfirmModal = useLoginConfirmModal()
 
-  useScrollEvent({ scrollYSize: 500, handler: setShowButton })
+  useScrollEvent({ scrollYSize: 200, handler: setShowButton })
 
   const onClickWriteButton = () => {
     if (userId) {
@@ -26,7 +26,7 @@ const FloatingButton = () => {
   }
 
   return (
-    <div className="fixed right-[30px] bottom-[110px] lg:right-[50px] lg:bottom-[50px] z-10">
+    <div className="fixed right-[20px] bottom-[80px] lg:right-[30px] lg:bottom-[50px] z-10">
       {showButton && (
         <Image
           src={"/images/top_button.png"}
@@ -35,7 +35,7 @@ const FloatingButton = () => {
           height={65}
           onClick={scrollToTop}
           className={
-            "w-[35px] h-[35px] lg:w-[65px] lg:h-[65px] cursor-pointer transition-all ease-in-out"
+            "w-[50px] h-[50px] lg:w-[65px] lg:h-[65px] cursor-pointer transition-all ease-in-out"
           }
         />
       )}
@@ -47,7 +47,7 @@ const FloatingButton = () => {
           width={65}
           height={65}
           onClick={onClickWriteButton}
-          className="w-[35px] h-[35px] lg:w-[65px] lg:h-[65px] cursor-pointer"
+          className="w-[50px] h-[50px] lg:w-[65px] lg:h-[65px] cursor-pointer"
         />
       )}
     </div>
