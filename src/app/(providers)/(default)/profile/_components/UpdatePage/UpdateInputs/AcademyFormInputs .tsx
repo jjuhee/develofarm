@@ -32,7 +32,7 @@ const AcademyFormInputs = ({
                 onChange={(e) =>
                   handleInputChange(formIndex, "period_from", e.target.value)
                 }
-                className="cursor-pointer"
+                className="text-[16px] font-bold cursor-pointer"
               />
               <span> ~ </span>
               <input
@@ -42,7 +42,7 @@ const AcademyFormInputs = ({
                 onChange={(e) =>
                   handleInputChange(formIndex, "period_to", e.target.value)
                 }
-                className="cursor-pointer"
+                className="text-[16px] font-bold cursor-pointer"
               />
             </div>
 
@@ -54,7 +54,7 @@ const AcademyFormInputs = ({
                   onChange={(e) =>
                     handleInputChange(formIndex, "academy_name", e.target.value)
                   }
-                  className="w-[250px] text-xl font-bold p-1"
+                  className="w-[220px] text-[16px] font-bold p-1"
                   placeholder="활동명"
                   maxLength={10}
                 />
@@ -77,7 +77,7 @@ const AcademyFormInputs = ({
                       e.target.value,
                     )
                   }
-                  className="p-1"
+                  className="w-[220px] text-[14px] p-1"
                   placeholder="활동내용"
                   maxLength={10}
                 />

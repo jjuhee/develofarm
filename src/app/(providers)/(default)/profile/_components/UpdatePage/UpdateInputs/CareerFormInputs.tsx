@@ -37,7 +37,7 @@ const CareerFormInputs: React.FC<Props> = ({
             onChange={(e) =>
               handleInputChange(formIndex, "period_from", e.target.value)
             }
-            className="cursor-pointer"
+            className="text-[16px] font-bold cursor-pointer"
           />
           <span> ~ </span>
           <input
@@ -47,24 +47,24 @@ const CareerFormInputs: React.FC<Props> = ({
             onChange={(e) =>
               handleInputChange(formIndex, "period_to", e.target.value)
             }
-            className="cursor-pointer"
+            className="text-[16px] font-bold cursor-pointer"
           />
-          <div className="pt-[30px]">
+          <div className="pt-[30px] flex justify-between items-center w-[60px]">
+            <Checkbox
+              id={`employed_status_${formIndex}`}
+              value={careerData[formIndex]?.employed_status}
+              handler={(e) =>
+                handleInputChange(
+                  formIndex,
+                  "employed_status",
+                  e.target.checked,
+                )
+              }
+            />
             <label
               htmlFor={`employed_status_${formIndex}`}
-              className="cursor-pointer"
+              className="cursor-pointer text-[14px]"
             >
-              <Checkbox
-                id={`employed_status_${formIndex}`}
-                value={careerData[formIndex]?.employed_status}
-                handler={(e) =>
-                  handleInputChange(
-                    formIndex,
-                    "employed_status",
-                    e.target.checked,
-                  )
-                }
-              />
               재직중
             </label>
           </div>
@@ -78,13 +78,13 @@ const CareerFormInputs: React.FC<Props> = ({
               onChange={(e) =>
                 handleInputChange(formIndex, "company_name", e.target.value)
               }
-              className="w-[250px] text-xl font-bold p-1"
+              className="w-[220px] text-[16px] font-bold p-1"
               placeholder="회사명"
               maxLength={10}
             />
             <button
               type="button"
-              onClick={handleDeleteForm} // handleDeleteForm 함수를 직접 호출
+              onClick={handleDeleteForm}
               className="text-[#AAAAAA] text-[30px] hover:text-red-500"
             >
               <HiOutlineXMark />
@@ -97,7 +97,7 @@ const CareerFormInputs: React.FC<Props> = ({
               onChange={(e) =>
                 handleInputChange(formIndex, "responsibility", e.target.value)
               }
-              className="p-1"
+              className="w-[220px] text-[14px] p-1"
               placeholder="담당직무"
               maxLength={10}
             />

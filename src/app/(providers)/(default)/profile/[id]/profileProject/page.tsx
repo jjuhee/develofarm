@@ -52,13 +52,15 @@ const ProfileProjectPage = () => {
     <div>
       {!profileProject || profileProject.length === 0 ? (
         <div>
-          <h2 className="text-[36px] font-bold pt-5">내가 게시한 프로젝트</h2>
-          <div className="pt-[50px]">내가 게시한 프로젝트가 없습니다.</div>
+          <h2 className="text-[18px] font-bold pt-5">내가 게시한 프로젝트</h2>
+          <div className="pt-[50px] text-[16px]">
+            내가 게시한 프로젝트가 없습니다.
+          </div>
           <hr className="my-[70px] border-t-2 border-gray-300 " />
         </div>
       ) : (
         <>
-          <h2 className="text-[36px] font-bold pt-5">내가 게시한 프로젝트</h2>
+          <h2 className="text-[18px] font-bold pt-5">내가 게시한 프로젝트</h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 mt-5">
             {profileProject.map((project) => (
               <ProfileProjectCard
@@ -74,13 +76,13 @@ const ProfileProjectPage = () => {
 
       {!bookmarks || bookmarks.length === 0 ? (
         <div>
-          <h2 className="text-[36px] font-bold">찜한 프로젝트</h2>
-          <div className="pt-[50px]">찜한 프로젝트가 없습니다.</div>
+          <h2 className="text-[18px] font-bold">찜한 프로젝트</h2>
+          <div className="pt-[50px] text-[16px]">찜한 프로젝트가 없습니다.</div>
           <hr className="my-[70px] border-t-2 border-gray-300 " />
         </div>
       ) : (
         <>
-          <h2 className="text-[36px] font-bold">찜한 프로젝트</h2>
+          <h2 className="text-[18px] font-bold">찜한 프로젝트</h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 mt-5">
             {bookmarks?.map((project) => (
               <ProfileProjectCard
