@@ -69,7 +69,6 @@ const MostBookmarked = ({ bookmarksCountProjects }: MostBookmarkedProps) => {
                   layout="fill" // 부모 요소의 크기에 맞게 설정
                   objectFit="cover" // 이미지를 부모 요소에 맞춤
                 />
-                <div>ddd</div>
               </div>
               <div className="absolute bottom-0 left-0 text-black h-[30%] w-full">
                 <div className="mb-2">
@@ -130,7 +129,6 @@ const MostBookmarked = ({ bookmarksCountProjects }: MostBookmarkedProps) => {
                   layout="fill" // 부모 요소의 크기에 맞게 설정
                   objectFit="cover" // 이미지를 부모 요소에 맞춤
                 />
-                <div>ddd</div>
               </div>
               <div className="absolute bottom-0 left-0 text-black h-[30%] w-full">
                 <div className="mb-2">
