@@ -36,8 +36,7 @@ const ProfileUserData = ({ profileId }: { profileId: string }) => {
           alt="userAvatar"
           width={273}
           height={273}
-          objectFit="cover"
-          className="rounded-full"
+          className="rounded-full object-cover"
         />
         <div className="text-left pl-[40px]">
           <h2 className="text-[21px] pl-[10px] font-bold">
