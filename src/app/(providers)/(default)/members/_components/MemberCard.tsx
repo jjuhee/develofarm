@@ -40,7 +40,7 @@ const MemberCard = ({ user }: Props) => {
           alt="user"
           width={300}
           height={300}
-          objectFit="cover"
+          className="object-cover"
         />
       </div>
       <section className="flex flex-col z-1 p-[12px] gap-[7px] pb-5 ">
