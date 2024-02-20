@@ -21,7 +21,6 @@ const ProfileProjectCard = ({
             alt={`Image for ${project.title}`}
             width={370}
             height={222.98}
-            objectFit="cover"
           />
         </Link>
         <div className="p-[20px]">
