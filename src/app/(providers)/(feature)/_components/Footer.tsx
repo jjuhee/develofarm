@@ -4,12 +4,12 @@ import React from "react"
 const Footer = () => {
   return (
     <div className="w-full bg-black text-white">
-      <div className="flex items-center justify-between max-w-[1200px] mx-auto py-[48px]">
+      <div className="flex items-center justify-between max-w-[1200px] mx-auto py-[36px]">
         <Image
           src={"/images/logo2.png"}
           alt="footer logo"
-          width={120}
-          height={20}
+          width={171}
+          height={42}
         />
         <div className="flex gap-10 text-xs font-bold">
           <span>이용약관</span>

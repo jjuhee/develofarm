@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { removeProjectInMember, setProjectInMember } from "../../api"

@@ -1,3 +1,5 @@
+"use client"
+
 import { Tables } from "@/types/supabase"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"

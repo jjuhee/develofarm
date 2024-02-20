@@ -1,3 +1,5 @@
+"use client"
+
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
 import { TablesInsert } from "@/types/supabase"
