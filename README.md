@@ -1,12 +1,12 @@
 ## 프로젝트 목차
 [1. 프로젝트 소개](#프로젝트-소개)  
-[2. 팀 소개](#팀-소개)  
-[3. 사용 기술](#사용-기술)  
-[4. 폴더 구조](#폴더-구조)  
-[5. 와이어 프레임](#와이어-프레임)    
-[6. 최종 디자인 시안](#최종-디자인-시안)  
-[7. 깃허브 조회 수](#깃허브-조회-수)  
-[6. 배포-주소](#배포-주소)  
+[2. 사용 기술](#사용-기술)  
+[3. 폴더 구조](#폴더-구조)  
+[4. 와이어 프레임](#와이어-프레임)    
+[5. 최종 디자인 시안](#최종-디자인-시안)  
+[6. 깃허브 조회 수](#깃허브-조회-수)  
+[7. 배포-주소](#배포-주소)  
+[8. 팀 소개](#팀-소개)  
 
 ## 프로젝트 소개
 - 프로젝트 이름: <img src="https://github.com/jjuhee/nbcamp_final/assets/57513472/18ec3e42-b239-4d9c-a4d1-153e54bf7202" width="20" height="20"/> **Developfarm**  
@@ -18,67 +18,40 @@
     - 라이브러리나, 기술등의 공식문서가 한글화가 되어 있으면서 공식문서의 중요성과 사용법을 익히자는 취지가 담겨있습니다.
 - 배포 주소: [develofarm](https://www.develofarm.site/)
 
-## 팀 소개
-- 팀이름: **行くぞ！！！(이쿠조!!!)**
-
-|팀원|역할|맡은 페이지|MBTI|깃허브 주소|블로그 주소|
-|------|---|---|---|---|---|
-|김은비|**리더**|프로젝트&인재풀 페이지, 헤더&푸터 레이아웃|ISTP|https://github.com/eunbime|https://velog.io/@eunbi/posts|
-|김주희|**부리더**|프로젝트 작성&수정 페이지|ISFP|https://github.com/jjuhee|https://developer.happymunzi.com|
-|진민용|팀원|로그인&메인 페이지, 검색 페이지, 헤더 레이아웃|ENFJ|https://github.com/boyaneck|https://velog.io/@boyaneck/posts|
-|정효창|팀원|마이 페이지|E같은 ISFP|https://github.com/HyoChang5147|https://velog.io/@jhc729/posts|
-|강지향|팀원|상세 페이지|ISFJ|https://github.com/KANG0417|https://velog.io/@kanjang96/posts|
-|이승연|디자이너|전체 페이지 UI/UX 디자인|ISFJ|||
-
 ## 사용 기술
 
-### Enviroment   <br/>
+### Enviroment
 
 <img src="https://img.shields.io/badge/GIT-F05032?style=for-the-badge&logo=Git&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=GitHub&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/VISUAL STUDIO CODE-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white"/></a>
 
- <br/>
+### Config
 
-### Config  <br/>
-
-<img src="https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=NPM&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/YARN-2C8EBB?style=for-the-badge&logo=Yarn&logoColor=white"/></a>
-
- <br/>
 
 ### Development Language
 <img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=CSS3&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/TYPESCRIPT-3178C6?style=for-the-badge&logo=typescript&logoColor=black"/></a> 
 
-<br />
-
 ### Framework
 <img src="https://img.shields.io/badge/NEXT.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"/></a> 
 
-<br />
-
 #### State Management
 
-- Server State State
+- Server Side State
 <img src="https://img.shields.io/badge/React Query-61DAFB?style=for-the-badge&logo=reactquery&logoColor=white"/></a>
 
 - Client Side State
 <img src="https://img.shields.io/badge/ZUSTAND-F3DF49?style=for-the-badge&logo=standardjs&logoColor=black"/></a>
 
-<br />
-
 ### Database
 
 <img src="https://img.shields.io/badge/SUPABASE-3FCF8E?style=for-the-badge&logo=supabase&logoColor=black"/></a>  
 
- <br/>
-
 ### style 
 <img src="https://img.shields.io/badge/TAILWIND-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"/></a>  
-
- <br/>
 
 ### Communication
 
@@ -86,7 +59,6 @@
 <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/FIGMA-F24E1E?style=for-the-badge&logo=Figma&logoColor=white"/></a>
 
- <br/>
 
 ## 파일 구조
 ```
@@ -289,4 +261,16 @@
 
 ## 배포 주소
 https://www.develofarm.site
+
+## 팀 소개
+- 팀이름: **行くぞ！！！(이쿠조!!!)**
+
+|팀원|역할|맡은 페이지|MBTI|깃허브 주소|블로그 주소|
+|------|---|---|---|---|---|
+|김은비|**리더**|프로젝트&인재풀 페이지, 헤더&푸터 레이아웃|ISTP|https://github.com/eunbime|https://velog.io/@eunbi/posts|
+|김주희|**부리더**|프로젝트 작성&수정 페이지|ISFP|https://github.com/jjuhee|https://developer.happymunzi.com|
+|진민용|팀원|로그인&메인 페이지, 검색 페이지, 헤더 레이아웃|ENFJ|https://github.com/boyaneck|https://velog.io/@boyaneck/posts|
+|정효창|팀원|마이 페이지|E같은 ISFP|https://github.com/HyoChang5147|https://velog.io/@jhc729/posts|
+|강지향|팀원|상세 페이지|ISFJ|https://github.com/KANG0417|https://velog.io/@kanjang96/posts|
+|이승연|디자이너|전체 페이지 UI/UX 디자인|ISFJ|||
 
