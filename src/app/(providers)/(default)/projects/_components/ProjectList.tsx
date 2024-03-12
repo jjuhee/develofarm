@@ -95,7 +95,7 @@ const ProjectList = ({ option, setIsShownCategory }: Props) => {
     )
 
   return (
-    <>
+    <div className="flex flex-col w-full">
       <div className="flex flex-col-reverse md:justify-between md:flex-row">
         <p className="text-[#363940]">
           {projects && projects.length > 0 ? (
@@ -132,7 +132,7 @@ const ProjectList = ({ option, setIsShownCategory }: Props) => {
       <Spacer y={50} />
 
       {projects && projects.length > 0 ? (
-        <ul className="flex flex-col max-w-full">
+        <ul className="flex flex-col w-full">
           {paginatedSortedProjects[page - 1]?.map((item: TProjectsType) => {
             return (
               <ProjectCard
@@ -154,7 +154,7 @@ const ProjectList = ({ option, setIsShownCategory }: Props) => {
         currentPage={page}
         onPageChange={onPageChange}
       />
-    </>
+    </div>
   )
 }
 

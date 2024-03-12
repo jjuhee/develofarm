@@ -63,7 +63,7 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
       {/* 프로젝트 내용 */}
       <section className="relative flex flex-col justify-between w-full py-0 md:py-2">
         <div className="flex flex-col max-w-full gap-3 md:gap-5">
-          <div className="flex flex-col gap-1 md:gap-3 items-start md:flex-row md:items-center">
+          <div className="flex flex-col w-full gap-1 md:gap-3 items-start md:flex-row md:items-center">
             <h4
               className={`${
                 recruit_status
@@ -73,7 +73,7 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
             >
               {recruit_status ? "모집 완료" : "모집 중"}{" "}
             </h4>
-            <h2 className="text-[15px] w-full md:w-full truncate md:text-[18px] pr-10">
+            <h2 className="max-w-full text-[15px] line-clamp-1 md:text-[18px] mr-10">
               {title}
             </h2>
           </div>
@@ -99,12 +99,12 @@ const ProjectCard = ({ project, bookmarks }: Props) => {
         </div>
 
         <div className="justify-between items-center mt-10 hidden md:block">
-          <ul className="flex gap-3 relative">
+          <ul className="flex relative gap-3">
             <ProjectCardTechs project={project} />
           </ul>
         </div>
 
-        <div className="absolute top-5 right-2 md:top-[12px]">
+        <div className="absolute right-2">
           <BookmarkButton projectId={id} bookmarks={bookmarks} />
         </div>
       </section>
