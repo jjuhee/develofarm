@@ -3,18 +3,16 @@
 import useUserStore from "@/store/user"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname, useSelectedLayoutSegment } from "next/navigation"
+import { useSelectedLayoutSegments } from "next/navigation"
 import React from "react"
 
 const TabNav = () => {
   const { user } = useUserStore((state) => state)
 
-  const pathname = usePathname()
-  const segment = useSelectedLayoutSegment()
+  const segments = useSelectedLayoutSegments()
+  const includedSegments = (path: string) => segments.includes(path)
 
-  console.log("segment", segment)
-
-  if (segment === "/write") return null
+  if (includedSegments("write")) return null
 
   return (
     <nav className="fixed z-10 items-center bottom-0 w-full h-[55px] shadow-md shadow-gray-300 bg-white block md:hidden">
@@ -22,7 +20,7 @@ const TabNav = () => {
         <Link href={"/"} className="flex flex-col items-center justify-center">
           <Image
             src={
-              segment === "/"
+              includedSegments("(home)")
                 ? "/icons/navi_active_home.png"
                 : "/icons/navi_home.png"
             }
@@ -38,7 +36,7 @@ const TabNav = () => {
         >
           <Image
             src={
-              segment === "/projects"
+              includedSegments("projects")
                 ? "/icons/navi_active_projects.png"
                 : "/icons/navi_projects.png"
             }
@@ -54,7 +52,7 @@ const TabNav = () => {
         >
           <Image
             src={
-              segment === "/members"
+              includedSegments("members")
                 ? "/icons/navi_active_members.png"
                 : "/icons/navi_members.png"
             }
@@ -70,7 +68,7 @@ const TabNav = () => {
         >
           <Image
             src={
-              segment === "/profile"
+              includedSegments("profile")
                 ? "/icons/navi_active_profile.png"
                 : "/icons/navi_profile.png"
             }

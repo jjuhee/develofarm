@@ -18,8 +18,6 @@ const HeaderFrontNav = () => {
     setMemberPosition(null)
   }
 
-  console.log("segment", segment)
-
   return (
     <nav className="hidden md:flex md:gap-[89px]">
       <Link
