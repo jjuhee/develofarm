@@ -10,10 +10,10 @@ import { useCustomModal } from "@/hooks/useCustomModal"
 import useOnClickOutSide from "@/hooks/useOnClickOutSide"
 import useProjectsStore from "@/store/projects"
 import useScrollLock from "@/hooks/useScrollLock"
-
-import type { Tables } from "@/types/supabase"
 import useResizeDebounce from "@/hooks/useResizeDebounce"
 import Image from "next/image"
+
+import type { Tables } from "@/types/supabase"
 
 interface Props {
   categoryData: TCategoryData
@@ -45,7 +45,7 @@ const Category = ({
   useScrollLock(isShownCategory!)
 
   useEffect(() => {
-    if (windowSize.width >= 1024) {
+    if (windowSize.width >= 750) {
       setIsShownCategory(false)
     }
   }, [windowSize.width])
@@ -108,15 +108,15 @@ const Category = ({
     <section
       className={`flex-col gap-4 bg-white ${
         isShownCategory || isWritePage
-          ? `block py-[15px] px-[25px] lg:px-0 ${
+          ? `block py-[15px] px-[25px] md:px-0 ${
               isShownCategory &&
               "fixed top-0 left-0 w-full h-full z-20 overflow-scroll scrollbar-hide"
             }`
           : "hidden"
-      } lg:block`}
+      } md:block`}
     >
       {!isWritePage && (
-        <div className="flex justify-between items-center py-3 lg:pt-0">
+        <div className="flex justify-between items-center py-3 md:pt-0">
           <h1>필터링 검색</h1>
           <div
             className={`cursor-pointer ${isShownCategory ? "block" : "hidden"}`}
@@ -126,7 +126,7 @@ const Category = ({
           </div>
         </div>
       )}
-      <div className="flex flex-col lg:flex-row relative justify-between gap-[39px] lg:border-y pt-5 pb-[60px] lg:px-0 border-slate-800">
+      <div className="flex flex-col md:flex-row relative justify-between gap-[39px] md:border-y pt-5 pb-[60px] md:px-0 border-slate-800">
         <div>
           <div className="flex flex-col gap-[15px]">
             <h3>프로젝트 방식</h3>
@@ -162,7 +162,7 @@ const Category = ({
               <h3>활동 지역</h3>
               <div ref={dropdownRef} className="relative">
                 <div
-                  className={`category flex items-center justify-between px-[20px] py-[5px] rounded-lg w-[190px] ${
+                  className={`category flex items-center justify-between px-[20px] py-[5px] rounded-md w-[190px] ${
                     isRegionActive
                       ? "border-main-lime bg-main-lime hover:bg-main-lime hover:border-main-lime font-semibold"
                       : "bg-[#D2D2D2] border-[#D2D2D2] text-black font-semibold"
@@ -174,14 +174,14 @@ const Category = ({
                   {isRegionActive ? <IoIosArrowUp /> : <IoIosArrowDown />}
                 </div>
                 <ul
-                  className={`absolute flex flex-col mt-[3px] rounded-lg border-[1px] border-black z-20  ${
+                  className={`absolute flex flex-col mt-[3px] rounded-md border-[1px] border-black z-20  ${
                     isRegionActive ? "visible" : "invisible"
                   }`}
                 >
                   {regions?.map((region) => (
                     <li
                       key={region.id}
-                      className="cursor-pointer px-[18px] bg-white text-[12px] leading-[38px] w-[188px] h-[36px] first:rounded-t-lg last:rounded-b-lg z-20 hover:bg-[#DBFFB2] lg:text-[14px]"
+                      className="cursor-pointer px-[18px] bg-white text-[12px] leading-[38px] w-[188px] h-[36px] first:rounded-t-md last:rounded-b-md z-20 hover:bg-[#DBFFB2] md:text-[14px]"
                       onClick={(e) => {
                         setCategoryData({
                           ...categoryData,
@@ -231,7 +231,7 @@ const Category = ({
         <div className="flex flex-col gap-[15px]">
           <ul className="flex flex-col gap-4">
             <h3>프로젝트 기간</h3>
-            <li className="flex flex-col lg:flex-row items-start lg:items-center gap-4">
+            <li className="flex flex-col md:flex-row items-start md:items-center gap-4">
               <label className="w-[50px] text-[16px]">시작일</label>
               <input
                 className={`category w-[170px] px-[20px] py-[5px] cursor-pointer
@@ -260,7 +260,7 @@ const Category = ({
                 }
               />
             </li>
-            <li className="flex flex-col lg:flex-row items-start lg:items-center gap-4">
+            <li className="flex flex-col md:flex-row items-start md:items-center gap-4">
               <label className="w-[50px] text-[16px]">종료일</label>
               <input
                 className={`category w-[170px] px-[20px] py-[5px] cursor-pointer
@@ -298,7 +298,7 @@ const Category = ({
             </li>
           </ul>
         </div>
-        <div className="flex flex-col gap-[15px] items-start lg:w-[441px]">
+        <div className="flex flex-col gap-[15px] items-start md:w-[441px]">
           <h3>기술 스택</h3>
           <ul className="flex gap-3 ">
             <SelectStackButton
@@ -310,7 +310,7 @@ const Category = ({
         </div>
         {/* 메인page */}
         {!isWritePage && (
-          <div className="flex fixed z-20 bottom-0 right-0 w-full *:min-w-[150px] *:h-[36px] justify-around bg-white py-5 border-t lg:justify-normal lg:absolute lg:bottom-6 lg:right-[1px] lg:gap-3 lg:p-0 lg:w-auto lg:*:min-w-[100px] lg:*:h-[36px] lg:border-none">
+          <div className="flex fixed z-20 bottom-0 right-0 w-full *:min-w-[150px] *:h-[36px] justify-around bg-white py-5 border-t md:justify-normal md:absolute md:bottom-6 md:right-[1px] md:gap-3 md:p-0 md:w-auto md:*:min-w-[100px] md:*:h-[36px] md:border-none">
             <Button
               type="border"
               text="초기화"

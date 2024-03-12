@@ -9,7 +9,7 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import useUrlStore from "@/store/url"
 import { useSelectedLayoutSegment } from "next/navigation"
-import HeaderNav from "./HeaderNav"
+import HeaderRightNav from "./HeaderRightNav"
 import useSignInAndSignOut from "@/hooks/useSignInAndSignOut"
 import HeaderFrontNav from "./HeaderFrontNav"
 
@@ -32,7 +32,7 @@ const Header = () => {
     <div
       className={`w-full bg-white shadow-lg shadow-gray-100 ${
         pathname === "/" ? "block" : "hidden"
-      } lg:block`}
+      } md:block`}
     >
       <div className="flex justify-between items-center max-w-[1250px] h-[60px] my-0 mx-auto px-2 ">
         <Link href={"/"}>
@@ -41,7 +41,7 @@ const Header = () => {
 
         <HeaderFrontNav />
 
-        <HeaderNav user={user!} isAuthInitialized={isAuthInitialized} />
+        <HeaderRightNav user={user!} isAuthInitialized={isAuthInitialized} />
       </div>
     </div>
   )
