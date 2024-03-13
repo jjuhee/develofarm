@@ -95,8 +95,8 @@ const ProjectList = ({ option, setIsShownCategory }: Props) => {
     )
 
   return (
-    <>
-      <div className="flex flex-col-reverse lg:justify-between lg:flex-row">
+    <div className="flex flex-col w-full">
+      <div className="flex flex-col-reverse md:justify-between md:flex-row">
         <p className="text-[#363940]">
           {projects && projects.length > 0 ? (
             <>{projects.length}건의 검색 결과를 찾았어요.</>
@@ -104,13 +104,13 @@ const ProjectList = ({ option, setIsShownCategory }: Props) => {
             <>검색 결과를 찾지 못했습니다.</>
           )}
         </p>
-        <div className="flex items-center justify-between mb-10 lg:justify-normal lg:mb-0">
+        <div className="flex items-center justify-between mb-10 md:justify-normal md:mb-0">
           <Image
             src={"/icons/filter.png"}
             alt="filter icon"
             width={30}
             height={30}
-            className="block cursor-pointer lg:hidden"
+            className="block cursor-pointer md:hidden"
             onClick={() => setIsShownCategory((prev) => !prev)}
           />
           <div className="flex gap-[30px]">
@@ -132,7 +132,7 @@ const ProjectList = ({ option, setIsShownCategory }: Props) => {
       <Spacer y={50} />
 
       {projects && projects.length > 0 ? (
-        <ul className="flex flex-col max-w-full">
+        <ul className="flex flex-col w-full">
           {paginatedSortedProjects[page - 1]?.map((item: TProjectsType) => {
             return (
               <ProjectCard
@@ -154,7 +154,7 @@ const ProjectList = ({ option, setIsShownCategory }: Props) => {
         currentPage={page}
         onPageChange={onPageChange}
       />
-    </>
+    </div>
   )
 }
 
