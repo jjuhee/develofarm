@@ -61,10 +61,10 @@
 <img src="https://img.shields.io/badge/FIGMA-F24E1E?style=for-the-badge&logo=Figma&logoColor=white"/></a>
 
 ## Code Convention
-[Code Convention Link](https://spiced-manx-85c.notion.site/Code-Convention-1d63a59f07e94a379e61c9ce38e10145)
+[Code Convention Link](https://spiced-manx-85c.notion.site/Code-Convention-1699b23f6a6f4dcaaeac5e3f738dc4f9)
 
 ## Git Convention
-[Git Convention Link](https://spiced-manx-85c.notion.site/Github-Rules-723eb4214a0f4121a4abea60490fc555)
+[Git Convention Link](https://spiced-manx-85c.notion.site/Github-Rules-94c6a0fa69d541f2bf4c03d1929f5151)
 
 ## 파일 구조
 ```
