@@ -19,7 +19,7 @@ const HeaderFrontNav = () => {
   }
 
   return (
-    <nav className="hidden lg:flex lg:gap-[89px]">
+    <nav className="hidden md:flex md:gap-[89px]">
       <Link
         href={"/projects"}
         className={`text-black text-[18px] ${

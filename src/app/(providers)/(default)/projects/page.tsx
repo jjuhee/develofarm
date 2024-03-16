@@ -26,7 +26,6 @@ export default async function Page() {
         ...initialOption,
         recruitStatus: false,
       }),
-    // gcTime: 0,
   })
 
   return (

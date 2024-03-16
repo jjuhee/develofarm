@@ -96,9 +96,12 @@ export async function getProject(projectId: string) {
     .eq("id", projectId)
     .single()
 
-  if (projectError) console.log("error", projectError)
+  if (projectError) {
+    throw new Error(projectError.message)
+  }
+  // error { message: "invalid uuid ~~ "}
 
-  return projectData
+  return projectData // null / undefined
 }
 
 /** projectId 값과 일치하는 해당 프로젝트 및 연관 data 삭제 */
